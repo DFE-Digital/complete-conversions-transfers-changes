@@ -54,7 +54,7 @@ public enum NoteTaskIdentifier
     ConfirmTransferHasAuthorityToProceed = 12,
 
     [Description("confirm_date_academy_transferred")]
-    [DisplayDescription("Confirm the date the academy transferred")] // task heading 
+    [DisplayDescription("Confirm the academy transfer date")] // task heading 
     ConfirmDateAcademyTransferred = 13,
 
     [Description("conditions_met")]
@@ -66,7 +66,7 @@ public enum NoteTaskIdentifier
     ReceiveGrantPaymentCertificate = 15,
 
     [Description("confirm_date_academy_opened")]
-    [DisplayDescription("Confirm the date the academy opened")]
+    [DisplayDescription("Confirm the academy open date")]
     ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]

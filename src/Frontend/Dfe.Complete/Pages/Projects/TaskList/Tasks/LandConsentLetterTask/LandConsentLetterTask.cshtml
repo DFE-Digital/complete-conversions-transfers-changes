@@ -1,0 +1,56 @@
+﻿@page "/projects/{projectId}/tasks/land_consent_letter"
+@using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandConsentLetterTask.LandConsentLetterTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The land consent letter shows that DfE and the Secretary of State agree to the trusts' land transfers.</p>
+        <p>It is not always needed. For example, when land is transferring from a diocese to a trust.</p>
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Draft, sign and send the letter
+        </h2>
+        <div class="govuk-hint">
+            <p>There is <external-link href="@_configuration["ExternalLinks:LandConsentLetterTemplate"]">a template to help you draft the land consent letter (Microsoft Word document)</external-link>. Do this after you have reviewed the Form M and completed other land tasks.</p>
+            <p>You cannot send the letter to the trusts' solicitors until all conditions are met. You should send it out with other signed and sealed legal documents. The solicitors need to send the letter on to the Land Registry.</p>
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item data-cy="drafted-checkbox" id="drafted" asp-for="@Model.Drafted" value="true" name="drafted" checked="@Model.Drafted">
+                        <b>Drafted</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="signed-checkbox" id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
+                        <b>Signed by person with delegated authority</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="sent-checkbox" id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
+                        <b>Sent to both trusts, their solicitors and the local authority</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="saved-checkbox" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                        <b>Saved in the academy SharePoint folder</b>
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+        </div>
+
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

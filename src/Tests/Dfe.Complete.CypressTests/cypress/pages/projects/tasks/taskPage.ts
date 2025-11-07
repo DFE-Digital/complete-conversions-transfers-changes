@@ -61,6 +61,18 @@ export class TaskPage extends BasePage {
         return this;
     }
 
+    enterDate(day: string, month: string, year: string, id: string) {
+        cy.enterDate(id, day, month, year);
+        return this;
+    }
+
+    hasDate(day: string, month: string, year: string, id: string) {
+        cy.getById(`${id}.Day`).should("have.value", day);
+        cy.getById(`${id}.Month`).should("have.value", month);
+        cy.getById(`${id}.Year`).should("have.value", year);
+        return this;
+    }
+
     // checkbox validation
 
     expandGuidance(summaryText: string) {
@@ -80,7 +92,7 @@ export class TaskPage extends BasePage {
     }
 
     noSaveAndReturnExists() {
-        return this.buttonDoesNotExist("Save and return");
+        return this.doesntContain("Save and return");
     }
 
     private performLabelContainerAction(action: () => void) {

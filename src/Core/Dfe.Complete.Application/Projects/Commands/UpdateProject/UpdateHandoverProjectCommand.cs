@@ -1,10 +1,15 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
@@ -21,7 +26,10 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     ) : IRequest<Result<bool>>;
 
     public class UpdateHandoverProjectCommandHandler(
-        ICompleteRepository<Project> projectRepository)
+        ICompleteRepository<Project> projectRepository,
+        IKeyContactReadRepository keyContactReadRepo,
+        IKeyContactWriteRepository keyContactWriteRepository,
+        ILogger<UpdateHandoverProjectCommandHandler> logger)
         : IRequestHandler<UpdateHandoverProjectCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(UpdateHandoverProjectCommand request,
@@ -30,30 +38,51 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken)
                 ?? throw new NotFoundException($"Project with {request.ProjectId} is not found", "ProjectId");
 
+            var dateTime = DateTime.UtcNow;
             project.EstablishmentSharepointLink = request.SchoolSharepointLink;
             project.IncomingTrustSharepointLink = request.IncomingTrustSharepointLink;
             project.OutgoingTrustSharepointLink = request.OutgoingTrustSharepointLink;
             project.State = ProjectState.Active;
             project.TwoRequiresImprovement = request.TwoRequiresImprovement;
+            project.UpdatedAt = dateTime;
+            
+            AssignedToRegionalCaseworkerTeam(request, project, dateTime);
 
-            AssignedToRegionalCaseworkerTeam(request, project);
-
-            AddNoteWhenHandoverCommentsPresent(project, request);
+            AddNoteWhenHandoverCommentsPresent(project, request, dateTime);
+            
+            await AddKeyContactIfDoesNotExist(project, dateTime, cancellationToken);
 
             await projectRepository.UpdateAsync(project, cancellationToken);
+
             return Result<bool>.Success(true);
         }
+        private async Task AddKeyContactIfDoesNotExist(Project project, DateTime dateTime, CancellationToken cancellationToken)
+        {
+            var keycontact = await keyContactReadRepo.KeyContacts.FirstOrDefaultAsync(k => k.ProjectId == project.Id, cancellationToken);
+            if (keycontact != null)
+            {
+                logger.LogError("Key contact already exists for handover project {ProjectId}", project.Id);
+                return;
+            }
+            await keyContactWriteRepository.AddKeyContactAsync(new KeyContact
+            {
+                Id = new KeyContactId(Guid.NewGuid()),
+                ProjectId = project.Id,
+                UpdatedAt = dateTime,
+                CreatedAt = dateTime,
+            }, cancellationToken);
+        }
 
-        private static void AssignedToRegionalCaseworkerTeam(UpdateHandoverProjectCommand request, Project project)
+        private static void AssignedToRegionalCaseworkerTeam(UpdateHandoverProjectCommand request, Project project, DateTime dateTime)
         {
             project.Team = request.AssignedToRegionalCaseworkerTeam ? ProjectTeam.RegionalCaseWorkerServices : request.UserTeam;
             project.AssignedToId = request.AssignedToRegionalCaseworkerTeam ? null : request.UserId;
-            project.AssignedAt = DateTime.UtcNow;
+            project.AssignedAt = dateTime;
         }
 
-        private static void AddNoteWhenHandoverCommentsPresent(Project project, UpdateHandoverProjectCommand request)
+        private static void AddNoteWhenHandoverCommentsPresent(Project project, UpdateHandoverProjectCommand request, DateTime dateTime)
         {
-            var dateTime = DateTime.UtcNow;
+            
             if (!string.IsNullOrWhiteSpace(request.HandoverComments))
             {
                 project.Notes.Add(new Note()

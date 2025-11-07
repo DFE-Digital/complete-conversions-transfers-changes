@@ -1,10 +1,10 @@
 ﻿@page "/projects/{projectId}/dao-revocation/minister/change"
 @model Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName.ChangeDaoRevocationMinisterNameModel
 @using Dfe.Complete.Constants
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     Layout = "_RecordDaoRevocationLayout";
-    ViewData["Title"] = "Minister’s name";
+    ViewData["Title"] = "Minister's name";
     var hasError = ErrorService.HasErrors();
 }
 
@@ -13,7 +13,7 @@
     <form method="post" novalidate>
         <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
         <h1 class="govuk-heading-xl">
-            Minister’s name
+            Minister's name
         </h1>
         <govuk-input id="name" asp-for="@Model.Name">
             <govuk-input-label></govuk-input-label>

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.KeyContacts.Commands;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Models;
@@ -156,7 +157,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updates the redact and send documents task Data for conversion or transfer project.
@@ -229,7 +230,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
@@ -286,7 +287,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
 
         /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
@@ -361,7 +362,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updaing the land registry title plans task data for transfer project.
@@ -381,7 +382,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updates the master funding agreement task Data for conversion or transfer project.
         /// </summary>
@@ -399,7 +400,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }        
+        }
 
         /// <summary>
         /// Confirm the incoming trust ceo contact for the project.
@@ -419,7 +420,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
         /// </summary>
@@ -433,6 +434,394 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(
             [FromBody] UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmHeadTeacherContact")]
+        [SwaggerResponse(204, "Confirm the head teacher contact for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmHeadTeacherContactTaskAsync(
+            [FromBody] UpdateHeadTeacherCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Complete a notification of changes to funded high needs places form for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CompleteNotificationOfChange")]
+        [SwaggerResponse(204, "Complete a notification of changes to funded high needs places form for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateCompleteNotificationOfChangeTaskAsync(
+            [FromBody] UpdateCompleteNotificationOfChangeTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/AcademyAndTrustFinancialInformation")]
+        [SwaggerResponse(204, "Updated the academy and trust financial information task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyAndTrustFinancialInformationTaskAsync(
+            [FromBody] UpdateAcademyAndTrustFinancialInformationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
+        
+        /// <summary>
+        /// Confirm the outgoing trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmOutgoingTrustCeoContact")]
+        [SwaggerResponse(204, "Confirm the outgoing trust ceo contact for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "KeyContact not found.")]
+        [SwaggerResponse(500, "Internal server error.")]
+        public async Task<IActionResult> UpdateConfirmOutgoingTrustCeoContactTaskAsync(
+            [FromBody] UpdateOutgoingTrustCeoCommand request,
+            CancellationToken cancellationToken)
+        {
+            var response = await sender.Send(request, cancellationToken);
+
+            if (!response.IsSuccess)
+            {
+                if (response.ErrorType == ErrorType.NotFound)
+                    return NotFound(response.Error);
+                return StatusCode(500, response.Error);
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the academy name task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/AcademyDetails")]
+        [SwaggerResponse(204, "Updated the academy name task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyDetailsTaskAsync(
+            [FromBody] UpdateConfirmAcademyNameTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Confirm if the bank details for the general annual grant payment need to change for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmBankDetails")]
+        [SwaggerResponse(204, "Confirm if the bank details for the general annual grant payment need to change task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmBankDetailsTaskAsync(
+            [FromBody] UpdateConfirmBankDetailsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the land consent letter task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/LandConsentLetter")]
+        [SwaggerResponse(204, "Updated the land consent letter task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateLandConsentLetterTaskAsync(
+            [FromBody] UpdateLandConsentLetterTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CheckAccuracyOfHigherNeeds")]
+        [SwaggerResponse(204, "Updates the accuracy of higher needs task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAccuracyOfHigherNeedsTaskAsync(
+            [FromBody] UpdateAccuracyOfHigherNeedsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating deed of termination for the master funding agreement for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/DeedOfTerminationMasterFundingAgreement")]
+        [SwaggerResponse(204, "Updated deed of termination for the master funding agreement for transfer project task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(
+            [FromBody] UpdateDeedOfTerminationMasterFundingAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the chair of governors’ task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmChairOfGovernors")]
+        [SwaggerResponse(204, "Updated the chair of governors’ task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateChairOfGovernorsTaskAsync(
+            [FromBody] UpdateChairOfGovernorsCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/DeedTerminationChurchSupplementalAgreement")]
+        [SwaggerResponse(204, "Updated the deed of termination for the church supplemental church agreement task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(
+            [FromBody] UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/IncomingTrustHasCompleteAllActions")]
+        [SwaggerResponse(204, "Updated the confirm incoming trust has completed all actions task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(
+            [FromBody] UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updating the form M task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/FormM")]
+        [SwaggerResponse(204, "Updated the form M task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateFormMTaskAsync(
+            [FromBody] UpdateFormMTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Check and clear the closure or transfer declaration for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ClosureOrTransferDeclaration")]
+        [SwaggerResponse(204, "Check and clear the closure or transfer declaration task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateClosureOrTransferDeclarationTaskAsync(
+            [FromBody] UpdateClosureOrTransferDeclarationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Request a new URN and record for the academy task for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/RequestNewURNAndRecordForAcademy")]
+        [SwaggerResponse(204, "Request a new URN and record for the academy task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateRequestNewUrnAndRecordForAcademyTaskAsync(
+            [FromBody] UpdateRequestNewUrnAndRecordForAcademyTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating share the information about opening task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/UpdateShareInformationAboutOpening")]
+        [SwaggerResponse(204, "Updated share the information about opening task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateShareInformationAboutOpeningTaskAsync(
+            [FromBody] UpdateShareInformationAboutOpeningTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the subleases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/Subleases")]
+        [SwaggerResponse(204, "Updated the subleases task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateSubleasesTaskAsync(
+            [FromBody] UpdateSubleasesTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the tenancy at will task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/TenancyAtWill")]
+        [SwaggerResponse(204, "Updated the tenancy at will task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateTenancyAtWillTaskAsync(
+            [FromBody] UpdateTenancyAtWillTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the trust modification order task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/TrustModificationOrder")]
+        [SwaggerResponse(204, "Updated the trust modification order task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateTrustModificationOrderTaskAsync(
+            [FromBody] UpdateTrustModificationOrderTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updating the 125 year lease for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/OneHundredAndTwentyFiveYearLease")]
+        [SwaggerResponse(204, "Updated the 125 year lease task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(
+            [FromBody] UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);

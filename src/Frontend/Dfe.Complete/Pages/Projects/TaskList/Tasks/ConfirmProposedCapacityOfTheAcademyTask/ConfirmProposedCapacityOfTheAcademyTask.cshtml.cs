@@ -3,7 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademyTask
 {
-    public class ConfirmProposedCapacityOfTheAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, ErrorService errorService)
+    public class ConfirmProposedCapacityOfTheAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, IErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)
     {
         [BindProperty(Name = "notapplicable")]
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
                 errorService.AddErrors(ModelState.Keys, ModelState);
                 return Page();
             }
-            await sender.Send(new UpdateConfirmProposedCapacityOfTheAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, ReceptionToSixYears, SevenToElevenYears, TwelveOrAboveYears));
+            await Sender.Send(new UpdateConfirmProposedCapacityOfTheAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, ReceptionToSixYears, SevenToElevenYears, TwelveOrAboveYears));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

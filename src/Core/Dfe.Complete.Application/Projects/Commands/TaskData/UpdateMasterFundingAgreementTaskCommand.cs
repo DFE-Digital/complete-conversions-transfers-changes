@@ -2,15 +2,19 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateMasterFundingAgreementTaskCommand(
         TaskDataId TaskDataId,
+        [Required]
+        [ProjectType]
         ProjectType? ProjectType,
         bool? NotApplicable,
         bool? Received,
@@ -21,7 +25,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? SignedSecretaryState
     ) : IRequest<Result<bool>>;
 
-    public class UpdateMasterFundingAgreementTaskCommandHandler(
+    internal class UpdateMasterFundingAgreementTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateMasterFundingAgreementTaskCommand, Result<bool>>

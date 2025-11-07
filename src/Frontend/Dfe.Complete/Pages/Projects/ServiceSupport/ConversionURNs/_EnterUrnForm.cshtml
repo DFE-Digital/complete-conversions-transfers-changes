@@ -2,7 +2,7 @@
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 
 @{
     const string urnField = nameof(Model.URN);

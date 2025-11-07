@@ -5,14 +5,14 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILogger<EditProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class EditProjectNoteModel(ISender sender, IErrorService errorService, ILogger<EditProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }

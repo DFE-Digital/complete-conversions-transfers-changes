@@ -1,18 +1,20 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_incoming_trust_ceo_contact"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.TagHelpers;
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask.IncomingTrustCeoTaskModel
+
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the incoming trust CEO’s details";
-    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();    
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
-}
+ }
 @section TaskHeaderHintSection
 {
     <div class="govuk-hint">
-        <p>Check the contact details are correct, <a href="@projectsExternalContactLink" data-cy="external-contacts-link">edit incorrect contact details and add missing contacts</a>. You may need to contact the person who previously worked on the project to verify this.</p>
+        @await Html.PartialAsync("~/Pages/Projects/TaskList/_ContactTaskHeaderSection.cshtml")        
     </div>
 }
 @section TaskSection {
@@ -39,7 +41,7 @@
     {
         <govuk-inset-text>
             No contacts have been added to the project.
-        </govuk-inset-text>       
-        <govuk-button-link href="@projectsExternalContactAddNewLink" data-cy="external-contacts-add-new-button">Add a contact</govuk-button-link>
+        </govuk-inset-text>
+        <govuk-button-link asp-policy="@UserPolicyConstants.CanAddContact" href="@projectsExternalContactAddNewLink" data-cy="external-contacts-add-new-button">Add a contact</govuk-button-link>
     }
 }

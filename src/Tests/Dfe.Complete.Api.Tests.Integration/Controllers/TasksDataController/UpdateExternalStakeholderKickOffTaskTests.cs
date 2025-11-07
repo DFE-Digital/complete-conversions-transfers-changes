@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;

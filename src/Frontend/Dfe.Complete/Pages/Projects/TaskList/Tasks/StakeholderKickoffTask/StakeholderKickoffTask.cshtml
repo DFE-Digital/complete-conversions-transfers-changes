@@ -1,20 +1,22 @@
 ﻿@page "/projects/{projectId}/tasks/stakeholder_kick_off"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
 
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "External stakeholder kick-off";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 
     var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
-    const string significantDateField = nameof(Model.SignificantDate);
+    const string significantDateField = "significant-date";
 
     var isConversion = Model.Project.Type == ProjectType.Conversion;
     var projectTypeString = isConversion ? "conversion" : "transfer";
     var trustInfoString = isConversion ? "school or trust," : "outgoing trust, the incoming trust";
+    var provisionalTransferDate = Model.Project.SignificantDateHistories?.OrderBy(p => p.CreatedAt).FirstOrDefault()?.PreviousDate ?? Model.Project.SignificantDate;
 }
 @section TaskHeaderHintSection  {
     <div class="govuk-hint"> 
@@ -149,19 +151,19 @@
 
         @if (!Model.Project.SignificantDateProvisional is false)
         {
-            <govuk-date-input data-cy="SignificantDate" id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
+            <govuk-date-input heading data-cy="significant-date" id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                     Enter the confirmed @projectTypeString date
                 </govuk-date-input-fieldset-legend>
-                <govuk-date-input-hint>
-                    <p>Everyone should have agreed to and know the confirmed @projectTypeString date.</p>
+                    <govuk-date-input-hint>
+                        <p>Everyone should have agreed to and know the confirmed @projectTypeString date.</p>
                         <p>You only need to enter a month and year. All @(isConversion ? "schools convert" : "academies transfer") on the first day of the month.</p>
+                    </govuk-date-input-hint>
                     @if (ErrorService.HasErrorForKey(significantDateField))
                     {
-                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(significantDateField))</govuk-date-input-error-message>
+                            <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(significantDateField))</govuk-date-input-error-message>
                     }
-                </govuk-date-input-hint>
             </govuk-date-input-fieldset>
             </govuk-date-input>
         }
@@ -169,7 +171,7 @@
         {
             <div class="govuk-inset-text">
                 <p>The @projectTypeString date has been confirmed and is currently @Model.Project.SignificantDate.ToDateString()</p>
-                <p>The provisional @projectTypeString date was @Model.Project.SignificantDateHistories?.OrderBy(p => p.CreatedAt).First().PreviousDate.ToDateString().</p>
+                <p>The provisional @projectTypeString date was @provisionalTransferDate.ToDateString().</p>
                 <p>Any further changes to the @projectTypeString date must be recorded on the main project screen.</p>
             </div>
         }

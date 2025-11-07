@@ -7,6 +7,21 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "CreateHandoverConversionMatProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateHandoverTransferProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateHandoverTransferMatProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateConversionProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
@@ -192,6 +207,11 @@
     },
     {
       "Controller": "ProjectGroupController",
+      "Action": "CreateProjectGroupAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectGroupController",
       "Action": "GetProjectGroupByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
@@ -223,6 +243,11 @@
     {
       "Controller": "ContactsController",
       "Action": "ListAllContactsForLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "GetParliamentMPContactByConstituencyAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
@@ -383,6 +408,111 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmHeadTeacherContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateAcademyAndTrustFinancialInformationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateCompleteNotificationOfChangeTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateAcademyDetailsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmBankDetailsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateLandConsentLetterTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateAccuracyOfHigherNeedsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedOfTerminationMasterFundingAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateChairOfGovernorsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateDeleteProjectStatusAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateTrustModificationOrderTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },    
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateShareInformationAboutOpeningTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateSubleasesTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateTenancyAtWillTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmOutgoingTrustCeoContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateFormMTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateClosureOrTransferDeclarationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

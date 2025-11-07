@@ -1,0 +1,58 @@
+﻿@page "/projects/{projectId}/tasks/closure_or_transfer_declaration"
+@using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ClosureOrTransferDeclarationTask.ClosureOrTransferDeclarationModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>
+            If the outgoing trust will close after this transfer, they must send DfE the closure or transfer declaration. You usually get this in the final month before the transfer.
+        </p>
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId"/>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div class="govuk-form-group">
+            <h2 class="govuk-heading-l">Check and clear the closure or transfer declaration</h2>
+        </div>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="@(nameof(Model.Received))" data-cy="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.Cleared))" data-cy="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Saved))" data-cy="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                    <b>Saved in the academy and outgoing trust SharePoint folders</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Sent))" data-cy="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
+                    <b>Sent to the Academies Financial Reporting team</b>
+                    <govuk-checkboxes-hint>
+                        <p>You must email the closure or transfer declaration to the Academies Financial Reporting team at <a href="mailto:@_configuration["Emails:FinancialReporting"]">@_configuration["Emails:FinancialReporting"]</a>.</p>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

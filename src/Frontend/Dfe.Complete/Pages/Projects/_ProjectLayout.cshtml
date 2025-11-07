@@ -24,7 +24,7 @@
                     Success
                 </govuk-notification-banner-title>
                 <h3 class="govuk-notification-banner__heading" id="dao-revocation">
-                    DAO revocation recoreded successfully
+                    DAO revocation recorded successfully
                 </h3>
             </govuk-notification-banner>
         </div>
@@ -66,7 +66,7 @@
           Important
         </govuk-notification-banner-title>
         <h3>Project completed</h3>
-        <p>This project was completed on @Model.Project.CompletedAt.ToDateMonthYearString().</p>
+        <p>This project was completed on @Model.Project.CompletedAt.ToDateString().</p>
         <p>Only Service Support team members can make changes to this project.</p>
       </govuk-notification-banner>
     </div>
@@ -159,7 +159,7 @@ else if (!@Model.UserHasEditAccess())
       <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
     }
   }
-  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="@String.Format(RouteConstants.ProjectDelete, Model.Project.Id.Value)">Delete project</a>
 </div>
 
 

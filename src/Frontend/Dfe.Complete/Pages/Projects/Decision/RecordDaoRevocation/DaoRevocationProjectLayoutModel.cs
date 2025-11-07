@@ -3,7 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.ProjectView;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Caching.Helpers;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
             reasons.Add(DaoRevokedReason.SchoolClosedOrClosing);
             reasons.Add(DaoRevokedReason.ChangeToGovernmentPolicy);
         }
-        protected static void ValidateReasons(IFormCollection formValues, List<DaoRevokedReason> reasons, Dictionary<DaoRevokedReason, string> reasonNotes, ErrorService errorService, ModelStateDictionary modelState)
+        protected static void ValidateReasons(IFormCollection formValues, List<DaoRevokedReason> reasons, Dictionary<DaoRevokedReason, string> reasonNotes, IErrorService errorService, ModelStateDictionary modelState)
         {
             var errors =new Dictionary<string, string>();
             foreach (var reason in reasons)

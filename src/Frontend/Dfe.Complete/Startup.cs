@@ -1,30 +1,30 @@
 using Azure.Identity;
+using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Configuration;
-using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
+using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Security;
-using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
-using GovUK.Dfe.CoreLibs.Security.Authorization;
+using Dfe.Complete.Validators;
 using GovUk.Frontend.AspNetCore;
+using GovUK.Dfe.CoreLibs.Http.Interfaces;
+using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
+using GovUK.Dfe.CoreLibs.Security.Antiforgery;
+using GovUK.Dfe.CoreLibs.Security.Authorization;
+using GovUK.Dfe.CoreLibs.Security.Cypress;
+using GovUK.Dfe.CoreLibs.Security.Enums;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using GovUK.Dfe.CoreLibs.Security.Cypress;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
-using GovUK.Dfe.CoreLibs.Http.Interfaces;
-using Dfe.Complete.Logging.Middleware;
-using GovUK.Dfe.CoreLibs.Security.Antiforgery;
-using Dfe.Complete.Validators;
-using GovUK.Dfe.CoreLibs.Security.Enums;
-using Dfe.Complete.Application.Mappers;
+using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 
 namespace Dfe.Complete;
 
@@ -71,11 +71,21 @@ public class Startup
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
 
-        ConfigureCustomAntiforgery(services);
         SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
+           .AddCookieTempDataProvider(options =>
+           {
+               options.Cookie.Name = ".Complete.TempData";
+               options.Cookie.HttpOnly = true;
+               options.Cookie.IsEssential = true;
+               if (string.IsNullOrEmpty(Configuration["CI"]))
+               {
+                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+               }
+               options.Cookie.SameSite = SameSiteMode.Lax;
+           })
            .AddCustomAntiForgeryHandling(opts =>
            {
                opts.CheckerGroups =
@@ -87,11 +97,14 @@ public class Startup
                ];
            });
         services.AddControllers().AddMicrosoftIdentityUI();
+
+        // Configure antiforgery AFTER all services are added to ensure our settings take precedence
+        ConfigureCustomAntiforgery(services);
+
         SetupDataProtection(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
-        services.AddCompleteClientProject(Configuration);
-        services.AddScoped<ErrorService>();
+        services.AddCompleteClientProject(Configuration);        
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
         services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
@@ -100,6 +113,11 @@ public class Startup
             options.IdleTimeout = _authenticationExpiration;
             options.Cookie.Name = ".Complete.Session";
             options.Cookie.IsEssential = true;
+            options.Cookie.HttpOnly = true;
+            if (string.IsNullOrEmpty(Configuration["CI"]))
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
         });
         services.AddHttpContextAccessor();
 
@@ -203,9 +221,18 @@ public class Startup
 
     private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
-    private static void ConfigureCustomAntiforgery(IServiceCollection services)
+    private void ConfigureCustomAntiforgery(IServiceCollection services)
     {
         services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
+        
+        services.Configure<AntiforgeryOptions>(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = string.IsNullOrEmpty(Configuration["CI"]) 
+                ? CookieSecurePolicy.Always 
+                : CookieSecurePolicy.SameAsRequest;
+            options.Cookie.SameSite = SameSiteMode.Strict;
+        });
     }
 
     private void RegisterClients(IServiceCollection services)
@@ -222,7 +249,7 @@ public class Startup
             AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
-        });
+        });               
     }
 
     private void SetupDataProtection(IServiceCollection services)

@@ -1,0 +1,44 @@
+﻿@page "/projects/{projectId}/tasks/share_information"
+@using Dfe.Complete.Utils;
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ShareInformationAboutOpeningTask.ShareInformationAboutOpeningTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription(); 
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>Once you have confirmed that all conditions have been met, email your main contact at the school or trust to tell them the conversion will happen on the agreed date.</p>
+    </div>
+}
+@section TaskSection {
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="@(nameof(Model.ShareInformationEmail))" asp-for="@Model.ShareInformationEmail" value="true" name="@(nameof(Model.ShareInformationEmail))" checked="@Model.ShareInformationEmail">
+                    <b>Email relevant information to your main contact</b>                    
+                    <govuk-details data-module="govuk-details" class="govuk-details">
+                        <govuk-details-summary>
+                            <span class="govuk-details__summary-text">What to tell the school or trust</span>
+                        </govuk-details-summary>
+                        <govuk-details-text>
+                                <p>Email your main contact at the school or trust.</p>
+                                <p>Your email should include:</p> 
+                                <ul> 
+                                    <li>confirmation the school will convert on the provisional date</li> 
+                                    <li>the school's new URN</li> 
+                                    <li>the feedback form (if applicable)</li> 
+                                </ul> 
+                                <p>You can split this information over more than one email if you do not immediately have everything you need.</p>                            
+                        </govuk-details-text>
+                    </govuk-details>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+    
+}
+

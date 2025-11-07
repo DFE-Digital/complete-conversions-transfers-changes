@@ -366,6 +366,102 @@ namespace Dfe.Complete.Client
             }
         }
 
+        /// <summary>
+        /// Returns a parliament mp contact by a constituency
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ConstituencyMemberContactDto> GetParliamentMPContactByConstituencyAsync(string? constituencyName)
+        {
+            return GetParliamentMPContactByConstituencyAsync(constituencyName, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a parliament mp contact by a constituency
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ConstituencyMemberContactDto> GetParliamentMPContactByConstituencyAsync(string? constituencyName, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Contacts/GetParliamentMPContact"
+                    urlBuilder_.Append("v1/Contacts/GetParliamentMPContact");
+                    urlBuilder_.Append('?');
+                    if (constituencyName != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ConstituencyName")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(constituencyName, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ConstituencyMemberContactDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -867,6 +963,105 @@ namespace Dfe.Complete.Client
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
+
+        /// <summary>
+        /// Creates a project group.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project group created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request)
+        {
+            return CreateProjectGroupAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a project group.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project group created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/ProjectGroup"
+                    urlBuilder_.Append("v1/ProjectGroup");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
 
         /// <summary>
         /// Gets the Project group by Id.
@@ -1414,11 +1609,309 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
+        /// Creates a new MAT conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionMatProjectAsync(CreateHandoverConversionMatProjectCommand request)
+        {
+            return CreateHandoverConversionMatProjectAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new MAT conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionMatProjectAsync(CreateHandoverConversionMatProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/projects/conversions/form-a-mat"
+                    urlBuilder_.Append("v1/Projects/projects/conversions/form-a-mat");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectId>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Creates a new transfer project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ProjectId> CreateHandoverTransferProjectAsync(CreateHandoverTransferProjectCommand request)
+        {
+            return CreateHandoverTransferProjectAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new transfer project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ProjectId> CreateHandoverTransferProjectAsync(CreateHandoverTransferProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/projects/transfers"
+                    urlBuilder_.Append("v1/Projects/projects/transfers");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectId>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Creates a new transfer MAT project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ProjectId> CreateHandoverTransferMatProjectAsync(CreateHandoverTransferMatProjectCommand request)
+        {
+            return CreateHandoverTransferMatProjectAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new transfer MAT project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ProjectId> CreateHandoverTransferMatProjectAsync(CreateHandoverTransferMatProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/projects/transfers/form-a-mat"
+                    urlBuilder_.Append("v1/Projects/projects/transfers/form-a-mat");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectId>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Creates a new conversion project
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request)
         {
             return CreateConversionProjectAsync(request, System.Threading.CancellationToken.None);
@@ -1431,6 +1924,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
@@ -1518,6 +2012,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request)
         {
             return CreateTransferProjectAsync(request, System.Threading.CancellationToken.None);
@@ -1530,6 +2025,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
@@ -1617,6 +2113,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request)
         {
             return CreateMatConversionProjectAsync(request, System.Threading.CancellationToken.None);
@@ -1629,6 +2126,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
@@ -4914,6 +5412,105 @@ namespace Dfe.Complete.Client
             }
         }
 
+        /// <summary>
+        /// Sets the delete status for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the project with delete status</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateDeleteProjectStatusAsync(UpdateDeleteProjectCommand request)
+        {
+            return UpdateDeleteProjectStatusAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Sets the delete status for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the project with delete status</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateDeleteProjectStatusAsync(UpdateDeleteProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/project/Delete"
+                    urlBuilder_.Append("v1/Projects/project/Delete");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -5343,7 +5940,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Local authority created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request)
+        public virtual System.Threading.Tasks.Task<CreateLocalAuthorityDto> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request)
         {
             return CreateLocalAuthorityAsync(request, System.Threading.CancellationToken.None);
         }
@@ -5355,7 +5952,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Local authority created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CreateLocalAuthorityDto> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -5403,7 +6000,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CreateLocalAuthorityDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -8183,6 +8780,1992 @@ namespace Dfe.Complete.Client
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
                     // Operation Path: "v1/TasksData/TaskData/ConfirmAcademyRiskProtectionArrangements"
                     urlBuilder_.Append("v1/TasksData/TaskData/ConfirmAcademyRiskProtectionArrangements");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request)
+        {
+            return UpdateConfirmHeadTeacherContactTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/ConfirmHeadTeacherContact"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmHeadTeacherContact");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Complete a notification of changes to funded high needs places form for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request)
+        {
+            return UpdateCompleteNotificationOfChangeTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Complete a notification of changes to funded high needs places form for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/CompleteNotificationOfChange"
+                    urlBuilder_.Append("v1/TasksData/TaskData/CompleteNotificationOfChange");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request)
+        {
+            return UpdateAcademyAndTrustFinancialInformationTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/AcademyAndTrustFinancialInformation"
+                    urlBuilder_.Append("v1/TasksData/TaskData/AcademyAndTrustFinancialInformation");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Confirm the outgoing trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the outgoing trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateConfirmOutgoingTrustCeoContactTaskAsync(UpdateOutgoingTrustCeoCommand request)
+        {
+            return UpdateConfirmOutgoingTrustCeoContactTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the outgoing trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the outgoing trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateConfirmOutgoingTrustCeoContactTaskAsync(UpdateOutgoingTrustCeoCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/ConfirmOutgoingTrustCeoContact"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmOutgoingTrustCeoContact");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("KeyContact not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Internal server error.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the academy name task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy name task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateAcademyDetailsTaskAsync(UpdateConfirmAcademyNameTaskCommand request)
+        {
+            return UpdateAcademyDetailsTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the academy name task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy name task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateAcademyDetailsTaskAsync(UpdateConfirmAcademyNameTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/AcademyDetails"
+                    urlBuilder_.Append("v1/TasksData/TaskData/AcademyDetails");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Confirm if the bank details for the general annual grant payment need to change for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm if the bank details for the general annual grant payment need to change task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateConfirmBankDetailsTaskAsync(UpdateConfirmBankDetailsTaskCommand request)
+        {
+            return UpdateConfirmBankDetailsTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm if the bank details for the general annual grant payment need to change for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm if the bank details for the general annual grant payment need to change task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateConfirmBankDetailsTaskAsync(UpdateConfirmBankDetailsTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/ConfirmBankDetails"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmBankDetails");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the land consent letter task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the land consent letter task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateLandConsentLetterTaskAsync(UpdateLandConsentLetterTaskCommand request)
+        {
+            return UpdateLandConsentLetterTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the land consent letter task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the land consent letter task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateLandConsentLetterTaskAsync(UpdateLandConsentLetterTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/LandConsentLetter"
+                    urlBuilder_.Append("v1/TasksData/TaskData/LandConsentLetter");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updates the accuracy of higher needs task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateAccuracyOfHigherNeedsTaskAsync(UpdateAccuracyOfHigherNeedsTaskCommand request)
+        {
+            return UpdateAccuracyOfHigherNeedsTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updates the accuracy of higher needs task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateAccuracyOfHigherNeedsTaskAsync(UpdateAccuracyOfHigherNeedsTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds"
+                    urlBuilder_.Append("v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating deed of termination for the master funding agreement for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated deed of termination for the master funding agreement for transfer project task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(UpdateDeedOfTerminationMasterFundingAgreementTaskCommand request)
+        {
+            return UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating deed of termination for the master funding agreement for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated deed of termination for the master funding agreement for transfer project task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(UpdateDeedOfTerminationMasterFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/DeedOfTerminationMasterFundingAgreement"
+                    urlBuilder_.Append("v1/TasksData/TaskData/DeedOfTerminationMasterFundingAgreement");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the chair of governors’ task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request)
+        {
+            return UpdateChairOfGovernorsTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the chair of governors’ task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/ConfirmChairOfGovernors"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmChairOfGovernors");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request)
+        {
+            return UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement"
+                    urlBuilder_.Append("v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request)
+        {
+            return UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions"
+                    urlBuilder_.Append("v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the form M task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the form M task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateFormMTaskAsync(UpdateFormMTaskCommand request)
+        {
+            return UpdateFormMTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the form M task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the form M task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateFormMTaskAsync(UpdateFormMTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/FormM"
+                    urlBuilder_.Append("v1/TasksData/TaskData/FormM");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Check and clear the closure or transfer declaration for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Check and clear the closure or transfer declaration task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateClosureOrTransferDeclarationTaskAsync(UpdateClosureOrTransferDeclarationTaskCommand request)
+        {
+            return UpdateClosureOrTransferDeclarationTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Check and clear the closure or transfer declaration for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Check and clear the closure or transfer declaration task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateClosureOrTransferDeclarationTaskAsync(UpdateClosureOrTransferDeclarationTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/ClosureOrTransferDeclaration"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ClosureOrTransferDeclaration");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Request a new URN and record for the academy task for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request)
+        {
+            return UpdateRequestNewUrnAndRecordForAcademyTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Request a new URN and record for the academy task for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy"
+                    urlBuilder_.Append("v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating share the information about opening task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated share the information about opening task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateShareInformationAboutOpeningTaskAsync(UpdateShareInformationAboutOpeningTaskCommand request)
+        {
+            return UpdateShareInformationAboutOpeningTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating share the information about opening task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated share the information about opening task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateShareInformationAboutOpeningTaskAsync(UpdateShareInformationAboutOpeningTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/UpdateShareInformationAboutOpening"
+                    urlBuilder_.Append("v1/TasksData/TaskData/UpdateShareInformationAboutOpening");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the subleases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the subleases task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateSubleasesTaskAsync(UpdateSubleasesTaskCommand request)
+        {
+            return UpdateSubleasesTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the subleases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the subleases task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateSubleasesTaskAsync(UpdateSubleasesTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/Subleases"
+                    urlBuilder_.Append("v1/TasksData/TaskData/Subleases");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the tenancy at will task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the tenancy at will task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateTenancyAtWillTaskAsync(UpdateTenancyAtWillTaskCommand request)
+        {
+            return UpdateTenancyAtWillTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the tenancy at will task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the tenancy at will task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateTenancyAtWillTaskAsync(UpdateTenancyAtWillTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/TenancyAtWill"
+                    urlBuilder_.Append("v1/TasksData/TaskData/TenancyAtWill");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the trust modification order task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the trust modification order task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateTrustModificationOrderTaskAsync(UpdateTrustModificationOrderTaskCommand request)
+        {
+            return UpdateTrustModificationOrderTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the trust modification order task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the trust modification order task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateTrustModificationOrderTaskAsync(UpdateTrustModificationOrderTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/TrustModificationOrder"
+                    urlBuilder_.Append("v1/TasksData/TaskData/TrustModificationOrder");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Updating the 125 year lease for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the 125 year lease task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request)
+        {
+            return UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the 125 year lease for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the 125 year lease task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease"
+                    urlBuilder_.Append("v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_date_academy_opened"
+@using Dfe.Complete.Utils;
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask.ConfirmAcademyOpenedDateTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the date the academy opened";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var openedDate = "opened-date";
 }
 @section TaskHeaderHintSection {
@@ -24,7 +25,7 @@
                 </govuk-date-input-hint>
                 @if (ErrorService.HasErrorForKey(@openedDate))
                 {
-                <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@openedDate)</govuk-date-input-error-message>
+                    <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@openedDate)</govuk-date-input-error-message>
                 }
             </govuk-date-input-fieldset>
         </govuk-date-input>

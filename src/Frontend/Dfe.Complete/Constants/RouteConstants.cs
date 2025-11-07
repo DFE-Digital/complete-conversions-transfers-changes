@@ -43,6 +43,7 @@
         public const string Project = "/projects/{0}";
         public const string CreateNewProject = "/projects/CreateNewProject";
         public const string ProjectCreated = "/projects/{0}/created";
+        public const string ProjectDelete = "/projects/{0}/confirm_delete";
 
         public const string SelectCreateProjectType = "/projects/new";
 
@@ -159,5 +160,8 @@
         public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-other-contact";
         public const string ProjectsExternalContactDelete = ProjectExternalContacts + "/{1}/delete";
         public const string ProjectsExternalContactEdit = ProjectExternalContacts + "/{1}/edit";
+
+        // Error Page
+        public const string ErrorPage = "/error";
     }
 }

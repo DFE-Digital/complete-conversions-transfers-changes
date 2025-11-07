@@ -1,16 +1,113 @@
 ﻿@page "/projects/{projectId}/tasks/deed_of_termination_for_the_master_funding_agreement"
+@using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterFundingAgreement.DeedOfTerminationForMasterFundingAgreementModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Deed of termination for the master funding agreement";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
-@section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>Use a deed of termination to end a master funding agreement.</p>
+        <p>You should only do this when the:</p> 
+        <ul> 
+            <li>outgoing trust is a multi-academy trust</li>
+            <li>multi-academy trust will close once the transfer happens</li>
+        </ul> 
+        <p>Single academy trusts do not have master funding agreements. Do not complete this task if the outgoing trust is a single academy trust.</p>
     </div>
 }
 @section TaskSection {
-
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Check and clear the deed of termination
+        </h2>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="received-checkbox" id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="cleared-checkbox" id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="signed-outgoing-trust-checkbox" id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
+                    <b>Signed by outgoing trust</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved-academy-outgoing-trust-checkbox" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                    <b>Saved in the academy and outgoing trust SharePoint folders</b>
+                </govuk-checkboxes-item>                
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div>
+            <h2 class="govuk-heading-l">
+                Check financial reports
+            </h2>            
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item data-cy="contact-financial-reporting-checkbox" id="@(nameof(Model.ContactFinancialReportingTeam))" asp-for="@Model.ContactFinancialReportingTeam" value="true" name="@(nameof(Model.ContactFinancialReportingTeam))" checked="@Model.ContactFinancialReportingTeam">
+                        <b>Contact Financial Reporting team</b>
+                        <div class="govuk-hint">                            
+                           <p>After the transfer happens, the Financial Reporting team email the outgoing trust to set a deadline for them to submit their financial reports to DfE. The Financial Reporting team will copy you into that email. </p> 
+                           <p>When that deadline passes, you must contact the Financial Reporting team to check the reports have been received and approved.</p>                            
+                        </div>
+                        <govuk-details>
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">How to contact the Financial Reporting team</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p>Email the financial reporting team at <a data-cy="finance-report-mail-to-link" href="mailto:@_configuration["Emails:FinancialReporting"]">@_configuration["Emails:FinancialReporting"]</a>.</p>
+                            </govuk-details-text>
+                        </govuk-details>
+                    </govuk-checkboxes-item>                    
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+        </div>
+        <div>
+            <h2 class="govuk-heading-l">
+                Signed by the Secretary of State
+            </h2>
+            <div class="govuk-hint">
+                <p>Do not get the deed of termination signed by the Secretary of State until the academy has transferred to the new trust.</p>
+            </div>
+            <govuk-details>
+                <govuk-details-summary>
+                    <span class="govuk-details__summary-text">How to sign the deed of termination</span>
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the deed of termination.</p> 
+                    <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p> 
+                    <p>Once you have the signed version of the document, save it as a PDF in SharePoint.</p>
+                </govuk-details-text>
+            </govuk-details>
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item data-cy="signed-secretary-state-checkbox" id="@(nameof(Model.SignedSecretaryState))" asp-for="@Model.SignedSecretaryState" value="true" name="@(nameof(Model.SignedSecretaryState))" checked="@Model.SignedSecretaryState">
+                        <b>Signed on behalf of Secretary of State</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="saved-academy-sharedpointholder-checkbox" id="@(nameof(Model.SavedAcademySharePointHolder))" asp-for="@Model.SavedAcademySharePointHolder" value="true" name="@(nameof(Model.SavedAcademySharePointHolder))" checked="@Model.SavedAcademySharePointHolder">
+                        <b>Saved in the academy SharePoint folder</b>
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+        </div>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
+

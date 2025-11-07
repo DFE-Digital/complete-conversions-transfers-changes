@@ -5,6 +5,7 @@ using Dfe.Complete.Application.DaoRevoked.Models;
 using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
 
 namespace Dfe.Complete.Application.Mappers
 {
@@ -88,9 +89,10 @@ namespace Dfe.Complete.Application.Mappers
 				.ForMember(dest => dest.HeadteacherPreferredJobTitle, opt => opt.Ignore())
 				.ForMember(dest => dest.ReligiousCharacter, opt => opt.Ignore())
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
-				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
+				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore())
+				.ForMember(dest => dest.PreviousEstablishment, opt => opt.Ignore());
 
-			CreateMap<TransferTasksData, TransferTaskDataDto>();
+            CreateMap<TransferTasksData, TransferTaskDataDto>();
             CreateMap<ConversionTasksData, ConversionTaskDataDto>();
 			CreateMap<KeyContact, KeyContactDto>();
             CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
@@ -98,6 +100,8 @@ namespace Dfe.Complete.Application.Mappers
             CreateMap<DaoRevocation, DaoRevocationDto>();
             CreateMap<Contact, ContactDto>()
             .ForMember(p => p.PrimaryContact, opt => opt.Ignore());
+
+			CreateMap<MemberOfParliament, ConstituencyMemberContactDto>();
         }
 	}
 }

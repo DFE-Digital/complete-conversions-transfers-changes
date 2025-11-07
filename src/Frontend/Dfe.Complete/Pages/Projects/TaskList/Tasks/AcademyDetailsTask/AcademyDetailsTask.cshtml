@@ -1,0 +1,39 @@
+﻿@page "/projects/{projectId}/tasks/academy_details"
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask.AcademyDetailsTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+
+    const string academyName = nameof(Model.AcademyName);
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>Enter the academy name, even if it is the same as the school's name.</p>
+        <p>The academy name will appear on all legal documents and funding letters.</p>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">Changing the academy name later</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>Make sure the school and trust agree on the academy name.</p>
+                <p>It must be confirmed at least 40 days before the academy opens.</p>
+                <p>If the name needs to change after that point, you must email SOPU (Schools Operational Practice Unit) as they will use this information to create the academy's URN (Unique Reference Number) and funding letters.</p>
+            </govuk-details-text>
+        </govuk-details>
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <div class="govuk-form-group">
+            <govuk-input name="@academyName" id="@academyName" asp-for="@Model.AcademyName" input-class="govuk-input govuk-!-width-three-quarters" data-cy="academy-name-input">
+                <govuk-input-label>Enter the academy name</govuk-input-label>
+            </govuk-input>
+        </div>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
+
+

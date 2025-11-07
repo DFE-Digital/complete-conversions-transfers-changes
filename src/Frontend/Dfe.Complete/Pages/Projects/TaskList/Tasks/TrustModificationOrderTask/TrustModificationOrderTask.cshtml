@@ -1,0 +1,72 @@
+﻿@page "/projects/{projectId}/tasks/trust_modification_order"
+@using Dfe.Complete.Utils
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask.TrustModificationOrderTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The trust modification order is only needed if there are restrictions on the title deeds that need resolving.</p>
+        <p>The land questionnaire will show if one is needed for this project. You can also check with the solicitors dealing with land issues.</p>
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Clear and sign the trust modification order
+        </h2>
+        <div class="govuk-hint">
+            <p>If one is needed, send the draft trust modification order and a copy of the original deed to SOPU (Schools Operational Practice Unit) at <a data-cy="finance-report-mail-to-link" href="mailto:@_configuration["Emails:AcademyDeliveryOperations"]">@_configuration["Emails:AcademyDeliveryOperations"]</a>. If necessary, they will send it to the Legal Adviser's Office for clearing.</p>
+            <p>It can take several weeks to hear back from SOPU.</p>
+            <p>You only need to send the cleared trust modification order to Academy Operations for signing.</p>
+            <p>This must be sent to them by the deadline they set in their monthly email. This is at the same time as you send the single worksheet.</p>
+        </div>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">When to use a trust modification order</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>A trust modification order is used when a voluntary or foundation school's land is held by a trust or foundation that is not a diocese.</p> 
+                <p>A trust modification order is likely to be needed if the school is a:</p>
+                <ul> 
+                    <li>voluntary-controlled school</li> 
+                    <li>voluntary-aided school</li>
+                    <li>foundation school</li>
+                </ul>                
+            </govuk-details-text>
+        </govuk-details>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="recieved-checkbox" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="sent-checkbox" id="@nameof(Model.Sent)" asp-for="@Model.Sent" value="true" name="@nameof(Model.Sent)" checked="@Model.Sent">
+                    <b>Sent to policy team for clearing</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="cleared-checkbox" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
+                    <b>Sent to Academy Operations team mailbox for signing</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved-checkbox" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                    <b>Saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

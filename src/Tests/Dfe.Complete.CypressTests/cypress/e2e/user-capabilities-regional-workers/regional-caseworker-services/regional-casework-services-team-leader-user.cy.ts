@@ -3,7 +3,8 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToCreateAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotBeAbleToSoftDeleteAProject,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewLocalAuthorities,
@@ -83,9 +84,8 @@ describe("Capabilities and permissions of the regional casework services team le
         yourTeamProjects.unableToViewFilter("Handed over");
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should be able to view multiple months of projects within a specified date range", () => {
@@ -132,8 +132,8 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldNotBeAbleToCreateAProject();
     });
 
-    it.skip("Should NOT be able to soft delete projects", () => {
-        // not implemented
+    it("Should NOT be able to soft delete projects", () => {
+        shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
     it("Should NOT be able to view and edit local authorities", () => {

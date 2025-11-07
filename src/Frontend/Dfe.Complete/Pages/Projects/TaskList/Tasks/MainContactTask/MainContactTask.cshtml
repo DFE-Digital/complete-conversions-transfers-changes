@@ -1,16 +1,18 @@
 ﻿@page "/projects/{projectId}/tasks/main_contact"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.TagHelpers;
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask.MainContactTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the main contact";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
         <p>This is your first point of contact if you have any questions about the project. You may know them as the external project lead.</p>
         <p>They might be from the school, trust, local authority, diocese or they could be a consultant.</p>
-        <p>You must <a href="@string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId)">add a new contact</a> first if they are not already in the list of contacts.</p>
+        <p asp-policy="@UserPolicyConstants.CanAddContact">You must <a href="@string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId)">add a new contact</a> first if they are not already in the list of contacts.</p>
     </div>
 }
 @section TaskSection

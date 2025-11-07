@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
@@ -35,7 +36,7 @@ public class CreateProjectCommon(
     ICompleteRepository<GiasEstablishment> establishmentRepository,
     ISender sender) : ICreateProjectCommon
 {
-    public async Task<CreateProjectCommonResult>  CreateCommonProject(CreateProjectCommonCommand request,
+    public async Task<CreateProjectCommonResult> CreateCommonProject(CreateProjectCommonCommand request,
         CancellationToken cancellationToken)
     {
         var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
@@ -84,7 +85,7 @@ public class CreateProjectCommon(
         }
 
         Result<UserDto?>? userRequest = null;
-        
+
         if (!string.IsNullOrEmpty(request.UserAdId))
             userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
@@ -92,7 +93,7 @@ public class CreateProjectCommon(
             throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
 
         var createdByUser = userRequest.Value;
-        
+
         UserDto? assignedUser = null;
         DateTime? assignedAt = null;
         ProjectTeam team;

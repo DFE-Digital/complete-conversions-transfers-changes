@@ -8,7 +8,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using FluentValidation;
 using MediatR;
@@ -21,13 +21,13 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 public class CreateExternalContact(
     IValidator<ExternalContactInputModel> externalContactInputModelValidator,
     ITrustCache trustCacheService,  
-    ErrorService errorService, 
+    IErrorService errorService, 
     ISender sender, 
     ILogger<CreateExternalContact> logger)
     : ExternalContactBasePageModel(sender)
 {   
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
-    private readonly ErrorService errorService = errorService;
+    private readonly IErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<CreateExternalContact> logger = logger;
     private readonly IValidator<ExternalContactInputModel> validator = externalContactInputModelValidator;
@@ -141,7 +141,7 @@ public class CreateExternalContact(
 
         if (contactType == default)
         {
-            var notFoundException = new Utils.NotFoundException(invalidContactTypeErrorMessage);
+            var notFoundException = new Utils.Exceptions.NotFoundException(invalidContactTypeErrorMessage);
 
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
             return NotFound();

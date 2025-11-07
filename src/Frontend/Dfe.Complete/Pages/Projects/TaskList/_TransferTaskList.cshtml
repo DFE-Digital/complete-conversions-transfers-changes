@@ -1,4 +1,7 @@
 ﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Utils
+
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
     var handoverWithRegionalDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
@@ -33,6 +36,8 @@
     var confirmDateAcademyTransferredLink = string.Format(RouteConstants.ProjectConfirmDateAcademyTransferredTask, Model.ProjectId);
     var redactAndSendDocumentsLink = string.Format(RouteConstants.ProjectRedactAndSendDocumentsTask, Model.ProjectId);
     var declarationOfExpenditureCertificateLink = string.Format(RouteConstants.ProjectDeclarationOfExpenditureCertificateTask, Model.ProjectId);
+
+    var confirmDateAcademyTransferredTitle = NoteTaskIdentifier.ConfirmDateAcademyTransferred.ToDisplayDescription();
 }
 
 <div class="govuk-grid-row">
@@ -245,7 +250,7 @@
                         <ul class="app-task-list__items">
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-date-the-academy-transferred-status" class="govuk-link" href="@confirmDateAcademyTransferredLink">Confirm the date the academy transferred</a>
+                                    <a aria-describedby="confirm-the-date-the-academy-transferred-status" class="govuk-link" href="@confirmDateAcademyTransferredLink">@confirmDateAcademyTransferredTitle</a>
                                 </span>
                                 <partial name="Shared/_TaskListStatus" model="@Model.TransferTaskList.ConfirmDateAcademyTransferred" />
                             </li>
