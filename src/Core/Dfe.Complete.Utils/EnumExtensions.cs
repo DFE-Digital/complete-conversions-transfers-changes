@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Utils.Attributes;
-using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.Serialization;
