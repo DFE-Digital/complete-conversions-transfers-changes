@@ -1,11 +1,19 @@
-﻿namespace Dfe.Complete.Domain.Enums
+﻿using Dfe.Complete.Utils.Attributes;
+using System.ComponentModel;
+
+namespace Dfe.Complete.Domain.Enums
 {
     public enum ProjectState
     {
+        [Description("Active")]
         Active = 0,
-        Completed = 1, 
+        [Description("Completed")]
+        Completed = 1,
+        [Description("Deleted")]
         Deleted = 2,
+        [Description("Dao Revoked")]
         DaoRevoked = 3,
+        [Description("In Active")]
         Inactive = 4
     }
 }
