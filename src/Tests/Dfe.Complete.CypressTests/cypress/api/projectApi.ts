@@ -30,28 +30,28 @@ class ProjectApi extends ApiBase {
         request: CreateConversionProjectRequest,
         username?: string,
     ): Cypress.Chainable<CreateProjectResponse> {
-        return this.createProjectBase(request, "Conversion", username);
+        return this.createProjectBase(request, "Conversions", username);
     }
 
     public createTransferProject(
         request: CreateTransferProjectRequest,
         username?: string,
     ): Cypress.Chainable<CreateProjectResponse> {
-        return this.createProjectBase(request, "Transfer", username);
+        return this.createProjectBase(request, "Transfers", username);
     }
 
     createMatConversionProject(
         request: CreateMatConversionProjectRequest,
         username?: string,
     ): Cypress.Chainable<CreateProjectResponse> {
-        return this.createProjectBase(request, "MatConversion", username);
+        return this.createProjectBase(request, "MatConversions", username);
     }
 
     createMatTransferProject(
         request: CreateMatTransferProjectRequest,
         username?: string,
     ): Cypress.Chainable<CreateProjectResponse> {
-        return this.createProjectBase(request, "MatTransfer", username);
+        return this.createProjectBase(request, "MatTransfers", username);
     }
 
     updateProjectAcademyUrn(projectId: string, academyUrn: number) {
@@ -123,7 +123,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "POST",
-                    url: Cypress.env(EnvApi) + "/v1/projects/Create/" + projectType,
+                    url: Cypress.env(EnvApi) + "/v1/projects/" + projectType,
                     headers: headers,
                     body: request,
                 })

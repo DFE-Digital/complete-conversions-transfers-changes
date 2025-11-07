@@ -1646,8 +1646,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/Conversions/FormAMat"
-                    urlBuilder_.Append("v1/Projects/Conversions/FormAMat");
+                    // Operation Path: "v1/Projects/MatConversions"
+                    urlBuilder_.Append("v1/Projects/MatConversions");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1844,8 +1844,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/Transfers/FormAMat"
-                    urlBuilder_.Append("v1/Projects/Transfers/FormAMat");
+                    // Operation Path: "v1/Projects/MatTransfers"
+                    urlBuilder_.Append("v1/Projects/MatTransfers");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
