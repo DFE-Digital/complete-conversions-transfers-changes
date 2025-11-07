@@ -210,10 +210,10 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
             typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateHandoverConversionProject_ShouldCorrectlySetFields(Project projCustomisation)
+        public void Factory_CreateConversionProject_ShouldCorrectlySetFields(Project projCustomisation)
         {
             // Arrange
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateConversionProjectParams(
                 projCustomisation.Id,
                 projCustomisation.Urn!,
                 projCustomisation.TasksDataId!.Value,
@@ -229,7 +229,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             );
 
             // Act
-            var project = Project.CreateHandoverConversionProject(parameters);
+            var project = Project.CreateConversionProject(parameters);
 
             // Assert
             Assert.Equal(projCustomisation.Urn, project.Urn);
@@ -249,10 +249,10 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
 
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateHandoverConversionMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
+        public void Factory_CreateConversionMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
         {
             // Arrange
-            var parameters = new CreateHandoverConversionMatProjectParams(
+            var parameters = new CreateConversionMatProjectParams(
                 projectCustomisation.Id,
                 projectCustomisation.Urn!,
                 projectCustomisation.TasksDataId!.Value,
@@ -268,7 +268,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             );
 
             // Act
-            var project = Project.CreateHandoverConversionMATProject(parameters);
+            var project = Project.CreateConversionMATProject(parameters);
 
             // Assert
             Assert.Equal(projectCustomisation.Urn, project.Urn);
@@ -289,10 +289,10 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateHandoverTransferProject_ShouldCorrectlySetFields(Project projCustomisation)
+        public void Factory_CreateTransferProject_ShouldCorrectlySetFields(Project projCustomisation)
         {
             // Arrange
-            var parameters = new CreateHandoverTransferProjectParams(
+            var parameters = new CreateTransferProjectParams(
                 projCustomisation.Id,
                 projCustomisation.Urn!,
                 projCustomisation.TasksDataId!.Value,
@@ -308,7 +308,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             );
 
             // Act
-            var project = Project.CreateHandoverTransferProject(parameters);
+            var project = Project.CreateTransferProject(parameters);
 
             // Assert
             Assert.Equal(projCustomisation.Urn, project.Urn);
@@ -325,12 +325,12 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
         }
 
-        // TODO: Add test for CreateHandoverTransferMATProject when the method is implemented
+        // TODO: Add test for CreateTransferMATProject when the method is implemented
         // [Theory]
         // [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        // public void Factory_CreateHandoverTransferMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
+        // public void Factory_CreateTransferMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
         // {
-        //     // This test will be implemented when CreateHandoverTransferMATProject method is added to Project.cs
+        //     // This test will be implemented when CreateTransferMATProject method is added to Project.cs
         // }
 
 

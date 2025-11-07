@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(GetProjectByUrnQuery command)
         {
             // Arrange
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateConversionProjectParams(
                 new ProjectId(Guid.NewGuid()),
                 command.Urn,
                 Guid.NewGuid(),
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Guid.NewGuid()
             );
 
-            var project = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+            var project = Domain.Entities.Project.CreateConversionProject(parameters);
 
             var queryableProjects = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMock();
             _mockProjectRepository.Projects.Returns(queryableProjects);

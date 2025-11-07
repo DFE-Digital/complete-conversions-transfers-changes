@@ -30,7 +30,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
     public async Task Handle_UpdatesTheUserId(UpdateRegionalDeliveryOfficerCommand command)
     {
         // Arrange
-        var sourceParameters = new CreateHandoverConversionProjectParams(
+        var sourceParameters = new CreateConversionProjectParams(
             command.ProjectId,
             new Urn(123456),
             Guid.NewGuid(),
@@ -45,7 +45,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
             Guid.NewGuid()
         );
 
-        var updatedParameters = new CreateHandoverConversionProjectParams(
+        var updatedParameters = new CreateConversionProjectParams(
             command.ProjectId,
             new Urn(123456),
             Guid.NewGuid(),
@@ -60,8 +60,8 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
             Guid.NewGuid()
         );
 
-        var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(sourceParameters);
-        var updatedProject = Domain.Entities.Project.CreateHandoverConversionProject(updatedParameters);
+        var sourceProject = Domain.Entities.Project.CreateConversionProject(sourceParameters);
+        var updatedProject = Domain.Entities.Project.CreateConversionProject(updatedParameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(),
                 Arg.Any<CancellationToken>())
@@ -89,7 +89,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
     public async Task Handle_ThrowsIfTheUserIsNotAssignable(UpdateRegionalDeliveryOfficerCommand command)
     {
         // Arrange
-        var parameters = new CreateHandoverConversionProjectParams(
+        var parameters = new CreateConversionProjectParams(
             command.ProjectId,
             new Urn(123456),
             Guid.NewGuid(),
@@ -104,7 +104,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
             Guid.NewGuid()
         );
 
-        var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+        var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
             .Returns(sourceProject);

@@ -174,7 +174,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         LocalAuthorityId = new LocalAuthorityId(localAuthorityId);
     }
-    public static Project CreateHandoverConversionProject(CreateHandoverConversionProjectParams parameters)
+    public static Project CreateConversionProject(CreateConversionProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -215,7 +215,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateHandoverConversionMATProject(CreateHandoverConversionMatProjectParams parameters)
+    public static Project CreateConversionMATProject(CreateConversionMatProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -256,7 +256,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateHandoverTransferProject(CreateHandoverTransferProjectParams parameters)
+    public static Project CreateTransferProject(CreateTransferProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -298,7 +298,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateHandoverTransferMATProject(CreateHandoverTransferMatProjectParams parameters)
+    public static Project CreateTransferMATProject(CreateTransferMatProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 

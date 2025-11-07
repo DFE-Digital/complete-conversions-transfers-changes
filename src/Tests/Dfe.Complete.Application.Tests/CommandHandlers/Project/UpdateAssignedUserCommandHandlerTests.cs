@@ -30,7 +30,7 @@ public class UpdateAssignedUserCommandHandlerTests
     public async Task Handle_UpdatesTheUserId(UpdateAssignedUserCommand command)
     {
         // Arrange
-        var parameters = new CreateHandoverConversionProjectParams(
+        var parameters = new CreateConversionProjectParams(
             command.ProjectId,
             new Urn(123456),
             Guid.NewGuid(),
@@ -45,7 +45,7 @@ public class UpdateAssignedUserCommandHandlerTests
             Guid.NewGuid()
         );
 
-        var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+        var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>()).Returns(sourceProject);
         _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, AssignToProject = true });
@@ -61,7 +61,7 @@ public class UpdateAssignedUserCommandHandlerTests
     public async Task Handle_ThrowsIfTheUserIsNotAssignable(UpdateAssignedUserCommand command)
     {
         // Arrange
-        var parameters = new CreateHandoverConversionProjectParams(
+        var parameters = new CreateConversionProjectParams(
             command.ProjectId,
             new Urn(123456),
             Guid.NewGuid(),
@@ -76,7 +76,7 @@ public class UpdateAssignedUserCommandHandlerTests
             Guid.NewGuid()
         );
 
-        var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+        var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>()).Returns(sourceProject);
         _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, AssignToProject = false });

@@ -2,22 +2,22 @@
   "Endpoints": [
     {
       "Controller": "ProjectsController",
-      "Action": "CreateHandoverConversionProjectAsync",
+      "Action": "CreateConversionProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
       "Controller": "ProjectsController",
-      "Action": "CreateHandoverConversionMatProjectAsync",
+      "Action": "CreateConversionMatProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
       "Controller": "ProjectsController",
-      "Action": "CreateHandoverTransferProjectAsync",
+      "Action": "CreateTransferProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
       "Controller": "ProjectsController",
-      "Action": "CreateHandoverTransferMatProjectAsync",
+      "Action": "CreateTransferMatProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {

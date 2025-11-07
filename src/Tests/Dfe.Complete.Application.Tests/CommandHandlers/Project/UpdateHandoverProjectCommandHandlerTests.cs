@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             UpdateHandoverProjectCommand command)
         {
             // Arrange
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateConversionProjectParams(
                 command.ProjectId,
                 new Urn(123456),
                 Guid.NewGuid(),
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 Guid.NewGuid()
             );
 
-            var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+            var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
             mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), It.IsAny<CancellationToken>()).Returns(sourceProject);
             var mockQueryable = new[] { keyContact }.AsQueryable().BuildMock();
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             KeyContact keyContact)
         {
             // Arrange
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateConversionProjectParams(
                 command.ProjectId,
                 new Urn(123456),
                 Guid.NewGuid(),
@@ -89,7 +89,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 Guid.NewGuid()
             );
 
-            var sourceProject = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+            var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
             mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), It.IsAny<CancellationToken>()).Returns(sourceProject);
             keyContact.ProjectId = sourceProject.Id;

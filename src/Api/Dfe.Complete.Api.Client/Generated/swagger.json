@@ -394,20 +394,20 @@
         }
       }
     },
-    "/v1/Projects/projects/conversions": {
+    "/v1/Projects/Conversions": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionProject",
+        "summary": "Creates a new conversion project.",
+        "operationId": "Projects_CreateConversionProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
+                "$ref": "#/components/schemas/CreateConversionProjectCommand"
               }
             }
           },
@@ -431,20 +431,20 @@
         }
       }
     },
-    "/v1/Projects/projects/conversions/form-a-mat": {
+    "/v1/Projects/Conversions/FormAMat": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new MAT conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionMatProject",
+        "summary": "Creates a new MAT conversion project.",
+        "operationId": "Projects_CreateConversionMatProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionMatProjectCommand"
+                "$ref": "#/components/schemas/CreateConversionMatProjectCommand"
               }
             }
           },
@@ -468,20 +468,57 @@
         }
       }
     },
-    "/v1/Projects/projects/transfers": {
+    "/v1/Projects/Transfers": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new transfer project (handover version).",
-        "operationId": "Projects_CreateHandoverTransferProject",
+        "summary": "Creates a new transfer project.",
+        "operationId": "Projects_CreateTransferProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateHandoverTransferProjectCommand"
+                "$ref": "#/components/schemas/CreateTransferProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Transfers/FormAMat": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new transfer MAT project.",
+        "operationId": "Projects_CreateTransferMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransferMatProjectCommand"
               }
             }
           },
@@ -5262,7 +5299,7 @@
           }
         }
       },
-      "CreateHandoverConversionProjectCommand": {
+      "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5314,7 +5351,7 @@
           }
         }
       },
-      "CreateHandoverConversionMatProjectCommand": {
+      "CreateConversionMatProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5365,7 +5402,7 @@
           }
         }
       },
-      "CreateHandoverTransferProjectCommand": {
+      "CreateTransferProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5425,6 +5462,70 @@
             "nullable": true
           },
           "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateTransferMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outgoingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
           }
