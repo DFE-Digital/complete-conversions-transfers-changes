@@ -1,5 +1,6 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_date_academy_opened"
 @using Dfe.Complete.Utils;
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask.ConfirmAcademyOpenedDateTaskModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -21,7 +22,11 @@
                 </govuk-date-input-fieldset-legend>
                 <govuk-date-input-hint>
                     <p>For example 27 5 2007</p>
-                </govuk-date-input-hint>                
+                </govuk-date-input-hint>
+                @if (ErrorService.HasErrorForKey(@openedDate))
+                {
+                    <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@openedDate)</govuk-date-input-error-message>
+                }
             </govuk-date-input-fieldset>
         </govuk-date-input>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
