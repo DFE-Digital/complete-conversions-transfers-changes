@@ -21,36 +21,30 @@ import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.conversionTasks.spen,
-    isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
-    significantDate: getSignificantDateString(12),
-    isSignificantDateProvisional: true,
+    provisionalConversionDate: getSignificantDateString(12),
     urn: urnPool.conversionTasks.grylls,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    isSignificantDateProvisional: true,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
     urn: urnPool.conversionTasks.huddersfield,
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - External stakeholder kick-off", () => {
+describe("Conversion tasks - External stakeholder kick off", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(project2.urn.value);
+        projectRemover.removeProjectIfItExists(project2.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createMatConversionProject(project2).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(project2).then((createResponse) => {
             project2Id = createResponse.value;
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });
@@ -71,7 +65,7 @@ describe("Conversion tasks - External stakeholder kick-off", () => {
             .hasGuidance("The person who prepared this project for advisory board")
             .hasCheckboxLabel(
                 `Check the local authority is able to convert the school by the provisional conversion date: ${significateDateToDisplayDate(
-                    project.significantDate,
+                    project.provisionalConversionDate,
                 )}`,
             )
             .clickDropdown("What to do if the local authority is not able to meet the provisional conversion date")
@@ -136,7 +130,11 @@ describe("Conversion tasks - External stakeholder kick-off", () => {
             .selectTask("External stakeholder kick-off");
         stakeholderKickOffTaskPage
             .contains(`The conversion date has been confirmed and is currently ${getDisplayDateString(1)}`)
-            .contains(`The provisional conversion date was ${significateDateToDisplayDate(project2.significantDate)}`)
+            .contains(
+                `The provisional conversion date was ${significateDateToDisplayDate(
+                    project2.provisionalConversionDate,
+                )}`,
+            )
             .contains("Any further changes to the conversion date must be recorded on the main project screen.");
     });
 

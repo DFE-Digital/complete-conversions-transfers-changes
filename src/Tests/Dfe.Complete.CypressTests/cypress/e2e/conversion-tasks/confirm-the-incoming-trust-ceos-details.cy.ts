@@ -16,24 +16,21 @@ const projectWithoutCEOContact = ProjectBuilder.createConversionProjectRequest({
 let projectWithoutCEOContactId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
-describe("Conversion Tasks - Confirm the incoming trust CEO's details", () => {
+describe("Conversion tasks - Confirm the incoming trust CEO's details", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(projectWithoutCEOContact.urn.value);
+        projectRemover.removeProjectIfItExists(projectWithoutCEOContact.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createConversionProject(projectWithoutCEOContact).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(projectWithoutCEOContact).then((createResponse) => {
             projectWithoutCEOContactId = createResponse.value;
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

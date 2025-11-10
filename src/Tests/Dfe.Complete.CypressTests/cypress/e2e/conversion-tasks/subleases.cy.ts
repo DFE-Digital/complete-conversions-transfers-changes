@@ -16,9 +16,6 @@ let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
@@ -26,13 +23,13 @@ describe("Conversion tasks - Subleases", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

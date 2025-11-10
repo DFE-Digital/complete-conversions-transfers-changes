@@ -17,7 +17,6 @@ let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
-    userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;
 
@@ -25,13 +24,13 @@ describe("Conversion tasks - Articles of association", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

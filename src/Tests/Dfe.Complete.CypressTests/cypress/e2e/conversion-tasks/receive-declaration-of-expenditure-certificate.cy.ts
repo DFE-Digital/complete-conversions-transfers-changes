@@ -18,32 +18,30 @@ const project = ProjectBuilder.createConversionProjectRequest({
 let projectId: string;
 let taskId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
-    significantDate: getSignificantDateString(12),
-    isSignificantDateProvisional: true,
+    provisionalConversionDate: getSignificantDateString(12),
     urn: urnPool.conversionTasks.huddersfield,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Conversion tasks - Receive declaration of expenditure certificate", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(project2.urn.value);
+        projectRemover.removeProjectIfItExists(project2.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createConversionProject(project).then((createResponse) => (project2Id = createResponse.value));
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(project2).then((createResponse) => {
+            project2Id = createResponse.value;
+        });
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });
