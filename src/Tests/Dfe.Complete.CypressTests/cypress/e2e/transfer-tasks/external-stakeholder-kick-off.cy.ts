@@ -3,7 +3,6 @@ import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import {
@@ -17,39 +16,34 @@ import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholder
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
-    isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
-    significantDate: getSignificantDateString(12),
-    isSignificantDateProvisional: true,
+    provisionalTransferDate: getSignificantDateString(12),
     urn: urnPool.transferTasks.marden,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    isSignificantDateProvisional: true,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
-    urn: { value: urnPool.transferTasks.whitley },
+    urn: urnPool.transferTasks.whitley,
 });
 let otherUserProjectId: string;
 
 describe("Transfers tasks - External stakeholder kick-off", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(project2.urn.value);
+        projectRemover.removeProjectIfItExists(project2.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createMatTransferProject(project2).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(project2).then((createResponse) => {
             project2Id = createResponse.value;
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });
@@ -71,7 +65,7 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
             .hasGuidance("Some trusts may prefer to have a one-to-one call with you")
 
             .hasCheckboxLabel("Host the kick-off meeting or call")
-            .hasDropdownContent("Make sure all attendees understand what they need to do")
+            .hasDropdownContent("Make sure all attendees understand what they need to do");
     });
 
     it("should submit the form and persist selections", () => {
@@ -135,7 +129,9 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
             .selectTask("External stakeholder kick-off");
         stakeholderKickOffTaskPage
             .contains(`The transfer date has been confirmed and is currently ${getDisplayDateString(1)}`)
-            .contains(`The provisional transfer date was ${significateDateToDisplayDate(project2.significantDate)}`)
+            .contains(
+                `The provisional transfer date was ${significateDateToDisplayDate(project2.provisionalTransferDate)}`,
+            )
             .contains("Any further changes to the transfer date must be recorded on the main project screen.");
     });
 

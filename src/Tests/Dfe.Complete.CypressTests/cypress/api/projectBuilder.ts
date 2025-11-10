@@ -5,7 +5,7 @@ import {
     CreateTransferProjectRequest,
     UpdateProjectHandoverAssignRequest,
 } from "./apiDomain";
-import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 export class ProjectBuilder {
@@ -39,7 +39,7 @@ export class ProjectBuilder {
             outgoingTrustToClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "test",
-            groupId: groupReferenceNumber,
+            groupId: null,
             provisionalTransferDate: "2027-05-01",
             createdByEmail: cypressUser.email,
             createdByFirstName: cypressUser.firstName,

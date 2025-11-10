@@ -26,7 +26,7 @@ export type CreateTransferProjectRequest = {
     financialSafeguardingGovernanceIssues: boolean;
     outgoingTrustToClose: boolean;
     advisoryBoardConditions?: string;
-    groupId?: string;
+    groupId?: string | null;
 };
 
 export type CreateMatConversionProjectRequest = {

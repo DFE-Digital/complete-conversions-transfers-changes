@@ -1,39 +1,36 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 const projectWithoutContact = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.whitley },
+    urn: urnPool.transferTasks.whitley,
 });
 let projectWithoutContactId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Transfer Tasks - Confirm the headteacher's details", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(projectWithoutContact.urn.value);
+        projectRemover.removeProjectIfItExists(projectWithoutContact.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createTransferProject(projectWithoutContact).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(projectWithoutContact).then((createResponse) => {
             projectWithoutContactId = createResponse.value;
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

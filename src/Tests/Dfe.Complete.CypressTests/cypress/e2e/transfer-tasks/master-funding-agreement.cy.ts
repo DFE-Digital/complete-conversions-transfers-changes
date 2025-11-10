@@ -4,11 +4,11 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
@@ -17,9 +17,6 @@ let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
@@ -27,13 +24,13 @@ describe("Transfer tasks - Master funding agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

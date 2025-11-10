@@ -8,6 +8,7 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
@@ -23,13 +24,13 @@ describe("Transfers tasks - Check and confirm academy and trust financial inform
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

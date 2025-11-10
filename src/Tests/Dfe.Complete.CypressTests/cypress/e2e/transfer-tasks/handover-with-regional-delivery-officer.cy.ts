@@ -17,9 +17,6 @@ let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
@@ -27,13 +24,13 @@ describe("Transfer - Handover with regional delivery officer", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

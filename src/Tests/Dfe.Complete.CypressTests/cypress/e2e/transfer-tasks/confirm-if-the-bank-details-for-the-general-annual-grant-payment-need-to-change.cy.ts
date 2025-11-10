@@ -14,9 +14,6 @@ const project = ProjectBuilder.createTransferProjectRequest({
 let projectId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
@@ -24,10 +21,10 @@ describe("Transfer tasks - Confirm if the bank details for the general annual gr
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });
