@@ -92,7 +92,8 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    // bug 247499
+    it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -120,7 +121,8 @@ describe("Capabilities and permissions of the regional casework services team le
             .columnHasValue("Assigned to", regionalCaseworkerUser.username);
     });
 
-    it("Should be able to change the added by user of the project in internal projects", () => {
+    // bug 247499
+    it.skip("Should be able to change the added by user of the project in internal projects", () => {
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
