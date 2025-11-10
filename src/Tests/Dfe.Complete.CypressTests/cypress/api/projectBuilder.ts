@@ -3,6 +3,7 @@ import {
     CreateMatConversionProjectRequest,
     CreateMatTransferProjectRequest,
     CreateTransferProjectRequest,
+    UpdateProjectHandoverAssignRequest,
 } from "./apiDomain";
 import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
@@ -14,10 +15,10 @@ export class ProjectBuilder {
         return {
             urn: 0, // specify a valid URN in request options
             incomingTrustUkprn: macclesfieldTrust.ukprn,
-            provisionalConversionDate: "2025-02-01",
+            provisionalConversionDate: "2027-03-01",
             advisoryBoardDate: "2025-02-18",
             advisoryBoardConditions: "test",
-            groupId: groupReferenceNumber,
+            groupId: null,
             createdByEmail: cypressUser.email,
             createdByFirstName: cypressUser.firstName,
             createdByLastName: cypressUser.lastName,
@@ -39,7 +40,7 @@ export class ProjectBuilder {
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "test",
             groupId: groupReferenceNumber,
-            provisionalTransferDate: "2023-05-01",
+            provisionalTransferDate: "2027-05-01",
             createdByEmail: cypressUser.email,
             createdByFirstName: cypressUser.firstName,
             createdByLastName: cypressUser.lastName,
@@ -58,13 +59,13 @@ export class ProjectBuilder {
             newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
             directiveAcademyOrder: false,
             advisoryBoardDate: "2023-05-01",
-            provisionalConversionDate: "2023-05-01",
+            provisionalConversionDate: "2027-05-01",
             advisoryBoardConditions: "none.",
             createdByEmail: cypressUser.email,
             createdByFirstName: cypressUser.firstName,
             createdByLastName: cypressUser.lastName,
             prepareId: 1,
-            ...options
+            ...options,
         };
     }
 
@@ -76,7 +77,7 @@ export class ProjectBuilder {
             newTrustName: dimensionsTrust.name,
             newTrustReferenceNumber: dimensionsTrust.referenceNumber,
             outgoingTrustUkprn: macclesfieldTrust.ukprn,
-            provisionalTransferDate: "2026-03-01",
+            provisionalTransferDate: "2027-03-01",
             inadequateOfsted: false,
             financialSafeguardingGovernanceIssues: false,
             outgoingTrustToClose: false,
@@ -86,6 +87,39 @@ export class ProjectBuilder {
             createdByFirstName: cypressUser.firstName,
             createdByLastName: cypressUser.lastName,
             prepareId: 1,
+            ...options,
+        };
+    }
+
+    public static updateConversionProjectHandoverAssignRequest(
+        options: Partial<UpdateProjectHandoverAssignRequest> = {},
+    ): UpdateProjectHandoverAssignRequest {
+        return {
+            projectId: { value: "" }, // specify a valid projectId in request options
+            schoolSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            assignedToRegionalCaseworkerTeam: false,
+            handoverComments: "Default handover comments",
+            userId: { value: cypressUser.id },
+            userTeam: "London",
+            twoRequiresImprovement: false,
+            ...options,
+        };
+    }
+
+    public static updateTransferProjectHandoverAssignRequest(
+        options: Partial<UpdateProjectHandoverAssignRequest> = {},
+    ): UpdateProjectHandoverAssignRequest {
+        return {
+            projectId: { value: "" }, // specify a valid projectId in request options
+            schoolSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
+            assignedToRegionalCaseworkerTeam: false,
+            handoverComments: "Default handover comments",
+            userId: { value: cypressUser.id },
+            userTeam: "London",
+            twoRequiresImprovement: false,
             ...options,
         };
     }

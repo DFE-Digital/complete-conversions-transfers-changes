@@ -9,7 +9,7 @@ export type CreateConversionProjectRequest = {
     prepareId: number;
     directiveAcademyOrder: boolean;
     advisoryBoardConditions?: string;
-    groupId?: string;
+    groupId?: string | null;
 };
 
 export type CreateTransferProjectRequest = {
@@ -68,6 +68,18 @@ export type ProjectRequest =
 
 export type CreateProjectResponse = {
     value: string;
+};
+
+export type UpdateProjectHandoverAssignRequest = {
+    projectId: { value: string };
+    schoolSharepointLink: string;
+    incomingTrustSharepointLink: string;
+    outgoingTrustSharepointLink?: string;
+    assignedToRegionalCaseworkerTeam: boolean;
+    handoverComments: string;
+    userId: { value: string };
+    userTeam: string;
+    twoRequiresImprovement: boolean;
 };
 
 export type GetProjectResponse = {
