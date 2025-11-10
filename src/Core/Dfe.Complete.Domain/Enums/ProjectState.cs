@@ -12,7 +12,7 @@ namespace Dfe.Complete.Domain.Enums
         Deleted = 2,
         [Description("Dao Revoked")]
         DaoRevoked = 3,
-        [Description("In Active")]
+        [Description("Inactive")]
         Inactive = 4
     }
 }
