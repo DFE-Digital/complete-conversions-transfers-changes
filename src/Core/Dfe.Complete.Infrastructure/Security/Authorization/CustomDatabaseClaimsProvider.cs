@@ -25,27 +25,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
             if (!cache.TryGetValue(cacheKey, out List<Claim>? additionalClaims))
             {
-                // Try to find user by OID first
-                var userRecord = await userRepository.FindAsync(u => u.EntraUserObjectId == userId);
-                var email = principal.FindFirst(CustomClaimTypeConstants.PreferredUsername)?.Value;
-
-                // If the email doesn't match (claims vs DB) - reject.
-                // Persons name probably changed and there is probably an orphaned record. Contact service support
-                if (userRecord != null && !string.Equals(userRecord.Email, email, StringComparison.OrdinalIgnoreCase))
-                    return [];
-
-                // If there was no OID match but there was an email match, this is probably first login. 
-                if (userRecord == null! && !string.IsNullOrEmpty(email))
-                {
-                    userRecord = await userRepository.FindAsync(u => u.Email == email);
-                    if (userRecord != null) 
-                    {
-                        userRecord.EntraUserObjectId = userId;
-                        await userRepository.UpdateAsync(userRecord);
-                    }
-                }
-
-                // If no OID or email match, reject
+                var userRecord = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == userId && u.DeactivatedAt == null);
                 if (userRecord == null!)
                     return [];
 
