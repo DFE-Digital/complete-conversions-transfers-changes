@@ -21,7 +21,6 @@ import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectT
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
-import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import taskHelper from "cypress/api/taskHelper";
 
@@ -45,7 +44,7 @@ const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequ
     provisionalTransferDate: getSignificantDateString(1),
 });
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
-const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
+const prepareProject = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.listings.themount,
     provisionalConversionDate: getSignificantDateString(1),
 });
@@ -94,7 +93,7 @@ describe("View all projects", () => {
             ])
             .withSchool(prepareProjectName)
             .columnHasValue("URN", `${prepareProject.urn}`)
-            .columnHasValue("Incoming trust", dimensionsTrust.name)
+            .columnHasValue("Incoming trust", macclesfieldTrust.name)
             .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
             .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisoryBoardDate))
             .columnHasValue("Project type", "Conversion")
