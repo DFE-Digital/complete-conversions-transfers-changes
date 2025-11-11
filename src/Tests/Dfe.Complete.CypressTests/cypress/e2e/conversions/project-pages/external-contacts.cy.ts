@@ -10,8 +10,8 @@ import { urnPool } from "cypress/constants/testUrns";
 
 const incomingTrust = macclesfieldTrust;
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversion.stChads
-    incomingTrustUkprn: { value: incomingTrust.ukprn },
+    urn: urnPool.conversion.stChads,
+    incomingTrustUkprn: incomingTrust.ukprn,
 });
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
@@ -92,7 +92,7 @@ const contacts: {
 describe("Add external contacts tests:", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login();

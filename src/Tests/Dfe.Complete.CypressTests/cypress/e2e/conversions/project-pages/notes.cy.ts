@@ -18,7 +18,7 @@ let projectId: string;
 
 before(() => {
     projectRemover.removeProjectIfItExists(project.urn);
-    projectApi.createMatConversionProject(project).then((response) => {
+    projectApi.createAndUpdateMatConversionProject(project).then((response) => {
         projectId = response.value;
         noteApi.createNote(projectId, cypressUser.id, "My note to edit");
         noteApi.createNote(projectId, cypressUser.id, "My note to delete");

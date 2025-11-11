@@ -2,7 +2,6 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import changeDatePage from "cypress/pages/projects/tasks/changeDatePage";
@@ -14,6 +13,8 @@ import {
 } from "cypress/support/formatDate";
 import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import taskHelper from "cypress/api/taskHelper";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
 const inSixMonthsMonth = getMonthNumber(6);
@@ -27,21 +28,18 @@ const inNineMonthsDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversion.stChads,
-    provisionalConversionDate: inSixMonthsSignificantDate
+    provisionalConversionDate: inSixMonthsSignificantDate,
 });
 let confirmedDateProjectId: string;
 const confirmedDateSchoolName = "St Chad's Catholic Primary School";
 
 const provisionalDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversion.jessons
+    urn: urnPool.conversion.jessons,
 });
 let provisionalDateProjectId: string;
 
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversion.jessons,
-    createdByEmail: rdoLondonUser.email,
-    createdByFirstName: rdoLondonUser.firstName,
-    createdByLastName: rdoLondonUser.lastName,
+    urn: urnPool.conversion.cradley,
 });
 let otherUserProjectId: string;
 
@@ -50,15 +48,21 @@ describe("Change the conversion date tests", () => {
         projectRemover.removeProjectIfItExists(confirmedDateProject.urn);
         projectRemover.removeProjectIfItExists(provisionalDateProject.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
+        projectApi.createAndUpdateMatConversionProject(confirmedDateProject).then((response) => {
+            confirmedDateProjectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(
+                confirmedDateProjectId,
+                "completed",
+                inSixMonthsSignificantDate,
+            );
+        });
         projectApi
-            .createMatConversionProject(confirmedDateProject)
-            .then((response) => (confirmedDateProjectId = response.value));
-        projectApi
-            .createMatConversionProject(provisionalDateProject)
+            .createAndUpdateMatConversionProject(provisionalDateProject)
             .then((response) => (provisionalDateProjectId = response.value));
-        projectApi
-            .createMatConversionProject(otherUserProject)
-            .then((response) => (otherUserProjectId = response.value));
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((response) => {
+            otherUserProjectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(otherUserProjectId, "completed", inSixMonthsSignificantDate);
+        });
     });
 
     beforeEach(() => {
@@ -111,7 +115,7 @@ describe("Change the conversion date tests", () => {
         projectDetailsPage
             .contains("Conversion date changed")
             .contains(
-                `You have changed the conversion date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn.value}.`,
+                `You have changed the conversion date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn}.`,
             )
             .containsSubHeading("New conversion date")
             .contains(`The new conversion date is ${inThreeMonthsDate}.`);
