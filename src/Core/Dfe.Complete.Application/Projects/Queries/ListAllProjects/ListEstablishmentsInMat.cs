@@ -1,7 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -19,7 +18,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var projects = await listAllProjectsQueryService.ListAllProjects(
-                    new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: request.ReferenceNumber)
+                    new ProjectFilters(null, null, NewTrustReferenceNumber: request.ReferenceNumber)
                     )
                     .ToListAsync(cancellationToken);
 

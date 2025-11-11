@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var mockProjects = matchingProjects.BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
+                .ListAllProjects(new ProjectFilters(null, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(mockProjects);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var emptyList = new List<ListAllProjectsQueryModel>().BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
+                .ListAllProjects(new ProjectFilters(null, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(emptyList);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -98,7 +98,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var query = new ListEstablishmentsInMatQuery("TR123");
 
             listAllProjectsQueryService
-                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: "TR123"))
+                .ListAllProjects(new ProjectFilters(null, null,  NewTrustReferenceNumber: "TR123"))
                 .Throws(new Exception(expectedError));
 
             // Act
