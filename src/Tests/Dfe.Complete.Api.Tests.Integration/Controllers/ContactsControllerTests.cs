@@ -264,6 +264,7 @@ public class ContactsControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
         var expected = fixture.Create<Domain.Entities.Contact>();
         expected.Type = Domain.Enums.ContactType.Project;
+        expected.Category = Domain.Enums.ContactCategory.Other;
         dbContext.Contacts.Add(expected);
 
         await dbContext.SaveChangesAsync();
@@ -277,8 +278,8 @@ public class ContactsControllerTests
         Assert.Equivalent(expected.Email, actual.Email);        
         Assert.Equivalent(expected.Phone, actual.Phone);       
         Assert.Equivalent(expected.OrganisationName, actual.OrganisationName);
-        Assert.Equal(expected.LocalAuthorityId.Value, actual.LocalAuthorityId.Value);
-        Assert.Equal((int)expected.Category, (int)actual.Category.Value);
+        Assert.Equal(expected.LocalAuthorityId?.Value, actual.LocalAuthorityId?.Value);
+        Assert.Equal(ContactCategory.Other, actual.Category);
         Assert.Equal(ContactType.Project, actual.Type);
         Assert.Equivalent(expected.EstablishmentUrn, actual.EstablishmentUrn);
     }
