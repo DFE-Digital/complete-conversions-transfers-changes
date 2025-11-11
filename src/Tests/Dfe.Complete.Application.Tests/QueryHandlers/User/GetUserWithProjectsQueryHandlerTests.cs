@@ -32,27 +32,27 @@ public class GetUserWithProjectsQueryHandlerTests
             Type = ProjectType.Conversion,
             AssignedToId = user.Id
         }).Create<Domain.Entities.Project>();
-        
+
         var transferProject = fixture.Customize(new ProjectCustomization
         {
             Urn = establishment.Urn,
             Type = ProjectType.Transfer,
             AssignedToId = user.Id
         }).Create<Domain.Entities.Project>();
-        
 
-        var projectList = new List<Domain.Entities.Project>{ conversionProject, transferProject };
+
+        var projectList = new List<Domain.Entities.Project> { conversionProject, transferProject };
         user.ProjectAssignedTos = projectList;
-        var userList = new List<Domain.Entities.User>{user};
-        var establishmentList = new List<GiasEstablishment>{establishment};
-        
+        var userList = new List<Domain.Entities.User> { user };
+        var establishmentList = new List<GiasEstablishment> { establishment };
+
         var establishmemtQueryable = establishmentList.BuildMock();
         var userQueryable = userList.BuildMock();
-        
+
         mockUserRepository
             .Query()
             .Returns(userQueryable);
-        
+
         mockEstablishmentRepository
             .Query()
             .Returns(establishmemtQueryable);

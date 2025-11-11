@@ -1,11 +1,11 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Models;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
-using MediatR;
-using Dfe.Complete.Domain.ValueObjects;
+﻿using AutoMapper;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
 {

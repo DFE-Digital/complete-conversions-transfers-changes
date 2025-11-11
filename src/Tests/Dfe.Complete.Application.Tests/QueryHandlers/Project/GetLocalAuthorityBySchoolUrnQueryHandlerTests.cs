@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Domain.Entities;
@@ -10,6 +9,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -33,11 +33,11 @@ public class GetLocalAuthorityBySchoolUrnQueryHandlerTests
         query = query with { SchoolUrn = schoolUrn };
         giasEstablishment.Urn = new Urn(query.SchoolUrn);
         localAuthority.Code = giasEstablishment.LocalAuthorityCode;
-        
+
         mockGiasEstablishmentRepo
             .GetAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>())
             .Returns(Task.FromResult(giasEstablishment));
-        
+
         mockLocalAuthorityRepo
             .GetAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>())
             .Returns(Task.FromResult(localAuthority));
@@ -48,7 +48,7 @@ public class GetLocalAuthorityBySchoolUrnQueryHandlerTests
         Assert.True(result.IsSuccess);
         Assert.Equal(localAuthority.Id.Value, result.Value.LocalAuthorityId.Value);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(LocalAuthorityCustomization),
         typeof(GiasEstablishmentsCustomization), typeof(IgnoreVirtualMembersCustomisation))]
@@ -62,7 +62,7 @@ public class GetLocalAuthorityBySchoolUrnQueryHandlerTests
         mockGiasEstablishmentRepo
             .GetAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>())
             .Throws(new Exception(expectedErrorMessage));
-        
+
         var result = await handler.Handle(query, default!);
 
         Assert.NotNull(result);

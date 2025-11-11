@@ -27,15 +27,15 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     {
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new ContactIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
         private readonly Mock<ISender> mockSender;
-        private readonly Mock<ILogger<EditExternalContact>> mockLogger;        
+        private readonly Mock<ILogger<EditExternalContact>> mockLogger;
 
         public EditExternalContactTests()
         {
             mockSender = fixture.Freeze<Mock<ISender>>();
-            mockLogger = fixture.Freeze<Mock<ILogger<EditExternalContact>>>();            
+            mockLogger = fixture.Freeze<Mock<ILogger<EditExternalContact>>>();
         }
 
-        [Theory]        
+        [Theory]
         [InlineData(ProjectType.Conversion)]
         [InlineData(ProjectType.Transfer)]
         public async Task OnGetAsync_Loads_Successfully(ProjectType projectType)
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.ProjectId, projectId.Value.ToString())
                .With(t => t.ContactId, contactId.Value.ToString())
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
-                   .With(e => e.SelectedExternalContactType, string.Empty)     
+                   .With(e => e.SelectedExternalContactType, string.Empty)
                    .Without(e => e.ContactTypeRadioOptions)
                    .Create())
                .Create();
@@ -63,7 +63,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             var contactDto = fixture.Build<ContactDto>()
               .With(t => t.Id, contactId)
               .With(t => t.ProjectId, projectId)
-              .With(t => t.Category, ContactCategory.SchoolOrAcademy)                            
+              .With(t => t.Category, ContactCategory.SchoolOrAcademy)
               .Create();
 
             var getProjectByIdQuery = new GetProjectByIdQuery(projectDto.Id);
@@ -86,14 +86,14 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => Assert.Equal(contactDto.Name, testClass.ExternalContactInput.FullName),
                 () => Assert.Equal(contactDto.Email, testClass.ExternalContactInput.Email),
                 () => Assert.Contains(ExternalContactType.SchoolOrAcademy, testClass.ExternalContactInput.ContactTypeRadioOptions!),
-                () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!),                
+                () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!),
                 () => Assert.Contains(ExternalContactType.LocalAuthority, testClass.ExternalContactInput.ContactTypeRadioOptions!),
                 () => Assert.Contains(ExternalContactType.Solicitor, testClass.ExternalContactInput.ContactTypeRadioOptions!),
                 () => Assert.Contains(ExternalContactType.Diocese, testClass.ExternalContactInput.ContactTypeRadioOptions!),
                 () => Assert.Contains(ExternalContactType.Other, testClass.ExternalContactInput.ContactTypeRadioOptions!)
             );
 
-            if(projectType == ProjectType.Transfer)
+            if (projectType == ProjectType.Transfer)
             {
                 Assert.Contains(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!);
                 Assert.Equal(7, testClass.ExternalContactInput.ContactTypeRadioOptions?.Length);
@@ -106,8 +106,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
         }
 
         [Theory]
-        [InlineData(ProjectType.Transfer, "schoolacademy")]       
-        [InlineData(ProjectType.Conversion, "schoolacademy")]      
+        [InlineData(ProjectType.Transfer, "schoolacademy")]
+        [InlineData(ProjectType.Conversion, "schoolacademy")]
         public async Task OnPost_ValidModel_ReturnsRedirectResult(ProjectType projectType, string contactType)
         {
             // Arrange             
@@ -120,7 +120,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.ContactId, contactId.Value.ToString())
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
                    .With(e => e.SelectedExternalContactType, contactType)
-                   .With(e => e.IsPrimaryProjectContact, false) 
+                   .With(e => e.IsPrimaryProjectContact, false)
                    .Create())
                .Create();
 
@@ -152,7 +152,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Contains($"/projects/{projectId.Value}/external-contacts", redirectResult.Url);
         }
 
-        [Fact]       
+        [Fact]
         public async Task OnPost_WhenExceptionThrown_LogsErrorAndReturnsPageResult()
         {
             // Arrange             
@@ -165,7 +165,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.ContactId, contactId.Value.ToString())
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
                    .With(e => e.SelectedExternalContactType, "solicitor")
-                   .With(e => e.IsPrimaryProjectContact, false)                    
+                   .With(e => e.IsPrimaryProjectContact, false)
                    .Create())
                .Create();
 
@@ -177,7 +177,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));           
+                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
 
             var exceptionMessage = "Error message";
             var exception = new Exception(exceptionMessage);
@@ -191,7 +191,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.True(testClass.ModelState.ContainsKey("UnexpectedError")),
-                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),                
+                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
                 () => mockLogger.Verify(
                 logger => logger.Log(
                     It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),

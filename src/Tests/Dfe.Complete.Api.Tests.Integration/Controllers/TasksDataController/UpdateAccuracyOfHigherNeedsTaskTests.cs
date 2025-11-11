@@ -7,8 +7,8 @@ using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using Microsoft.EntityFrameworkCore; 
-using System.Security.Claims; 
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -48,7 +48,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
 
-        } 
+        }
 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]

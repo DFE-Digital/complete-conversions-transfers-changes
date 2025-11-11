@@ -10,6 +10,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
+using Dfe.Complete.Tests.Common.Assertions;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -19,7 +20,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Reflection;
-using Dfe.Complete.Tests.Common.Assertions;
 
 namespace Dfe.Complete.Tests.Models;
 
@@ -234,14 +234,15 @@ public class BaseProjectsPageModelTests
         string expectedUrl = string.Format(RouteConstants.ProjectTaskList, projectId.Value);
 
         // Act
-        var result = BaseProjectsPageModel.GetProjectSummaryUrl( projectId);
+        var result = BaseProjectsPageModel.GetProjectSummaryUrl(projectId);
 
         // Assert
         Assert.Equal(expectedUrl, result);
     }
 
     [Fact]
-    public void BaseProjectsPageModel_HasCorrectConfiguration_WhenInstantiated(){
+    public void BaseProjectsPageModel_HasCorrectConfiguration_WhenInstantiated()
+    {
         // Arrange + Act
         var model = new TestBaseProjectsPageModel("my-navigation-page");
         var pagination = new PaginationModel("route", 1, 100, 20);
@@ -291,7 +292,8 @@ public class BaseProjectsPageModelTests
     }
 }
 
-public class TestBaseProjectsPageModel(string currentNav) : BaseProjectsPageModel(currentNav) {
+public class TestBaseProjectsPageModel(string currentNav) : BaseProjectsPageModel(currentNav)
+{
     public IActionResult TestHasPageFound(bool condition, int totalPages) =>
        HasPageFound(condition, totalPages);
 }

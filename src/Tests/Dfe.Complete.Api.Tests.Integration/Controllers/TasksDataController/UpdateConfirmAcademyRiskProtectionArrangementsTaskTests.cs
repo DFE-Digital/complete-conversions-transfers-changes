@@ -11,7 +11,7 @@ using System.Net;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
-{ 
+{
     public class UpdateConfirmAcademyRiskProtectionArrangementsTaskTests
     {
         [Theory]
@@ -83,7 +83,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData); 
+            Assert.NotNull(existingTaskData);
             Assert.Equal(command.RpaOption.ToString(), existingTaskData.RiskProtectionArrangementOption.ToString());
             Assert.Equal(command.RpaReason, existingTaskData.RiskProtectionArrangementReason);
         }

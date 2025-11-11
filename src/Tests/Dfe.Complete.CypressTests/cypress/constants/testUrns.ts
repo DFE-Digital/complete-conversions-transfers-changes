@@ -61,5 +61,6 @@ export const urnPool = {
     support: {
         whitcliffe: 107780,
         kinnerley: 123481,
+        gomersal: 107781,
     },
 };

@@ -4,7 +4,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
@@ -30,6 +30,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
-        } 
-    } 
+        }
+    }
 }

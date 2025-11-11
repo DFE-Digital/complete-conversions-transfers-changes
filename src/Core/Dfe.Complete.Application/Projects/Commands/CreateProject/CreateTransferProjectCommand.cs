@@ -7,9 +7,9 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
-public record CreateHandoverTransferProjectCommand(
+public record CreateTransferProjectCommand(
     [Required][Urn] int? Urn,
     [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
     [Required][Ukprn(ValueIsInteger = true)] int? OutgoingTrustUkprn,
@@ -25,19 +25,19 @@ public record CreateHandoverTransferProjectCommand(
     string? AdvisoryBoardConditions,
     [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>, IBaseHandoverTransferProjectCommand;
 
-public class CreateHandoverTransferProjectCommandHandler(
+public class CreateTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverTransferProjectCommandHandler> logger)
-    : BaseCreateHandoverTransferProjectCommandHandler<CreateHandoverTransferProjectCommand>(unitOfWork, handoverProjectService, logger),
-      IRequestHandler<CreateHandoverTransferProjectCommand, ProjectId>
+    ILogger<CreateTransferProjectCommandHandler> logger)
+    : BaseCreateTransferProjectCommandHandler<CreateTransferProjectCommand>(unitOfWork, handoverProjectService, logger),
+      IRequestHandler<CreateTransferProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
     {
         return await HandleAsync(request, cancellationToken);
     }
 
-    protected override async Task PerformSpecificValidationsAsync(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
+    protected override async Task PerformSpecificValidationsAsync(CreateTransferProjectCommand request, CancellationToken cancellationToken)
     {
         var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
         var outgoingTrustUkprn = request.OutgoingTrustUkprn!.Value;
@@ -50,7 +50,7 @@ public class CreateHandoverTransferProjectCommandHandler(
         await _handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
     }
 
-    protected override async Task<SpecificProjectData> GetSpecificProjectDataAsync(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
+    protected override async Task<SpecificProjectData> GetSpecificProjectDataAsync(CreateTransferProjectCommand request, CancellationToken cancellationToken)
     {
         var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
 
@@ -66,13 +66,13 @@ public class CreateHandoverTransferProjectCommandHandler(
     }
 
     protected override Project CreateProject(
-        CreateHandoverTransferProjectCommand request,
+        CreateTransferProjectCommand request,
         HandoverProjectCommonData commonData,
         SpecificProjectData specificData,
         TransferTasksData transferTask,
         CancellationToken cancellationToken)
     {
-        var parameters = new CreateHandoverTransferProjectParams(
+        var parameters = new CreateTransferProjectParams(
             commonData.ProjectId,
             new Urn(commonData.Urn),
             transferTask.Id.Value,
@@ -86,6 +86,6 @@ public class CreateHandoverTransferProjectCommandHandler(
             commonData.UserId,
             commonData.LocalAuthorityId);
 
-        return Project.CreateHandoverTransferProject(parameters);
+        return Project.CreateTransferProject(parameters);
     }
 }

@@ -35,12 +35,12 @@ namespace Dfe.Complete.Models
                 return Task.CompletedTask;
             }
 
-            if(bindingContext.ModelMetadata.IsRequired 
+            if (bindingContext.ModelMetadata.IsRequired
                 && IsEmpty(fromProviderResult, toProviderResult))
             {
-					bindingContext.Result = ModelBindingResult.Success("");
-					return Task.CompletedTask;
-			}
+                bindingContext.Result = ModelBindingResult.Success("");
+                return Task.CompletedTask;
+            }
 
             if (FieldsAreValid(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult))
             {
@@ -59,35 +59,35 @@ namespace Dfe.Complete.Models
             string fromResult = fromProviderResult.FirstValue;
             string toResult = toProviderResult.FirstValue;
 
-            if(bindingContext.ModelMetadata.IsRequired && string.IsNullOrEmpty(fromResult))
+            if (bindingContext.ModelMetadata.IsRequired && string.IsNullOrEmpty(fromResult))
             {
-				string ErrorMessage = $"Enter a 'from' {displayName.ToLower()}";
-				AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
-				return false;
-			}
+                string ErrorMessage = $"Enter a 'from' {displayName.ToLower()}";
+                AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
+                return false;
+            }
 
-			if (bindingContext.ModelMetadata.IsRequired && string.IsNullOrEmpty(toResult))
-			{
-				string ErrorMessage = $"Enter a 'to' {displayName.ToLower()}";
-				AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
-				return false;
-			}
+            if (bindingContext.ModelMetadata.IsRequired && string.IsNullOrEmpty(toResult))
+            {
+                string ErrorMessage = $"Enter a 'to' {displayName.ToLower()}";
+                AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
+                return false;
+            }
 
-			if (fromResult.Length > 2)
+            if (fromResult.Length > 2)
             {
                 string ErrorMessage = $"'From' {displayName.ToLower()} must be 2 characters or less";
                 AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
                 return false;
             }
 
-			if (toResult.Length > 2)
-			{
-				string ErrorMessage = $"'To' {displayName.ToLower()} must be 2 characters or less";
-				AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
-				return false;
-			}
+            if (toResult.Length > 2)
+            {
+                string ErrorMessage = $"'To' {displayName.ToLower()} must be 2 characters or less";
+                AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
+                return false;
+            }
 
-			int from;
+            int from;
             int to;
 
             if (!int.TryParse(fromResult, out from) || !int.TryParse(toResult, out to))
@@ -97,12 +97,12 @@ namespace Dfe.Complete.Models
                 return false;
             }
 
-            if(to < 5)
+            if (to < 5)
             {
-				string ErrorMessage = $"'To' {displayName.ToLower()} must be 5 or above";
-				AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
-				return false;
-			}
+                string ErrorMessage = $"'To' {displayName.ToLower()} must be 5 or above";
+                AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
+                return false;
+            }
 
             if (from < 2)
             {
@@ -111,14 +111,14 @@ namespace Dfe.Complete.Models
                 return false;
             }
 
-			if (from >= to)
-			{
-				var ErrorMessage = $"'From' {displayName.ToLower()} must be less than 'to' {displayName.ToLower()}";
-				AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
-				return false;
-			}
+            if (from >= to)
+            {
+                var ErrorMessage = $"'From' {displayName.ToLower()} must be less than 'to' {displayName.ToLower()}";
+                AddError(bindingContext, fromModelName, toModelName, fromProviderResult, toProviderResult, ErrorMessage);
+                return false;
+            }
 
-			return true;
+            return true;
         }
 
         private static void AddError(ModelBindingContext bindingContext, string fromModelName, string toModelName, ValueProviderResult fromProviderResult, ValueProviderResult toProviderResult, string ErrorMessage)
@@ -132,7 +132,7 @@ namespace Dfe.Complete.Models
         private static Type ValidateBindingContext(ModelBindingContext bindingContext)
         {
             ArgumentNullException.ThrowIfNull(bindingContext, nameof(bindingContext));
-            
+
             var modelType = bindingContext.ModelType;
             if (modelType != typeof(string))
             {

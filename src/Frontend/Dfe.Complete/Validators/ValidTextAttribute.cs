@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Dfe.Complete.Constants;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using Dfe.Complete.Constants;
 namespace Dfe.Complete.Validators;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter,
@@ -19,17 +19,17 @@ public class ValidTextAttribute : ValidationAttribute
     {
         if (value is null)
             return ValidationResult.Success;
-        
-        var valueAsString = (string) value;
 
-        if(valueAsString.Length > _maxLength)
+        var valueAsString = (string)value;
+
+        if (valueAsString.Length > _maxLength)
             return new ValidationResult(string.Format(ValidationConstants.TextValidationMessage, validationContext.DisplayName.ToLower(), _maxLength));
 
         var specialCharactersRegex = new Regex(AllowSpecialCharactersPattern, RegexOptions.None, TimeSpan.FromSeconds(30));
         var match = specialCharactersRegex.Match(valueAsString);
-        
+
         return match.Success
             ? new ValidationResult($"{validationContext.DisplayName} must not include special characters other than , ( ) '")
-            : ValidationResult.Success; 
+            : ValidationResult.Success;
     }
 }

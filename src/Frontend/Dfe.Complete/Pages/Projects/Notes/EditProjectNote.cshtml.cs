@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
@@ -9,6 +7,8 @@ using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 

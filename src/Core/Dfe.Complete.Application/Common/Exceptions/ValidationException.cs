@@ -1,5 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using FluentValidation.Results;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Application.Common.Exceptions
 {

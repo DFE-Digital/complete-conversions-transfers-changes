@@ -1,6 +1,9 @@
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Contacts.Interfaces;
+using Dfe.Complete.Application.DaoRevoked.Interfaces;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
+using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Application.Users.Interfaces;
@@ -14,9 +17,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
-using Dfe.Complete.Application.DaoRevoked.Interfaces;
-using Dfe.Complete.Application.ProjectGroups.Interfaces;
-using Dfe.Complete.Application.KeyContacts.Interfaces;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -71,18 +71,18 @@ namespace Dfe.Complete.Infrastructure
                 var redisConfigurationOptions = new ConfigurationOptions
                 {
                     AbortOnConnectFail = false,
-                    ResolveDns = true,                    
+                    ResolveDns = true,
                     EndPoints = { $"{redisAppSettings.GetValue<string>("Host")}:{redisAppSettings.GetValue<int>("Port")}" },
                     Password = redisAppSettings.GetValue<string>("Password"),
                     User = "default",
-                    DefaultDatabase = 0,                                 
+                    DefaultDatabase = 0,
                     AsyncTimeout = 15000,
-                    SyncTimeout = 15000,                  
+                    SyncTimeout = 15000,
                 };
-                
+
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {
-                    redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;                 
+                    redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;
                     redisCacheConfig.InstanceName = "redis-master";
                 });
             }

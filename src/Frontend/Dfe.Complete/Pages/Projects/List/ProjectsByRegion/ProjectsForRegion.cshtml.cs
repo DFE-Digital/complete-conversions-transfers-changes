@@ -23,7 +23,7 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
         if (parsedRegion == null) return NotFound();
-        
+
         RegionName = (Region)parsedRegion!;
 
         var listProjectsForRegionQuery =

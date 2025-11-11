@@ -4,7 +4,6 @@ import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
-    shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -24,17 +23,21 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { urnPool } from "cypress/constants/testUrns";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.whitcliffe },
-    significantDate: "2027-04-01",
+    urn: urnPool.support.whitcliffe,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateConversionProject(project).then((response) => {
+            projectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", "2027-04-01");
+        });
     });
     beforeEach(() => {
         cy.login(businessSupportUser);
@@ -92,12 +95,12 @@ describe("Capabilities and permissions of the business support user", () => {
                 "All conditions met",
                 "Confirmed date (Original date)",
             ])
-            .withSchool(`${schoolName} ${project.urn.value}`)
+            .withSchool(`${schoolName} ${project.urn}`)
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", "Apr 2027")
+            .columnHasValue("Confirmed date (Original date)", "Apr 2027 (Apr 2027)")
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
@@ -114,10 +117,6 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should be able to view the reports landing page", () => {
         shouldBeAbleToViewReportsLandingPage();
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {

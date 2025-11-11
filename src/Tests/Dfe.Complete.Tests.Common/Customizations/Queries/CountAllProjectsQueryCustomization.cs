@@ -7,7 +7,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Queries;
 public class CountAllProjectsQueryCustomization : ICustomization
 {
     public ProjectState? ProjectStatus { get; set; }
-    public ProjectType? Type{ get; set; }
+    public ProjectType? Type { get; set; }
 
     public void Customize(IFixture fixture)
     {

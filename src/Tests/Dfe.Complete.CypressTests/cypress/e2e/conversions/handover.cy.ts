@@ -1,26 +1,26 @@
 import projectRemover from "cypress/api/projectRemover";
-import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
-import prepareProjectApi from "cypress/api/prepareProjectApi";
 import { beforeEach } from "mocha";
 import { Logger } from "cypress/common/logger";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { dimensionsTrust } from "cypress/constants/stringTestConstants";
+import { macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import { cypressUser, regionalCaseworkerTeamLeaderUser } from "cypress/constants/cypressConstants";
 import conversionHandoverForm from "cypress/pages/projects/handover/conversionHandoverForm";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import validationComponent from "cypress/pages/validationComponent";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
 
-const project = PrepareProjectBuilder.createConversionProjectRequest({ urn: 151111 });
+const project = ProjectBuilder.createConversionProjectRequest({ urn: 151111 });
 const schoolName = "Our Lady of Walsingham Primary School";
 
-const formAMATProject = PrepareProjectBuilder.createConversionFormAMatProjectRequest({ urn: 151113 });
+const formAMATProject = ProjectBuilder.createConversionFormAMatProjectRequest({ urn: 151113 });
 const formAMATSchoolName = "Hope Brook CofE Primary School";
 
-const otherProject = PrepareProjectBuilder.createConversionProjectRequest({ urn: 151114 });
+const otherProject = ProjectBuilder.createConversionProjectRequest({ urn: 151114 });
 const otherSchoolName = "Moor Park Primary School";
 
 describe("Handover process tests for conversion projects", () => {
@@ -28,9 +28,9 @@ describe("Handover process tests for conversion projects", () => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(formAMATProject.urn);
         projectRemover.removeProjectIfItExists(otherProject.urn);
-        prepareProjectApi.createConversionProject(project);
-        prepareProjectApi.createConversionFormAMatProject(formAMATProject);
-        prepareProjectApi.createConversionProject(otherProject);
+        projectApi.createConversionProject(project);
+        projectApi.createMatConversionProject(formAMATProject);
+        projectApi.createConversionProject(otherProject);
     });
 
     beforeEach(() => {
@@ -55,9 +55,9 @@ describe("Handover process tests for conversion projects", () => {
             .summaryShows("Form a MAT?")
             .hasValue("No")
             .summaryShows("Incoming trust name")
-            .hasValue(dimensionsTrust.name)
+            .hasValue(macclesfieldTrust.name)
             .summaryShows("Incoming trust UKPRN")
-            .hasValue(dimensionsTrust.ukprn)
+            .hasValue(macclesfieldTrust.ukprn)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .summaryShows("Provisional conversion date")
@@ -110,9 +110,9 @@ describe("Handover process tests for conversion projects", () => {
             .summaryShows("Form a MAT?")
             .hasValue("Yes")
             .summaryShows("New trust")
-            .hasValue(dimensionsTrust.name)
+            .hasValue(macclesfieldTrust.name)
             .summaryShows("Trust reference number")
-            .hasValue(dimensionsTrust.referenceNumber)
+            .hasValue(macclesfieldTrust.referenceNumber)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(formAMATProject.advisoryBoardDate))
             .summaryShows("Provisional conversion date")

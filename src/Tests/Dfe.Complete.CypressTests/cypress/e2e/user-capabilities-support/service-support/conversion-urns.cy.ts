@@ -12,9 +12,11 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
+import { getSignificantDateString } from "cypress/support/formatDate";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.kinnerley },
+    urn: urnPool.support.kinnerley,
+    provisionalConversionDate: getSignificantDateString(1),
 });
 const schoolName = "Kinnerley Church of England Controlled Primary School";
 const academy = {
@@ -24,21 +26,22 @@ const academy = {
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
-const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.whitcliffe } });
+const project2 = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.whitcliffe });
 const schoolName2 = "Whitcliffe Mount School";
 const projectWithAcademy = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.kinnerley },
+    urn: urnPool.support.gomersal,
+    provisionalConversionDate: getSignificantDateString(1),
 });
-const schoolWithAcademyName = "Kinnerley Church of England Controlled Primary School";
+const schoolWithAcademyName = "Gomersal Church of England Voluntary Controlled Middle School";
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(project2.urn.value);
-        projectRemover.removeProjectIfItExists(projectWithAcademy.urn.value);
-        projectApi.createConversionProject(project);
-        projectApi.createConversionProject(project2);
-        projectApi.createConversionProject(projectWithAcademy).then((response) => {
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(project2.urn);
+        projectRemover.removeProjectIfItExists(projectWithAcademy.urn);
+        projectApi.createAndUpdateConversionProject(project);
+        projectApi.createAndUpdateConversionProject(project2);
+        projectApi.createAndUpdateConversionProject(projectWithAcademy).then((response) => {
             projectApi.updateProjectAcademyUrn(response.value, academy.urn);
         });
     });
@@ -65,7 +68,7 @@ describe("Service support user - Conversion URNs: ", () => {
                 "View Project",
             ])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion date", nextMonthShort)
             .columnHasValue("Academy name", "Unconfirmed")
             .columnHasValue("Academy URN", "Create academy URN")
@@ -110,9 +113,7 @@ describe("Service support user - Conversion URNs: ", () => {
         Logger.log("Success message should be displayed on Conversion URNs page");
         conversionURNsPage
             .containsHeading("Conversion URNs")
-            .containsSuccessBannerWithMessage(
-                `Academy URN ${academy.urn} added to ${schoolName}, ${project.urn.value}`,
-            );
+            .containsSuccessBannerWithMessage(`Academy URN ${academy.urn} added to ${schoolName}, ${project.urn}`);
     });
 
     it("Should be able to view academies with the URNs added", () => {
@@ -131,7 +132,7 @@ describe("Service support user - Conversion URNs: ", () => {
                 "View Project",
             ])
             .withSchool(schoolWithAcademyName)
-            .columnHasValue("URN", `${projectWithAcademy.urn.value}`)
+            .columnHasValue("URN", `${projectWithAcademy.urn}`)
             .columnHasValue("Conversion date", nextMonthShort)
             .columnHasValue("Academy name", academy.name)
             .columnHasValue("Academy URN", `${academy.urn}`)
@@ -139,7 +140,7 @@ describe("Service support user - Conversion URNs: ", () => {
             .viewProject(schoolWithAcademyName);
 
         Logger.log("Verify that the project details page is displayed");
-        projectDetailsPage.containsHeading(schoolName);
+        projectDetailsPage.containsHeading(schoolWithAcademyName);
     });
 
     it("Should be shown error when an invalid academy URN is entered and be able to cancel", () => {

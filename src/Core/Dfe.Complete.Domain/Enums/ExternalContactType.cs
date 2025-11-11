@@ -10,7 +10,7 @@ public enum ExternalContactType
     HeadTeacher = 1,
 
     [Description("incomingtrust")]
-    [DisplayDescription("Incoming trust CEO (Chief executive officer)")]   
+    [DisplayDescription("Incoming trust CEO (Chief executive officer)")]
     IncomingTrust = 2,
 
     [Description("outgoingtrust")]
@@ -26,7 +26,7 @@ public enum ExternalContactType
     LocalAuthority = 5,
 
     [Description("solicitor")]
-    [DisplayDescription("Solicitor")]    
+    [DisplayDescription("Solicitor")]
     Solicitor = 6,
 
     [Description("diocese")]

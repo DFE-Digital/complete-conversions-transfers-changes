@@ -40,7 +40,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Saved = true,
                 Sent = true,
             };
-            
+
             // Act
             await tasksDataClient.UpdateClosureOrTransferDeclarationTaskAsync(command, default);
 
@@ -54,7 +54,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.ClosureOrTransferDeclarationSent);
             Assert.Null(existingTaskData.ClosureOrTransferDeclarationNotApplicable);
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
@@ -119,7 +119,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateClosureOrTransferDeclarationTaskAsync(command, default));
 
-            Assert.Contains($"Transfer task data TaskDataId {{ Value = { command.TaskDataId.Value} }} not found.", exception.Message);
+            Assert.Contains($"Transfer task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }
 }

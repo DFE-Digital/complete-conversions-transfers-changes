@@ -12,9 +12,9 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Conversion(Project project)
         {
-            
+
             var builder = new ProjectTypeBuilder();
-            
+
             var model = ConversionCsvModelFactory.Make();
             model.Project.Type = ProjectType.Conversion;
 
@@ -26,7 +26,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Transfer(Project project)
-        {   
+        {
             var builder = new ProjectTypeBuilder();
             var model = ConversionCsvModelFactory.Make();
             model.Project.Type = ProjectType.Transfer;

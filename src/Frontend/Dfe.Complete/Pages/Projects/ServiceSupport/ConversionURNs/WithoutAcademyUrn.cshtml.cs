@@ -8,7 +8,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
     public class WithoutAcademyUrnModel(ISender sender) : ServiceSupportModel(ConversionsUrnModel.WithoutAcademyURNSubNavigation)
     {
         public IEnumerable<ListAllProjectsConvertingQueryResultModel>? Projects { get; set; }
-        
+
 
         public async Task OnGet()
         {

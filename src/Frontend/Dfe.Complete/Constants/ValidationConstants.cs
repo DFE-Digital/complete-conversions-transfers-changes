@@ -24,7 +24,7 @@
         public const string InvalidGuid = "{0} is not a valid Guid.";
         public const string ContactNotFound = "Contact {0} does not exist.";
         public const string ProjectNotFound = "Project {0} does not exist.";
-        public const string ChooseAtLeastOneReason= "Select at least one reason";
+        public const string ChooseAtLeastOneReason = "Select at least one reason";
         public const string MustProvideDetails = "You must provide details";
         public const string MinisterNameRequired = "Enter the name of the minister that approved the decision";
         public const string DecisionDateRequired = "Enter a valid date the decision was made, like 27 3 2021";
@@ -41,7 +41,7 @@
         // project completion validation messages
         // For transfer
         public const string TransferDateInPast = "The transfer date has been confirmed and is in the past";
-        public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";        
+        public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";
         public const string ExpenditureCertificateComplete = "The receive declaration of expenditure certificate task is completed";
         public const string AcademyTransferDateComplete = "The confirm the date the academy transferred task is completed";
 

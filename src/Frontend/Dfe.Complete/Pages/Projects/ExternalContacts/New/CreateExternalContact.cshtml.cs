@@ -20,12 +20,12 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 [Authorize(Policy = UserPolicyConstants.CanAddContact)]
 public class CreateExternalContact(
     IValidator<ExternalContactInputModel> externalContactInputModelValidator,
-    ITrustCache trustCacheService,  
-    IErrorService errorService, 
-    ISender sender, 
+    ITrustCache trustCacheService,
+    IErrorService errorService,
+    ISender sender,
     ILogger<CreateExternalContact> logger)
     : ExternalContactBasePageModel(sender)
-{   
+{
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
     private readonly IErrorService errorService = errorService;
     private readonly ISender sender = sender;
@@ -33,8 +33,8 @@ public class CreateExternalContact(
     private readonly IValidator<ExternalContactInputModel> validator = externalContactInputModelValidator;
 
     [BindProperty]
-    public ExternalContactInputModel ExternalContactInput { get; set; } = new();   
-    
+    public ExternalContactInputModel ExternalContactInput { get; set; } = new();
+
     [FromRoute(Name = "externalcontacttype")]
     [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
     public string SelectedExternalContactType { get; set; }
@@ -96,10 +96,10 @@ public class CreateExternalContact(
             ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
             return await GetPageAsync();
         }
-    }   
+    }
 
     private bool RequiresOrganisationName(ExternalContactType contactType)
-        => contactType is ExternalContactType.IncomingTrust or ExternalContactType.OutgoingTrust;    
+        => contactType is ExternalContactType.IncomingTrust or ExternalContactType.OutgoingTrust;
 
     private async Task<string?> GetOrganisationNameAsync(ExternalContactType contactType)
     {

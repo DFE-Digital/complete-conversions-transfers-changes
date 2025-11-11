@@ -1,12 +1,12 @@
-using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
-using Microsoft.Extensions.Logging;
+using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 var pageOfProjectGroups = await projectGroupsQuery
                     .Paginate(request.Page, request.Count)
                     .ToListAsync(cancellationToken);
-                
+
 
                 var projectGroupIds = pageOfProjectGroups
                     .Select(p => p.Id)
@@ -59,49 +59,49 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectGroupsDto = pageOfProjectGroups.Select(pg =>
                 {
-                   // Determine group name: use trust name from API if TrustUkprn exists, otherwise use NewTrustName for Form a MAT projects
-                   var groupName = string.Empty;
-                   var trustUkprn = pg.TrustUkprn?.Value.ToString() ?? string.Empty;
-                   
-                   if (pg.TrustUkprn != null)
-                   {
-                       // Regular project group with trust UKPRN - get name from Academies API
-                       groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
-                   }
-                   else
-                   {
-                       // Form a MAT project group - use NewTrustName from projects in this group
-                       var projectsInThisGroup = projectsInGroups.Where(p => p.GroupId == pg.Id);
-                       var formAMatProject = projectsInThisGroup
-                           .Where(p => p.FormAMat)
-                           .OrderBy(p => p.CreatedAt)
-                           .FirstOrDefault();
-                       
-                       if (formAMatProject != null)
-                       {
-                           groupName = formAMatProject.NewTrustName ?? string.Empty;
-                       }
-                   }
-                   
-                   var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
-                   
-                   var urnsForThisGroup = projectsInGroups
-                       .Where(p => p.GroupId == pg.Id)
-                       .Select(p => p.Urn.Value.ToString());
-                   
-                   var establishmentInThisGroup = establishments
-                       .Where(e => urnsForThisGroup.Contains(e.Urn))
-                       .OrderBy(e => e.Name)
-                       .Select(e => e.Name)
-                       .Distinct();
+                    // Determine group name: use trust name from API if TrustUkprn exists, otherwise use NewTrustName for Form a MAT projects
+                    var groupName = string.Empty;
+                    var trustUkprn = pg.TrustUkprn?.Value.ToString() ?? string.Empty;
 
-                   return new ListProjectsGroupsModel(
-                       pg.Id.Value.ToString(),
-                       groupName,
-                       groupIdentifier,
-                       trustUkprn,
-                       string.Join("; ", establishmentInThisGroup));
-                 }).ToList();
+                    if (pg.TrustUkprn != null)
+                    {
+                        // Regular project group with trust UKPRN - get name from Academies API
+                        groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
+                    }
+                    else
+                    {
+                        // Form a MAT project group - use NewTrustName from projects in this group
+                        var projectsInThisGroup = projectsInGroups.Where(p => p.GroupId == pg.Id);
+                        var formAMatProject = projectsInThisGroup
+                            .Where(p => p.FormAMat)
+                            .OrderBy(p => p.CreatedAt)
+                            .FirstOrDefault();
+
+                        if (formAMatProject != null)
+                        {
+                            groupName = formAMatProject.NewTrustName ?? string.Empty;
+                        }
+                    }
+
+                    var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
+
+                    var urnsForThisGroup = projectsInGroups
+                        .Where(p => p.GroupId == pg.Id)
+                        .Select(p => p.Urn.Value.ToString());
+
+                    var establishmentInThisGroup = establishments
+                        .Where(e => urnsForThisGroup.Contains(e.Urn))
+                        .OrderBy(e => e.Name)
+                        .Select(e => e.Name)
+                        .Distinct();
+
+                    return new ListProjectsGroupsModel(
+                        pg.Id.Value.ToString(),
+                        groupName,
+                        groupIdentifier,
+                        trustUkprn,
+                        string.Join("; ", establishmentInThisGroup));
+                }).ToList();
 
                 return PaginatedResult<List<ListProjectsGroupsModel>>.Success(projectGroupsDto, totalCount);
             }

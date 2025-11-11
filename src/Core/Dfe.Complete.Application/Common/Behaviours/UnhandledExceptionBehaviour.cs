@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Application.Common.Behaviours
 {

@@ -1,12 +1,12 @@
-using MediatR;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Notes.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Notes.Interfaces;
+using Dfe.Complete.Application.Notes.Queries.QueryFilters;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Queries;

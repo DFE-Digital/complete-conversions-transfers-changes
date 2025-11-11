@@ -2,8 +2,12 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
+using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
 using Dfe.Complete.Utils.Exceptions;
@@ -11,18 +15,14 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Application.Users.Queries.GetUser;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 
 namespace Dfe.Complete.Tests.Pages.Projects
 {

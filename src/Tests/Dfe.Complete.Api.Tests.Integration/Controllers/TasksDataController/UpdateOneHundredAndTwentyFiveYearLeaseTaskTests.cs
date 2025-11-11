@@ -8,12 +8,12 @@ using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims; 
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
     public class UpdateOneHundredAndTwentyFiveYearLeaseTaskTests
-    { 
+    {
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value }, 
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Email = true,
                 Receive = true,
                 Save = true,
@@ -52,8 +52,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease);
             Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseNotApplicable);
         }
-        
-        
+
+
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),

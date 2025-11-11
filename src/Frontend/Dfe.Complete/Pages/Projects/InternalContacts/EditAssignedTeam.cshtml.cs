@@ -15,7 +15,7 @@ public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogge
     [BindProperty]
     [Required]
     public ProjectTeam? Team { get; set; } = default!;
-    
+
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
@@ -26,7 +26,7 @@ public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogge
     public async Task<IActionResult> OnPost()
     {
         await UpdateCurrentProject();
-        
+
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
-    public record UpdateConfirmAcademyNameTaskCommand(TaskDataId TaskDataId, 
+    public record UpdateConfirmAcademyNameTaskCommand(TaskDataId TaskDataId,
         string? AcademyName) : IRequest<Result<bool>>;
 
     internal class UpdateConfirmAcademyNameTaskCommandHandler(
@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.AcademyDetailsName = request.AcademyName??string.Empty;
+            tasksData.AcademyDetailsName = request.AcademyName ?? string.Empty;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

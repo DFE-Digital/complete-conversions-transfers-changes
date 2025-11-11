@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Projects.Queries.Csv
         public async Task<Result<string?>> Handle(GetConversionCsvByMonthQuery request, CancellationToken cancellationToken)
         {
             var result = await conversionCsvQueryService.GetByMonth(request.month, request.year).ToListAsync(cancellationToken);
-            if(result?.Count == 0)
+            if (result?.Count == 0)
             {
                 return Result<string?>.Failure("No data found");
             }

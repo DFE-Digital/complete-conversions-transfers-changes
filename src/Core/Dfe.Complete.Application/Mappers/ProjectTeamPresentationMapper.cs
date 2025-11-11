@@ -6,7 +6,7 @@ namespace Dfe.Complete.Application.Mappers
     {
         public static string? Map(ProjectTeam? projectTeam)
         {
-            if(projectTeam == null)
+            if (projectTeam == null)
                 return null;
 
             return projectTeam switch
