@@ -6,7 +6,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Infrastructure.Security.Authorization

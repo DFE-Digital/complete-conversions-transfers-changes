@@ -155,13 +155,13 @@ namespace Dfe.Complete.Tests.Authorization
         }
 
         [Fact]
-        public async Task GetClaimsAsync_UserFoundByOid_EmailMismatch_ReturnsEmpty()
+        public async Task GetClaimsAsync_UserFoundByOid_EmailMismatch_ThrowsException()
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
             var userEmail = "user@example.com";
             var claimEmail = "different@example.com"; // Different email in claims
-            
+
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
@@ -183,10 +183,9 @@ namespace Dfe.Complete.Tests.Authorization
                        .Returns(Task.FromResult(userRecord));
 
             // Act
-            var claims = await _provider.GetClaimsAsync(principal);
-
-            // Assert: Should return empty due to email mismatch
-            Assert.Empty(claims);
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await _provider.GetClaimsAsync(principal));
+            // Assert: Verify exception message
+            Assert.Contains("Duplicate account detected", exception.Message);
         }
 
         [Fact]
@@ -195,7 +194,7 @@ namespace Dfe.Complete.Tests.Authorization
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
             var userEmail = "user@example.com";
-            
+
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
@@ -223,10 +222,10 @@ namespace Dfe.Complete.Tests.Authorization
 
             // Assert: Should update OID and return claims
             Assert.NotEmpty(claims);
-            
+
             // Verify OID was updated
             await _repository.Received(1).UpdateAsync(Arg.Is<User>(u => u.EntraUserObjectId == userId));
-            
+
             // Verify expected claims
             var collection = claims as Claim[] ?? claims.ToArray();
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
@@ -241,7 +240,7 @@ namespace Dfe.Complete.Tests.Authorization
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
             var userEmail = "user@example.com";
-            
+
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
@@ -258,7 +257,7 @@ namespace Dfe.Complete.Tests.Authorization
 
             // Assert: Should return empty as no user found
             Assert.Empty(claims);
-            
+
             // Verify no update was attempted
             await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
         }
@@ -268,7 +267,7 @@ namespace Dfe.Complete.Tests.Authorization
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
-            
+
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
@@ -285,7 +284,7 @@ namespace Dfe.Complete.Tests.Authorization
 
             // Assert: Should return empty as no email to lookup
             Assert.Empty(claims);
-            
+
             // Verify email lookup was not attempted
             await _repository.Received(1).FindAsync(Arg.Any<Expression<Func<User, bool>>>());
             await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
@@ -297,7 +296,7 @@ namespace Dfe.Complete.Tests.Authorization
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
             var userEmail = "user@example.com";
-            
+
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
@@ -325,10 +324,10 @@ namespace Dfe.Complete.Tests.Authorization
 
             // Assert: Should return claims without update
             Assert.NotEmpty(claims);
-            
+
             // Verify no update was attempted (user already has OID and emails match)
             await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
-            
+
             // Verify expected claims
             var collection = claims as Claim[] ?? claims.ToArray();
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
