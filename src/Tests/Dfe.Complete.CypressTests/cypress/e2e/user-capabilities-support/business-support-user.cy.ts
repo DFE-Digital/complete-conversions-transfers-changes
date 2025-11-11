@@ -23,6 +23,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { urnPool } from "cypress/constants/testUrns";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.support.whitcliffe,
@@ -33,7 +34,10 @@ const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => {
+            projectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", "2027-04-01");
+        });
     });
     beforeEach(() => {
         cy.login(businessSupportUser);
@@ -96,7 +100,7 @@ describe("Capabilities and permissions of the business support user", () => {
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", "Apr 2027")
+            .columnHasValue("Confirmed date (Original date)", "Apr 2027 (Apr 2027)")
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
