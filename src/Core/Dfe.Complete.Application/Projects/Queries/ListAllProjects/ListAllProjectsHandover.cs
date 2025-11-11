@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsHandoverQuery(
-        ProjectState? ProjectStatus = ProjectState.Inactive, 
+        ProjectState? ProjectStatus = ProjectState.Inactive,
         Urn? Urn = null,
         OrderProjectQueryBy? OrderBy = null,
         int Page = 0,
@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var projectListQuery = listAllProjectsQueryService
                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, null, Urn: request.Urn), orderBy: request.OrderBy);
-                  
+
                 var totalProjects = await projectListQuery.CountAsync(cancellationToken);
 
                 var projectList = await projectListQuery

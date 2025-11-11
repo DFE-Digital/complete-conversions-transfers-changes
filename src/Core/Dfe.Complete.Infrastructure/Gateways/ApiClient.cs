@@ -12,7 +12,7 @@ namespace Dfe.Complete.Infrastructure.Gateways
         private readonly string _httpClientName;
 
         protected ApiClient(
-            IHttpClientFactory clientFactory, 
+            IHttpClientFactory clientFactory,
             ILogger<ApiClient> logger,
             string httpClientName)
         {
@@ -51,7 +51,7 @@ namespace Dfe.Complete.Infrastructure.Gateways
 
         public async Task<Stream> GetStream(string endpoint)
         {
-            try 
+            try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
@@ -159,7 +159,7 @@ namespace Dfe.Complete.Infrastructure.Gateways
         private HttpClient CreateHttpClient()
         {
             var client = _clientFactory.CreateClient(_httpClientName);
-            
+
             //TODO: we still using this class?
             // client.DefaultRequestHeaders.Add(HttpHeaderConstants.UserContextName, _httpContextAccessor.HttpContext.User?.Identity?.Name);
 

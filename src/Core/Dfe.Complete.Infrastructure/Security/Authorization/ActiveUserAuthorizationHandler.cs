@@ -8,7 +8,7 @@ public class ActiveUserAuthorizationHandler : AuthorizationHandler<ActiveUserReq
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ActiveUserRequirement requirement)
     {
         var userIdClaim = context.User.FindFirst(CustomClaimTypeConstants.UserId);
-        
+
         if (userIdClaim != null && !string.IsNullOrEmpty(userIdClaim.Value))
             context.Succeed(requirement);
         else

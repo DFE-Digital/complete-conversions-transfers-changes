@@ -10,11 +10,11 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByLocalAuthority;
 public class AllLocalAuthorities(ISender sender) : AllProjectsModel(ByLocalAuthorityNavigation)
 {
     public List<ListAllProjectLocalAuthoritiesResultModel> LocalAuthorities { get; set; } = [];
-    
+
     public async Task<IActionResult> OnGet()
     {
         var query = new ListAllProjectsByLocalAuthoritiesQuery
-            { Count = PageSize, Page = PageNumber - 1, State = ProjectState.Active };
+        { Count = PageSize, Page = PageNumber - 1, State = ProjectState.Active };
 
         var listResponse = await sender.Send(query);
 

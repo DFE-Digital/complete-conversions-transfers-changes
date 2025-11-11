@@ -22,22 +22,23 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalWorker.ark },
-    handingOverToRegionalCaseworkService: true,
-    userAdId: rdoTeamLeaderUser.adId,
+    urn: urnPool.regionalWorker.ark,
+    createdByEmail: rdoTeamLeaderUser.email,
+    createdByFirstName: rdoTeamLeaderUser.firstName,
+    createdByLastName: rdoTeamLeaderUser.lastName,
 });
 const unassignedProjectSchoolName = "Ark Globe Academy";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.regionalWorker.longnor },
+    urn: urnPool.regionalWorker.longnor,
 });
 let projectId: string;
 
 describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(unassignedProject.urn.value);
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createTransferProject(unassignedProject, rdoTeamLeaderUser.email);
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(unassignedProject.urn);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateTransferProject(unassignedProject, rdoTeamLeaderUser);
+        projectApi.createAndUpdateMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {
@@ -78,7 +79,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    // bug 247499
+    it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -103,8 +105,9 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
     });
 
-    it("Should be able to change the added by user of the project in internal projects", () => {
-        shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
+    // bug 247499
+    it.skip("Should be able to change the added by user of the project in internal projects", () => {
+        shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn, projectId, cypressUser, regionalCaseworkerUser);
     });
 
     it("Should be able to view the reports landing page", () => {

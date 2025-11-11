@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
@@ -15,6 +14,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -57,10 +57,10 @@ public class ListAllProjectsConvertingQueryHandlerTests
             project.Project.AcademyUrn = null;
             project.Project.CompletedAt = null;
             project.Project.SignificantDate = DateOnly.FromDateTime(DateTime.UtcNow);
-        }        
+        }
 
         var mockQueryable = projects.BuildMock();
-        
+
         var orderBy = new OrderProjectQueryBy() { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending };
 
         mockListAllProjectsQueryService
@@ -78,7 +78,7 @@ public class ListAllProjectsConvertingQueryHandlerTests
         Assert.Equal(5, result.Value?.Count());
         Assert.Equal(projects.Count, result.ItemCount);
     }
-    
+
     [Theory]
     [CustomAutoData]
     public async Task Handle_ShouldUseTaskDataAcademyDetailsName_WhenAvailable(

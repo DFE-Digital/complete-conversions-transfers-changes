@@ -33,26 +33,6 @@
       "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
     },
     {
-      "Route": "/Projects/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/Conversion/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/MatConversion/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/Transfer/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/MatTransfer/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
       "Route": "/Demonstration/TagHelper",
       "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Dfe.Complete.TagHelpers
 {
     [HtmlTargetElement("govuk-create-title", TagStructure = TagStructure.WithoutEndTag)]
-    public class CreateTitleTagHelper: TagHelper
+    public class CreateTitleTagHelper : TagHelper
     {
 
         [HtmlAttributeName("id")]

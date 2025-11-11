@@ -32,9 +32,9 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
 
     [BindProperty(Name = $"new_transfer_contact_form[contact_type]")]
     public string? TransferContactType { get; set; }
-    
+
     [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
-    public string? ConversionContactType { get; set; }    
+    public string? ConversionContactType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -72,8 +72,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             LocalAuthorityContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
                     contact =>
-                        new ExternalContactModel(contact, 
-                            true, 
+                        new ExternalContactModel(contact,
+                            true,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.LocalAuthorityMainContactId)));
             SolicitorContacts.AddRange(
@@ -87,7 +87,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact,
-                        true, 
+                        true,
                         contact.Id == Project.MainContactId,
                         ShowOrganisation: true)));
         }
@@ -109,7 +109,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         {
             LocalAuthorityContacts.AddRange(laContacts.Value.Select(contact =>
                 new ExternalContactModel(contact, false)));
-        }       
+        }
 
         if (Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
         {
@@ -118,8 +118,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
                 cacheKey,
                 async () =>
                 {
-                    return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);                    
-                }                
+                    return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
+                }
             );
 
             if (constituencyMember != null)
@@ -128,7 +128,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             }
         }
         return Page();
-    }   
+    }
 
     private async Task<ConstituencyMemberContactDto?> GetContactByConstituency(string constituencyName)
     {
@@ -136,5 +136,5 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         var result = await Sender.Send(getContactyByConstituency);
         return result?.Value;
     }
-   
+
 }

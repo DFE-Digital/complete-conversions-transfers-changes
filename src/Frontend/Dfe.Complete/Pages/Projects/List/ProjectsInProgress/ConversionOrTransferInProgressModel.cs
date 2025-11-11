@@ -5,6 +5,6 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 
 public class ConversionOrTransferInProgressModel(string currentSubNavigationItem, ProjectType projectType) : ProjectsInProgressModel(currentSubNavigationItem)
 {
-        public ProjectType ProjectType { get; } = projectType;
-        public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+    public ProjectType ProjectType { get; } = projectType;
+    public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
 }

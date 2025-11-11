@@ -1,25 +1,25 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Models; 
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using MockQueryable; 
+using MockQueryable;
 using NSubstitute;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
 {
     public class SearchProjectsQueryHandlerTests
-    { 
+    {
         [Theory]
         [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
-            public async Task Handle_ShouldReturnFilteredList_WhenSearchTermURNs(
+        public async Task Handle_ShouldReturnFilteredList_WhenSearchTermURNs(
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         SearchProjectsQueryHandler handler,
         IFixture fixture)
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Project!,
                     item.Establishment
                 )).ToList();
-             
+
             var mock = listAllProjectsQueryModels.BuildMock();
 
             var query = new SearchProjectsQuery(searchTerm, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
@@ -81,7 +81,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             };
             mockListAllProjectsQueryService
                 .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
-                .Returns(mock); 
+                .Returns(mock);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -120,7 +120,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .ListAllProjects(new ProjectFilters(null,null, ProjectStatuses: query.ProjectStates), searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -161,7 +161,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             mockListAllProjectsQueryService
                 .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock);
-             
+
             // Act
             var result = await handler.Handle(query, default);
 
@@ -188,7 +188,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Project!,
                     item.Establishment
                 )).ToList();
-              
+
             var query = new SearchProjectsQuery(searchTerm!, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 1,

@@ -185,7 +185,7 @@ public class PaginationModelTests
     public void IsOutOfRangePage_ShouldReturnCorrectResult(int pageNumber, bool result)
     {
         // Arrange
-        var url = "https://example.com"; 
+        var url = "https://example.com";
         var recordCount = 10;
         var pageSize = 5;
         var elementIdPrefix = "custom-";

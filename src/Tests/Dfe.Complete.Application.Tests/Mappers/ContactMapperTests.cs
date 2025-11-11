@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
         }
 
         [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]        
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public void Map_ContactToContactDto_ShouldMapAllPropertiesCorrectly(Contact contact)
         {
             // Act

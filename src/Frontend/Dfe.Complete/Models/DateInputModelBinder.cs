@@ -19,12 +19,12 @@ namespace Dfe.Complete.Models
             var monthValueProviderResult = bindingContext.ValueProvider.GetValue(monthModelName);
             var yearValueProviderResult = bindingContext.ValueProvider.GetValue(yearModelName);
 
-			if (IsOptionalOrFieldTypeMismatch(bindingContext, dayValueProviderResult, monthValueProviderResult, yearValueProviderResult))
-			{
-				if (modelType == typeof(DateTime?))
-				{
-					bindingContext.Result = ModelBindingResult.Success(null);
-				}
+            if (IsOptionalOrFieldTypeMismatch(bindingContext, dayValueProviderResult, monthValueProviderResult, yearValueProviderResult))
+            {
+                if (modelType == typeof(DateTime?))
+                {
+                    bindingContext.Result = ModelBindingResult.Success(null);
+                }
                 else
                 {
                     bindingContext.Result = ModelBindingResult.Failed();

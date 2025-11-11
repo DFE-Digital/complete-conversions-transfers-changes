@@ -495,8 +495,8 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
-        
+        }
+
         /// <summary>
         /// Confirm the outgoing trust ceo contact for the project.
         /// </summary>
@@ -675,7 +675,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updating the form M task data for transfer project.
         /// </summary>
@@ -694,7 +694,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Check and clear the closure or transfer declaration for transfer project.
         /// </summary>
@@ -713,7 +713,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Request a new URN and record for the academy task for the project.
         /// </summary>
@@ -808,6 +808,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+
        
         
         

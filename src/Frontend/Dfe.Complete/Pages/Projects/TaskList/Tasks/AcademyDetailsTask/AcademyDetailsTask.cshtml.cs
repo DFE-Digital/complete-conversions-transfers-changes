@@ -23,7 +23,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask
         {
             await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
-            AcademyName = ConversionTaskData.AcademyDetailsName;            
+            AcademyName = ConversionTaskData.AcademyDetailsName;
 
             return Page();
         }

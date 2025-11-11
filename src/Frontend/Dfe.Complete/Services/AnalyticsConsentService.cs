@@ -24,9 +24,9 @@
             var domain = configuration["GoogleAnalytics:Domain"];
             if (!string.IsNullOrEmpty(domain))
             {
-				_analyticsDomain = domain;
-			}
-		}
+                _analyticsDomain = domain;
+            }
+        }
 
         public bool? ConsentValue()
         {
@@ -65,7 +65,7 @@
             _httpContextAccessor.HttpContext!.Response.Cookies.Append(ConsentCookieName, consent.ToString().ToLower(), cookieOptions);
             var request = _httpContextAccessor.HttpContext.Request;
 
-			if (!consent)
+            if (!consent)
             {
                 foreach (var cookie in request.Cookies.Keys)
                 {
@@ -75,8 +75,8 @@
                         //Delete if domain is the same
                         _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie);
                         //Delete if domain matches - need both as we wont be sent the cookie if the domain doesnt match
-						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = _analyticsDomain});
-					}
+                        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = _analyticsDomain });
+                    }
 
                     // App Insights
                     if (cookie.StartsWith("ai_"))

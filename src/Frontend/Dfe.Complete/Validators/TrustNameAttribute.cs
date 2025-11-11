@@ -1,7 +1,7 @@
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Validators;
 
@@ -32,7 +32,7 @@ public partial class TrustNameAttribute(string trustReference, ISender sender) :
 
         return ValidateTrustNameAsync(trn, trustName, sender).GetAwaiter().GetResult();
     }
-    
+
     private async Task<ValidationResult?> ValidateTrustNameAsync(string? trn, string trustName, ISender sender)
     {
         if (string.IsNullOrEmpty(trn)) return ValidationResult.Success;

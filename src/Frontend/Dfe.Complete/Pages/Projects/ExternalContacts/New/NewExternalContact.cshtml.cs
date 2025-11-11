@@ -23,7 +23,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
         await this.GetCurrentProjectAsync();
 
         if (this.Project == null)
-        {  
+        {
             return NotFound();
         }
 

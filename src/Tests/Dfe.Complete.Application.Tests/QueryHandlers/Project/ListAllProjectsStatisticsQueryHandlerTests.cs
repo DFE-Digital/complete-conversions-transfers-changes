@@ -45,7 +45,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var now = DateTime.UtcNow;
             var dateTime = new DateTime(now.Year, now.Month, 15, now.Hour, now.Minute, now.Second, DateTimeKind.Utc);
-            var projects = SetUpProjects(dateTime); 
+            var projects = SetUpProjects(dateTime);
             var regions = GetRegions(projects);
             var teams = projects.DistinctBy(x => x.Team)
                 .Select(p => p.Team.ToDescription()).ToList();
@@ -91,14 +91,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Transfers.UnassignedProjects);
             Assert.Equal(0, result.Value.NotRegionalCaseworkServicesProjects.Transfers.DaoRevokedProjects);
 
-            AssertProjectsPerRegion(regions, result.Value.ConversionsPerRegion, ProjectType.Conversion); 
+            AssertProjectsPerRegion(regions, result.Value.ConversionsPerRegion, ProjectType.Conversion);
             AssertProjectsPerRegion(regions, result.Value.TransfersPerRegion, ProjectType.Transfer);
 
             AssertSixMonthViewOfAllProjectOpeners(dateTime, result.Value.SixMonthViewOfAllProjectOpeners);
 
             AssertNewProjectsInAMonth(dateTime, result.Value.NewProjects);
 
-            AssertUsersPerTeam(result.Value.UsersPerTeam, teams.Select(FormatDescription).ToList()); 
+            AssertUsersPerTeam(result.Value.UsersPerTeam, teams.Select(FormatDescription).ToList());
         }
 
         [Fact]
@@ -151,8 +151,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             {
                 var project = projectsPerRegion.FirstOrDefault(x => x.RegionName == FormatDescription(region.Key));
                 Assert.NotNull(project);
-                var typeProject = region.Value.FirstOrDefault(x => x.Key == projectType); 
-                 
+                var typeProject = region.Value.FirstOrDefault(x => x.Key == projectType);
+
                 Assert.Equal(typeProject.Value.TotalProjects, project.Details.TotalProjects);
                 Assert.Equal(typeProject.Value.InProgressProjects, project.Details.InProgressProjects);
                 Assert.Equal(typeProject.Value.CompletedProjects, project.Details.CompletedProjects);
@@ -166,7 +166,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 .Select(word => char.ToUpper(word[0]) + word[1..].ToLower()));
 
         private record AssignmentCounts(int AssignedCount, int UnassignedCount);
-        private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);                          
+        private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);
 
         private static List<Domain.Entities.Project> SetUpProjects(DateTime dateTime)
             =>

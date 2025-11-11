@@ -9,6 +9,7 @@ import dateHistoryPage from "cypress/pages/projects/projectDetails/dateHistoryPa
 import { today } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
+import TaskHelper from "cypress/api/taskHelper";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
 const inSixMonthsDisplayDate = getDisplayDateString(6);
@@ -18,9 +19,8 @@ const inNineMonthsSignificantDate = getSignificantDateString(9);
 const inNineMonthsDisplayDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.batmans },
-    significantDate: inSixMonthsSignificantDate,
-    isSignificantDateProvisional: false,
+    urn: urnPool.conversion.batmans,
+    provisionalConversionDate: inSixMonthsSignificantDate,
 });
 
 let confirmedDateProjectId: string;
@@ -53,9 +53,14 @@ const reasonsForChange2 = {
 
 describe("View the conversion date history tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
-        projectApi.createMatConversionProject(confirmedDateProject).then((response) => {
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn);
+        projectApi.createAndUpdateMatConversionProject(confirmedDateProject).then((response) => {
             confirmedDateProjectId = response.value;
+            TaskHelper.updateExternalStakeholderKickOff(
+                confirmedDateProjectId,
+                "completed",
+                inSixMonthsSignificantDate,
+            );
             projectApi.updateProjectSignificantDate(
                 confirmedDateProjectId,
                 inThreeMonthsSignificantDate,

@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
     public class ChangeDaoRevocationReasonsModel(ISender sender, ILogger<DaoRevocationReasonsModel> logger, IErrorService errorService,
         ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
     {
-        public Dictionary<string, string> FormValues { get; set; } = []; 
+        public Dictionary<string, string> FormValues { get; set; } = [];
 
         public List<DaoRevokedReason> Reasons { get; set; } = [];
 
@@ -49,13 +49,13 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
         {
             PoplateOptions(Reasons);
             ValidateReasons(Request.Form, Reasons, ReasonNotes, errorService, ModelState);
-            
-            FormValues = Request.Form.ToDictionary(k => k.Key, v => v.Value.ToString()); 
+
+            FormValues = Request.Form.ToDictionary(k => k.Key, v => v.Value.ToString());
 
             if (!ModelState.IsValid)
             {
                 return Page();
-            } 
+            }
 
             var command = await GetCachedDecisionAsync();
 
@@ -64,6 +64,6 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
             await UpdateCacheAsync(command);
 
             return RedirectToDaoRevocationRoute(RouteConstants.ProjectDaoRevocationCheck);
-        } 
+        }
     }
 }

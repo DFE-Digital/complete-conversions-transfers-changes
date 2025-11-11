@@ -1,15 +1,15 @@
 ﻿using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using NSubstitute;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using NSubstitute.ExceptionExtensions;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Domain.ValueObjects;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
 {

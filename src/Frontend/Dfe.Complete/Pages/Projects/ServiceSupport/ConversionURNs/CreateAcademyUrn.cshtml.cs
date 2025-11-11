@@ -16,14 +16,14 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 {
     [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
-    public class CreateAcademyUrnModel(ISender sender, 
+    public class CreateAcademyUrnModel(ISender sender,
         IErrorService errorService, ILogger<CreateAcademyUrnModel> logger) : BaseProjectPageModel(sender, logger)
     {
         [BindProperty]
         [AcademyUrn]
         [Display(Name = "Urn")]
         public string URN { get; set; }
-        
+
         public EstablishmentDto? SelectedAcademy { get; set; }
 
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
@@ -35,13 +35,13 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            
+
             var result = await Sender.Send(new GetEstablishmentByUrnQuery(URN.ToInt()), cancellationToken);
             SelectedAcademy = result.Value;
 
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPostSave(CancellationToken cancellationToken)
         {
             await OnGetAsync();
@@ -51,14 +51,14 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            
+
             var projectId = new ProjectId(Guid.Parse(ProjectId));
             var urn = new Urn(URN.ToInt());
 
             // Update the project
             var updateAcademyUrnCommand = new UpdateAcademyUrnCommand(projectId, urn);
             await Sender.Send(updateAcademyUrnCommand, cancellationToken);
-            
+
             var successMessage = string.Format("Academy URN {0} added to {1}, {2}", URN, Establishment?.Name, Establishment?.Urn);
 
             TempData.SetNotification(
@@ -68,7 +68,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 
             return Redirect(RouteConstants.ServiceSupportProjectsWithoutAcademyUrn);
         }
-        
+
         public string ToDisplayAddress(AddressDto addressDto)
         {
             var lines = new List<string>

@@ -31,7 +31,7 @@ public record ListAllProjectsForUserQueryResultModel(
             project.AssignedTo.ProjectCaseworkers = null;
             project.AssignedTo.ProjectRegionalDeliveryOfficers = null;
         }
-        
+
         return new ListAllProjectsForUserQueryResultModel(project.Id,
             project.Urn,
             giasEstablishment.Name,

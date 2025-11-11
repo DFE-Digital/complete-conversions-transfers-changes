@@ -11,11 +11,11 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
-    using Dfe.Complete.Utils;    
+    using Dfe.Complete.Utils;
     using Dfe.Complete.Utils.Exceptions;
-    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;    
-    using MediatR;    
-    using Microsoft.AspNetCore.Mvc;    
+    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+    using MediatR;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Moq;
     using System;
@@ -27,14 +27,14 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
         private readonly Mock<ISender> mockSender;
         private readonly Mock<ILogger<NewExternalContact>> mockLogger;
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
-      
+
         public NewExternalContactTests()
         {
             mockSender = fixture.Freeze<Mock<ISender>>();
             mockLogger = fixture.Freeze<Mock<ILogger<NewExternalContact>>>();
         }
 
-        [Theory]        
+        [Theory]
         [InlineData(ProjectType.Conversion, ExternalContactType.ChairOfGovernors)]
         [InlineData(ProjectType.Transfer, ExternalContactType.OutgoingTrust)]
         public async Task OnGetAsync_Loads_Successfully(ProjectType projectType, ExternalContactType expectedContactType)
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.Id, projectId)
                .With(t => t.Type, projectType)
                .Create();
-            
+
             mockSender.Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
 
@@ -72,7 +72,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => Assert.Contains(expectedContactType, testClass.ContactTypeRadioOptions),
                 () => Assert.Equal("someoneelse", testClass.SelectedExternalContactType)
             );
-            
+
         }
 
         [Theory]
@@ -86,13 +86,13 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Arrange
             Guid projectIdGuid = Guid.Parse(guidValue);
             ProjectId projectId = new ProjectId(projectIdGuid);
-            
+
             var testClass = fixture.Build<NewExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectIdGuid.ToString())
                .With(t => t.SelectedExternalContactType, contactType)
                .Create();
-           
+
             // Act
             var result = testClass.OnPost();
 
@@ -101,23 +101,23 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Equal(expectedRedirectUrl, redirectResult.Url);
         }
 
-        
+
         [Fact]
         public void OnPost_WhenNotFoundExceptionThrown_LogsErrorAndReturnsPageResult()
         {
             // Arrange
-            string invalidContactType = "headteacher_invalid";            
+            string invalidContactType = "headteacher_invalid";
 
             var testClass = fixture.Build<NewExternalContact>()
-              .With(t => t.PageContext, PageDataHelper.GetPageContext())              
+              .With(t => t.PageContext, PageDataHelper.GetPageContext())
               .With(t => t.SelectedExternalContactType, invalidContactType)
               .Create();
-            
+
             // Act and Assert            
             var result = Assert.Throws<NotFoundException>(() => testClass.OnPost());
             string messagePart = $"The selected contact type '{invalidContactType}' is invalid.";
 
-            Assert.Multiple(                
+            Assert.Multiple(
                 () => Assert.Equal(messagePart, result.Message),
                 () => mockLogger.Verify(x => x.Log(
                 It.Is<LogLevel>(l => l == LogLevel.Error),
@@ -125,7 +125,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 It.IsAny<It.IsAnyType>(),
                 It.Is<Exception>(ex => ex.Message == messagePart),
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()!),
-            Times.Once));            
+            Times.Once));
         }
     }
 }

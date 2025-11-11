@@ -8,7 +8,7 @@ public partial class AcademyUrnAttribute : ValidationAttribute
 {
     [GeneratedRegex("^\\d{6}$")]
     private static partial Regex UrnRegex();
-    
+
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var urn = value as string;
