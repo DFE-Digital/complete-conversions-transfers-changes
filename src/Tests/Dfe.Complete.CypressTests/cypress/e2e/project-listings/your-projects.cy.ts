@@ -10,19 +10,24 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest({
-    provisionalConversionDate: "2026-04-01",
+    provisionalConversionDate: "2028-04-01",
     urn: urnPool.listings.heles,
 });
 const conversionSchoolName = "Hele's School";
-const transferProject = ProjectBuilder.createTransferProjectRequest({ urn: urnPool.listings.queen });
+const transferProject = ProjectBuilder.createTransferProjectRequest({
+    urn: urnPool.listings.queen,
+    provisionalTransferDate: "2028-03-01",
+});
 let transferProjectId: string;
 const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const conversionFormAMatProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.listings.themount,
+    provisionalConversionDate: "2028-03-01",
 });
 const conversionFormAMatSchoolName = "The Mount School";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.listings.myddle,
+    provisionalTransferDate: "2028-03-01",
 });
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
 
@@ -32,10 +37,12 @@ describe("View your projects", () => {
         projectRemover.removeProjectIfItExists(transferProject.urn);
         projectRemover.removeProjectIfItExists(conversionFormAMatProject.urn);
         projectRemover.removeProjectIfItExists(transferFormAMatProject.urn);
-        projectApi.createConversionProject(conversionProject);
-        projectApi.createTransferProject(transferProject).then((response) => (transferProjectId = response.value));
-        projectApi.createMatConversionProject(conversionFormAMatProject);
-        projectApi.createMatTransferProject(transferFormAMatProject);
+        projectApi.createAndUpdateConversionProject(conversionProject);
+        projectApi
+            .createAndUpdateTransferProject(transferProject)
+            .then((response) => (transferProjectId = response.value));
+        projectApi.createAndUpdateMatConversionProject(conversionFormAMatProject);
+        projectApi.createAndUpdateMatTransferProject(transferFormAMatProject);
     });
 
     beforeEach(() => {
@@ -64,7 +71,7 @@ describe("View your projects", () => {
             // .columnHasValue("Incoming trust", trust) // bug 208086
             .columnContainsValue("Outgoing trust", "None")
             .columnHasValue("Local authority", "Plymouth")
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(conversionSchoolName);
         projectDetailsPage.containsHeading(conversionSchoolName);
     });
@@ -79,7 +86,7 @@ describe("View your projects", () => {
             .columnContainsValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Westmorland and Furness")
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", "Mar 2028")
             .goTo(transferSchoolName);
         projectDetailsPage.containsHeading(transferSchoolName);
     });
@@ -94,7 +101,7 @@ describe("View your projects", () => {
             .columnContainsValue("Incoming trust", macclesfieldTrust.name)
             .columnContainsValue("Outgoing trust", "None")
             .columnHasValue("Local authority", "Kirklees")
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", "Mar 2028")
             .goTo(conversionFormAMatSchoolName);
         projectDetailsPage.containsHeading(conversionFormAMatSchoolName);
     });
@@ -109,7 +116,7 @@ describe("View your projects", () => {
             .columnContainsValue("Incoming trust", dimensionsTrust.name)
             .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Shropshire")
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", "Mar 2028")
             .goTo(transferFormAMatSchoolName);
         projectDetailsPage.containsHeading(transferFormAMatSchoolName);
     });
@@ -130,7 +137,7 @@ describe("View your projects", () => {
             ])
             .withSchool(conversionSchoolName)
             .columnHasValue("URN", `${conversionProject.urn}`)
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
             .columnHasValue("Assigned to", cypressUser.username)
@@ -156,7 +163,7 @@ describe("View your projects", () => {
             .columnHasValue("Local authority", "Westmorland and Furness")
             .columnHasValue("Team", "London")
             .columnHasValue("Type of project", "Transfer")
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", "Mar 2028")
             .columnHasValue("Project completion date", todayFormatted)
             .goTo(transferSchoolName);
         projectDetailsPage.containsHeading(transferSchoolName);

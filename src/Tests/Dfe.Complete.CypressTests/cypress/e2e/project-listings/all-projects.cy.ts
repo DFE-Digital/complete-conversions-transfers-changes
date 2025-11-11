@@ -23,10 +23,11 @@ import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatist
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
 import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
-import prepareProjectApi from "cypress/api/prepareProjectApi";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.listings.heles,
+    provisionalConversionDate: getSignificantDateString(1),
 });
 let projectId: string;
 const schoolName = "Hele's School";
@@ -41,6 +42,7 @@ const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const transferRegion = "North West";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.listings.myddle,
+    provisionalTransferDate: getSignificantDateString(1),
 });
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
 const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
@@ -57,12 +59,15 @@ describe("View all projects", () => {
         projectRemover.removeProjectIfItExists(transferProject.urn);
         projectRemover.removeProjectIfItExists(transferFormAMatProject.urn);
         projectRemover.removeProjectIfItExists(prepareProject.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
-        projectApi.createTransferProject(transferProject);
-        projectApi.createMatTransferProject(transferFormAMatProject);
-        prepareProjectApi
-            .createConversionProject(prepareProject)
-            .then((response) => (prepareProjectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => {
+            projectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", getSignificantDateString(1));
+        });
+        projectApi.createAndUpdateTransferProject(transferProject).then((response) => {
+            taskHelper.updateExternalStakeholderKickOff(response.value, "completed", getSignificantDateString(1));
+        });
+        projectApi.createAndUpdateMatTransferProject(transferFormAMatProject);
+        projectApi.createConversionProject(prepareProject).then((response) => (prepareProjectId = response.value));
     });
 
     beforeEach(() => {
@@ -175,7 +180,7 @@ describe("View all projects", () => {
         projectTable
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn}`)
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Form a MAT project?", "Yes")
             .columnHasValue("Assigned to", cypressUser.username);
@@ -188,7 +193,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn}`)
-            .columnHasValue("Transfer date", "Mar 2026")
+            .columnHasValue("Transfer date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "Yes")
             .columnHasValue("Assigned to", cypressUser.username);
         allProjects
@@ -206,7 +211,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn}`)
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(transferFormAMatSchoolName);
@@ -232,7 +237,7 @@ describe("View all projects", () => {
             .columnHasValue("Local authority", localAuthorityShort)
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
+            .columnHasValue("Confirmed date (Original date)", `${nextMonthShortUS} (${nextMonthShortUS})`) // bug 228624
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
@@ -256,7 +261,7 @@ describe("View all projects", () => {
             .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
+            .columnHasValue("Confirmed date (Original date)", `${nextMonthShortUS} (${nextMonthShortUS})`) // bug 228624
             .goTo(`${transferSchoolName} ${transferProject.urn}`);
         projectDetailsPage.containsHeading(transferSchoolName);
     });

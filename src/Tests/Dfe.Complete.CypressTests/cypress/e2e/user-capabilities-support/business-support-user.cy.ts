@@ -26,15 +26,15 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.whitcliffe },
-    significantDate: "2027-04-01",
+    urn: urnPool.support.whitcliffe,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(businessSupportUser);
@@ -92,7 +92,7 @@ describe("Capabilities and permissions of the business support user", () => {
                 "All conditions met",
                 "Confirmed date (Original date)",
             ])
-            .withSchool(`${schoolName} ${project.urn.value}`)
+            .withSchool(`${schoolName} ${project.urn}`)
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086

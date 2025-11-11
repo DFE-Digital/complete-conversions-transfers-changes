@@ -37,8 +37,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
     before(() => {
         projectRemover.removeProjectIfItExists(unassignedProject.urn);
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createTransferProject(unassignedProject, rdoTeamLeaderUser.email);
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateTransferProject(unassignedProject, rdoTeamLeaderUser);
+        projectApi.createAndUpdateMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {

@@ -22,14 +22,14 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.whitcliffe },
-    significantDate: "2027-04-01",
+    urn: urnPool.support.whitcliffe,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 describe("Capabilities and permissions of the data consumer user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(dataConsumerUser);

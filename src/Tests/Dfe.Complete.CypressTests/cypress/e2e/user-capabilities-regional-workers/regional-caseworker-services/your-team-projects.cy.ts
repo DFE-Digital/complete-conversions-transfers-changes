@@ -12,19 +12,13 @@ import { urnPool } from "cypress/constants/testUrns";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    provisionalConversionDate: "2026-04-01",
+    provisionalConversionDate: "2028-04-01",
     urn: urnPool.regionalWorker.morda,
-    createdByEmail: regionalCaseworkerUser.email,
-    createdByFirstName: regionalCaseworkerUser.firstName,
-    createdByLastName: regionalCaseworkerUser.lastName,
 });
 const schoolName = "Morda CofE Primary School";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
-    provisionalConversionDate: "2026-04-01",
+    provisionalConversionDate: "2028-04-01",
     urn: urnPool.regionalWorker.mountjoy,
-    createdByEmail: regionalCaseworkerTeamLeaderUser.email,
-    createdByFirstName: regionalCaseworkerTeamLeaderUser.firstName,
-    createdByLastName: regionalCaseworkerTeamLeaderUser.lastName,
 });
 let teammatesProjectId: string;
 const teammatesSchoolName = "Mountjoy House School";
@@ -33,10 +27,27 @@ describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(teammatesProject.urn);
-        projectApi.createConversionProject(project, regionalCaseworkerUser.email);
+        projectApi.createConversionProject(project, regionalCaseworkerUser.email).then((response) => {
+            projectApi.updateProjectHandoverAssign(
+                ProjectBuilder.updateConversionProjectHandoverAssignRequest({
+                    projectId: { value: response.value },
+                    userId: { value: regionalCaseworkerUser.id },
+                    userTeam: "RegionalCaseWorkerServices",
+                }),
+            );
+        });
         projectApi
-            .createConversionProject(teammatesProject, regionalCaseworkerTeamLeaderUser.email)
-            .then((response) => (teammatesProjectId = response.value));
+            .createAndUpdateConversionProject(teammatesProject, regionalCaseworkerTeamLeaderUser)
+            .then((response) => {
+                teammatesProjectId = response.value;
+                projectApi.updateProjectHandoverAssign(
+                    ProjectBuilder.updateConversionProjectHandoverAssignRequest({
+                        projectId: { value: teammatesProjectId },
+                        userId: { value: regionalCaseworkerTeamLeaderUser.id },
+                        userTeam: "RegionalCaseWorkerServices",
+                    }),
+                );
+            });
     });
 
     beforeEach(() => {
@@ -47,7 +58,10 @@ describe("Regional caseworker services user - View your team projects", () => {
 
     it("Should be able to view my project in my team project listings in progress", () => {
         navBar.goToYourTeamProjects();
-        yourTeamProjects.containsHeading("Your team projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
+        yourTeamProjects
+            .containsHeading("Your team projects in progress")
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders([
                 "School or academy",
@@ -66,15 +80,15 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Assigned to", regionalCaseworkerUser.username)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
     it("Should be able to view my teammate's project in my team project listings in progress", () => {
         yourTeamProjects
             .containsHeading("Your team projects in progress")
-            .goToNextPageUntilFieldIsVisible(teammatesSchoolName);
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(teammatesSchoolName);
         projectTable
             .hasTableHeaders([
                 "School or academy",
@@ -93,7 +107,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
@@ -117,7 +131,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
             .columnHasValue("Project type", "Conversion")
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
@@ -135,7 +149,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .withSchool(teammatesSchoolName)
             .columnHasValue("URN", `${teammatesProject.urn}`)
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .columnHasValue("Project type", "Conversion")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
@@ -160,7 +174,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Type of project", "Conversion")
-            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Conversion or transfer date", "Apr 2028")
             .columnHasValue("Project completion date", todayFormatted)
             .goTo(teammatesSchoolName);
         projectDetailsPage.containsHeading(teammatesSchoolName);

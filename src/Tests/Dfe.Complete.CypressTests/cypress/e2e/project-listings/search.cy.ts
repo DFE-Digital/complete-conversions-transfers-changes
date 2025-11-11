@@ -9,14 +9,18 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
+import { getSignificantDateString } from "cypress/support/formatDate";
 
-const project = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.listings.heles } });
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: urnPool.listings.heles,
+    provisionalConversionDate: getSignificantDateString(1),
+});
 const schoolName = "Hele's School";
 
 describe("Search bar tests", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createConversionProject(project);
+        projectApi.createAndUpdateConversionProject(project);
     });
 
     beforeEach(() => {
@@ -28,7 +32,7 @@ describe("Search bar tests", () => {
     const searchCases = [
         {
             description: "should be able to search for a project by URN",
-            searchTerm: `${project.urn.value}`,
+            searchTerm: `${project.urn}`,
         },
         {
             description: "Should be able to search for a project by school name",
@@ -36,7 +40,7 @@ describe("Search bar tests", () => {
         },
         {
             description: "Should be able to search for a project by UKPRN",
-            searchTerm: `${project.incomingTrustUkprn.value}`,
+            searchTerm: `${project.incomingTrustUkprn}`,
         },
         {
             description: "Should be able to search for a project by establishment name",
@@ -61,7 +65,7 @@ describe("Search bar tests", () => {
                     "Assigned to",
                 ])
                 .withSchool(schoolName)
-                .columnHasValue("URN", `${project.urn.value}`)
+                .columnHasValue("URN", `${project.urn}`)
                 .columnHasValue("Project type", "Conversion")
                 .columnHasValue("Conversion or transfer date", nextMonthShort)
                 .columnHasValue("Assigned to", cypressUser.username)
