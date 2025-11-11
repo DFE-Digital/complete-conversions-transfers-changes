@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class ProjectTypeBuilder: IColumnBuilder<ConversionCsvModel>
+    public class ProjectTypeBuilder : IColumnBuilder<ConversionCsvModel>
     {
         public string Build(ConversionCsvModel input)
         {

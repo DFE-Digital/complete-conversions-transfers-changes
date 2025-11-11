@@ -12,16 +12,16 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
                 <form action="@string.Format(RouteConstants.ProjectComplete, Model.ProjectId)" accept-charset="UTF-8"
-                    method="post">
+                      method="post">
                     @Html.AntiForgeryToken()
                     <h2 class="govuk-heading-m">Completing a project</h2>
-                    <p class="govuk-body">You should only complete the project when you have finished every task and marked
-                        any
-                        that are not needed as not applicable.</p>
+                    <p class="govuk-body">
+                        You should only complete the project when you have finished every task and marked
+                        any that are not needed as not applicable.
+                    </p>
                     <p class="govuk-body">You will not be able to change this project once it is completed.</p>
                     <div class="govuk-button-group">
-                        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button"
-                            role="button" id="save">Complete project</button>
+                        <govuk-button type="submit" id="save">Complete project</govuk-button>
                     </div>
                 </form>
             </div>

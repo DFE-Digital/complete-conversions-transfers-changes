@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AutoFixture;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
@@ -7,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MockQueryable;
 using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models;
 

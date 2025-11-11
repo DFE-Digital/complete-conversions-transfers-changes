@@ -1,7 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Dfe.Complete.Utils.Exceptions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Application.Common.Behaviours;
 
@@ -21,9 +21,9 @@ public class ExceptionHandlingBehavior<TRequest, TResponse>(
         catch (NotFoundException notFoundException)
         {
             var requestName = typeof(TRequest).Name;
-            logger.LogError(notFoundException, 
+            logger.LogError(notFoundException,
                 "Not Found Exception for Request: {Name} {@Request} with message: {Message}",
-                requestName, 
+                requestName,
                 request,
                 notFoundException.Message);
             throw;

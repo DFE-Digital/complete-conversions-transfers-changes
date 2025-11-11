@@ -2,7 +2,6 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using System.Runtime.CompilerServices;
 
@@ -175,80 +174,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         LocalAuthorityId = new LocalAuthorityId(localAuthorityId);
     }
-
-    public static Project CreateConversionProject(
-        ProjectId id,
-        Urn urn,
-        DateTime createdAt,
-        DateTime updatedAt,
-        TaskType taskType,
-        ProjectType projectType,
-        Guid tasksDataId,
-        DateOnly significantDate,
-        bool isSignificantDateProvisional,
-        Ukprn incomingTrustUkprn,
-        Region? region,
-        bool isDueTo2RI,
-        bool hasAcademyOrderBeenIssued,
-        DateOnly advisoryBoardDate,
-        string? advisoryBoardConditions,
-        string? establishmentSharepointLink,
-        string? incomingTrustSharepointLink,
-        ProjectGroupId? groupId,
-        ProjectTeam? team,
-        UserId regionalDeliveryOfficerId,
-        UserId? assignedToId,
-        DateTime? assignedAt,
-        string? handoverComments,
-        Guid localAuthorityId)
-    {
-        var project = new Project(
-            id,
-            urn,
-            createdAt,
-            updatedAt,
-            taskType,
-            projectType,
-            tasksDataId,
-            significantDate,
-            isSignificantDateProvisional,
-            incomingTrustUkprn,
-            null,
-            region,
-            isDueTo2RI,
-            hasAcademyOrderBeenIssued,
-            advisoryBoardDate,
-            advisoryBoardConditions,
-            establishmentSharepointLink,
-            incomingTrustSharepointLink,
-            null,
-            groupId,
-            team,
-            regionalDeliveryOfficerId,
-            assignedToId,
-            assignedAt,
-            null,
-            null,
-            localAuthorityId);
-
-        if (!string.IsNullOrEmpty(handoverComments))
-        {
-            project.AddNote(new Note
-            {
-                CreatedAt = project.CreatedAt,
-                ProjectId = project.Id,
-                Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                UserId = regionalDeliveryOfficerId
-            });
-        }
-
-        project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-        return project;
-    }
-
-    public static Project CreateHandoverConversionProject(CreateHandoverConversionProjectParams parameters)
+    public static Project CreateConversionProject(CreateConversionProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -289,7 +215,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateHandoverConversionMATProject(CreateHandoverConversionMatProjectParams parameters)
+    public static Project CreateConversionMATProject(CreateConversionMatProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -330,82 +256,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateTransferProject
-    (
-        ProjectId id,
-        Urn urn,
-        DateTime createdAt,
-        DateTime updatedAt,
-        TaskType taskType,
-        ProjectType projectType,
-        Guid tasksDataId,
-        Region? region,
-        ProjectTeam team,
-        UserId regionalDeliveryOfficerId,
-        UserId? assignedToId,
-        DateTime? assignedAt,
-        Ukprn incomingTrustUkprn,
-        Ukprn outgoingTrustUkprn,
-        ProjectGroupId? groupId,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
-        string outgoingTrustSharepointLink,
-        DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        DateOnly significantDate,
-        bool isSignificantDateProvisional,
-        bool isDueTo2RI,
-        string? handoverComments,
-        Guid localAuthorityId
-    )
-    {
-        var project = new Project(
-            id,
-            urn,
-            createdAt,
-            updatedAt,
-            taskType,
-            projectType,
-            tasksDataId,
-            significantDate,
-            isSignificantDateProvisional,
-            incomingTrustUkprn,
-            outgoingTrustUkprn,
-            region,
-            isDueTo2RI,
-            null,
-            advisoryBoardDate,
-            advisoryBoardConditions,
-            establishmentSharepointLink,
-            incomingTrustSharepointLink,
-            outgoingTrustSharepointLink,
-            groupId,
-            team,
-            regionalDeliveryOfficerId,
-            assignedToId,
-            assignedAt,
-            null,
-            null,
-            localAuthorityId);
-
-        if (!string.IsNullOrEmpty(handoverComments))
-        {
-            project.AddNote(new Note
-            {
-                CreatedAt = project.CreatedAt,
-                ProjectId = project.Id,
-                Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                UserId = regionalDeliveryOfficerId
-            });
-        }
-
-        project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-        return project;
-    }
-
-    public static Project CreateHandoverTransferProject(CreateHandoverTransferProjectParams parameters)
+    public static Project CreateTransferProject(CreateTransferProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
@@ -447,97 +298,42 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public static Project CreateMatConversionProject(
-        ProjectId id,
-        Urn urn,
-        DateTime createdAt,
-        DateTime updatedAt,
-        TaskType taskType,
-        ProjectType projectType,
-        Guid tasksDataId,
-        Region? region,
-        ProjectTeam team,
-        UserId regionalDeliveryOfficerId,
-        UserId? assignedToId,
-        DateTime? assignedAt,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
-        DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        DateOnly significantDate,
-        bool isSignificantDateProvisional,
-        bool isDueTo2Ri,
-        string newTrustName,
-        string newTrustReferenceNumber,
-        bool hasDirectiveAcademyOrderBeenIssue,
-        string? handoverComments,
-        Guid localAuthorityId)
+    public static Project CreateTransferMATProject(CreateTransferMatProjectParams parameters)
     {
-        var project = new Project(id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
-            isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
-            advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
-            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
+        var now = DateTime.UtcNow;
 
-        if (!string.IsNullOrEmpty(handoverComments))
+        var project = new Project(
+            parameters.Id,
+            parameters.Urn,
+            now,
+            now,
+            TaskType.Transfer,
+            ProjectType.Transfer,
+            parameters.TasksDataId,
+            parameters.SignificantDate,
+            true,
+            null,
+            parameters.OutgoingTrustUkprn,
+            parameters.Region,
+            false,
+            null,
+            parameters.AdvisoryBoardDate,
+            parameters.AdvisoryBoardConditions,
+            null,
+            null,
+            null,
+            null,
+            null,
+            parameters.RegionalDeliveryOfficerId,
+            null,
+            null,
+            parameters.NewTrustName,
+            parameters.NewTrustReferenceNumber,
+            parameters.LocalAuthorityId)
         {
-            project.AddNote(new Note
-            {
-                CreatedAt = project.CreatedAt,
-                ProjectId = project.Id,
-                Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                UserId = regionalDeliveryOfficerId
-            });
-        }
-
-        project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-        return project;
-    }
-
-    public static Project CreateMatTransferProject(
-    ProjectId Id,
-    Urn urn,
-    DateTime createdAt,
-    DateTime updatedAt,
-    Ukprn outgoingTrustUkprn,
-    TaskType taskType,
-    ProjectType projectType,
-    Guid tasksDataId,
-    Region? region,
-    ProjectTeam team,
-    UserId regionalDeliveryOfficerId,
-    UserId? assignedToId,
-    DateTime? assignedAt,
-    string establishmentSharepointLink,
-    string incomingTrustSharepointLink,
-    string outgoingTrustSharepointLink,
-    DateOnly advisoryBoardDate,
-    string advisoryBoardConditions,
-    DateOnly significantDate,
-    bool isSignificantDateProvisional,
-    bool isDueTo2Ri,
-    string newTrustName,
-    string newTrustReferenceNumber,
-    string? handoverComments,
-    Guid localAuthorityId)
-    {
-        var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
-            isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
-            advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
-            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
-
-        if (!string.IsNullOrEmpty(handoverComments))
-        {
-            project.AddNote(new Note
-            {
-                CreatedAt = project.CreatedAt,
-                ProjectId = project.Id,
-                Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                UserId = regionalDeliveryOfficerId
-            });
-        }
+            State = ProjectState.Inactive,
+            TwoRequiresImprovement = null
+        };
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 

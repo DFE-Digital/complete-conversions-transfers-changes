@@ -3,7 +3,7 @@
 namespace Dfe.Complete.TagHelpers
 {
     [HtmlTargetElement("govuk-summary-card", TagStructure = TagStructure.NormalOrSelfClosing)]
-    public class SummaryCardTagHelper: TagHelper
+    public class SummaryCardTagHelper : TagHelper
     {
         [HtmlAttributeName("label")]
         public string Label { get; set; }
@@ -38,7 +38,7 @@ namespace Dfe.Complete.TagHelpers
                 "</div>"
             );
 
-                 
+
 
             output.TagMode = TagMode.StartTagAndEndTag;
         }

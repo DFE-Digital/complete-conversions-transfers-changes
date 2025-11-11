@@ -495,8 +495,8 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
-        
+        }
+
         /// <summary>
         /// Confirm the outgoing trust ceo contact for the project.
         /// </summary>
@@ -675,7 +675,45 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
+        /// <summary>
+        /// Updating the form M task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/FormM")]
+        [SwaggerResponse(204, "Updated the form M task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateFormMTaskAsync(
+            [FromBody] UpdateFormMTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Check and clear the closure or transfer declaration for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ClosureOrTransferDeclaration")]
+        [SwaggerResponse(204, "Check and clear the closure or transfer declaration task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateClosureOrTransferDeclarationTaskAsync(
+            [FromBody] UpdateClosureOrTransferDeclarationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
         /// <summary>
         /// Request a new URN and record for the academy task for the project.
         /// </summary>
@@ -770,7 +808,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updating the 125 year lease for conversion project.
         /// </summary>

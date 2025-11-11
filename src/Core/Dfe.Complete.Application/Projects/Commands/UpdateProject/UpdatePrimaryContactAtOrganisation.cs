@@ -12,12 +12,12 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
     : IRequestHandler<UpdatePrimaryContactAtOrganisationCommand>
 {
     public async Task Handle(UpdatePrimaryContactAtOrganisationCommand request, CancellationToken cancellationToken)
-    {        
+    {
         if (request.Contact.ProjectId != request.ProjectId)
         {
             return;
         }
-        
+
         var project = await projectRepository.FindAsync(request.ProjectId, cancellationToken);
 
         if (project == null)

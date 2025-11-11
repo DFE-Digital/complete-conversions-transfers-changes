@@ -19,10 +19,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
         [BindProperty]
         public string? TrustSurplusOrDeficit { get; set; }
         [BindProperty]
-        public Guid? TasksDataId { get; set; } 
+        public Guid? TasksDataId { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = TransferTaskData.CheckAndConfirmFinancialInformationNotApplicable;
             AcademySurplusOrDeficit = TransferTaskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit;

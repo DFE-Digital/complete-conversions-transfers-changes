@@ -17,7 +17,7 @@ public class StringLengthValidatorAttribute : ValidationAttribute
             return ValidationResult.Success;
 
         var valueAsString = (string)value;
-        
+
         return valueAsString.Trim().Length > _maxLength ? new ValidationResult(ErrorMessage) : ValidationResult.Success;
     }
 }

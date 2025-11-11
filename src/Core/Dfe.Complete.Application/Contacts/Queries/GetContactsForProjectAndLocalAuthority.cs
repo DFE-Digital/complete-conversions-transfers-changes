@@ -24,13 +24,13 @@ internal class GetContactsForProjectAndLocalAuthority(IContactReadRepository con
                 await contactsRepository.Contacts.Where(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId
                     || contact.LocalAuthorityId != null && contact.LocalAuthorityId == request.LocalAuthorityId)
                     .OrderBy(Contact => Contact.Name)
-                    .ToListAsync(cancellationToken); 
+                    .ToListAsync(cancellationToken);
             var contactDto = mapper.Map<List<ContactDto>?>(contactsCollection);
             return Result<List<ContactDto>?>.Success(contactDto);
         }
         catch (Exception e)
         {
             return Result<List<ContactDto>?>.Failure(e.Message);
-        } 
+        }
     }
 }

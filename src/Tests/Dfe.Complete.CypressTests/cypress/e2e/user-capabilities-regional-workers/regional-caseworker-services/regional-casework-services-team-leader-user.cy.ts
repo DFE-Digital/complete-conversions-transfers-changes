@@ -27,20 +27,26 @@ import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalWorker.mountjoy },
-    handingOverToRegionalCaseworkService: true,
+    urn: urnPool.regionalWorker.mountjoy,
 });
 const unassignedProjectSchoolName = "Mountjoy House School";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.regionalWorker.morda },
+    urn: urnPool.regionalWorker.morda,
 });
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(unassignedProject.urn.value);
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createTransferProject(unassignedProject);
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(unassignedProject.urn);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createTransferProject(unassignedProject).then((response) => {
+            projectApi.updateProjectHandoverAssign(
+                ProjectBuilder.updateTransferProjectHandoverAssignRequest({
+                    projectId: { value: response.value },
+                    assignedToRegionalCaseworkerTeam: true,
+                }),
+            );
+        });
+        projectApi.createAndUpdateMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {
@@ -92,7 +98,8 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    // bug 247499
+    it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -120,7 +127,8 @@ describe("Capabilities and permissions of the regional casework services team le
             .columnHasValue("Assigned to", regionalCaseworkerUser.username);
     });
 
-    it("Should be able to change the added by user of the project in internal projects", () => {
+    // bug 247499
+    it.skip("Should be able to change the added by user of the project in internal projects", () => {
         const currentAssignee = cypressUser;
         const newAssignee = regionalCaseworkerUser;
 

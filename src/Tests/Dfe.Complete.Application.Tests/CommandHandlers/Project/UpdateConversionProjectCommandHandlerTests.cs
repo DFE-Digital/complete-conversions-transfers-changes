@@ -1,28 +1,16 @@
-﻿using System.Linq.Expressions;
-using AutoFixture;
-using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using NSubstitute;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
+﻿using AutoFixture.Xunit2;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using MediatR;
-using Moq;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Users.Queries.GetUser;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 using MockQueryable;
+using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
@@ -32,7 +20,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ExistingGroupIdentifier_IsHandlingRSC_True_ExistingLastComment_WithHandoverComment_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
+            [Frozen] ICompleteRepository<ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -263,9 +251,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var projectId = new ProjectId(Guid.NewGuid());
 
-            var project = new Domain.Entities.Project 
-            { 
-                Id = projectId, 
+            var project = new Domain.Entities.Project
+            {
+                Id = projectId,
                 CreatedAt = DateTime.UtcNow,
             };
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) :  ProjectLayoutModel(sender, logger, InternalContactsNavigation)
+public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) : ProjectLayoutModel(sender, logger, InternalContactsNavigation)
 {
     private readonly ISender _sender = sender;
     public UserDto? UserAssignedTo { get; set; }

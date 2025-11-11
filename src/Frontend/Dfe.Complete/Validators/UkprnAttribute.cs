@@ -29,7 +29,7 @@ namespace Dfe.Complete.Validators
             if (ukprn.Length != 8)
                 return new ValidationResult(
                     $"The {displayName} must be 8 digits long and start with a 1. For example, 12345678.");
-            
+
             if (!string.IsNullOrEmpty(_comparisonProperty))
             {
                 var comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);
@@ -47,7 +47,7 @@ namespace Dfe.Complete.Validators
                     return new ValidationResult($"The outgoing and incoming trust cannot be the same");
                 }
             }
-            
+
             try
             {
                 var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));

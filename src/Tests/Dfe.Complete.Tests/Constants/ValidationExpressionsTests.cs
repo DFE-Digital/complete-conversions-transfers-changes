@@ -45,7 +45,7 @@ namespace Dfe.Complete.Tests.Constants
             var isValid = UKPhoneRegex().IsMatch(input);
             Assert.Equal(expectedIsValid, isValid);
         }
-         
+
         [Theory]
         [InlineData("user@example.com", true)]
         [InlineData("user.name@domain.co.uk", true)]
@@ -63,7 +63,7 @@ namespace Dfe.Complete.Tests.Constants
         {
             var isValid = EmailRegex().IsMatch(input);
             Assert.Equal(expectedIsValid, isValid);
-        } 
+        }
     }
 
 }

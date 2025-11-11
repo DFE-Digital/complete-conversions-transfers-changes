@@ -16,15 +16,15 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
     public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IUserReadRepository userReadRepository, ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     {
         public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
-        {  
+        {
             try
             {
-                var projectsQuery = new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed, ProjectState.Inactive ])
+                var projectsQuery = new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed, ProjectState.Inactive])
                     .Apply(projectReadRepository.Projects.AsNoTracking());
 
                 var conversions = await projectsQuery
                     .Where(p => p.Type == ProjectType.Conversion)
-                    .Select(p => new ProjectModel(p.Type, p.State, p.AssignedToId, p.Team,  p.Region, p.SignificantDateProvisional, p.SignificantDate, p.CreatedAt))
+                    .Select(p => new ProjectModel(p.Type, p.State, p.AssignedToId, p.Team, p.Region, p.SignificantDateProvisional, p.SignificantDate, p.CreatedAt))
                     .ToListAsync(cancellationToken);
 
                 var transfers = await projectsQuery

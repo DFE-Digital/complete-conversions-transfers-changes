@@ -35,11 +35,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateTrustModificationOrderTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },                
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Received = true,
                 Sent = true,
                 Cleared = true,
-                Saved = true               
+                Saved = true
             };
 
             // Act
@@ -52,9 +52,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.TrustModificationOrderReceived);
             Assert.True(existingTaskData.TrustModificationOrderSentLegal);
             Assert.True(existingTaskData.TrustModificationOrderCleared);
-            Assert.True(existingTaskData.TrustModificationOrderSaved);            
+            Assert.True(existingTaskData.TrustModificationOrderSaved);
         }
-        
+
 
         [Theory]
         [CustomAutoData(
@@ -95,7 +95,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.TrustModificationOrderReceived);
             Assert.Null(existingTaskData.TrustModificationOrderSentLegal);
             Assert.Null(existingTaskData.TrustModificationOrderCleared);
-            Assert.Null(existingTaskData.TrustModificationOrderSaved);            
+            Assert.Null(existingTaskData.TrustModificationOrderSaved);
             Assert.True(existingTaskData.TrustModificationOrderNotApplicable);
         }
 

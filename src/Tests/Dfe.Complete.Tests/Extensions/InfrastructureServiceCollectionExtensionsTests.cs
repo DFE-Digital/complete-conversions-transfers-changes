@@ -1,7 +1,7 @@
 using Dfe.Complete.Infrastructure;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Caching.Distributed;
 namespace Dfe.Complete.Tests.Extensions;
 
 public class InfrastructureServiceCollectionExtensionsTests

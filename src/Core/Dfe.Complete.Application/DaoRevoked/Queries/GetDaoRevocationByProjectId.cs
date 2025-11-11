@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.DaoRevoked.Queries
                 var result = await daoRevocationReadRepository.DaoRevocations.AsNoTracking()
                     .FirstOrDefaultAsync(d => d.ProjectId == request.ProjectId, cancellationToken) ?? throw new NotFoundException($"No project found for Id: {request.ProjectId.Value}.");
 
-                var daoRevocationDto = mapper.Map<DaoRevocationDto?>(result); 
+                var daoRevocationDto = mapper.Map<DaoRevocationDto?>(result);
 
                 return Result<DaoRevocationDto?>.Success(daoRevocationDto);
             }

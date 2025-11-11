@@ -1,15 +1,15 @@
 using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using NSubstitute;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.AcademiesApi.Client.Contracts;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using MockQueryable;
+using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System.Collections.ObjectModel;
-using MockQueryable;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -64,14 +64,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Value);
             Assert.Equal(2, result.Value.Count);
-            
+
             var firstGroup = result.Value[0];
             Assert.Equal(projectGroups[1].Id.Value.ToString(), firstGroup.GroupId);
             Assert.Equal("Trust Two", firstGroup.GroupName);
             Assert.Equal("GROUP002", firstGroup.GroupIdentifier);
             Assert.Equal("87654321", firstGroup.TrustUkprn);
             Assert.Contains("School Three", firstGroup.IncludedEstablishments);
-            
+
             var secondGroup = result.Value[1];
             Assert.Equal(projectGroups[0].Id.Value.ToString(), secondGroup.GroupId);
             Assert.Equal("Trust One", secondGroup.GroupName);
@@ -143,7 +143,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Value);
             Assert.Single(result.Value);
-            
+
             var group = result.Value[0];
             Assert.Equal(projectGroups[0].Id.Value.ToString(), group.GroupId);
             Assert.Equal("Trust One", group.GroupName);
@@ -304,10 +304,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Value);
             Assert.Equal(3, result.Value.Count);
-            
+
             Assert.Equal("GROUP003", result.Value[0].GroupIdentifier);
             Assert.Equal("GROUP002", result.Value[1].GroupIdentifier);
             Assert.Equal("GROUP001", result.Value[2].GroupIdentifier);
         }
     }
-} 
+}

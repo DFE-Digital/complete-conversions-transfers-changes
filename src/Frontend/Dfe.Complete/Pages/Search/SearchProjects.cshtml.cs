@@ -6,7 +6,6 @@ using Dfe.Complete.Pages.Projects.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace Dfe.Complete.Pages.Search
 {
@@ -45,7 +44,7 @@ namespace Dfe.Complete.Pages.Search
                 };
                 var searchProjectsResponse = await sender.Send(searchProjectsQuery);
                 Projects = searchProjectsResponse.Value ?? [];
-                TotalResults = searchProjectsResponse.ItemCount; 
+                TotalResults = searchProjectsResponse.ItemCount;
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
 

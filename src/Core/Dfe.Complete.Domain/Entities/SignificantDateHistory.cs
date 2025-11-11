@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class SignificantDateHistory: IEntity<SignificantDateHistoryId>
+public class SignificantDateHistory : IEntity<SignificantDateHistoryId>
 {
     public SignificantDateHistoryId Id { get; set; }
 
@@ -18,7 +18,7 @@ public class SignificantDateHistory: IEntity<SignificantDateHistoryId>
     public DateTime UpdatedAt { get; set; }
 
     public UserId? UserId { get; set; }
-    
+
     public virtual ICollection<SignificantDateHistoryReason> Reasons { get; set; } = new List<SignificantDateHistoryReason>();
 
     public virtual User? User { get; set; }

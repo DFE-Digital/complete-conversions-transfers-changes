@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Security.Claims;
-using Dfe.Complete.Domain.Constants;
+﻿using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -8,6 +6,8 @@ using Dfe.Complete.Infrastructure.Security.Authorization;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
+using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.Authorization
 {

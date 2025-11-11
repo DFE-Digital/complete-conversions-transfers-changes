@@ -4,15 +4,14 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
-using System.Net;
-using System.Security.Claims; 
-using Microsoft.EntityFrameworkCore;
 using Dfe.Complete.Utils.Exceptions;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
-{ 
+{
     public class UpdateAcademyAndTrustFinancialInformationTaskTests
     {
         [Theory]
@@ -52,7 +51,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Equal(command.TrustSurplusOrDeficit, existingTaskData.CheckAndConfirmFinancialInformationTrustSurplusDeficit);
             Assert.Null(existingTaskData.CheckAndConfirmFinancialInformationNotApplicable);
         }
-         
+
 
         [Theory]
         [CustomAutoData(
@@ -117,8 +116,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateAcademyAndTrustFinancialInformationTaskAsync(command, default));
-              
-            Assert.Contains($"Transfer task data TaskDataId {{ Value = { command.TaskDataId.Value} }} not found.", exception.Message);
+
+            Assert.Contains($"Transfer task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }
 }

@@ -1,11 +1,11 @@
+using Dfe.Complete.Application.Users.Models;
+using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
-using Dfe.Complete.Application.Users.Queries.ListAllUsers;
-using Dfe.Complete.Application.Users.Models;
-using Dfe.Complete.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Team.ProjectsByUser;

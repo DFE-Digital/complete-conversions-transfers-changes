@@ -18,8 +18,8 @@ public class SignificantDateHistoryDto
     public DateTime UpdatedAt { get; set; }
 
     public UserId? UserId { get; set; }
-    
+
     public virtual ICollection<SignificantDateHistoryReasonDto> Reasons { get; set; } = new List<SignificantDateHistoryReasonDto>();
-    
+
     public virtual User? User { get; set; }
 }

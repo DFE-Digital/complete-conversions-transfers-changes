@@ -42,7 +42,7 @@ namespace Dfe.Complete.Application.Services.TrustCache
             {
                 if (trust.Ukprn != null)
                 {
-                    UkprnCache.TryAdd(trust.Ukprn, trust); 
+                    UkprnCache.TryAdd(trust.Ukprn, trust);
                     UkprnCache[trust.Ukprn!] = trust;
                 }
                 if (trust.ReferenceNumber != null)
@@ -59,7 +59,7 @@ namespace Dfe.Complete.Application.Services.TrustCache
             {
                 return;
             }
-            var trusts = await trustsClient.GetByUkprnsAllAsync(ukprns.Select(ukprn => ukprn.ToString())); 
+            var trusts = await trustsClient.GetByUkprnsAllAsync(ukprns.Select(ukprn => ukprn.ToString()));
 
             foreach (var trust in trusts)
             {

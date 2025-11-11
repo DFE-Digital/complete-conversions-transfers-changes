@@ -2,10 +2,10 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
@@ -31,9 +31,9 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.RequestNewUrnAndRecordComplete = request.NotApplicable == true ? null : request.Complete;
             tasksData.RequestNewUrnAndRecordReceive = request.NotApplicable == true ? null : request.Receive;
             tasksData.RequestNewUrnAndRecordGive = request.NotApplicable == true ? null : request.Give;
-            
+
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
-            
+
             return Result<bool>.Success(true);
         }
     }

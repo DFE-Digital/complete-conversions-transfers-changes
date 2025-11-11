@@ -11,7 +11,7 @@ public record GetLocalAuthorityBySchoolUrnQuery(int SchoolUrn) : IRequest<Result
 
 public record GetLocalAuthorityBySchoolUrnResponseDto(Guid? LocalAuthorityId);
 
-public class GetLocalAuthorityBySchoolUrnQueryHandler(ICompleteRepository<LocalAuthority> localAuthorityRepo, ICompleteRepository<GiasEstablishment> giasEstablishmentRepo, ILogger<GetLocalAuthorityBySchoolUrnQueryHandler> logger) 
+public class GetLocalAuthorityBySchoolUrnQueryHandler(ICompleteRepository<LocalAuthority> localAuthorityRepo, ICompleteRepository<GiasEstablishment> giasEstablishmentRepo, ILogger<GetLocalAuthorityBySchoolUrnQueryHandler> logger)
     : IRequestHandler<GetLocalAuthorityBySchoolUrnQuery, Result<GetLocalAuthorityBySchoolUrnResponseDto?>>
 {
     public async Task<Result<GetLocalAuthorityBySchoolUrnResponseDto?>> Handle(GetLocalAuthorityBySchoolUrnQuery request, CancellationToken cancellationToken)
@@ -19,9 +19,9 @@ public class GetLocalAuthorityBySchoolUrnQueryHandler(ICompleteRepository<LocalA
         try
         {
             var giasEstablishment = await giasEstablishmentRepo.GetAsync(x => x.Urn == new Urn(request.SchoolUrn));
-            
+
             var localAuthority = await localAuthorityRepo.GetAsync(x => x.Code == giasEstablishment.LocalAuthorityCode);
-            
+
             return Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value));
         }
         catch (Exception e)

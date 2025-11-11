@@ -40,7 +40,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 TempData["HasDeletedLa"] = true;
                 return RedirectToPage(Links.LocalAuthorities.ListLocalAuthorities);
             }
-            return Page(); 
+            return Page();
         }
 
         public string EditLocalAuthorityUrl(string id)

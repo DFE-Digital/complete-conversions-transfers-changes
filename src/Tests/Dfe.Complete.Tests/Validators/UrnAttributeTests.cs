@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Validators;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Domain.ValueObjects;
-using MediatR;
-using Moq;
+﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Services.AcademiesApi;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Validators;
+using MediatR;
+using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators;
 
@@ -24,7 +24,7 @@ public class UrnAttributeTests
     {
         // Arrange
         var mockSender = new Mock<ISender>();
-        
+
         mockSender.Setup(s => s.Send(It.IsAny<GetEstablishmentByUrnRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<EstablishmentDto>.Success(new EstablishmentDto()));
 
@@ -153,7 +153,7 @@ public class UrnAttributeTests
 
         mockSender.Setup(s => s.Send(It.IsAny<GetEstablishmentByUrnRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<EstablishmentDto>.Failure("There's no school or academy with that URN. Check the number you entered is correct."));
-        
+
         var attribute = new UrnAttribute();
         var validationContext = new ValidationContext(new { TestUrn = urnValue }, null, null)
         {

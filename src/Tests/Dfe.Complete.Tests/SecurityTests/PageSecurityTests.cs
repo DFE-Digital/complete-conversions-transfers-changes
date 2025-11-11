@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Routing;
 using GovUK.Dfe.CoreLibs.Testing.Authorization;
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using Microsoft.Extensions.DependencyInjection;
 using GovUK.Dfe.CoreLibs.Testing.Authorization.Helpers;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Dfe.Complete.Frontend.Tests.Pages
 {

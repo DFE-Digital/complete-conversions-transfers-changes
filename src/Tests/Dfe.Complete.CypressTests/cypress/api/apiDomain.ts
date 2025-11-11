@@ -1,77 +1,63 @@
 export type CreateConversionProjectRequest = {
-    urn: { value: number };
-    significantDate: string;
-    isSignificantDateProvisional: boolean;
-    incomingTrustUkprn: { value: number };
-    isDueTo2Ri: boolean;
-    hasAcademyOrderBeenIssued: boolean;
+    urn: number;
+    incomingTrustUkprn: number;
     advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    establishmentSharepointLink: string;
-    incomingTrustSharepointLink: string;
-    groupReferenceNumber?: string;
-    handingOverToRegionalCaseworkService?: boolean;
-    handoverComments?: string;
-    userAdId?: string;
+    provisionalConversionDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    directiveAcademyOrder: boolean;
+    advisoryBoardConditions?: string;
+    groupId?: string | null;
 };
 
 export type CreateTransferProjectRequest = {
-    urn: { value: number };
-    outgoingTrustUkprn: { value: number };
-    incomingTrustUkprn: { value: number };
-    significantDate: string;
-    isSignificantDateProvisional: boolean;
-    isDueTo2Ri: boolean;
-    isDueToInedaquateOfstedRating: boolean;
-    isDueToIssues: boolean;
-    outGoingTrustWillClose: boolean;
-    handingOverToRegionalCaseworkService?: boolean;
+    urn: number;
+    incomingTrustUkprn: number;
+    outgoingTrustUkprn: number;
     advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    establishmentSharepointLink: string;
-    incomingTrustSharepointLink: string;
-    outgoingTrustSharepointLink: string;
-    groupReferenceNumber?: string;
-    handoverComments?: string;
-    userAdId?: string;
+    provisionalTransferDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    inadequateOfsted: boolean;
+    financialSafeguardingGovernanceIssues: boolean;
+    outgoingTrustToClose: boolean;
+    advisoryBoardConditions?: string;
+    groupId?: string | null;
 };
 
 export type CreateMatConversionProjectRequest = {
-    urn: { value: number };
-    newTrustName: string;
+    urn: number;
     newTrustReferenceNumber: string;
-    significantDate: string;
-    isSignificantDateProvisional: boolean;
-    isDueTo2Ri: boolean;
-    hasAcademyOrderBeenIssued: boolean;
+    newTrustName: string;
     advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    establishmentSharepointLink: string;
-    incomingTrustSharepointLink: string;
-    handingOverToRegionalCaseworkService: boolean;
-    handoverComments: string;
-    userAdId: string;
+    provisionalConversionDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    directiveAcademyOrder: boolean;
+    advisoryBoardConditions?: string;
 };
 
 export type CreateMatTransferProjectRequest = {
-    urn: { value: number };
-    newTrustName: string;
+    urn: number;
     newTrustReferenceNumber: string;
-    outgoingTrustUkprn: { value: number };
-    significantDate: string;
-    isSignificantDateProvisional: boolean;
-    isDueTo2Ri: boolean;
-    isDueToInedaquateOfstedRating: boolean;
-    isDueToIssues: boolean;
-    handingOverToRegionalCaseworkService: boolean;
-    outGoingTrustWillClose: boolean;
+    newTrustName: string;
     advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    establishmentSharepointLink: string;
-    incomingTrustSharepointLink: string;
-    outgoingTrustSharepointLink: string;
-    handoverComments: string;
-    userAdId: string;
+    provisionalTransferDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    outgoingTrustUkprn: number;
+    inadequateOfsted: boolean;
+    financialSafeguardingGovernanceIssues: boolean;
+    outgoingTrustToClose: boolean;
+    advisoryBoardConditions?: string;
 };
 
 export type ProjectRequest =
@@ -82,6 +68,18 @@ export type ProjectRequest =
 
 export type CreateProjectResponse = {
     value: string;
+};
+
+export type UpdateProjectHandoverAssignRequest = {
+    projectId: { value: string };
+    schoolSharepointLink: string;
+    incomingTrustSharepointLink: string;
+    outgoingTrustSharepointLink?: string;
+    assignedToRegionalCaseworkerTeam: boolean;
+    handoverComments: string;
+    userId: { value: string };
+    userTeam: string;
+    twoRequiresImprovement: boolean;
 };
 
 export type GetProjectResponse = {
@@ -155,84 +153,3 @@ export type CreateLocalAuthorityRequest = {
     email: string;
     phone: string;
 };
-
-// prepare project api domain
-
-export type CreateConversionPrepareRequest = {
-    urn: number;
-    incomingTrustUkprn: number;
-    advisoryBoardDate: string;
-    provisionalConversionDate: string;
-    createdByEmail: string;
-    createdByFirstName: string;
-    createdByLastName: string;
-    prepareId: number;
-    directiveAcademyOrder: boolean;
-    advisoryBoardConditions: string;
-    groupId: string | null;
-};
-
-export type CreateConversionFormAMatPrepareRequest = {
-    urn: number;
-    advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    provisionalConversionDate: string;
-    directiveAcademyOrder: boolean;
-    createdByEmail: string;
-    createdByFirstName: string;
-    createdByLastName: string;
-    prepareId: number;
-    newTrustReferenceNumber: string;
-    newTrustName: string;
-};
-
-export type CreateTransferPrepareRequest = {
-    urn: number;
-    advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    provisionalTransferDate: string;
-    createdByEmail: string;
-    createdByFirstName: string;
-    createdByLastName: string;
-    inadequateOfsted: boolean;
-    financialSafeguardingGovernanceIssues: boolean;
-    outgoingTrustUkprn: number;
-    outgoingTrustToClose: boolean;
-    prepareId: number;
-    groupId: string | null;
-    incomingTrustUkprn: number;
-};
-
-export type CreateTransferFormAMatPrepareRequest = {
-    urn: number;
-    advisoryBoardDate: string;
-    advisoryBoardConditions: string;
-    provisionalTransferDate: string;
-    createdByEmail: string;
-    createdByFirstName: string;
-    createdByLastName: string;
-    inadequateOfsted: boolean;
-    financialSafeguardingGovernanceIssues: boolean;
-    outgoingTrustUkprn: number;
-    outgoingTrustToClose: boolean;
-    prepareId: number;
-    groupId: string | null;
-    newTrustReferenceNumber: string;
-    newTrustName: string;
-};
-
-export type PrepareProjectRequest =
-    | CreateConversionPrepareRequest
-    | CreateTransferPrepareRequest
-    | CreateConversionFormAMatPrepareRequest
-    | CreateTransferFormAMatPrepareRequest;
-
-export type CreateConversionPrepareResponse = {
-    conversion_project_id: string;
-};
-
-export type CreateTransferPrepareResponse = {
-    transfer_project_id: string;
-};
-
-export type CreatePrepareProjectResponse = CreateConversionPrepareResponse | CreateTransferPrepareResponse;

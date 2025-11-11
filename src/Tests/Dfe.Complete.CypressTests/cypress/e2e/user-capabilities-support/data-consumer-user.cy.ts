@@ -25,15 +25,15 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.whitcliffe },
-    significantDate: "2027-04-01",
+    urn: urnPool.support.whitcliffe,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the data consumer user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(dataConsumerUser);
