@@ -14,7 +14,7 @@ public record UpdateExternalContactCommand(ContactId ContactId, ContactDto conta
 
 public class UpdateExternalContactCommandHandler(
     IContactReadRepository contactReadRepository,
-    IContactWriteRepository contactWriteRepository, 
+    IContactWriteRepository contactWriteRepository,
     ISender sender,
     ILogger<UpdateExternalContactCommandHandler> logger
 ) : IRequestHandler<UpdateExternalContactCommand, Result<bool>>
@@ -26,7 +26,7 @@ public class UpdateExternalContactCommandHandler(
             var contactEntity = new ContactIdQuery(request.ContactId)
                 .Apply(contactReadRepository.Contacts)
                 .FirstOrDefault();
-            
+
             if (contactEntity is null) return Result<bool>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", request.ContactId.Value.ToString()), ErrorType.NotFound);
 
             var updateDto = request.contactDto;
@@ -39,7 +39,7 @@ public class UpdateExternalContactCommandHandler(
             contactEntity.OrganisationName = updateDto.OrganisationName;
             contactEntity.UpdatedAt = DateTime.UtcNow;
 
-            await contactWriteRepository.UpdateContactAsync(contactEntity, cancellationToken);            
+            await contactWriteRepository.UpdateContactAsync(contactEntity, cancellationToken);
 
             await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contactEntity.ProjectId!, request.contactDto.PrimaryContact, contactEntity), cancellationToken);
 

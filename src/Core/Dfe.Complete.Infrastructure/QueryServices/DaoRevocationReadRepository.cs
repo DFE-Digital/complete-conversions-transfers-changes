@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Application.DaoRevoked.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.QueryServices
 {

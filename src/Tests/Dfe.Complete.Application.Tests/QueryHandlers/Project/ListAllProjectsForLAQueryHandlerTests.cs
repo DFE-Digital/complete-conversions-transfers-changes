@@ -3,7 +3,6 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -51,7 +50,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult.Value);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(expected.Count, handlerResult.Value?.Count);
-        
+
         Assert.Equal(expected.Select(r => r), handlerResult.Value?.Select(r => r));
         // for (int i = 0; i < handlerResult.Value!.Count; i++)
         // {
@@ -123,7 +122,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -137,28 +136,28 @@ public class ListAllProjectsForLAQueryHandlerTests
         //Arrange 
         var localAuthorityCode = fixture.Create<string>();
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        
+
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
         mockListAllProjectsQueryService
             .ListAllProjects(
             Arg.Is<ProjectFilters>(f =>
                 f.LocalAuthorityCode == localAuthorityCode
-            ), 
+            ),
             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
-        
+
         //Act
         var handlerResult =
             await handler.Handle(new ListAllProjectsForLocalAuthorityQuery(localAuthorityCode) { Page = 10 }, default);
-        
+
         // Assert
         Assert.NotNull(handlerResult.Value);
         Assert.True(handlerResult.IsSuccess);
-        
+
         var resultDates = handlerResult.Value!.Select(x => x.ConversionOrTransferDate).ToList();
-        
+
         var orderedDates = resultDates.OrderBy(d => d).ToList();
-        Assert.True(resultDates.SequenceEqual(orderedDates), 
+        Assert.True(resultDates.SequenceEqual(orderedDates),
             "Dates in the result should be in ascending order");
     }
 }

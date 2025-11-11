@@ -1,10 +1,8 @@
-﻿using System.Security.Claims;
-using AutoFixture;
+﻿using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -13,6 +11,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
+using System.Security.Claims;
 using Contact = Dfe.Complete.Domain.Entities.Contact;
 using ContactCategory = Dfe.Complete.Domain.Enums.ContactCategory;
 using ContactId = Dfe.Complete.Domain.ValueObjects.ContactId;
@@ -95,7 +94,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             var mainContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var headteacher = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
-            
+
             var incomingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var outgoingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var incomingCeoContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
@@ -113,7 +112,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             contacts.ForEach(c => c.Id = new ContactId(Guid.NewGuid()));
             contacts.ForEach(c => c.ProjectId = null);
-            
+
             directorOfServicesContact.Category = ContactCategory.LocalAuthority;
             directorOfServicesContact.LocalAuthorityId = localAuthority.Id;
 
@@ -149,7 +148,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.State = ProjectState.Active;
             project.LocalAuthorityId = localAuthority.Id;
             project.IncomingTrustUkprn = new Ukprn(12345678);
-            
+
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
 
@@ -181,25 +180,25 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                     User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
-            
+
             var significantDateHistoryReason = fixture.Customize(
                 new SignificantDateHistoryReasonCustomization()
                 {
                     SignificantDateHistoryId = significantDateHistory.Id
                 }
             ).Create<SignificantDateHistoryReason>();
-            
+
             significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
             await dbContext.SaveChangesAsync();
-            
-            var trustDto = fixture.Customize(new TrustDtoCustomization {Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
-        
+
+            var trustDto = fixture.Customize(new TrustDtoCustomization { Ukprn = project.IncomingTrustUkprn.Value.ToString() }).Create<TrustDto>();
+
             Assert.NotNull(factory.WireMockServer);
 
-            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[] { trustDto }, new List<KeyValuePair<string, string>> { new("ukprns", trustDto.Ukprn!) });
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
@@ -214,7 +213,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             Assert.Equal(3, lines.Length);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthContentsQueryHandler(
@@ -277,7 +276,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             var mainContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var headteacher = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
-            
+
             var incomingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var outgoingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var incomingCeoContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
@@ -295,7 +294,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             contacts.ForEach(c => c.Id = new ContactId(Guid.NewGuid()));
             contacts.ForEach(c => c.ProjectId = null);
-            
+
             directorOfServicesContact.Category = ContactCategory.LocalAuthority;
             directorOfServicesContact.LocalAuthorityId = localAuthority.Id;
 
@@ -331,7 +330,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.State = ProjectState.Active;
             project.LocalAuthorityId = localAuthority.Id;
             project.IncomingTrustUkprn = new Ukprn(12345678);
-            
+
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
 
@@ -370,18 +369,18 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                     SignificantDateHistoryId = significantDateHistory.Id
                 }
             ).Create<SignificantDateHistoryReason>();
-            
+
             significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
             await dbContext.SaveChangesAsync();
-            
-            var trustDto = fixture.Customize(new TrustDtoCustomization {Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
-        
+
+            var trustDto = fixture.Customize(new TrustDtoCustomization { Ukprn = project.IncomingTrustUkprn.Value.ToString() }).Create<TrustDto>();
+
             Assert.NotNull(factory.WireMockServer);
-            
-            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[] { trustDto }, new List<KeyValuePair<string, string>> { new("ukprns", trustDto.Ukprn!) });
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthContentsAsync(1, 2025);
@@ -394,7 +393,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             Assert.Equal(3, lines.Length);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonth_ReturnsBadRequest_WhenCommandFails(
@@ -407,7 +406,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             // Act
             await Assert.ThrowsAsync<CompleteApiException>(async () => await csvExportClient.GetConversionCsvByMonthAsync(1, 2025));
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthContents_ReturnsBadRequest_WhenCommandFails(
@@ -451,7 +450,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 ).Create<LocalAuthority>();
 
             dbContext.LocalAuthorities.Add(localAuthority);
- 
+
             await dbContext.SaveChangesAsync();
             //tasks
             var conversionTasksData = fixture.Create<ConversionTasksData>();
@@ -510,12 +509,12 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             dbContext.KeyContacts.Add(keyContact);
 
             await dbContext.SaveChangesAsync();
-            
-            var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
+
+            var trustDto = fixture.Customize(new TrustDtoCustomization() { Ukprn = project.IncomingTrustUkprn.Value.ToString() }).Create<TrustDto>();
 
             Assert.NotNull(factory.WireMockServer);
 
-            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[] { trustDto }, new List<KeyValuePair<string, string>> { new("ukprns", trustDto.Ukprn!) });
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);

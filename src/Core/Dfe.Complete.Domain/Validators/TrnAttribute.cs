@@ -8,7 +8,7 @@ public partial class TrnAttribute : ValidationAttribute
 {
     [GeneratedRegex("^TR\\d{5}$")]
     private static partial Regex TrnRegex();
-    
+
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var trn = value as string;

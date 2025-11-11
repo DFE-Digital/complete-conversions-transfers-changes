@@ -48,11 +48,11 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
             CreatedAt = createdAt
         };
     }
-    public void Update( 
+    public void Update(
        string code,
        AddressDetails addressDetails,
        DateTime updatedAt)
-    { 
+    {
         Code = code;
         Address1 = addressDetails.Address1;
         Address2 = addressDetails.Address2;

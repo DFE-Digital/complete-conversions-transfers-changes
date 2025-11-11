@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
-    public record UpdateConfirmAcademyOpenedDateTaskCommand(TaskDataId TaskDataId, 
+    public record UpdateConfirmAcademyOpenedDateTaskCommand(TaskDataId TaskDataId,
         DateOnly? AcademyOpenedDate) : IRequest<Result<bool>>;
 
     internal class UpdateConfirmAcademyOpenedDateTaskCommandHandler(

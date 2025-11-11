@@ -47,7 +47,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.ShareInformationEmail);            
+            Assert.True(existingTaskData.ShareInformationEmail);
         }
 
         [Theory]

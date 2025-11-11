@@ -1,9 +1,9 @@
 ﻿using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
+using Dfe.Complete.Utils;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Globalization;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.TagHelpers
 {
@@ -14,9 +14,9 @@ namespace Dfe.Complete.TagHelpers
 
         [HtmlAttributeName("label")]
         public string Label { get; set; }
-        
+
         [HtmlAttributeName("id")]
-        
+
         public string Id { get; set; }
 
         [HtmlAttributeName("asp-for")]
@@ -50,7 +50,7 @@ namespace Dfe.Complete.TagHelpers
         {
             var value = GetValue();
 
-            if(value != empty && RenderLink)
+            if (value != empty && RenderLink)
             {
                 return $@"<a class=""govuk-link"" href=""{For.Model}"">{value}</a>";
             }
@@ -80,7 +80,7 @@ namespace Dfe.Complete.TagHelpers
                         </a>                   
                      </dd>";
             }
-            
+
             return $@"<dd class=""govuk-summary-list__actions"">
                         <a class=""govuk-link"" href={Href}>
                             Change<span class=""govuk-visually-hidden"">{Label}</span>

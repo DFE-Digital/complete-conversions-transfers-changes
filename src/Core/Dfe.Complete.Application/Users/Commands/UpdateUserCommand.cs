@@ -3,13 +3,13 @@ using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Dfe.Complete.Domain.Validators;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Users.Commands
 {

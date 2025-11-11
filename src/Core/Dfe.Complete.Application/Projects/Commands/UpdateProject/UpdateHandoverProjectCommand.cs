@@ -45,11 +45,11 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             project.State = ProjectState.Active;
             project.TwoRequiresImprovement = request.TwoRequiresImprovement;
             project.UpdatedAt = dateTime;
-            
+
             AssignedToRegionalCaseworkerTeam(request, project, dateTime);
 
             AddNoteWhenHandoverCommentsPresent(project, request, dateTime);
-            
+
             await AddKeyContactIfDoesNotExist(project, dateTime, cancellationToken);
 
             await projectRepository.UpdateAsync(project, cancellationToken);
@@ -82,7 +82,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
         private static void AddNoteWhenHandoverCommentsPresent(Project project, UpdateHandoverProjectCommand request, DateTime dateTime)
         {
-            
+
             if (!string.IsNullOrWhiteSpace(request.HandoverComments))
             {
                 project.Notes.Add(new Note()

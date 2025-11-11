@@ -210,7 +210,7 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
 
         [Fact]
         public void ProjectIdQuery_Various()
-        { 
+        {
             var projectId = new ProjectId(Guid.NewGuid());
             var list = new[]
             {

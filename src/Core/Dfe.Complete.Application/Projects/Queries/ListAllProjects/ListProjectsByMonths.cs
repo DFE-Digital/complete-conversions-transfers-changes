@@ -3,11 +3,11 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
-using MediatR;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Utilities.Constants;
-using Microsoft.Extensions.Logging;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {

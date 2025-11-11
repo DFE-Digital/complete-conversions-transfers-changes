@@ -8,16 +8,16 @@ using Microsoft.Extensions.Logging;
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
-public abstract class BaseCreateHandoverTransferProjectCommandHandler<TRequest>
+public abstract class BaseCreateTransferProjectCommandHandler<TRequest>
     where TRequest : IBaseHandoverTransferProjectCommand
 {
     protected readonly IUnitOfWork _unitOfWork;
     protected readonly IHandoverProjectService _handoverProjectService;
     protected readonly ILogger _logger;
 
-    protected BaseCreateHandoverTransferProjectCommandHandler(
+    protected BaseCreateTransferProjectCommandHandler(
         IUnitOfWork unitOfWork,
         IHandoverProjectService handoverProjectService,
         ILogger logger)
@@ -77,7 +77,7 @@ public abstract class BaseCreateHandoverTransferProjectCommandHandler<TRequest>
             if (ex.StatusCode == 404)
             {
                 await _unitOfWork.RollBackAsync();
-                _logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
+                _logger.LogError(ex, "Exception while creating transfer project for URN: {Urn}", request.Urn);
                 throw new UnprocessableContentException(ex.Message, ex);
             }
             throw new UnknownException(ex.Message);
@@ -85,8 +85,8 @@ public abstract class BaseCreateHandoverTransferProjectCommandHandler<TRequest>
         catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await _unitOfWork.RollBackAsync();
-            _logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
-            throw new UnknownException($"An error occurred while creating the handover transfer project for URN: {request.Urn}", ex);
+            _logger.LogError(ex, "Exception while creating transfer project for URN: {Urn}", request.Urn);
+            throw new UnknownException($"An error occurred while creating the transfer project for URN: {request.Urn}", ex);
         }
     }
 

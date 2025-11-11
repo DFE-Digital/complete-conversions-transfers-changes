@@ -13,12 +13,12 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            
+
             var projectWithHistories = new GetProjectHistoryByProjectIdQuery(ProjectId);
             var result = await sender.Send(projectWithHistories);
-            
+
             Project = result.Value!;
-            
+
             return Page();
         }
 

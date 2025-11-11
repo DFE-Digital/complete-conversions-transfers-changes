@@ -7,7 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
-{   public record UpdateLandConsentLetterTaskCommand(
+{
+    public record UpdateLandConsentLetterTaskCommand(
         TaskDataId TaskDataId,
         bool? NotApplicable,
         bool? Drafted,
@@ -30,10 +31,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             tasksData.LandConsentLetterNotApplicable = request.NotApplicable;
             tasksData.LandConsentLetterDrafted = notApplicableSelected ? null : request.Drafted;
-            tasksData.LandConsentLetterSigned = notApplicableSelected ? null : request.Signed; 
+            tasksData.LandConsentLetterSigned = notApplicableSelected ? null : request.Signed;
             tasksData.LandConsentLetterSent = notApplicableSelected ? null : request.Sent;
             tasksData.LandConsentLetterSaved = notApplicableSelected ? null : request.Saved;
-            
+
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

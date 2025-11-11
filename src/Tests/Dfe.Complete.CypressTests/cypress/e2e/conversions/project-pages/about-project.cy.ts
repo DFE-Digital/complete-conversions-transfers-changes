@@ -11,37 +11,35 @@ import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import groupApi from "cypress/api/groupApi";
 import editConversionProjectPage from "cypress/pages/projects/edit/editConversionProjectPage";
 import { urnPool } from "cypress/constants/testUrns";
+import { UpdateProjectHandoverAssignRequest } from "cypress/api/apiDomain";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
-    incomingTrustUkprn: { value: dimensionsTrust.ukprn },
-    groupReferenceNumber: dimensionsTrust.groupReferenceNumber,
+    urn: urnPool.conversion.stChads,
+    incomingTrustUkprn: dimensionsTrust.ukprn,
+    groupId: dimensionsTrust.groupReferenceNumber,
 });
 let projectId: string;
 let changeLinkPath: string;
+let projectDetails: UpdateProjectHandoverAssignRequest;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley";
 const academy = {
     urn: urnPool.conversion.cradley,
     name: "Cradley CofE Primary School",
-    address: "Church Road",
-    localAuthority: "Dudley",
-    schoolPhase: "Primary",
-    sharePointLink: "https://educationgovuk.sharepoint.com",
 };
 
 const projectFormAMAT = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectFormAMATId: string;
+let projectFormAMATDetails: UpdateProjectHandoverAssignRequest;
 const formAMATSchoolName = "Whitchurch Primary School";
 const formAMATLocalAuthority = "Bath and North East Somerset";
 const formAMATRegion = "South West";
 
 const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.stMarks },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversion.stMarks,
 });
 let teammatesProjectId: string;
 let formAMATChangeLinkPath: string;
@@ -49,20 +47,28 @@ let groupId: string;
 
 describe("About the project page - conversion projects: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(projectFormAMAT.urn.value);
-        projectRemover.removeProjectIfItExists(teammatesProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(projectFormAMAT.urn);
+        projectRemover.removeProjectIfItExists(teammatesProject.urn);
         projectApi.createConversionProject(project).then((response) => {
             projectId = response.value;
+            projectDetails = ProjectBuilder.updateConversionProjectHandoverAssignRequest({
+                projectId: { value: projectId },
+            });
+            projectApi.updateProjectHandoverAssign(projectDetails);
             projectApi.updateProjectAcademyUrn(projectId, academy.urn);
             changeLinkPath = `/projects/conversions/${projectId}/edit#`;
         });
         projectApi.createMatConversionProject(projectFormAMAT).then((response) => {
             projectFormAMATId = response.value;
+            projectFormAMATDetails = ProjectBuilder.updateConversionProjectHandoverAssignRequest({
+                projectId: { value: projectFormAMATId },
+            });
+            projectApi.updateProjectHandoverAssign(projectFormAMATDetails);
             formAMATChangeLinkPath = `/projects/conversions/${projectFormAMATId}/edit#`;
         });
         projectApi
-            .createMatConversionProject(teammatesProject, rdoLondonUser.email)
+            .createAndUpdateMatConversionProject(teammatesProject, rdoLondonUser)
             .then((response) => (teammatesProjectId = response.value));
         groupApi
             .getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber)
@@ -78,13 +84,13 @@ describe("About the project page - conversion projects: ", () => {
         Logger.log("Project summary details are still displayed at the top of the page");
         projectDetailsPage
             .containsHeading(schoolName)
-            .hasSchoolURNHeading(`${project.urn.value}`)
+            .hasSchoolURNHeading(`${project.urn}`)
             .hasConversionTag()
             .hasInAGroupTag()
-            .hasConversionDate(project.significantDate)
+            .hasConversionDate(project.provisionalConversionDate)
             .hasIncomingTrust(dimensionsTrust.name)
             .hasLAAndRegion(localAuthority, region)
-            .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink);
+            .hasSharePointLinks(projectDetails.schoolSharepointLink, projectDetails.incomingTrustSharepointLink);
 
         Logger.log("Project details sections are displayed as expected");
 
@@ -95,7 +101,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Type")
             .hasValue("Conversion")
             .summaryShows("Conversion date")
-            .hasValue(significateDateToDisplayDate(project.significantDate))
+            .hasValue(`${significateDateToDisplayDate(project.provisionalConversionDate)} provisional`)
             .summaryShows("Local authority")
             .hasValue(localAuthority)
             .summaryShows("Diocese")
@@ -109,16 +115,16 @@ describe("About the project page - conversion projects: ", () => {
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
-            .hasValue(project.handingOverToRegionalCaseworkService ? "Yes" : "No")
+            .hasValue(projectDetails.assignedToRegionalCaseworkerTeam ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}project-assignment`)
 
             .subSection("Reasons for the conversion")
             .hasSubHeading("Reasons for the conversion")
             .summaryShows("Has a directive academy order been issued?")
-            .hasValue(project.hasAcademyOrderBeenIssued ? "Yes" : "No")
+            .hasValue(project.directiveAcademyOrder ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}directive-academy-order`)
             .summaryShows("Is this conversion due to intervention following 2RI?")
-            .hasValue(project.isDueTo2Ri ? "Yes" : "No")
+            .hasValue(projectDetails.twoRequiresImprovement ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}two-requires-improvement`)
 
             .subSection("Advisory board details")
@@ -127,7 +133,7 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .hasChangeLink(`${changeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
-            .hasValue(project.advisoryBoardConditions)
+            .hasValue(project.advisoryBoardConditions!)
             .hasChangeLink(`${changeLinkPath}advisory-board`)
 
             .subSection("School details")
@@ -135,10 +141,10 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Name")
             .hasValueWithLink(
                 `${schoolName} View the school's information in GIAS (opens in new tab)`,
-                `${giasUrl}/Establishments/Establishment/Details/${project.urn.value}`,
+                `${giasUrl}/Establishments/Establishment/Details/${project.urn}`,
             )
             .summaryShows("URN (unique reference number)")
-            .hasValue(project.urn.value)
+            .hasValue(project.urn)
             .summaryShows("Type")
             .hasValue("Voluntary aided school")
             .summaryShows("Range")
@@ -150,7 +156,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the school SharePoint folder (opens in new tab)",
-                project.establishmentSharepointLink,
+                projectDetails.schoolSharepointLink,
             )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
@@ -172,7 +178,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Phase")
             .hasValue("Primary")
             .summaryShows("SharePoint folder")
-            .hasValueWithLink("View the academy SharePoint folder (opens in new tab)", academy.sharePointLink)
+            .hasValueWithLink("View the academy SharePoint folder (opens in new tab)", projectDetails.schoolSharepointLink)
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Incoming trust details")
@@ -200,7 +206,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                project.incomingTrustSharepointLink,
+                projectDetails.incomingTrustSharepointLink,
             )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`);
     });
@@ -213,15 +219,15 @@ describe("About the project page - conversion projects: ", () => {
         Logger.log("Project summary details are still displayed at the top of the page");
         projectDetailsPage
             .containsHeading(formAMATSchoolName)
-            .hasSchoolURNHeading(`${projectFormAMAT.urn.value}`)
+            .hasSchoolURNHeading(`${projectFormAMAT.urn}`)
             .hasFormAMATTag()
             .hasConversionTag()
-            .hasConversionDate(projectFormAMAT.significantDate)
+            .hasConversionDate(projectFormAMAT.provisionalConversionDate)
             .hasIncomingTrust(macclesfieldTrust.name)
             .hasLAAndRegion("Bath And North East Somerset", formAMATRegion)
             .hasSharePointLinks(
-                projectFormAMAT.establishmentSharepointLink,
-                projectFormAMAT.incomingTrustSharepointLink,
+                projectFormAMATDetails.schoolSharepointLink,
+                projectFormAMATDetails.incomingTrustSharepointLink,
             );
 
         Logger.log("Project details sections are displayed as expected");
@@ -233,7 +239,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Type")
             .hasValue("Conversion")
             .summaryShows("Conversion date")
-            .hasValue(significateDateToDisplayDate(projectFormAMAT.significantDate))
+            .hasValue(`${significateDateToDisplayDate(projectFormAMAT.provisionalConversionDate)} provisional`)
             .summaryShows("Local authority")
             .hasValue(formAMATLocalAuthority)
             .summaryShows("Diocese")
@@ -247,16 +253,16 @@ describe("About the project page - conversion projects: ", () => {
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
-            .hasValue(projectFormAMAT.handingOverToRegionalCaseworkService ? "Yes" : "No")
+            .hasValue(projectFormAMATDetails.assignedToRegionalCaseworkerTeam ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}project-assignment`)
 
             .subSection("Reasons for the conversion")
             .hasSubHeading("Reasons for the conversion")
             .summaryShows("Has a directive academy order been issued?")
-            .hasValue(projectFormAMAT.hasAcademyOrderBeenIssued ? "Yes" : "No")
+            .hasValue(projectFormAMAT.directiveAcademyOrder ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}directive-academy-order`)
             .summaryShows("Is this conversion due to intervention following 2RI?")
-            .hasValue(projectFormAMAT.isDueTo2Ri ? "Yes" : "No")
+            .hasValue(projectFormAMATDetails.twoRequiresImprovement ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}two-requires-improvement`)
 
             .subSection("Advisory board details")
@@ -265,7 +271,7 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(significateDateToDisplayDate(projectFormAMAT.advisoryBoardDate))
             .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
-            .hasValue(projectFormAMAT.advisoryBoardConditions)
+            .hasValue(projectFormAMAT.advisoryBoardConditions!)
             .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
 
             .subSection("School details")
@@ -273,10 +279,10 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Name")
             .hasValueWithLink(
                 `${formAMATSchoolName} View the school's information in GIAS (opens in new tab)`,
-                `${giasUrl}/Establishments/Establishment/Details/${projectFormAMAT.urn.value}`,
+                `${giasUrl}/Establishments/Establishment/Details/${projectFormAMAT.urn}`,
             )
             .summaryShows("URN (unique reference number)")
-            .hasValue(projectFormAMAT.urn.value)
+            .hasValue(projectFormAMAT.urn)
             .summaryShows("Type")
             .hasValue("Academy converter")
             .summaryShows("Range")
@@ -288,7 +294,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the school SharePoint folder (opens in new tab)",
-                projectFormAMAT.establishmentSharepointLink,
+                projectFormAMATDetails.schoolSharepointLink,
             )
             .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
@@ -315,7 +321,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                projectFormAMAT.incomingTrustSharepointLink,
+                projectFormAMATDetails.incomingTrustSharepointLink,
             )
             .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`);
     });

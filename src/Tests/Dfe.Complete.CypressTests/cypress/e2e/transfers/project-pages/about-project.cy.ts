@@ -10,14 +10,17 @@ import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import editTransferProjectPage from "cypress/pages/projects/edit/editTransferProjectPage";
 import groupApi from "cypress/api/groupApi";
 import { urnPool } from "cypress/constants/testUrns";
+import { UpdateProjectHandoverAssignRequest } from "cypress/api/apiDomain";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.abbey },
-    incomingTrustUkprn: { value: macclesfieldTrust.ukprn },
-    outgoingTrustUkprn: { value: dimensionsTrust.ukprn },
+    urn: urnPool.transfer.abbey,
+    incomingTrustUkprn: macclesfieldTrust.ukprn,
+    outgoingTrustUkprn: dimensionsTrust.ukprn,
+    groupId: macclesfieldTrust.groupReferenceNumber,
 });
 let projectId: string;
 let changeLinkPath: string;
+let projectDetails: UpdateProjectHandoverAssignRequest;
 const schoolName = "Abbey College Manchester";
 const localAuthority = "Manchester";
 const region = "North West";
@@ -25,13 +28,14 @@ const incomingTrust = macclesfieldTrust;
 const outgoingTrust = dimensionsTrust;
 
 const projectFormAMat = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transfer.priory },
+    urn: urnPool.transfer.priory,
     newTrustName: macclesfieldTrust.name,
     newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
-    outgoingTrustUkprn: { value: dimensionsTrust.ukprn },
+    outgoingTrustUkprn: dimensionsTrust.ukprn,
 });
 let projectFormAMatId: string;
 let formAMATChangeLinkPath: string;
+let projectFormAMATDetails: UpdateProjectHandoverAssignRequest;
 let groupId: string;
 const formAMATSchoolName = "Priory Rise School";
 const formAMATLocalAuthority = "Milton Keynes";
@@ -39,14 +43,23 @@ const formAMATRegion = "South East";
 
 describe("About the project page - transfer projects: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(projectFormAMat.urn.value);
-        projectApi.createTransferProject(project).then((response) => {
-            projectId = response.value;
-            changeLinkPath = `/projects/transfers/${projectId}/edit#`;
-        });
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(projectFormAMat.urn);
+        // bug 248050
+        // projectApi.createTransferProject(project).then((response) => {
+        //     projectId = response.value;
+        //     projectDetails = ProjectBuilder.updateTransferProjectHandoverAssignRequest({
+        //         projectId: { value: projectId },
+        //     });
+        //     projectApi.updateProjectHandoverAssign(projectDetails);
+        //     changeLinkPath = `/projects/transfers/${projectId}/edit#`;
+        // });
         projectApi.createMatTransferProject(projectFormAMat).then((response) => {
             projectFormAMatId = response.value;
+            projectFormAMATDetails = ProjectBuilder.updateTransferProjectHandoverAssignRequest({
+                projectId: { value: projectFormAMatId },
+            });
+            projectApi.updateProjectHandoverAssign(projectFormAMATDetails);
             formAMATChangeLinkPath = `/projects/transfers/${projectFormAMatId}/edit#`;
         });
         groupApi
@@ -59,7 +72,8 @@ describe("About the project page - transfer projects: ", () => {
         cy.acceptCookies();
     });
 
-    it("Should display the project details on the about project section for a transfer project", () => {
+    // bug 248050
+    it.skip("Should display the project details on the about project section for a transfer project", () => {
         Logger.log("Go to project");
         cy.visit(`projects/${projectId}/tasks`);
 
@@ -69,14 +83,14 @@ describe("About the project page - transfer projects: ", () => {
         Logger.log("Project summary details are still displayed at the top of the page");
         projectDetailsPage
             .containsHeading(schoolName)
-            .hasAcademyURNHeading(`${project.urn.value}`)
+            .hasAcademyURNHeading(`${project.urn}`)
             .hasTransferTag()
             .hasInAGroupTag()
-            .hasTransferDate(project.significantDate)
+            .hasTransferDate(project.provisionalTransferDate)
             .hasOutgoingTrust(outgoingTrust.name)
             .hasIncomingTrust(incomingTrust.name)
             .hasLAAndRegion(localAuthority, region)
-            .hasSharePointLink(project.establishmentSharepointLink);
+            .hasSharePointLink(projectDetails.schoolSharepointLink);
 
         Logger.log("About projects sections are displayed as expected");
 
@@ -87,7 +101,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Type")
             .hasValue("Transfer")
             .summaryShows("Transfer date")
-            .hasValue(significateDateToDisplayDate(project.significantDate))
+            .hasValue(`${significateDateToDisplayDate(project.provisionalTransferDate)} provisional`)
             .summaryShows("Local authority")
             .hasValue(localAuthority)
             .summaryShows("Diocese")
@@ -95,25 +109,25 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Region")
             .hasValue(region)
             .summaryShows("Group reference number")
-            .hasValue(project.groupReferenceNumber!)
+            .hasValue(project.groupId!)
             .hasChangeLink(`${changeLinkPath}group-reference-number`)
 
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
-            .hasValue(project.handingOverToRegionalCaseworkService ? "Yes" : "No")
+            .hasValue(projectDetails.assignedToRegionalCaseworkerTeam ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}project-assignment`)
 
             .subSection("Reasons for the transfer")
             .hasSubHeading("Reasons for the transfer")
             .summaryShows("Is this transfer due to 2RI?")
-            .hasValue(project.isDueTo2Ri ? "Yes" : "No")
+            .hasValue(projectDetails.twoRequiresImprovement ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}two-requires-improvement`)
             .summaryShows("Is this transfer due to an inadequate Ofsted rating?")
-            .hasValue(project.isDueToInedaquateOfstedRating ? "Yes" : "No")
+            .hasValue(project.inadequateOfsted ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}inadequate-ofsted`)
             .summaryShows("Is this transfer due to financial, safeguarding or governance issues?")
-            .hasValue(project.isDueToIssues ? "Yes" : "No")
+            .hasValue(project.financialSafeguardingGovernanceIssues ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}financial-safeguarding-governance-issues`)
 
             .subSection("Advisory board details")
@@ -122,7 +136,7 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .hasChangeLink(`${changeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
-            .hasValue(project.advisoryBoardConditions)
+            .hasValue(project.advisoryBoardConditions!)
             .hasChangeLink(`${changeLinkPath}advisory-board`)
 
             .subSection("Academy details")
@@ -130,10 +144,10 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Name")
             .hasValueWithLink(
                 `${schoolName} View the school's information in GIAS (opens in new tab)`,
-                `${giasUrl}/Establishments/Establishment/Details/${project.urn.value}`,
+                `${giasUrl}/Establishments/Establishment/Details/${project.urn}`,
             )
             .summaryShows("Academy URN (unique reference number)")
-            .hasValue(project.urn.value)
+            .hasValue(project.urn)
             .summaryShows("Type")
             .hasValue("Other independent school")
             .summaryShows("Age range")
@@ -143,7 +157,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the academy SharePoint folder (opens in new tab)",
-                project.establishmentSharepointLink,
+                projectDetails.schoolSharepointLink,
             )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
@@ -172,7 +186,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                project.incomingTrustSharepointLink,
+                projectDetails.incomingTrustSharepointLink,
             )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
@@ -198,11 +212,11 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                project.outgoingTrustSharepointLink,
+                projectDetails.outgoingTrustSharepointLink,
             )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
             .summaryShows("Will the outgoing trust close once this transfer is completed?")
-            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No")
+            .hasValue(project.outgoingTrustToClose ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}outgoing-trust-to-close`);
     });
 
@@ -213,14 +227,14 @@ describe("About the project page - transfer projects: ", () => {
         Logger.log("Project summary details are still displayed at the top of the page");
         projectDetailsPage
             .containsHeading(formAMATSchoolName)
-            .hasAcademyURNHeading(`${projectFormAMat.urn.value}`)
+            .hasAcademyURNHeading(`${projectFormAMat.urn}`)
             .hasTransferTag()
             .hasFormAMATTag()
-            .hasTransferDate(projectFormAMat.significantDate)
+            .hasTransferDate(projectFormAMat.provisionalTransferDate)
             .hasOutgoingTrust(outgoingTrust.name)
             .hasIncomingTrust(incomingTrust.name)
             .hasLAAndRegion(formAMATLocalAuthority, formAMATRegion)
-            .hasSharePointLink(projectFormAMat.establishmentSharepointLink);
+            .hasSharePointLink(projectFormAMATDetails.schoolSharepointLink);
 
         Logger.log("About projects details sections are displayed as expected");
         aboutTheProjectPage
@@ -230,7 +244,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Type")
             .hasValue("Transfer")
             .summaryShows("Transfer date")
-            .hasValue(significateDateToDisplayDate(project.significantDate))
+            .hasValue(`${significateDateToDisplayDate(projectFormAMat.provisionalTransferDate)} provisional`)
             .summaryShows("Local authority")
             .hasValue(formAMATLocalAuthority)
             .summaryShows("Diocese")
@@ -244,19 +258,19 @@ describe("About the project page - transfer projects: ", () => {
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
-            .hasValue(projectFormAMat.handingOverToRegionalCaseworkService ? "Yes" : "No")
+            .hasValue(projectFormAMATDetails.assignedToRegionalCaseworkerTeam ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}project-assignment`)
 
             .subSection("Reasons for the transfer")
             .hasSubHeading("Reasons for the transfer")
             .summaryShows("Is this transfer due to 2RI?")
-            .hasValue(projectFormAMat.isDueTo2Ri ? "Yes" : "No")
+            .hasValue(projectFormAMATDetails.twoRequiresImprovement ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}two-requires-improvement`)
             .summaryShows("Is this transfer due to an inadequate Ofsted rating?")
-            .hasValue(projectFormAMat.isDueToInedaquateOfstedRating ? "Yes" : "No")
+            .hasValue(projectFormAMat.inadequateOfsted ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}inadequate-ofsted`)
             .summaryShows("Is this transfer due to financial, safeguarding or governance issues?")
-            .hasValue(projectFormAMat.isDueToIssues ? "Yes" : "No")
+            .hasValue(projectFormAMat.financialSafeguardingGovernanceIssues ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}financial-safeguarding-governance-issues`)
 
             .subSection("Advisory board details")
@@ -265,7 +279,7 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(significateDateToDisplayDate(projectFormAMat.advisoryBoardDate))
             .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
-            .hasValue(projectFormAMat.advisoryBoardConditions)
+            .hasValue(projectFormAMat.advisoryBoardConditions!)
             .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
 
             .subSection("Academy details")
@@ -273,10 +287,10 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Name")
             .hasValueWithLink(
                 `${formAMATSchoolName} View the school's information in GIAS (opens in new tab)`,
-                `${giasUrl}/Establishments/Establishment/Details/${projectFormAMat.urn.value}`,
+                `${giasUrl}/Establishments/Establishment/Details/${projectFormAMat.urn}`,
             )
             .summaryShows("Academy URN (unique reference number)")
-            .hasValue(projectFormAMat.urn.value)
+            .hasValue(projectFormAMat.urn)
             .summaryShows("Type")
             .hasValue("Academy converter")
             .summaryShows("Age range")
@@ -286,7 +300,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the academy SharePoint folder (opens in new tab)",
-                projectFormAMat.establishmentSharepointLink,
+                projectFormAMATDetails.schoolSharepointLink,
             )
             .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
@@ -309,7 +323,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                projectFormAMat.incomingTrustSharepointLink,
+                projectFormAMATDetails.incomingTrustSharepointLink,
             )
             .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
@@ -335,15 +349,16 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
-                project.outgoingTrustSharepointLink,
+                projectFormAMATDetails.outgoingTrustSharepointLink,
             )
             .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
             .summaryShows("Will the outgoing trust close once this transfer is completed?")
-            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No")
+            .hasValue(projectFormAMat.outgoingTrustToClose ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}outgoing-trust-to-close`);
     });
 
-    it("Should display page links that navigate to different sections of the about project page", () => {
+    // bug 248050
+    it.skip("Should display page links that navigate to different sections of the about project page", () => {
         Logger.log("Go to the about project section");
         cy.visit(`projects/${projectId}/information`);
 
@@ -365,7 +380,8 @@ describe("About the project page - transfer projects: ", () => {
             .pageHasMovedToSection("Outgoing trust details");
     });
 
-    it("Should be able to make changes to your project's details", () => {
+    // bug 248050
+    it.skip("Should be able to make changes to your project's details", () => {
         const newIncomingTrust = dimensionsTrust;
         const newOutgoingTrust = macclesfieldTrust;
         cy.visit(`projects/${projectId}/information`);

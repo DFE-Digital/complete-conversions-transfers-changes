@@ -2,7 +2,6 @@
 using AutoMapper;
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Services.PersonsApi;
-using Dfe.Complete.Tests.Common.Customizations.DataAttributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.PersonsApi.Client.Contracts;
 using Microsoft.Extensions.Logging;
@@ -41,7 +40,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.True(result.IsSuccess);
             Assert.Equal(dto, result.Value);
-        }        
+        }
 
         [Theory]
         [CustomAutoData]
@@ -62,7 +61,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var result = await handler.Handle(request, CancellationToken.None);
 
             Assert.False(result.IsSuccess);
-            Assert.Contains("Persons API client", result.Error);           
+            Assert.Contains("Persons API client", result.Error);
         }
 
         [Theory]
@@ -109,7 +108,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var expectedMessage = $"An unexpected error occurred. Response: {exception.Message}";
 
             Assert.False(result.IsSuccess);
-            Assert.Equal(expectedMessage, result.Error);            
+            Assert.Equal(expectedMessage, result.Error);
         }
     }
 

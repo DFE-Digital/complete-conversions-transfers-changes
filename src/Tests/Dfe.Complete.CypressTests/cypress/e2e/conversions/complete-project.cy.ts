@@ -3,57 +3,57 @@ import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import TaskHelper from "cypress/api/taskHelper";
+import taskHelper from "cypress/api/taskHelper";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { getSignificantDateString } from "cypress/support/formatDate";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const completableProject = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
-    isSignificantDateProvisional: true,
+    urn: urnPool.conversion.stChads,
 });
 let completableProjectId: string;
 const completableSchoolName = "St Chad's Catholic Primary School";
 
 const someTasksCompletedProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.cradley },
+    urn: urnPool.conversion.cradley,
 });
 let someTasksCompletedProjectId: string;
 
 const noTasksCompletedProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
+    urn: urnPool.conversion.jessons,
 });
 let noTasksCompletedProjectId: string;
 
 describe("Complete conversion projects tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(completableProject.urn.value);
-        projectRemover.removeProjectIfItExists(noTasksCompletedProject.urn.value);
-        projectRemover.removeProjectIfItExists(someTasksCompletedProject.urn.value);
-        projectApi.createConversionProject(completableProject).then((response) => {
+        projectRemover.removeProjectIfItExists(completableProject.urn);
+        projectRemover.removeProjectIfItExists(noTasksCompletedProject.urn);
+        projectRemover.removeProjectIfItExists(someTasksCompletedProject.urn);
+        projectApi.createAndUpdateConversionProject(completableProject).then((response) => {
             completableProjectId = response.value;
-            projectApi.getProject(completableProject.urn.value).then((response) => {
+            projectApi.getProject(completableProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
-                TaskHelper.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
-                TaskHelper.updateConfirmAllConditionsMet(completableProjectId, "completed");
-                TaskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
+                taskHelper.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
+                taskHelper.updateConfirmAllConditionsMet(completableProjectId, "completed");
+                taskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });
-        projectApi.createMatConversionProject(someTasksCompletedProject).then((response) => {
+        projectApi.createAndUpdateMatConversionProject(someTasksCompletedProject).then((response) => {
             someTasksCompletedProjectId = response.value;
-            projectApi.getProject(someTasksCompletedProject.urn.value).then((response) => {
+            projectApi.getProject(someTasksCompletedProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
                 // set significate date in the future, so project cannot be completed
-                TaskHelper.updateExternalStakeholderKickOff(
+                taskHelper.updateExternalStakeholderKickOff(
                     someTasksCompletedProjectId,
                     "completed",
                     getSignificantDateString(1),
                 );
-                TaskHelper.updateConfirmAllConditionsMet(someTasksCompletedProjectId, "completed");
-                TaskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
+                taskHelper.updateConfirmAllConditionsMet(someTasksCompletedProjectId, "completed");
+                taskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });
         projectApi
-            .createMatConversionProject(noTasksCompletedProject)
+            .createAndUpdateMatConversionProject(noTasksCompletedProject)
             .then((response) => (noTasksCompletedProjectId = response.value));
     });
 
@@ -66,7 +66,7 @@ describe("Complete conversion projects tests", () => {
         cy.visit(`projects/${completableProjectId}/tasks`);
         taskListPage
             .clickButton("Complete project")
-            .contains(`You have completed the project for ${completableSchoolName} ${completableProject.urn.value}`);
+            .contains(`You have completed the project for ${completableSchoolName} ${completableProject.urn}`);
         cy.visit("/projects/yours/completed");
         yourProjects.goToNextPageUntilFieldIsVisible(completableSchoolName);
     });
@@ -89,5 +89,9 @@ describe("Complete conversion projects tests", () => {
                 "The confirm all conditions have been met task is completed",
                 "The confirm the date the academy opened task is completed",
             ]);
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

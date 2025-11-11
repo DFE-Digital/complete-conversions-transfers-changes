@@ -20,7 +20,7 @@ public class TrustUkprnClientHandlerTests
         var expectedTrust = new TrustDto();
         var mockClient = new Mock<ITrustsV4Client>();
         var mockLogger = new Mock<ILogger<TrustUkprnClientHandler>>();
-        
+
         mockClient
             .Setup(client => client.GetTrustByUkprn2Async(ukprn, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedTrust);
@@ -44,7 +44,7 @@ public class TrustUkprnClientHandlerTests
     {
         // Arrange
         var mockClient = new Mock<ITrustsV4Client>();
-        var mockLogger = new Mock<ILogger<TrustUkprnClientHandler>>();        
+        var mockLogger = new Mock<ILogger<TrustUkprnClientHandler>>();
         var handler = new TrustUkprnClientHandler(mockClient.Object, mockLogger.Object, mockCache);
         var request = new GetTrustByUkprnRequest(ukprn);
 

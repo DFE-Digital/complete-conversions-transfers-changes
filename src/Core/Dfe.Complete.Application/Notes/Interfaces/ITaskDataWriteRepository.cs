@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Domain.Entities; 
+﻿using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Notes.Interfaces
 {

@@ -4,36 +4,36 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using AutoFixture.AutoMoq;
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
-    using Dfe.Complete.Application.Contacts.Models;    
+    using Dfe.Complete.Application.Contacts.Models;
     using Dfe.Complete.Application.Contacts.Queries;
-    using Dfe.Complete.Domain.ValueObjects;    
-    using Dfe.Complete.Pages.Projects.ExternalContacts;    
+    using Dfe.Complete.Domain.ValueObjects;
+    using Dfe.Complete.Pages.Projects.ExternalContacts;
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
-    using Dfe.Complete.Tests.MockData;    
-    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;    
-    using MediatR;    
+    using Dfe.Complete.Tests.MockData;
+    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
-    using Moq;    
+    using Moq;
     using System.Threading.Tasks;
-    
+
     using Xunit;
 
     public class DeleteExternalContactTests
     {
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
         private readonly Mock<ISender> mockSender;
-        private readonly Mock<ILogger<DeleteExternalContact>> mockLogger;        
+        private readonly Mock<ILogger<DeleteExternalContact>> mockLogger;
 
         public DeleteExternalContactTests()
         {
             mockSender = fixture.Freeze<Mock<ISender>>();
-            mockLogger = fixture.Freeze<Mock<ILogger<DeleteExternalContact>>>();            
+            mockLogger = fixture.Freeze<Mock<ILogger<DeleteExternalContact>>>();
         }
 
-        [Fact]                
+        [Fact]
         public async Task OnGetAsync_Loads_Successfully()
         {
             // Arrange            
@@ -43,14 +43,14 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             var testClass = fixture.Build<DeleteExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())
-               .With(t => t.ContactId, contactId.Value.ToString())               
+               .With(t => t.ContactId, contactId.Value.ToString())
                .Create();
 
             var contactDto = fixture.Build<ContactDto>()
               .With(t => t.Id, contactId)
               .With(t => t.ProjectId, projectId)
               .Create();
-            
+
             var getContactByIdQuery = new GetContactByIdQuery(contactDto.Id);
 
             mockSender.Setup(s => s.Send(getContactByIdQuery, It.IsAny<CancellationToken>()))
@@ -78,12 +78,12 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())
                .With(t => t.ContactId, contactId.Value.ToString())
-               .Create();            
-           
+               .Create();
+
             var contactDto = fixture.Build<ContactDto>()
               .With(t => t.Id, contactId)
               .With(t => t.ProjectId, projectId)
-              .Create();            
+              .Create();
 
 
             mockSender.
@@ -98,7 +98,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Contains($"/projects/{projectId.Value}/external-contacts", redirectResult.Url);
         }
 
-        [Fact]       
+        [Fact]
         public async Task OnPost_WhenExceptionThrown_LogsErrorAndReturnsPageResult()
         {
             // Arrange                              
@@ -129,12 +129,12 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .ThrowsAsync(exception);
 
             // Act
-            var result = await testClass.OnPostAsync();           
+            var result = await testClass.OnPostAsync();
 
             // Assert
             Assert.Multiple(
                 () => Assert.True(testClass.ModelState.ContainsKey("UnexpectedError")),
-                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),             
+                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
                 () => mockLogger.Verify(
                 logger => logger.Log(
                     It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),

@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Dfe.Complete.Application.Projects.Models;
+﻿using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
@@ -7,6 +6,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Extensions
 {

@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(
         [Required] TaskDataId TaskDataId,
-        [Required] [ProjectType] ProjectType? ProjectType,
+        [Required][ProjectType] ProjectType? ProjectType,
         bool? RpaPolicyConfirm,
         RiskProtectionArrangementOption? RpaOption,
         string? RpaReason
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
 
             tasksData.RiskProtectionArrangementOption = request.RpaOption;
-            tasksData.RiskProtectionArrangementReason = request.RpaReason; 
+            tasksData.RiskProtectionArrangementReason = request.RpaReason;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }

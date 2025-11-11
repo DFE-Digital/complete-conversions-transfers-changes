@@ -9,7 +9,7 @@ namespace Dfe.Complete.Validators
     public class OtherExternalContactInputValidator : ExternalContactInputValidator<OtherExternalContactInputModel>
     {
         public OtherExternalContactInputValidator()
-        { 
+        {
 
             RuleFor(x => x.Role)
                .NotEmpty().WithMessage(ValidationConstants.RoleRequiredMessage);
@@ -17,11 +17,12 @@ namespace Dfe.Complete.Validators
             When(
                     x => x.SelectedExternalContactType == ExternalContactType.Solicitor.ToDescription()
                     || x.SelectedExternalContactType == ExternalContactType.Diocese.ToDescription()
-                    || x.SelectedExternalContactType == ExternalContactType.Other.ToDescription(), 
-                    () => {
-                    RuleFor(x => x.IsPrimaryProjectContact).Equal(false).WithMessage(ValidationConstants.InvalidPrimaryContactMessage);
+                    || x.SelectedExternalContactType == ExternalContactType.Other.ToDescription(),
+                    () =>
+                    {
+                        RuleFor(x => x.IsPrimaryProjectContact).Equal(false).WithMessage(ValidationConstants.InvalidPrimaryContactMessage);
                     }
-                );         
+                );
         }
     }
 }

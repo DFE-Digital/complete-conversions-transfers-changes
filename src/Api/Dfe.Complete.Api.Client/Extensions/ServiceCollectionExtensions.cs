@@ -1,8 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using Dfe.Complete.Api.Client.Security;
 using Dfe.Complete.Api.Client.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Api.Client.Extensions
 {
@@ -16,8 +16,8 @@ namespace Dfe.Complete.Api.Client.Extensions
             where TClientInterface : class
             where TClientImplementation : class, TClientInterface
         {
-            var apiSettings = new ApiClientSettings(); 
-            
+            var apiSettings = new ApiClientSettings();
+
             configuration.GetSection("CompleteApiClient").Bind(apiSettings);
 
             services.AddSingleton(apiSettings);
@@ -47,7 +47,7 @@ namespace Dfe.Complete.Api.Client.Extensions
                     return new BearerTokenHandler(tokenService);
                 });
             }
-            
+
             return services;
         }
     }

@@ -18,7 +18,7 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
@@ -27,8 +27,8 @@ const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, b
 
 describe("Internal contacts page: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateMatConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login();
@@ -67,7 +67,7 @@ describe("Internal contacts page: ", () => {
         Logger.log("Click cancel on the change assigned user page");
         internalContactsPage
             .containsHeading(`Change assigned person for ${schoolName}`)
-            .contains(`URN ${project.urn.value}`)
+            .contains(`URN ${project.urn}`)
             .assignTo(rdoLondonUser.username)
             .clickLink("Cancel");
 
@@ -84,7 +84,7 @@ describe("Internal contacts page: ", () => {
         Logger.log("Change the assigned team");
         internalContactsPage
             .containsHeading(`Change assigned team for ${schoolName}`)
-            .contains(`URN ${project.urn.value}`)
+            .contains(`URN ${project.urn}`)
             .selectTeam("North East")
             .clickButton("Continue");
 
@@ -114,7 +114,7 @@ describe("Internal contacts page: ", () => {
             Logger.log(`Change the assigned user to ${assignableUser.username} user`);
             internalContactsPage
                 .containsHeading(`Change assigned person for ${schoolName}`)
-                .contains(`URN ${project.urn.value}`)
+                .contains(`URN ${project.urn}`)
                 .hasLabel("Assign to")
                 .assignTo(assignableUser.username)
                 .clickButton("Continue");
@@ -138,7 +138,7 @@ describe("Internal contacts page: ", () => {
             Logger.log(`Try to change the assigned user to ${unassignableUser.username} user`);
             internalContactsPage
                 .containsHeading(`Change assigned person for ${schoolName}`)
-                .contains(`URN ${project.urn.value}`)
+                .contains(`URN ${project.urn}`)
                 .hasLabel("Assign to")
                 .assignToInvalidUser(unassignableUser.username)
                 .contains("No results found");

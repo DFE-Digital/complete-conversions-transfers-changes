@@ -9,30 +9,29 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import { ProjectType } from "cypress/api/taskApi";
 
 const completableProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.abbey },
-    isSignificantDateProvisional: true,
+    urn: urnPool.transfer.abbey,
 });
 let completableProjectId: string;
 const completableSchoolName = "Abbey College Manchester";
 
 const someTasksCompletedProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transfer.priory },
+    urn: urnPool.transfer.priory,
 });
 let someTasksCompletedProjectId: string;
 
 const noTasksCompletedProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transfer.prees },
+    urn: urnPool.transfer.prees,
 });
 let noTasksCompletedProjectId: string;
 
 describe("Complete transfer projects tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(completableProject.urn.value);
-        projectRemover.removeProjectIfItExists(someTasksCompletedProject.urn.value);
-        projectRemover.removeProjectIfItExists(noTasksCompletedProject.urn.value);
-        projectApi.createTransferProject(completableProject).then((response) => {
+        projectRemover.removeProjectIfItExists(completableProject.urn);
+        projectRemover.removeProjectIfItExists(someTasksCompletedProject.urn);
+        projectRemover.removeProjectIfItExists(noTasksCompletedProject.urn);
+        projectApi.createAndUpdateTransferProject(completableProject).then((response) => {
             completableProjectId = response.value;
-            projectApi.getProject(completableProject.urn.value).then((response) => {
+            projectApi.getProject(completableProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
                 TaskHelper.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
                 TaskHelper.updateConfirmTransferHasAuthorityToProceed(taskId, "completed");
@@ -40,12 +39,12 @@ describe("Complete transfer projects tests", () => {
                 TaskHelper.updateConfirmDateAcademyTransferred(taskId, "2025-09-01");
             });
         });
-        projectApi.createMatTransferProject(someTasksCompletedProject).then((response) => {
+        projectApi.createAndUpdateMatTransferProject(someTasksCompletedProject).then((response) => {
             someTasksCompletedProjectId = response.value;
             TaskHelper.updateExternalStakeholderKickOff(someTasksCompletedProjectId, "completed", "2025-10-01");
         });
         projectApi
-            .createMatTransferProject(noTasksCompletedProject)
+            .createAndUpdateMatTransferProject(noTasksCompletedProject)
             .then((response) => (noTasksCompletedProjectId = response.value));
     });
 
@@ -58,7 +57,7 @@ describe("Complete transfer projects tests", () => {
         cy.visit(`projects/${completableProjectId}/tasks`);
         taskListPage
             .clickButton("Complete project")
-            .contains(`You have completed the project for ${completableSchoolName} ${completableProject.urn.value}`);
+            .contains(`You have completed the project for ${completableSchoolName} ${completableProject.urn}`);
         cy.visit("/projects/yours/completed");
         yourProjects.goToNextPageUntilFieldIsVisible(completableSchoolName);
     });

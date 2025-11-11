@@ -1,11 +1,11 @@
-﻿using Dfe.Complete.Domain.Interfaces.Repositories;
+﻿using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
-using AutoMapper;
-using Microsoft.Extensions.Logging;
-using MediatR;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {

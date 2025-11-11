@@ -15,10 +15,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTa
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmHeadTeacherDetails)
     {
         [BindProperty]
-        public Guid? HeadTeacherContactId { get; set; }      
+        public Guid? HeadTeacherContactId { get; set; }
 
         [BindProperty]
-        public Guid? KeyContactId { get; set; }        
+        public Guid? KeyContactId { get; set; }
 
         public List<ContactDto>? Contacts { get; set; }
 
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTa
             KeyContactId = headTeacherKeyContactDto?.Value?.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
-                                   
+
             return Page();
         }
         public async Task<IActionResult> OnPost()

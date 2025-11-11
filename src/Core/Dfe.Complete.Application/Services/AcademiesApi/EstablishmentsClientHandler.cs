@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.Services.AcademiesApi
         {
             if (string.IsNullOrWhiteSpace(request.Urn))
                 throw new ArgumentException("URN cannot be null or empty.");
-            
+
             try
             {
                 var cacheKey = $"-establishment-{request.Urn}";
@@ -38,8 +38,8 @@ namespace Dfe.Complete.Application.Services.AcademiesApi
                     .ConfigureAwait(false);
                 },
                     CacheOptions.DefaultCacheOptions
-                );                       
-                
+                );
+
                 return Result<EstablishmentDto?>.Success(result);
             }
             catch (AcademiesApiException ex)

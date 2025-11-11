@@ -9,9 +9,9 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateDeedOfTerminationMasterFundingAgreementTaskCommand(
-        TaskDataId TaskDataId,        
+        TaskDataId TaskDataId,
         bool? Received,
-        bool? Cleared,        
+        bool? Cleared,
         bool? Saved,
         bool? Signed,
         bool? ContactFinancialReportingTeam,
@@ -42,6 +42,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
-        }       
+        }
     }
 }

@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
-{ 
+{
     public record SearchProjectsQuery(
        string SearchTerm,
        List<ProjectState> ProjectStates) : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                        item.Project!,
                        item.Establishment
-                   )).ToListAsync(cancellationToken); 
+                   )).ToListAsync(cancellationToken);
 
                 return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectList, itemCount);
             }

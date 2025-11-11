@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using Dfe.Complete.Utils.Attributes;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Domain.Enums;
 
@@ -71,7 +71,7 @@ public enum NoteTaskIdentifier
 
     [Description("church_supplemental_agreement")]
     [DisplayDescription("Church supplemental agreement")]
-    ChurchSupplementalAgreement = 17,    
+    ChurchSupplementalAgreement = 17,
 
     [Description("commercial_transfer_agreement")]
     [DisplayDescription("Commercial transfer agreement")]
@@ -80,7 +80,7 @@ public enum NoteTaskIdentifier
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
     MainContact = 19,
-    
+
     [Description("master_funding_agreement")]
     [DisplayDescription("Master funding agreement")]
     MasterFundingAgreement = 20,
@@ -108,11 +108,11 @@ public enum NoteTaskIdentifier
     [Description("conversion_grant")]
     [DisplayDescription("Process conversion support grant")]
     ProcessConversionSupportGrant = 26,
-    
+
     [Description("sponsored_support_grant")]
     [DisplayDescription("Confirm and process the sponsored support grant")]
     ConfirmAndProcessTheSponsoredSupportGrant = 27,
-    
+
     [Description("confirm_headteacher_contact")]
     [DisplayDescription("Confirm the headteacher's details")]
     ConfirmHeadTeacherDetails = 28,

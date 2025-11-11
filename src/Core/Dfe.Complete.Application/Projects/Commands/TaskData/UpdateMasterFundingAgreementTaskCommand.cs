@@ -49,7 +49,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
-             
+
             tasksData.MasterFundingAgreementCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.MasterFundingAgreementNotApplicable = request.NotApplicable;
             tasksData.MasterFundingAgreementReceived = request.NotApplicable == true ? null : request.Received;

@@ -5,7 +5,8 @@ using FluentAssertions;
 
 namespace Dfe.Complete.Application.Tests.LocalAuthorities.ModelsTests;
 
-public class LocalAuthoritiesModelsTests {
+public class LocalAuthoritiesModelsTests
+{
     [Fact]
     public void MapLAEntityToDto_Should_Map_Properties_Correctly()
     {

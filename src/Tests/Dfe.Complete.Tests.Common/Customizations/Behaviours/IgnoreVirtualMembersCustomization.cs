@@ -1,5 +1,5 @@
-﻿using AutoFixture.Kernel;
-using AutoFixture;
+﻿using AutoFixture;
+using AutoFixture.Kernel;
 using System.Reflection;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Behaviours

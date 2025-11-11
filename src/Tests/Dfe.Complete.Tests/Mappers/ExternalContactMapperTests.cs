@@ -13,8 +13,8 @@ namespace Dfe.Complete.Tests.Mappers
         [InlineData(ExternalContactType.LocalAuthority, "Local authority")]
         [InlineData(ExternalContactType.Solicitor, "Solicitor")]
         [InlineData(ExternalContactType.Diocese, "Diocese")]
-        [InlineData(ExternalContactType.Other, "Other")]        
-        public void GetRoleByContactTypeTests(ExternalContactType  value, string expectedResult)
+        [InlineData(ExternalContactType.Other, "Other")]
+        public void GetRoleByContactTypeTests(ExternalContactType value, string expectedResult)
         {
             // Act
             var result = ExternalContactMapper.GetRoleByContactType(value);
@@ -47,7 +47,7 @@ namespace Dfe.Complete.Tests.Mappers
         [Theory]
         [InlineData(ContactCategory.IncomingTrust, ExternalContactType.IncomingTrust)]
         [InlineData(ContactCategory.OutgoingTrust, ExternalContactType.OutgoingTrust)]
-        [InlineData(ContactCategory.SchoolOrAcademy, ExternalContactType.SchoolOrAcademy)]        
+        [InlineData(ContactCategory.SchoolOrAcademy, ExternalContactType.SchoolOrAcademy)]
         [InlineData(ContactCategory.LocalAuthority, ExternalContactType.LocalAuthority)]
         [InlineData(ContactCategory.Solicitor, ExternalContactType.Solicitor)]
         [InlineData(ContactCategory.Diocese, ExternalContactType.Diocese)]

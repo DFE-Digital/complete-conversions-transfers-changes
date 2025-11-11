@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
@@ -8,6 +6,8 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
 
@@ -33,7 +33,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
         _projects = FilterByHasAcademyUrn(_projects, filters.WithAcademyUrn);
         _projects = FilterByUrn(_projects, filters.Urn);
         _projects = FilterByGroupId(_projects, filters.GroupId);
-        
+
         return this;
     }
 
@@ -194,7 +194,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
             projects = projects.Where(project => statuses.Contains(project.State));
         return projects;
     }
-    
+
     private static IQueryable<Project> FilterByHasAcademyUrn(IQueryable<Project> projects, bool? withAcademyUrn)
     {
         if (withAcademyUrn != null)

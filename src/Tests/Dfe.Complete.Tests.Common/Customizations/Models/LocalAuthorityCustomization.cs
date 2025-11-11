@@ -13,7 +13,7 @@ public class LocalAuthorityCustomization : ICustomization
     {
         fixture.Customize<LocalAuthorityId>(c =>
             c.FromFactory<Guid>(guid => new LocalAuthorityId(guid)));
-            
+
         fixture
             .Customize<LocalAuthority>(composer => composer
                 .With(x => x.Code, LocalAuthorityCode ?? fixture.Create<string>())

@@ -4,7 +4,6 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Linq.Expressions;
@@ -38,20 +37,20 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldDeleteLocalAuthorityAndContactSuccessfully()
         {
-            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid())); 
+            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid()));
 
             var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
             var contact = Domain.Entities.Contact.Create(
-                command.ContactId!, "Title", "Name", "Email", "Phone", command.Id,  DateTime.UtcNow);
+                command.ContactId!, "Title", "Name", "Email", "Phone", command.Id, DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(command.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.RemoveAsync(It.IsAny<Domain.Entities.LocalAuthority>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
-             
+
 
             _mockContactRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.Contact, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(contact);
@@ -85,7 +84,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
 
             var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow); 
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(command.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
@@ -136,6 +135,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never);
-        } 
+        }
     }
 }

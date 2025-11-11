@@ -7,5 +7,5 @@ namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ContactReadRepository(CompleteContext context) : IContactReadRepository
 {
-    public IQueryable<Contact> Contacts => context.Contacts.AsNoTracking();        
+    public IQueryable<Contact> Contacts => context.Contacts.AsNoTracking();
 }

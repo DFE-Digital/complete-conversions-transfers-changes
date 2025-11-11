@@ -18,7 +18,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
         public bool? Signed { get; set; }
 
         [BindProperty(Name = "questionsreceived")]
-        public bool? QuestionsReceived { get; set; }        
+        public bool? QuestionsReceived { get; set; }
 
         [BindProperty(Name = "questionschecked")]
         public bool? QuestionsChecked { get; set; }
@@ -52,14 +52,14 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
                 Signed = ConversionTaskData.CommercialTransferAgreementSigned;
                 Saved = ConversionTaskData.CommercialTransferAgreementSaved;
                 QuestionsReceived = ConversionTaskData.CommercialTransferAgreementQuestionsReceived;
-                QuestionsChecked = ConversionTaskData.CommercialTransferAgreementQuestionsChecked;               
+                QuestionsChecked = ConversionTaskData.CommercialTransferAgreementQuestionsChecked;
             }
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));            
+            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

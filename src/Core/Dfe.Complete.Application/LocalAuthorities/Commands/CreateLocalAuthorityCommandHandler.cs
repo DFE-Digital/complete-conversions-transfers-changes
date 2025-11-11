@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
        string? Address3,
        string? AddressTown,
        string? AddressCounty,
-       string AddressPostcode, 
+       string AddressPostcode,
        string? Title,
        string? ContactName,
        string? Email,
@@ -36,13 +36,13 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             try
             {
                 var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
-                ContactId? contactId = null;    
+                ContactId? contactId = null;
                 await unitOfWork.BeginTransactionAsync();
                 var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                 if (hasLocalAuthority)
                 {
                     throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, request.Code));
-                } 
+                }
                 var localAuthority = LocalAuthority.Create(localAuthorityId, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
                     request.AddressPostcode), DateTime.UtcNow);

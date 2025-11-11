@@ -1,6 +1,6 @@
-using System.Web;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Web;
 
 namespace Dfe.Complete.Api.Middleware
 {
@@ -15,7 +15,7 @@ namespace Dfe.Complete.Api.Middleware
                 .SelectMany(x => x.Value, (col, value) => new KeyValuePair<string, string>(col.Key, value!)).ToList();
             var qb = new QueryBuilder(items);
             context.Request.QueryString = qb.ToQueryString();
-            
+
             await next(context);
         }
     }

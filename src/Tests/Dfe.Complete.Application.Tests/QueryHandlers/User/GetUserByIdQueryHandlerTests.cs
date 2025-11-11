@@ -55,8 +55,10 @@ public class GetUserByIdQueryHandlerTests
 
         var userDto = new UserDto
         {
-            ActiveDirectoryUserGroupIds = user.ActiveDirectoryUserGroupIds, FirstName = user.FirstName,
-            LastName = user.LastName, Email = user.Email
+            ActiveDirectoryUserGroupIds = user.ActiveDirectoryUserGroupIds,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email
         };
 
         mockMapper.Map<UserDto>(user).Returns(userDto);

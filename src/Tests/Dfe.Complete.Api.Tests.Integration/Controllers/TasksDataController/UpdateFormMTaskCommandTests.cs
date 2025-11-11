@@ -4,15 +4,15 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
-using System.Security.Claims;
 using Dfe.Complete.Utils.Exceptions;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using UpdateFormMTaskCommand = Dfe.Complete.Client.Contracts.UpdateFormMTaskCommand;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
-{ 
+{
     public class UpdateFormMTaskCommandTests
     {
         [Theory]
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.TransferTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            
+
             var command = new UpdateFormMTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
@@ -42,7 +42,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Signed = true,
                 Saved = true
             };
-            
+
             // Act
             await tasksDataClient.UpdateFormMTaskAsync(command, default);
 
@@ -102,7 +102,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.FormMSigned);
             Assert.True(existingTaskData.FormMNotApplicable);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateFormMTaskAsync_ShouldThrowError_WhenTaskDataIdIsNotFound(
@@ -124,7 +124,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateFormMTaskAsync(command, default));
 
-            Assert.Contains($"Transfer task data TaskDataId {{ Value = { command.TaskDataId.Value} }} not found.", exception.Message);
+            Assert.Contains($"Transfer task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }
 }
