@@ -141,7 +141,7 @@ describe("Capabilities and permissions of the regional casework services team le
         Logger.log("Change the added by user");
         internalContactsPage
             .containsHeading(`Who added this project?`)
-            .contains(`URN ${project.urn.value}`)
+            .contains(`URN ${project.urn}`)
             .hasLabel("Added by")
             .assignTo(newAssignee.username)
             .clickButton("Continue");
