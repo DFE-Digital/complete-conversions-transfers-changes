@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Changed
 - Identify user by entra_user_object_id instead of active_directory_user_id
 - Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
+- Throw exception when key_contacts record is missing on contact update tasks
 
 ### Fixed
 - fix access denied request form link
