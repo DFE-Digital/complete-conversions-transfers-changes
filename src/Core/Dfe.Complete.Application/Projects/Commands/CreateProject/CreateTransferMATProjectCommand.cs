@@ -7,9 +7,9 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
-public record CreateHandoverTransferMatProjectCommand(
+public record CreateTransferMatProjectCommand(
     [Required][Urn] int? Urn,
     [Required][Trn] string? NewTrustReferenceNumber,
     [Required] string? NewTrustName,
@@ -25,25 +25,25 @@ public record CreateHandoverTransferMatProjectCommand(
     [Required] bool? OutgoingTrustToClose,
     string? AdvisoryBoardConditions) : IRequest<ProjectId>, IBaseHandoverTransferProjectCommand;
 
-public class CreateHandoverTransferMatProjectCommandHandler(
+public class CreateTransferMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverTransferMatProjectCommandHandler> logger)
-    : BaseCreateHandoverTransferProjectCommandHandler<CreateHandoverTransferMatProjectCommand>(unitOfWork, handoverProjectService, logger),
-      IRequestHandler<CreateHandoverTransferMatProjectCommand, ProjectId>
+    ILogger<CreateTransferMatProjectCommandHandler> logger)
+    : BaseCreateTransferProjectCommandHandler<CreateTransferMatProjectCommand>(unitOfWork, handoverProjectService, logger),
+      IRequestHandler<CreateTransferMatProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverTransferMatProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateTransferMatProjectCommand request, CancellationToken cancellationToken)
     {
         return await HandleAsync(request, cancellationToken);
     }
 
-    protected override Task PerformSpecificValidationsAsync(CreateHandoverTransferMatProjectCommand request, CancellationToken cancellationToken)
+    protected override Task PerformSpecificValidationsAsync(CreateTransferMatProjectCommand request, CancellationToken cancellationToken)
     {
         // MAT version doesn't need additional validations beyond the base ones
         return Task.CompletedTask;
     }
 
-    protected override Task<SpecificProjectData> GetSpecificProjectDataAsync(CreateHandoverTransferMatProjectCommand request, CancellationToken cancellationToken)
+    protected override Task<SpecificProjectData> GetSpecificProjectDataAsync(CreateTransferMatProjectCommand request, CancellationToken cancellationToken)
     {
         return Task.FromResult(new SpecificProjectData
         {
@@ -53,13 +53,13 @@ public class CreateHandoverTransferMatProjectCommandHandler(
     }
 
     protected override Project CreateProject(
-        CreateHandoverTransferMatProjectCommand request,
+        CreateTransferMatProjectCommand request,
         HandoverProjectCommonData commonData,
         SpecificProjectData specificData,
         TransferTasksData transferTask,
         CancellationToken cancellationToken)
     {
-        var parameters = new CreateHandoverTransferMatProjectParams(
+        var parameters = new CreateTransferMatProjectParams(
             commonData.ProjectId,
             new Urn(commonData.Urn),
             transferTask.Id.Value,
@@ -74,6 +74,6 @@ public class CreateHandoverTransferMatProjectCommandHandler(
             specificData.NewTrustName!
         );
 
-        return Project.CreateHandoverTransferMATProject(parameters);
+        return Project.CreateTransferMATProject(parameters);
     }
 }

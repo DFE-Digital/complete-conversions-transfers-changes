@@ -32,10 +32,10 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
         }
 
         protected async Task UpdateCacheAsync(RecordDaoRevocationDecisionCommand decison)
-        { 
-            cacheService.Remove(CacheKey); 
+        {
+            cacheService.Remove(CacheKey);
             await cacheService.GetOrAddAsync(CacheKey, () =>
-            { 
+            {
                 return Task.FromResult(decison);
             }, string.Empty);
         }
@@ -57,7 +57,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
         }
         protected static void ValidateReasons(IFormCollection formValues, List<DaoRevokedReason> reasons, Dictionary<DaoRevokedReason, string> reasonNotes, IErrorService errorService, ModelStateDictionary modelState)
         {
-            var errors =new Dictionary<string, string>();
+            var errors = new Dictionary<string, string>();
             foreach (var reason in reasons)
             {
                 var reasonKey = $"dao_revoked_reasons[{reason.ToDescription()}]";
@@ -83,7 +83,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
             if (reasonNotes.Count == 0 && errors.Count == 0)
             {
                 errors.Add("select-dao-revoked-reason", ValidationConstants.ChooseAtLeastOneReason);
-            } 
+            }
 
             foreach (var error in errors.Distinct())
             {

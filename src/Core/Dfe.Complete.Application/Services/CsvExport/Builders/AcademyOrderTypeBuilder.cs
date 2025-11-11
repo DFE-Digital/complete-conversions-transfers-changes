@@ -7,10 +7,10 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
     {
         public string Build(T value)
         {
-            if(getProject(value).Type == ProjectType.Transfer)
+            if (getProject(value).Type == ProjectType.Transfer)
                 return "not applicable";
 
-            if(getProject(value).DirectiveAcademyOrder == true)
+            if (getProject(value).DirectiveAcademyOrder == true)
                 return "directive academy order";
 
             return "academy order";

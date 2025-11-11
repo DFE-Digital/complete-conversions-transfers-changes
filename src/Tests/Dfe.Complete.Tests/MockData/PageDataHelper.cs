@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.MockData
-{    public static class PageDataHelper
+{
+    public static class PageDataHelper
     {
         public static PageContext GetPageContext()
         {

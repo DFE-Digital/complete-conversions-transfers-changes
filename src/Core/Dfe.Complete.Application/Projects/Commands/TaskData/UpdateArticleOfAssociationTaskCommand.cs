@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -8,6 +7,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
@@ -48,7 +48,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
-             
+
             tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.ArticlesOfAssociationNotApplicable = request.NotApplicable;
             tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.Received;

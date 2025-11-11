@@ -40,7 +40,7 @@ public class CompleteProjectModelTests
     (
         [Frozen] IProjectService projectService,
         [Frozen] ISender sender,
-        [Frozen] ILogger<CompleteProjectModel> logger,       
+        [Frozen] ILogger<CompleteProjectModel> logger,
         IFixture fixture
     )
     {
@@ -67,7 +67,7 @@ public class CompleteProjectModelTests
                 HttpContext = httpContext
             },
             TempData = tempData
-        };       
+        };
 
         var projectDto = fixture.Build<ProjectDto>()
             .With(p => p.Id, projectId)
@@ -80,7 +80,7 @@ public class CompleteProjectModelTests
         UserDto? userDto = new UserDto { Team = "service_support" };
         var userResult = Result<UserDto?>.Success(userDto);
 
-        var successResult = Result<ProjectDto?>.Success(projectDto);           
+        var successResult = Result<ProjectDto?>.Success(projectDto);
 
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
@@ -95,7 +95,7 @@ public class CompleteProjectModelTests
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
         projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new List<string>());  
+            .Returns(new List<string>());
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -166,7 +166,7 @@ public class CompleteProjectModelTests
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
         projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
-            .Returns(new List<string>());       
+            .Returns(new List<string>());
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -200,7 +200,7 @@ public class CompleteProjectModelTests
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
-       
+
         CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
         {
             ProjectId = projectId.Value.ToString(),
@@ -237,7 +237,7 @@ public class CompleteProjectModelTests
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
         projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new List<string> { "validation message" });       
+            .Returns(new List<string> { "validation message" });
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -283,7 +283,7 @@ public class CompleteProjectModelTests
             {
                 HttpContext = httpContext
             },
-        };       
+        };
 
         var projectDto = fixture.Build<ProjectDto>()
             .With(p => p.Id, projectId)
@@ -319,9 +319,9 @@ public class CompleteProjectModelTests
         // Assert
         var redirectResult = Assert.IsType<RedirectResult>(result);
 
-        Assert.Multiple(            
+        Assert.Multiple(
             () => Assert.Equal($"/projects/{projectDto.Id.Value}/tasks?projectCompletionValidation=true", redirectResult.Url),
-            () => Assert.True(testClass.TempData.ContainsKey("CompleteProjectValidationMessages"))            
+            () => Assert.True(testClass.TempData.ContainsKey("CompleteProjectValidationMessages"))
         );
-    }    
+    }
 }

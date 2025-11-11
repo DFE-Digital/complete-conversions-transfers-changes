@@ -1,4 +1,3 @@
-using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Interfaces;

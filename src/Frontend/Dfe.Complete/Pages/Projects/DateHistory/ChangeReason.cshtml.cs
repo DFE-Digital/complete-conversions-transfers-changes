@@ -15,20 +15,20 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
     {
         [BindProperty]
         public string SignificantDateString { get; set; }
-        
+
         public DateOnly SignificantDate { get; set; }
-        
+
         [BindProperty]
         public IFormCollection FormValues { get; set; } = default!;
 
-        public List<SignificantDateReason> Reasons  { get; set; }
+        public List<SignificantDateReason> Reasons { get; set; }
 
         public Dictionary<SignificantDateReason, string> ReasonNotes { get; private set; } = new();
 
         public override async Task<IActionResult> OnGetAsync()
         {
             await PopulatePage();
-            
+
             if (!SigDateHelper.CanEditSignificantDate(Project, User, CurrentUserTeam))
             {
                 TempData.SetNotification(
@@ -38,10 +38,10 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 );
                 return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectTaskList));
             }
-            
+
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
         {
             await PopulatePage();
@@ -78,20 +78,20 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 
             if (!ModelState.IsValid)
                 return Page();
-            
+
             var command = new UpdateSignificantDateCommand(Project.Id, DateOnly.Parse(SignificantDateString), ReasonNotes, User.GetUserId());
             await Sender.Send(command);
-            
+
             return Redirect(FormatRouteWithProjectId(RouteConstants.ChangeProjectDateHistoryConfirm));
         }
 
         private async Task PopulatePage()
         {
             await base.OnGetAsync();
-            
+
             var previousDate = Project.SignificantDate;
             var dateString = TempData["SignificantDate"]?.ToString() ?? SignificantDateString;
-            
+
             SignificantDate = DateOnly.Parse(dateString);
 
             if (SignificantDate > previousDate)
@@ -111,7 +111,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 {
                     reasons.Add(SignificantDateReason.Academy);
                 }
-                
+
                 reasons.Add(SignificantDateReason.LocalAuthority);
                 reasons.Add(SignificantDateReason.Diocese);
                 reasons.Add(SignificantDateReason.Tupe);

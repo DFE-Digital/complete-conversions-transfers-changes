@@ -1,11 +1,11 @@
-using System.ComponentModel;
 using Dfe.Complete.Utils.Attributes;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Domain.Enums;
 
 public enum SignificantDateReason
 {
-    
+
     [Description("advisory_board_conditions")]
     [DisplayDescription("Advisory board conditions not met")]
     AdvisoryBoardConditions = 1,

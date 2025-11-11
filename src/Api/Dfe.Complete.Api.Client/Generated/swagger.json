@@ -527,160 +527,12 @@
         }
       }
     },
-    "/v1/Projects/projects/conversions": {
+    "/v1/Projects/Conversions": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/projects/conversions/form-a-mat": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new MAT conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionMatProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionMatProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/projects/transfers": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new transfer project (handover version).",
-        "operationId": "Projects_CreateHandoverTransferProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverTransferProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/projects/transfers/form-a-mat": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new transfer MAT project (handover version).",
-        "operationId": "Projects_CreateHandoverTransferMatProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverTransferMatProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/Create/Conversion": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new conversion project",
+        "summary": "Creates a new conversion project.",
         "operationId": "Projects_CreateConversionProject",
         "requestBody": {
           "x-name": "request",
@@ -709,16 +561,52 @@
           "400": {
             "description": "Invalid request data."
           }
-        },
-        "deprecated": true
+        }
       }
     },
-    "/v1/Projects/Create/Transfer": {
+    "/v1/Projects/MatConversions": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new Transfer project",
+        "summary": "Creates a new MAT conversion project.",
+        "operationId": "Projects_CreateConversionMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConversionMatProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Transfers": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new transfer project.",
         "operationId": "Projects_CreateTransferProject",
         "requestBody": {
           "x-name": "request",
@@ -747,62 +635,23 @@
           "400": {
             "description": "Invalid request data."
           }
-        },
-        "deprecated": true
+        }
       }
     },
-    "/v1/Projects/Create/MatConversion": {
+    "/v1/Projects/MatTransfers": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new Form a Mat Conversion project",
-        "operationId": "Projects_CreateMatConversionProject",
+        "summary": "Creates a new transfer MAT project.",
+        "operationId": "Projects_CreateTransferMatProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMatConversionProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/v1/Projects/Create/MatTransfer": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new Form a Mat Transfer project",
-        "operationId": "Projects_CreateMatTransferProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMatTransferProjectCommand"
+                "$ref": "#/components/schemas/CreateTransferMatProjectCommand"
               }
             }
           },
@@ -5711,285 +5560,104 @@
           }
         }
       },
-      "CreateHandoverConversionProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "incomingTrustUkprn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "provisionalConversionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "createdByEmail": {
-            "type": "string"
-          },
-          "createdByFirstName": {
-            "type": "string"
-          },
-          "createdByLastName": {
-            "type": "string"
-          },
-          "prepareId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "directiveAcademyOrder": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "advisoryBoardConditions": {
-            "type": "string",
-            "nullable": true
-          },
-          "groupId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateHandoverConversionMatProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "newTrustReferenceNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "newTrustName": {
-            "type": "string",
-            "nullable": true
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "provisionalConversionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "createdByEmail": {
-            "type": "string"
-          },
-          "createdByFirstName": {
-            "type": "string"
-          },
-          "createdByLastName": {
-            "type": "string"
-          },
-          "prepareId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "directiveAcademyOrder": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "advisoryBoardConditions": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateHandoverTransferProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "incomingTrustUkprn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "outgoingTrustUkprn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "provisionalTransferDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "createdByEmail": {
-            "type": "string"
-          },
-          "createdByFirstName": {
-            "type": "string"
-          },
-          "createdByLastName": {
-            "type": "string"
-          },
-          "prepareId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "inadequateOfsted": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "financialSafeguardingGovernanceIssues": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "outgoingTrustToClose": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "advisoryBoardConditions": {
-            "type": "string",
-            "nullable": true
-          },
-          "groupId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateHandoverTransferMatProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "newTrustReferenceNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "newTrustName": {
-            "type": "string",
-            "nullable": true
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "provisionalTransferDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "createdByEmail": {
-            "type": "string"
-          },
-          "createdByFirstName": {
-            "type": "string"
-          },
-          "createdByLastName": {
-            "type": "string"
-          },
-          "prepareId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "outgoingTrustUkprn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "inadequateOfsted": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "financialSafeguardingGovernanceIssues": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "outgoingTrustToClose": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "advisoryBoardConditions": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
       "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "incomingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "hasAcademyOrderBeenIssued": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "advisoryBoardDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
           },
           "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "groupReferenceNumber": {
             "type": "string",
             "nullable": true
           },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateConversionMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
-          "handoverComments": {
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
             "type": "string"
           },
-          "userAdId": {
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
           }
@@ -6000,175 +5668,125 @@
         "additionalProperties": false,
         "properties": {
           "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "outgoingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "incomingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "isDueToInedaquateOfstedRating": {
-            "type": "boolean"
-          },
-          "isDueToIssues": {
-            "type": "boolean"
-          },
-          "outGoingTrustWillClose": {
-            "type": "boolean"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "outgoingTrustSharepointLink": {
-            "type": "string"
-          },
-          "groupReferenceNumber": {
-            "type": "string",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
-          },
-          "handoverComments": {
-            "type": "string"
-          },
-          "userAdId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateMatConversionProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "newTrustName": {
-            "type": "string"
-          },
-          "newTrustReferenceNumber": {
-            "type": "string"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "hasAcademyOrderBeenIssued": {
-            "type": "boolean"
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "handoverComments": {
-            "type": "string",
-            "nullable": true
-          },
-          "userAdId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateMatTransferProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "newTrustName": {
-            "type": "string"
-          },
-          "newTrustReferenceNumber": {
-            "type": "string"
           },
           "outgoingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "isDueToInedaquateOfstedRating": {
-            "type": "boolean"
-          },
-          "isDueToIssues": {
-            "type": "boolean"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "outGoingTrustWillClose": {
-            "type": "boolean"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "advisoryBoardDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
+            "type": "boolean",
+            "nullable": true
           },
           "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateTransferMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
             "type": "string"
           },
-          "establishmentSharepointLink": {
+          "createdByFirstName": {
             "type": "string"
           },
-          "incomingTrustSharepointLink": {
+          "createdByLastName": {
             "type": "string"
           },
-          "outgoingTrustSharepointLink": {
-            "type": "string"
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
-          "handoverComments": {
-            "type": "string"
+          "outgoingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
-          "userAdId": {
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
           }

@@ -7,31 +7,30 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.spen },
+    urn: urnPool.conversionTasks.spen,
 });
 let projectId: string;
 const projectWithoutCEOContact = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.huddersfield },
+    urn: urnPool.conversionTasks.huddersfield,
 });
 let projectWithoutCEOContactId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversionTasks.grylls },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversionTasks.grylls,
 });
 let otherUserProjectId: string;
 
-describe("Conversion Tasks - Confirm the incoming trust CEO's details", () => {
+describe("Conversion tasks - Confirm the incoming trust CEO's details", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(projectWithoutCEOContact.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(projectWithoutCEOContact.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createConversionProject(projectWithoutCEOContact).then((createResponse) => {
+        projectApi.createAndUpdateConversionProject(projectWithoutCEOContact).then((createResponse) => {
             projectWithoutCEOContactId = createResponse.value;
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

@@ -2,7 +2,6 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import changeDatePage from "cypress/pages/projects/tasks/changeDatePage";
@@ -13,6 +12,8 @@ import {
     getYearNumber,
 } from "cypress/support/formatDate";
 import { urnPool } from "cypress/constants/testUrns";
+import taskHelper from "cypress/api/taskHelper";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
 const inThreeMonthsDate = getDisplayDateString(3);
@@ -23,37 +24,41 @@ const inNineMonthsYear = getYearNumber(9);
 const inNineMonthsDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.abbey },
-    significantDate: inSixMonthsSignificantDate,
-    isSignificantDateProvisional: false,
+    urn: urnPool.transfer.abbey,
+    provisionalTransferDate: inSixMonthsSignificantDate,
 });
 let confirmedDateProjectId: string;
 const confirmedDateSchoolName = "Abbey College Manchester";
 
 const provisionalDateProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transfer.priory },
-    isSignificantDateProvisional: true,
+    urn: urnPool.transfer.priory,
 });
 let provisionalDateProjectId: string;
 
 const otherUserProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.prees },
-    isSignificantDateProvisional: false,
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.transfer.prees,
 });
 let otherUserProjectId: string;
 describe("Change the transfer date tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn);
+        projectRemover.removeProjectIfItExists(provisionalDateProject.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
+        projectApi.createAndUpdateTransferProject(confirmedDateProject).then((response) => {
+            confirmedDateProjectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(
+                confirmedDateProjectId,
+                "completed",
+                inSixMonthsSignificantDate,
+            );
+        });
         projectApi
-            .createTransferProject(confirmedDateProject)
-            .then((response) => (confirmedDateProjectId = response.value));
-        projectApi
-            .createMatTransferProject(provisionalDateProject)
+            .createAndUpdateMatTransferProject(provisionalDateProject)
             .then((response) => (provisionalDateProjectId = response.value));
-        projectApi.createTransferProject(otherUserProject).then((response) => (otherUserProjectId = response.value));
+        projectApi.createAndUpdateTransferProject(otherUserProject, rdoLondonUser).then((response) => {
+            otherUserProjectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(otherUserProjectId, "completed", inSixMonthsSignificantDate);
+        });
     });
 
     beforeEach(() => {
@@ -92,7 +97,7 @@ describe("Change the transfer date tests", () => {
         projectDetailsPage
             .contains("Transfer date changed")
             .contains(
-                `You have changed the transfer date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn.value}.`,
+                `You have changed the transfer date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn}.`,
             )
             .containsSubHeading("New transfer date")
             .contains(`The new transfer date is ${inThreeMonthsDate}.`);
@@ -149,7 +154,7 @@ describe("Change the transfer date tests", () => {
         projectDetailsPage
             .contains("Transfer date changed")
             .contains(
-                `You have changed the transfer date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn.value}.`,
+                `You have changed the transfer date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn}.`,
             )
             .containsSubHeading("New transfer date")
             .contains(`The new transfer date is ${inNineMonthsDate}.`);

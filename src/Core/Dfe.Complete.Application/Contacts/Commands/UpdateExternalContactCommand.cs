@@ -13,7 +13,7 @@ public record UpdateExternalContactCommand(ContactDto contactDto) : IRequest<Res
 
 public class UpdateExternalContactCommandHandler(
     IContactReadRepository contactReadRepository,
-    IContactWriteRepository contactWriteRepository, 
+    IContactWriteRepository contactWriteRepository,
     ISender sender,
     ILogger<UpdateExternalContactCommandHandler> logger
 ) : IRequestHandler<UpdateExternalContactCommand, Result<bool>>
@@ -38,7 +38,7 @@ public class UpdateExternalContactCommandHandler(
             contactEntity.OrganisationName = updateDto.OrganisationName;
             contactEntity.UpdatedAt = DateTime.UtcNow;
 
-            await contactWriteRepository.UpdateContactAsync(contactEntity, cancellationToken);            
+            await contactWriteRepository.UpdateContactAsync(contactEntity, cancellationToken);
 
             await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contactEntity.ProjectId!, request.contactDto.PrimaryContact, contactEntity), cancellationToken);
 

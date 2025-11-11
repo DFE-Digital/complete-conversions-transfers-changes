@@ -3,7 +3,6 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;

@@ -1,5 +1,5 @@
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects; 
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Projects.Models
 {
@@ -228,7 +228,7 @@ namespace Dfe.Complete.Application.Projects.Models
         public DateOnly? ReceiveGrantPaymentCertificateDateReceived { get; set; }
 
         public bool? ReceiveGrantPaymentCertificateCheckCertificate { get; set; }
-        
+
         public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; }
 
         public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
@@ -245,8 +245,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
-        public bool? CommercialTransferAgreementSaved { get; set; } 
+        public bool? CommercialTransferAgreementSaved { get; set; }
 
-        
+
     }
 }

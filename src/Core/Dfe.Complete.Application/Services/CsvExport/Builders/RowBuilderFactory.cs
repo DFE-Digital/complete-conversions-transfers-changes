@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
 
         public RowBuilder<T> Column(string name)
         {
-            if(!_firstHeader)
+            if (!_firstHeader)
             {
                 _headers.Append(",");
             }
@@ -35,7 +35,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             _headers.Append(name);
             return this;
         }
-       
+
         public RowBuilder<T> BlankIfEmpty(Func<T, object?> func)
         {
             _columnBuilders.Add(new BlankIfEmpty<T>(func));
@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
         }
 
         public RowBuilder<T> Builder(IColumnBuilder<T> columnBuilder)
-        {       
+        {
             _columnBuilders.Add(columnBuilder);
             return this;
         }
@@ -71,7 +71,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             _columnBuilders.Add(new IncomingTrustDataBuilder<T>(trustCache, project, value));
             return this;
         }
-            
+
         public string Build(T model)
         {
             return _columnBuilders.Select(x => x.Build(model)).Aggregate((acc, x) => acc + "," + x);
@@ -84,5 +84,5 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
 
     }
 
-    
+
 }

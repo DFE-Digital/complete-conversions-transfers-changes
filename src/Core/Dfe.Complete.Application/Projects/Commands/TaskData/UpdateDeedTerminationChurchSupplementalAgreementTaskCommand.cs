@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateDeedTerminationChurchSupplementalAgreementTaskCommand(
-        TaskDataId TaskDataId, 
+        TaskDataId TaskDataId,
         bool? NotApplicable,
         bool? Received,
         bool? Cleared,
@@ -42,6 +42,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
-        }  
+        }
     }
 }

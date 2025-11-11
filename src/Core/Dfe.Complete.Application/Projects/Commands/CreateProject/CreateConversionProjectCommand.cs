@@ -8,9 +8,9 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
-public record CreateHandoverConversionProjectCommand(
+public record CreateConversionProjectCommand(
     [Required][Urn] int? Urn,
     [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
     [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
@@ -23,13 +23,13 @@ public record CreateHandoverConversionProjectCommand(
     string? AdvisoryBoardConditions,
     [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
-public class CreateHandoverConversionProjectCommandHandler(
+public class CreateConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverConversionProjectCommandHandler> logger)
-    : IRequestHandler<CreateHandoverConversionProjectCommand, ProjectId>
+    ILogger<CreateConversionProjectCommandHandler> logger)
+    : IRequestHandler<CreateConversionProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -57,7 +57,7 @@ public class CreateHandoverConversionProjectCommandHandler(
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
 
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateConversionProjectParams(
                 commonData.ProjectId,
                 new Urn(commonData.Urn),
                 conversionTask.Id.Value,
@@ -71,7 +71,7 @@ public class CreateHandoverConversionProjectCommandHandler(
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 
-            var project = Project.CreateHandoverConversionProject(parameters);
+            var project = Project.CreateConversionProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
@@ -84,8 +84,8 @@ public class CreateHandoverConversionProjectCommandHandler(
         catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
-            logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
-            throw new UnknownException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
+            logger.LogError(ex, "Exception while creating conversion project for URN: {Urn}", request.Urn);
+            throw new UnknownException($"An error occurred while creating the conversion project for URN: {request.Urn}", ex);
         }
     }
 }

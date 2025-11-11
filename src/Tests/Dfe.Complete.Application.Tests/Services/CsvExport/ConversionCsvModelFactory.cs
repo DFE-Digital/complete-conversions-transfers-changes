@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                                               bool withSignificantDateHistory = true,
                                               bool withContacts = true)
         {
-            var fixture = new Fixture();   
+            var fixture = new Fixture();
 
             var establishment = fixture.Customize(
                 new GiasEstablishmentsCustomization()
@@ -60,7 +60,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 
             var significantDateHistory = fixture.Customize(
                 new SignificantDateHistoryCustomization()
-                { 
+                {
                     ProjectId = project.Id
                 }
                 ).Create<SignificantDateHistory>();
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                                           createdBy,
                                           assignedTo,
                                           withContacts ? mainContact : null,
-                                          withContacts ?  headteacher : null,
+                                          withContacts ? headteacher : null,
                                           withContacts ? laContact : null,
                                           withContacts ? incomingContact : null,
                                           withContacts ? outgoingContact : null,

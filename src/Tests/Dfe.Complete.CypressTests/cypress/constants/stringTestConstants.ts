@@ -1,5 +1,4 @@
 export type yesNoOption = "Yes" | "No";
-export const groupReferenceNumber = "GRP_00000001";
 export const macclesfieldTrust = {
     name: "The Macclesfield Academy",
     referenceNumber: "TR01369",

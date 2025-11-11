@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.KeyContacts.Queries;
 
 public record GetKeyContactsForProjectQuery(ProjectId ProjectId) : IRequest<Result<KeyContactDto>>;
 
-public class GetKeyContactsForProjectQueryHandler(IKeyContactReadRepository keyContactsRepository, ILogger<GetKeyContactsForProjectQueryHandler> logger,  IMapper mapper) 
+public class GetKeyContactsForProjectQueryHandler(IKeyContactReadRepository keyContactsRepository, ILogger<GetKeyContactsForProjectQueryHandler> logger, IMapper mapper)
     : IRequestHandler<GetKeyContactsForProjectQuery, Result<KeyContactDto>>
 {
     public async Task<Result<KeyContactDto>> Handle(GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)

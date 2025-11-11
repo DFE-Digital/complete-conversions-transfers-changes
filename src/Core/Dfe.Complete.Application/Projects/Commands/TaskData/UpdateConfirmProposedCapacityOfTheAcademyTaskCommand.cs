@@ -24,14 +24,14 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.ProposedCapacityOfTheAcademyNotApplicable = request.NotApplicable; 
+            tasksData.ProposedCapacityOfTheAcademyNotApplicable = request.NotApplicable;
             tasksData.ProposedCapacityOfTheAcademyReceptionToSixYears = request.NotApplicable == true ? null : request.ReceptionToSixYears;
             tasksData.ProposedCapacityOfTheAcademySevenToElevenYears = request.NotApplicable == true ? null : request.SevenToElevenYears;
-            tasksData.ProposedCapacityOfTheAcademyTwelveOrAboveYears = request.NotApplicable == true ? null : request.TwelveOrAboveYears; 
+            tasksData.ProposedCapacityOfTheAcademyTwelveOrAboveYears = request.NotApplicable == true ? null : request.TwelveOrAboveYears;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
-        } 
+        }
     }
 }

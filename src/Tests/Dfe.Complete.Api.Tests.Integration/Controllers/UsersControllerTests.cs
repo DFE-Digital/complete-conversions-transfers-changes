@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
@@ -8,6 +7,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
@@ -215,7 +215,7 @@ public class UsersControllerTests
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
-        
+
         // Create a user to update
         var existingUser = Domain.Entities.User.Create(
             new Domain.ValueObjects.UserId(Guid.NewGuid()),
@@ -224,7 +224,7 @@ public class UsersControllerTests
             "User",
             "London"
         );
-        
+
         dbContext.Users.Add(existingUser);
         await dbContext.SaveChangesAsync();
 

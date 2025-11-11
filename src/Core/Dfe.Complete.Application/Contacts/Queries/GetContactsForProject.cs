@@ -26,6 +26,6 @@ public class GetContactsForProject(ICompleteRepository<Contact> contactsReposito
         {
             return Result<List<Contact>>.Failure(e.Message);
         }
-        
+
     }
 }

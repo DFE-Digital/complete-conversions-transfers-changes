@@ -1,7 +1,7 @@
+using Dfe.Complete.Api.Tests.Integration.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using System.Net;
-using Dfe.Complete.Api.Tests.Integration.Customizations;
 
 namespace Dfe.Complete.Api.Tests.Integration.OpenApiTests;
 

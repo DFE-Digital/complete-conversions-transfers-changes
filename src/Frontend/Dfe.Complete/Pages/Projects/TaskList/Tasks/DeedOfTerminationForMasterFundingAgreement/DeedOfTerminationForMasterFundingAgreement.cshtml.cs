@@ -50,7 +50,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterF
             Cleared = TransferTaskData.DeedOfTerminationForTheMasterFundingAgreementCleared;
             ContactFinancialReportingTeam = TransferTaskData.DeedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam;
             SignedSecretaryState = TransferTaskData.DeedOfTerminationForTheMasterFundingAgreementSignedSecretaryState;
-            SavedAcademySharePointHolder = TransferTaskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder;           
+            SavedAcademySharePointHolder = TransferTaskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder;
 
             return Page();
         }

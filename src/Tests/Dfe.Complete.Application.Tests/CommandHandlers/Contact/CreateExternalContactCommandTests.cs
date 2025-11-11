@@ -2,8 +2,6 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
-using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -13,7 +11,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using Entities = Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Application.Tests.CommandHandlers.Contact;   
+namespace Dfe.Complete.Application.Tests.CommandHandlers.Contact;
 
 public class CreateExternalContactCommandTests
 {
@@ -26,7 +24,7 @@ public class CreateExternalContactCommandTests
         [Frozen] IContactWriteRepository mockContactWriteRepository,
         IFixture fixture,
         CreateExternalContactCommand command,
-        CreateExternalContactCommandHandler sut        
+        CreateExternalContactCommandHandler sut
         )
     {
         // Arrange       
@@ -67,7 +65,7 @@ public class CreateExternalContactCommandTests
         // Assert
         Assert.Multiple
         (
-            () => Assert.False(result.IsSuccess),            
+            () => Assert.False(result.IsSuccess),
             async () => await mockContactWriteRepository.DidNotReceive().CreateContactAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
         );
     }

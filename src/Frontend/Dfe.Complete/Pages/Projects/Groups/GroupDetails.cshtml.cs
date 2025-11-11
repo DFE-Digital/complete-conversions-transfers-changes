@@ -12,12 +12,12 @@ namespace Dfe.Complete.Pages.Projects.Groups
         [BindProperty(SupportsGet = true, Name = "groupId")]
         public string GroupId { get; set; }
         public ProjectGroupDetails ProjectGroupDetails { get; set; }
-        
+
         public async Task OnGet()
         {
             var request = new GetProjectGroupDetailsQuery(new ProjectGroupId(Guid.Parse(GroupId)));
             var response = await sender.Send(request);
-            
+
             ProjectGroupDetails = response.Value;
         }
     }

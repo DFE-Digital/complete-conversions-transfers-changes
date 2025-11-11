@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
@@ -13,6 +12,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.User;
 
@@ -55,8 +55,10 @@ public class GetUserByEmailQueryHandlerTests
 
         var userDto = new UserDto
         {
-            ActiveDirectoryUserGroupIds = user.ActiveDirectoryUserGroupIds, FirstName = user.FirstName,
-            LastName = user.LastName, Email = user.Email
+            ActiveDirectoryUserGroupIds = user.ActiveDirectoryUserGroupIds,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email
         };
 
         mockMapper.Map<UserDto>(user).Returns(userDto);

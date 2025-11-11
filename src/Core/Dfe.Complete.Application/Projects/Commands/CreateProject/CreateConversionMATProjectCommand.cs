@@ -8,9 +8,9 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
-public record CreateHandoverConversionMatProjectCommand(
+public record CreateConversionMatProjectCommand(
     [Required][Urn] int? Urn,
     [Required][Trn] string? NewTrustReferenceNumber,
     [Required] string? NewTrustName,
@@ -23,13 +23,13 @@ public record CreateHandoverConversionMatProjectCommand(
     [Required] bool? DirectiveAcademyOrder,
     string? AdvisoryBoardConditions) : IRequest<ProjectId>;
 
-public class CreateHandoverConversionMatProjectCommandHandler(
+public class CreateConversionMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverConversionMatProjectCommandHandler> logger)
-    : IRequestHandler<CreateHandoverConversionMatProjectCommand, ProjectId>
+    ILogger<CreateConversionMatProjectCommandHandler> logger)
+    : IRequestHandler<CreateConversionMatProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverConversionMatProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateConversionMatProjectCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -51,7 +51,7 @@ public class CreateHandoverConversionMatProjectCommandHandler(
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
 
-            var parameters = new CreateHandoverConversionMatProjectParams(
+            var parameters = new CreateConversionMatProjectParams(
                 commonData.ProjectId,
                 new Urn(commonData.Urn),
                 conversionTask.Id.Value,
@@ -66,7 +66,7 @@ public class CreateHandoverConversionMatProjectCommandHandler(
                 request.NewTrustName!
                 );
 
-            var project = Project.CreateHandoverConversionMATProject(parameters);
+            var project = Project.CreateConversionMATProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
@@ -79,8 +79,8 @@ public class CreateHandoverConversionMatProjectCommandHandler(
         catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
-            logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
-            throw new UnknownException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
+            logger.LogError(ex, "Exception while creating conversion project for URN: {Urn}", request.Urn);
+            throw new UnknownException($"An error occurred while creating the conversion project for URN: {request.Urn}", ex);
         }
     }
 

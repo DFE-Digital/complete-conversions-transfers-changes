@@ -7,10 +7,11 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
-{   public record UpdateLandRegistryTitlePlansTaskCommand(
+{
+    public record UpdateLandRegistryTitlePlansTaskCommand(
         TaskDataId TaskDataId,
         bool? Received,
-        bool? Cleared, 
+        bool? Cleared,
         bool? Saved
     ) : IRequest<Result<bool>>;
 
@@ -25,7 +26,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
             tasksData.LandRegistryReceived = request.Received;
-            tasksData.LandRegistryCleared = request.Cleared; 
+            tasksData.LandRegistryCleared = request.Cleared;
             tasksData.LandRegistrySaved = request.Saved;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
