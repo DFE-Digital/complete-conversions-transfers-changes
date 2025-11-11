@@ -3,30 +3,20 @@
 @using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.TagHelpers;
 @using Dfe.Complete.Utils;
-@using Microsoft.AspNetCore.Authorization
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
-@inject IAuthorizationService Authorization
+
 
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDetailsTask.ConfirmChairOfGovernorsDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
-    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
-    var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
-    var canAddContact = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();    
+    var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);    
 }
 
 @section TaskHeaderHintSection
 {
     <div class="govuk-hint">
-        @if (canAddContact.Succeeded)
-        {
-            <p>Check the contact details are correct, <a href="@projectsExternalContactLink" data-cy="external-contacts-link">edit incorrect contact details and add missing contacts</a>. You may need to contact the person who previously worked on the project to verify this.</p>
-        }
-        else
-        {
-            <p>Check the contact details are correct. You may need to contact the person who previously worked on the project to verify this.</p>
-        }
+        @await Html.PartialAsync("~/Pages/Projects/TaskList/_ContactTaskHeaderSection.cshtml")
     </div>
 }
 @section TaskSection {

@@ -7,7 +7,17 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "CreateHandoverConversionMatProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateHandoverTransferProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateHandoverTransferMatProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
@@ -194,6 +204,11 @@
       "Controller": "ServiceSupportController",
       "Action": "RemoveLocalAuthorityAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
+    },
+    {
+      "Controller": "ProjectGroupController",
+      "Action": "CreateProjectGroupAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
       "Controller": "ProjectGroupController",
@@ -493,6 +508,16 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateFormMTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateClosureOrTransferDeclarationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

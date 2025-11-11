@@ -248,6 +248,42 @@
       }
     },
     "/v1/ProjectGroup": {
+      "post": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Creates a project group.",
+        "operationId": "ProjectGroup_CreateProjectGroup",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project group created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
       "get": {
         "tags": [
           "ProjectGroup"
@@ -395,6 +431,43 @@
         }
       }
     },
+    "/v1/Projects/projects/conversions/form-a-mat": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new MAT conversion project (handover version).",
+        "operationId": "Projects_CreateHandoverConversionMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionMatProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/projects/transfers": {
       "post": {
         "tags": [
@@ -409,6 +482,43 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateHandoverTransferProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/projects/transfers/form-a-mat": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new transfer MAT project (handover version).",
+        "operationId": "Projects_CreateHandoverTransferMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverTransferMatProjectCommand"
               }
             }
           },
@@ -466,7 +576,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/Transfer": {
@@ -503,7 +614,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatConversion": {
@@ -540,7 +652,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatTransfer": {
@@ -3577,20 +3690,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/UpdateConfirmSchoolHasCompletedAllActions": {
+    "/v1/TasksData/TaskData/FormM": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Update the confirmation the school has completed all actions task data for conversion project.",
-        "operationId": "TasksData_UpdateConfirmSchoolHasCompletedAllActionsTask",
+        "summary": "Updating the form M task data for transfer project.",
+        "operationId": "TasksData_UpdateFormMTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSchoolHasCompletedAllActionsTaskCommand"
+                "$ref": "#/components/schemas/UpdateFormMTaskCommand"
               }
             }
           },
@@ -3599,7 +3712,40 @@
         },
         "responses": {
           "204": {
-            "description": "Update confirm school has completed all actions task successfully."
+            "description": "Updated the form M task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ClosureOrTransferDeclaration": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check and clear the closure or transfer declaration for transfer project.",
+        "operationId": "TasksData_UpdateClosureOrTransferDeclarationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClosureOrTransferDeclarationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Check and clear the closure or transfer declaration task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -5194,6 +5340,18 @@
           }
         }
       },
+      "CreateProjectGroupCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupReferenceNumber": {
+            "type": "string"
+          },
+          "ukprn": {
+            "$ref": "#/components/schemas/Ukprn"
+          }
+        }
+      },
       "ProjectGroupDto": {
         "type": "object",
         "additionalProperties": false,
@@ -5344,6 +5502,57 @@
           }
         }
       },
+      "CreateHandoverConversionMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CreateHandoverTransferProjectCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -5404,6 +5613,70 @@
             "nullable": true
           },
           "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateHandoverTransferMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outgoingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
           }
@@ -9048,18 +9321,63 @@
           }
         }
       },
-      "UpdateConfirmSchoolHasCompletedAllActionsTaskCommand": {
+      "UpdateFormMTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "emailed": {
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receivedTitlePlans": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
             "type": "boolean",
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateClosureOrTransferDeclarationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
             "type": "boolean",
             "nullable": true
           }

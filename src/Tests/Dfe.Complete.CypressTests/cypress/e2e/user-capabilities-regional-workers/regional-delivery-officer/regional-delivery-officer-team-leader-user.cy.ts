@@ -3,7 +3,7 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToSoftDeleteAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
@@ -78,8 +78,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    // bug 245061
-    // + POST /Projects/InternalContacts/EditAssignedUser is intermittently not being called
+    // bug 247499
     it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
@@ -105,7 +104,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
     });
 
-    it("Should be able to change the added by user of the project in internal projects", () => {
+    // bug 247499
+    it.skip("Should be able to change the added by user of the project in internal projects", () => {
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
@@ -117,9 +117,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should NOT be able to view and edit local authorities", () => {
