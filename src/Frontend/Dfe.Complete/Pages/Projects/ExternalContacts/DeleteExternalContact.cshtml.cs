@@ -18,7 +18,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
     [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
     public class DeleteExternalContact(ISender sender, IErrorService errorService, ILogger<DeleteExternalContact> logger)
      : PageModel
-    {   
+    {
         private readonly ISender sender = sender;
         private readonly IErrorService errorService = errorService;
         private readonly ILogger<DeleteExternalContact> logger = logger;
@@ -40,7 +40,8 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
 
         public async Task<IActionResult> OnPostAsync()
         {
-            try{
+            try
+            {
 
                 var deleteExternalContactCommand = new DeleteExternalContactCommand(new ContactId(Guid.Parse(ContactId)));
                 var response = await sender.Send(deleteExternalContactCommand);
@@ -98,15 +99,15 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
 
             if (!success)
             {
-                var error = string.Format(ValidationConstants.InvalidGuid, ContactId);                
-                throw new NotFoundException(error);                
+                var error = string.Format(ValidationConstants.InvalidGuid, ContactId);
+                throw new NotFoundException(error);
             }
 
             var query = new GetContactByIdQuery(new ContactId(guid));
             var result = await sender.Send(query);
 
             if (!result.IsSuccess || result.Value == null)
-            {                
+            {
                 var error = string.Format(ValidationConstants.ContactNotFound, ContactId);
                 throw new NotFoundException(error);
             }

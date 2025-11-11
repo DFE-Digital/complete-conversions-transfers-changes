@@ -56,7 +56,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreement
             }
             else
             {
-                NotApplicable = ConversionTaskData.ChurchSupplementalAgreementNotApplicable; 
+                NotApplicable = ConversionTaskData.ChurchSupplementalAgreementNotApplicable;
                 Received = ConversionTaskData.ChurchSupplementalAgreementReceived;
                 Cleared = ConversionTaskData.ChurchSupplementalAgreementCleared;
                 Signed = ConversionTaskData.ChurchSupplementalAgreementSigned;

@@ -39,7 +39,7 @@ namespace Dfe.Complete.Tests.Validators
             Assert.Empty(results);
         }
 
-        [Theory] 
+        [Theory]
         [InlineData("   ")]
         [InlineData("123456")]
         [InlineData("INVALID")]

@@ -9,7 +9,7 @@ namespace Dfe.Complete.Extensions
             if (modelState.ContainsKey(key))
             {
                 var entry = modelState[key];
-                if(entry == null)
+                if (entry == null)
                 {
                     return;
                 }

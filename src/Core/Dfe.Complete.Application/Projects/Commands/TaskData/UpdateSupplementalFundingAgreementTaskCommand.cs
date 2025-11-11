@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -7,12 +6,13 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateSupplementalFundingAgreementTaskCommand(
         TaskDataId TaskDataId,
-        [Required]ProjectType? ProjectType,
+        [Required] ProjectType? ProjectType,
         bool? Received,
         bool? Cleared,
         bool? Sent,
@@ -61,7 +61,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             tasksData.SupplementalFundingAgreementSaved = request.Saved;
             tasksData.SupplementalFundingAgreementCleared = request.Cleared;
-            tasksData.SupplementalFundingAgreementReceived = request.Received; 
+            tasksData.SupplementalFundingAgreementReceived = request.Received;
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.Now, cancellationToken);
         }

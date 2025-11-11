@@ -1,26 +1,22 @@
-﻿using Dfe.AcademiesApi.Client.Contracts;
+﻿using AutoFixture;
+using AutoFixture.Xunit2;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
-using Microsoft.Extensions.Logging;
-using Moq; 
-using AutoFixture.Xunit2;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using AutoFixture;
 using MockQueryable;
 using NSubstitute;
-using System.Collections.ObjectModel;
 using NSubstitute.ExceptionExtensions;
+using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class ListAllProjectsHandoverQueryHandlerTests
-    { 
+    {
         [Theory]
         [CustomAutoData(
            typeof(OmitCircularReferenceCustomization),
@@ -51,7 +47,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                .CreateMany(1)
                .OrderBy(t => t.Name);
             mockTrustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos))); 
+            .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos)));
 
             var query = new ListAllProjectsHandoverQuery(ProjectState.Inactive);
 
@@ -78,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             IFixture fixture)
         {
             // Arrange
-            var ukprn = fixture.Create<int>(); 
+            var ukprn = fixture.Create<int>();
             var listAllProjectsQueryModels = fixture.Build<ListAllProjectsQueryModel>()
             .CreateMany(5)
             .Select(p =>
@@ -98,7 +94,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockListAllProjectsQueryService.ListAllProjects(
                 Arg.Is<ProjectFilters>(f =>
                     f.ProjectStatus == ProjectState.Inactive))
-                .Returns(mock); 
+                .Returns(mock);
 
             var query = new ListAllProjectsHandoverQuery(ProjectState.Inactive);
 
@@ -111,7 +107,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.NotNull(result.Value);
             foreach (var item in result.Value)
             {
-                Assert.Null(item.NewTrustName); 
+                Assert.Null(item.NewTrustName);
             }
         }
 
@@ -123,7 +119,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturnFailure_WhenExceptionThrown(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             ListAllProjectsHandoverQueryHandler handler)
-        { 
+        {
             // Arrange  
             mockListAllProjectsQueryService.ListAllProjects(
                 Arg.Is<ProjectFilters>(f =>

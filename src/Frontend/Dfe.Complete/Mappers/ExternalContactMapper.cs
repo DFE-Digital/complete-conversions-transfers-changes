@@ -9,7 +9,7 @@ namespace Dfe.Complete.Helpers
         {
             return contactType switch
             {
-                ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors or ExternalContactType.SchoolOrAcademy => ContactCategory.SchoolOrAcademy,                
+                ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors or ExternalContactType.SchoolOrAcademy => ContactCategory.SchoolOrAcademy,
                 ExternalContactType.IncomingTrust => ContactCategory.IncomingTrust,
                 ExternalContactType.OutgoingTrust => ContactCategory.OutgoingTrust,
                 ExternalContactType.LocalAuthority => ContactCategory.LocalAuthority,
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Helpers
 
         public static string GetRoleByContactType(ExternalContactType contactType)
         {
-            if(contactType == ExternalContactType.IncomingTrust || contactType == ExternalContactType.OutgoingTrust)
+            if (contactType == ExternalContactType.IncomingTrust || contactType == ExternalContactType.OutgoingTrust)
             {
                 return "CEO";
             }

@@ -1,9 +1,9 @@
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {

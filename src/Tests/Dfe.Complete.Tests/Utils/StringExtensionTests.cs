@@ -47,7 +47,7 @@ namespace Dfe.Complete.Tests.Utils
             Assert.NotNull(ex.InnerException);
             Assert.Contains("'Z' (ASCII 90)", ex.InnerException.Message);
         }
-        
+
         [Theory]
         [InlineData("Chester Diocesan Learning Trust (CDLT)", "Chester Diocesan Learning Trust (Cdlt)")]
         [InlineData("BOSCO CATHOLIC EDUCATION TRUST", "Bosco Catholic Education Trust")]

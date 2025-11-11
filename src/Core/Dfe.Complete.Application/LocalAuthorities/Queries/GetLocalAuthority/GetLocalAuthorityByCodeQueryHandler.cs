@@ -1,7 +1,7 @@
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Application.LocalAuthorities.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

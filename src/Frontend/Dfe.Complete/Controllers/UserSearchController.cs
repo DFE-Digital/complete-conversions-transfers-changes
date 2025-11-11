@@ -20,7 +20,7 @@ public class UserSearchController(ISender sender) : Controller
         }
 
         var formattedArray = users.Value.Select(user => new[] { user.FirstName, user.LastName, user.Email }).ToArray();
-        
+
         return Ok(formattedArray);
     }
 }

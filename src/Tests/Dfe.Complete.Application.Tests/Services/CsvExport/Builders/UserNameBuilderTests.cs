@@ -9,7 +9,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
     {
         [Fact]
         public void ReturnsBlankIfNull()
-        {            
+        {
             var builder = new UserNameBuilder<User>(x => x);
 
             var result = builder.Build(null);

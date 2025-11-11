@@ -2,11 +2,11 @@
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.LocalAuthorities.Models
-{ 
+{
     public class ContactDetailsModel
-    { 
+    {
         public ContactId Id { get; set; } = null!;
-        public string Title { get; set; } = null!;   
+        public string Title { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string? Email { get; set; } = null!;
         public string? Phone { get; set; } = null!;

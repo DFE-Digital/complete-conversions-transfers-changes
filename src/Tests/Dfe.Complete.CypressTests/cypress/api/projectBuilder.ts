@@ -3,32 +3,27 @@ import {
     CreateMatConversionProjectRequest,
     CreateMatTransferProjectRequest,
     CreateTransferProjectRequest,
+    UpdateProjectHandoverAssignRequest,
 } from "./apiDomain";
-import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
-import { getSignificantDateString } from "cypress/support/formatDate";
 
 export class ProjectBuilder {
     public static createConversionProjectRequest(
         options: Partial<CreateConversionProjectRequest> = {},
     ): CreateConversionProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
-            significantDate: getSignificantDateString(1),
-            isSignificantDateProvisional: false,
-            incomingTrustUkprn: {
-                value: macclesfieldTrust.ukprn,
-            },
-            isDueTo2Ri: false,
-            hasAcademyOrderBeenIssued: false,
+            urn: 0, // specify a valid URN in request options
+            incomingTrustUkprn: macclesfieldTrust.ukprn,
+            provisionalConversionDate: "2027-03-01",
             advisoryBoardDate: "2025-02-18",
             advisoryBoardConditions: "test",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            groupReferenceNumber: groupReferenceNumber,
-            handingOverToRegionalCaseworkService: false,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
+            groupId: null,
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
+            directiveAcademyOrder: false,
             ...options,
         };
     }
@@ -37,24 +32,20 @@ export class ProjectBuilder {
         options: Partial<CreateTransferProjectRequest> = {},
     ): CreateTransferProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
-            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
-            incomingTrustUkprn: { value: dimensionsTrust.ukprn },
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            isDueToInedaquateOfstedRating: false,
-            isDueToIssues: false,
-            outGoingTrustWillClose: false,
-            handingOverToRegionalCaseworkService: false,
+            urn: 0, // specify a valid URN in request options
+            outgoingTrustUkprn: macclesfieldTrust.ukprn,
+            incomingTrustUkprn: dimensionsTrust.ukprn,
+            inadequateOfsted: false,
+            outgoingTrustToClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "test",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
-            groupReferenceNumber: groupReferenceNumber,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
+            groupId: null,
+            provisionalTransferDate: "2027-05-01",
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
+            financialSafeguardingGovernanceIssues: false,
             ...options,
         };
     }
@@ -63,20 +54,17 @@ export class ProjectBuilder {
         options: Partial<CreateMatConversionProjectRequest> = {},
     ): CreateMatConversionProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
+            urn: 0, // specify a valid URN in request options
             newTrustName: macclesfieldTrust.name,
             newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            hasAcademyOrderBeenIssued: false,
+            directiveAcademyOrder: false,
             advisoryBoardDate: "2023-05-01",
+            provisionalConversionDate: "2027-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
-            handingOverToRegionalCaseworkService: false,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
             ...options,
         };
     }
@@ -85,24 +73,53 @@ export class ProjectBuilder {
         options: Partial<CreateMatTransferProjectRequest> = {},
     ): CreateMatTransferProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
+            urn: 0, // specify a valid URN in request options
             newTrustName: dimensionsTrust.name,
             newTrustReferenceNumber: dimensionsTrust.referenceNumber,
-            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            isDueToInedaquateOfstedRating: false,
-            isDueToIssues: false,
-            handingOverToRegionalCaseworkService: false,
-            outGoingTrustWillClose: false,
+            outgoingTrustUkprn: macclesfieldTrust.ukprn,
+            provisionalTransferDate: "2027-03-01",
+            inadequateOfsted: false,
+            financialSafeguardingGovernanceIssues: false,
+            outgoingTrustToClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
+            ...options,
+        };
+    }
+
+    public static updateConversionProjectHandoverAssignRequest(
+        options: Partial<UpdateProjectHandoverAssignRequest> = {},
+    ): UpdateProjectHandoverAssignRequest {
+        return {
+            projectId: { value: "" }, // specify a valid projectId in request options
+            schoolSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            assignedToRegionalCaseworkerTeam: false,
+            handoverComments: "Default handover comments",
+            userId: { value: cypressUser.id },
+            userTeam: "London",
+            twoRequiresImprovement: false,
+            ...options,
+        };
+    }
+
+    public static updateTransferProjectHandoverAssignRequest(
+        options: Partial<UpdateProjectHandoverAssignRequest> = {},
+    ): UpdateProjectHandoverAssignRequest {
+        return {
+            projectId: { value: "" }, // specify a valid projectId in request options
+            schoolSharepointLink: "https://educationgovuk.sharepoint.com/1",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
             outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
+            assignedToRegionalCaseworkerTeam: false,
+            handoverComments: "Default handover comments",
+            userId: { value: cypressUser.id },
+            userTeam: "London",
+            twoRequiresImprovement: false,
             ...options,
         };
     }

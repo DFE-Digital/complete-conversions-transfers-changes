@@ -13,7 +13,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
     {
         [BindProperty]
         public bool? RpaPolicyConfirm { get; set; }
-         
+
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         [BindProperty]

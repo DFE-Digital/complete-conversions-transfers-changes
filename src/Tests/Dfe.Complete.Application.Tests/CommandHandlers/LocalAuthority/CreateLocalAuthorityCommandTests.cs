@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Linq.Expressions;
@@ -63,7 +62,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode", "Title", "ContactName", "Email", "Phone");
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
-              .ReturnsAsync(true); 
+              .ReturnsAsync(true);
 
             var result = await _handler.Handle(command, _cancellationToken);
 

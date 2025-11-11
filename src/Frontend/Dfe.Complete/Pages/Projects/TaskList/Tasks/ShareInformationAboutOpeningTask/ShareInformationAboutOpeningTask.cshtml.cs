@@ -22,7 +22,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ShareInformationAboutOpenin
             await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
             ShareInformationEmail = ConversionTaskData.ShareInformationEmail;
-            return Page();            
+            return Page();
         }
 
         public async Task<IActionResult> OnPost()

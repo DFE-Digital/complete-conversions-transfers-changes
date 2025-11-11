@@ -4,7 +4,7 @@
     {
         public string Build(T value)
         {
-            if(func(value) == true)
+            if (func(value) == true)
                 return trueValue;
 
             return falseValue;

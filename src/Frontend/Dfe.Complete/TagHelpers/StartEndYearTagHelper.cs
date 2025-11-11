@@ -43,7 +43,7 @@ namespace Dfe.Complete.TagHelpers
                 Hint = Hint
             };
 
-           
+
             var error = _errorService.GetError(Name);
             if (error != null)
             {
@@ -64,16 +64,16 @@ namespace Dfe.Complete.TagHelpers
                     model.StartInvalid = model.EndInvalid = true;
                 }
             }
-			else
-			{
+            else
+            {
                 if (!string.IsNullOrEmpty(startEnd) && Regex.Match(startEnd, "20\\d\\d/\\d\\d", RegexOptions.None, TimeSpan.FromSeconds(5)).Success)
                 {
                     model.StartYear = "20" + startEnd.Substring(2, 2);
                     model.EndYear = "20" + startEnd.Substring(5, 2);
                 }
-			}
+            }
 
-			return model;
+            return model;
         }
     }
 }

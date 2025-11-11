@@ -1,9 +1,9 @@
-using System.Security.Claims;
 using Dfe.Complete.TagHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.TagHelpers
 {
