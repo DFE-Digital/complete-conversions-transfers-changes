@@ -27,7 +27,7 @@ let projectId: string;
 describe("Capabilities and permissions of the regional casework services user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(regionalCaseworkerUser);
