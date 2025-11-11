@@ -43,46 +43,6 @@
     </div>
 }
 @section TaskSection {
-    <details data-module="govuk-details" class="govuk-details">
-        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">@(isConversion ? "How to check grant eligibility" : "Grant amounts, eligibility and guidance")</span></summary>
-        <div class="govuk-details__text">
-            @{
-                if (!isConversion)
-                {
-                    <p>Each eligible transfer will get £25,000 as a standard level of funding.</p>
-                    <p>This is adjusted if the academy transferring has a budget surplus. The incoming trust must use bugdet surplus to pay for transfer costs before using transfer grant funding.</p>
-                    <p>In some circumstances, they might be entitled to a larger grant. There are 3 levels of funding money that can be added to the transfer grant:</p>
-                    <ul>
-                        <li>fast track</li> 
-                        <li>intermediate</li> 
-                        <li>full sponsored</li>
-                    </ul>
-                    <p>The following amounts all include the £25,000 basic level of transfer grant funding.</p>
-                }
-            }
-            <p>The fast track grant amounts are:</p>
-            <ul>
-                <li>£70,000 for primary and special schools</li>
-                <li>£80,000 for secondary and all-through schools</li>
-            </ul>
-            <p>In some circumstances, the sponsor might be entitled to a larger grant.</p>
-            <p>This would be the intermediate grant, or the full sponsored grant.</p>
-            <p>Intermediate grant amounts are:</p>
-            <ul>
-                <li>£90,000 for primary and special schools</li>
-                <li>£115,000 for secondary and all-through schools</li>
-            </ul>
-            <p>Full sponsored grant amounts are:</p>
-            <ul>
-                <li>£110,000 for primary and special schools</li>
-                <li>£150,000 secondary and all-through schools</li>
-            </ul>
-            <p>All grants include the £25,000 conversion support grant. This is used to fund conversion costs, such as legal expenses. Any amount left after conversion costs have been paid for should be used for school improvements.</p>
-            <p>A business case must be approved at advisory board, or by the regional director, for a trust to get the intermediate or full sponsored grant.</p>
-            <p>There is more <a href="https://www.gov.uk/government/publications/sponsored-academies-funding-guidance-for-sponsors" class="govuk-link" target="_blank">guidance on grant eligibility and spending (opens in new tab)</a> on GOV.UK.</p>
-        </div>
-    </details>
-
     @if (isConversion)
     {
         @await Html.PartialAsync("_ConversionConfirmSponsoredSupportGrantTask", Model)

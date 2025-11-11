@@ -2,6 +2,43 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGrantTask.ConfirmTransferGrantFundingLevelTaskModel
 
+<div class="guidance">
+    <details data-module="govuk-details" class="govuk-details">
+    <summary class="govuk-details__summary">
+        <span class="govuk-details__summary-text">Grant amounts, eligibility and guidance</span>
+    </summary>
+    <div class="govuk-details__text">
+        <p>Each eligible transfer will get £25,000 as a standard level of funding.</p>
+        <p>This is adjusted if the academy transferring has a budget surplus. The incoming trust must use bugdet surplus to pay for transfer costs before using transfer grant funding.</p>
+        <p>In some circumstances, they might be entitled to a larger grant. There are 3 levels of funding money that can be added to the transfer grant:</p>
+        <ul>
+            <li>fast track</li>
+            <li>intermediate</li>
+            <li>full sponsored</li>
+        </ul>
+        <p>The following amounts all include the £25,000 basic level of transfer grant funding.</p>
+        <p>Fast track grant amounts are:</p>
+        <ul>
+            <li>£70,000 for primary and special academies</li>
+            <li>£80,000 for secondary and all through academies</li>
+        </ul>
+        <p>Intermediate grant amounts are:</p>
+        <ul>
+            <li>£90,000 for primary and special academies</li>
+            <li>£115,000 for secondary and all-through academies</li>
+        </ul>
+        <p>Full sponsored grant amounts are:</p>
+        <ul>
+            <li>£110,000 for primary and special academies</li>
+            <li>£150,000 secondary and all-through academies</li>
+        </ul>
+        <p>Any funding up to £100,000 must be approved by the director of the National Directorate.</p>
+        <p>Any funding of £100,000 or more must be approved by the Director General for Regions Group.</p>
+        <p>You can <external-link class="govuk-link" href="@_configuration["ExternalLinks:TransferGrantFundingGuidance"]">read the transfer grant funding guidance Word document (opens in new tab)</external-link> for more in-depth advice and support.</p>
+    </div>
+</details>
+</div>
+
 <form method="post">
     <input type="hidden" asp-for="TasksDataId" />
     <input type="hidden" asp-for="Type" />
