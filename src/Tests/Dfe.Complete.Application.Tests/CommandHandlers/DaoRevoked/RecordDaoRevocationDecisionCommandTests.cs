@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.DaoRevoked
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization))]
         public async Task Handle_ShouldDaoRevokedProjectSuccessfully(
-            [Frozen] IProjectReadRepository mockProjectReadRepository, 
+            [Frozen] IProjectReadRepository mockProjectReadRepository,
             RecordDaoRevocationDecisionCommandHandler handler,
             Domain.Entities.Project project)
         {

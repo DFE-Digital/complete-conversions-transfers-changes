@@ -8,7 +8,7 @@ using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims; 
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateDeedTerminationChurchSupplementalAgreementTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value }, 
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Cleared = true,
                 Received = true,
                 Saved = true,
@@ -56,7 +56,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedTerminationChurchAgreementReceived);
             Assert.False(existingTaskData.DeedTerminationChurchAgreementSignedOutgoingTrust);
             Assert.False(existingTaskData.DeedTerminationChurchAgreementSignedDiocese);
-            Assert.True(existingTaskData.DeedTerminationChurchAgreementSaved); 
+            Assert.True(existingTaskData.DeedTerminationChurchAgreementSaved);
             Assert.True(existingTaskData.DeedTerminationChurchAgreementSignedSecretaryState);
             Assert.False(existingTaskData.DeedTerminationChurchAgreementSavedAfterSigningBySecretaryState);
         }

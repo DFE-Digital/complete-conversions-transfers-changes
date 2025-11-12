@@ -34,11 +34,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             var isConversion = Project.Type == ProjectType.Conversion;
 
             if (isConversion)
-            { 
+            {
                 SendIntroEmails = ConversionTaskData.StakeholderKickOffIntroductoryEmails;
                 SendInvites = ConversionTaskData.StakeholderKickOffSetupMeeting;
                 HostMeetingOrCall = ConversionTaskData.StakeholderKickOffMeeting;
@@ -46,22 +46,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 LocalAuthorityAbleToConvert = ConversionTaskData.StakeholderKickOffCheckProvisionalConversionDate;
             }
             else
-            { 
+            {
                 SendIntroEmails = TransferTaskData.StakeholderKickOffIntroductoryEmails;
                 SendInvites = TransferTaskData.StakeholderKickOffSetupMeeting;
                 HostMeetingOrCall = TransferTaskData.StakeholderKickOffMeeting;
             }
-            
+
             SignificantDate = Project.SignificantDateProvisional is true ? null : Project.SignificantDate;
 
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             var errorToRemove = "The Significant date must include a month and year";
-            ModelState.RemoveError("significant-date", errorToRemove); 
+            ModelState.RemoveError("significant-date", errorToRemove);
 
             if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
             {
@@ -73,21 +73,21 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            
-            var request = new UpdateExternalStakeholderKickOffTaskCommand(Project.Id, 
-                SendIntroEmails, 
-                LocalAuthorityProforma, 
-                LocalAuthorityAbleToConvert, 
-                SendInvites, 
-                HostMeetingOrCall, 
+
+            var request = new UpdateExternalStakeholderKickOffTaskCommand(Project.Id,
+                SendIntroEmails,
+                LocalAuthorityProforma,
+                LocalAuthorityAbleToConvert,
+                SendInvites,
+                HostMeetingOrCall,
                 SignificantDate,
                 User.Identity!.Name);
-            
+
             await Sender.Send(request);
-            
+
             SetTaskSuccessNotification();
-            
+
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
-        } 
+        }
     }
 }

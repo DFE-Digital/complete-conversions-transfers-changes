@@ -151,7 +151,7 @@ namespace Dfe.Complete.Domain.Interfaces.Repositories
         /// <param name="entities"></param>
         /// <returns></returns>
         IEnumerable<TAggregate> AddRange(ICollection<TAggregate> entities);
-        
+
         /// <summary>
         /// 
         /// </summary>

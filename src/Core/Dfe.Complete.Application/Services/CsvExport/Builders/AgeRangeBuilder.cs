@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class AgeRangeBuilder<T>(Func<T, GiasEstablishment> selector): IColumnBuilder<T>
+    public class AgeRangeBuilder<T>(Func<T, GiasEstablishment> selector) : IColumnBuilder<T>
     {
         public string Build(T value)
         {

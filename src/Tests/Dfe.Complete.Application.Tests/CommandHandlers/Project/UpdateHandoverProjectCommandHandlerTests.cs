@@ -31,10 +31,22 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             UpdateHandoverProjectCommand command)
         {
             // Arrange
-            var now = DateTime.UtcNow;
-            var sourceProject = Domain.Entities.Project.CreateConversionProject(command.ProjectId, new Urn(123456), now, now, TaskType.Conversion, ProjectType.Conversion,
-                Guid.NewGuid(), DateOnly.MinValue, true, new Ukprn(2), Region.London, true, true, DateOnly.MinValue, "", "", "", null, default, new UserId(Guid.NewGuid()),
-                null, null, null, Guid.NewGuid());
+            var parameters = new CreateConversionProjectParams(
+                command.ProjectId,
+                new Urn(123456),
+                Guid.NewGuid(),
+                DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+                new Ukprn(2),
+                Region.London,
+                true,
+                DateOnly.FromDateTime(DateTime.Today.AddDays(15)),
+                "Advisory board conditions",
+                null,
+                new UserId(Guid.NewGuid()),
+                Guid.NewGuid()
+            );
+
+            var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
             mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), It.IsAny<CancellationToken>()).Returns(sourceProject);
             var mockQueryable = new[] { keyContact }.AsQueryable().BuildMock();
@@ -62,10 +74,22 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             KeyContact keyContact)
         {
             // Arrange
-            var now = DateTime.UtcNow;
-            var sourceProject = Domain.Entities.Project.CreateConversionProject(command.ProjectId, new Urn(123456), now, now, TaskType.Conversion, ProjectType.Conversion,
-                Guid.NewGuid(), DateOnly.MinValue, true, new Ukprn(2), Region.London, true, true, DateOnly.MinValue, "", "", "", null, default, new UserId(Guid.NewGuid()),
-                null, null, null, Guid.NewGuid());
+            var parameters = new CreateConversionProjectParams(
+                command.ProjectId,
+                new Urn(123456),
+                Guid.NewGuid(),
+                DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
+                new Ukprn(2),
+                Region.London,
+                true,
+                DateOnly.FromDateTime(DateTime.Today.AddDays(15)),
+                "Advisory board conditions",
+                null,
+                new UserId(Guid.NewGuid()),
+                Guid.NewGuid()
+            );
+
+            var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
             mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), It.IsAny<CancellationToken>()).Returns(sourceProject);
             keyContact.ProjectId = sourceProject.Id;

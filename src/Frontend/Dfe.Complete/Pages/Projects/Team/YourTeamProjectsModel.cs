@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dfe.Complete.Domain.Constants;
+﻿using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Pages.Projects.Team;
 

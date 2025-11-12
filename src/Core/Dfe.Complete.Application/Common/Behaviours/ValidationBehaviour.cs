@@ -1,7 +1,7 @@
-using System.Diagnostics.CodeAnalysis;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using ValidationException = Dfe.Complete.Application.Common.Exceptions.ValidationException;
 
 namespace Dfe.Complete.Application.Common.Behaviours;
@@ -28,7 +28,7 @@ public class ValidationBehaviour<TRequest, TResponse>(IEnumerable<IValidator<TRe
 
         if (failures.Count > 0)
         {
-            var errorMessages = string.Join(",", failures.Select(x => x.ErrorMessage)); 
+            var errorMessages = string.Join(",", failures.Select(x => x.ErrorMessage));
             logger.LogError("Validation failures occurred in {HandlerName}. Request: {@Request}, Errors: {ErrorMessages}", nameof(ValidationBehaviour<TRequest, TResponse>), request, errorMessages);
             throw new ValidationException(failures);
         }

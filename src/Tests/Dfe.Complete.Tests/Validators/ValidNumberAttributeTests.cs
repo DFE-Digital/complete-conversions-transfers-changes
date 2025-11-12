@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Validators;
+﻿using Dfe.Complete.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -15,14 +15,14 @@ namespace Dfe.Complete.Tests.Validators
         [InlineData("25", 10, 30, true)]
         [InlineData("5", 10, 30, false)]
         [InlineData("35", 10, 30, false)]
-        [InlineData("abc", 10, 30, false)] 
-        [InlineData("", 10, 30, true)]  
-        [InlineData(null, 10, 30, true)] 
+        [InlineData("abc", 10, 30, false)]
+        [InlineData("", 10, 30, true)]
+        [InlineData(null, 10, 30, true)]
         public void ValidNumberAttribute_Validation_WorksAsExpected(string value, int minValue, int maxValue, bool expectedIsValid)
         {
             // Arrange
             var attribute = new ValidNumberAttribute(minValue, maxValue);
-            var validationContext = new ValidationContext(new { }); 
+            var validationContext = new ValidationContext(new { });
             var validationResults = new List<ValidationResult>();
 
             // Act
@@ -41,8 +41,8 @@ namespace Dfe.Complete.Tests.Validators
         [InlineData("25", 10, 30, true, false)]
         [InlineData("abc", 10, 30, true, true)]
         [InlineData("abc", 10, 30, false, false)]
-        [InlineData("", 10, 30, true, true)]   
-        [InlineData(null, 10, 30, true, true)]  
+        [InlineData("", 10, 30, true, true)]
+        [InlineData(null, 10, 30, true, true)]
         public void ValidNumberAttributeWithDepentableFlag_Validation_WorksAsExpected(
                 string value,
                 int minValue,

@@ -17,8 +17,8 @@ public class EditAssignedUser(ISender sender, IErrorService errorService, ILogge
 {
     private readonly ISender _sender = sender;
 
-    [BindProperty] [InternalEmail] public string Email { get; set; } = default!;
-    
+    [BindProperty][InternalEmail] public string Email { get; set; } = default!;
+
     [BindProperty(SupportsGet = true)]
     public string? ReturnUrl { get; set; }
 
@@ -57,7 +57,7 @@ public class EditAssignedUser(ISender sender, IErrorService errorService, ILogge
 
         var assignedToUserQuery = new GetUserByEmailQuery(Email);
         var assignedResult = await _sender.Send(assignedToUserQuery);
-        
+
         if (assignedResult is { IsSuccess: true, Value.AssignToProject: true })
         {
             try

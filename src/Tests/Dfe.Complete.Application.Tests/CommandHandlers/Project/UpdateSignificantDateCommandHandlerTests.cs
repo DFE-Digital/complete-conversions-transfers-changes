@@ -4,13 +4,13 @@ using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
 using System.Linq.Expressions;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 

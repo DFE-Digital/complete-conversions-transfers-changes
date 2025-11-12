@@ -19,7 +19,7 @@ internal class GetContactsForProjectByCategoryHandler(IContactReadRepository con
     {
         try
         {
-            var filteredContacts  = contactReadRepository.Contacts.Where(Contacts => Contacts.ProjectId == request.ProjectId && Contacts.Category == request.ContactCategory);
+            var filteredContacts = contactReadRepository.Contacts.Where(Contacts => Contacts.ProjectId == request.ProjectId && Contacts.Category == request.ContactCategory);
 
             var contactsCollection = await filteredContacts.ToListAsync(cancellationToken);
             var contactsDtoCollection = mapper.Map<List<ContactDto>>(contactsCollection);
@@ -29,7 +29,7 @@ internal class GetContactsForProjectByCategoryHandler(IContactReadRepository con
         catch (Exception e)
         {
             return Result<List<ContactDto>>.Failure(e.Message);
-        }        
+        }
     }
 }
 

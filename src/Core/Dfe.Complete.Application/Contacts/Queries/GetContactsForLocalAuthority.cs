@@ -28,6 +28,6 @@ public class GetContactsForLocalAuthority(ICompleteRepository<Contact> contactsR
         {
             return Result<List<Contact>>.Failure(e.Message);
         }
-        
+
     }
 }

@@ -18,7 +18,7 @@ public class PaginationModel
         {
             HasPrevious = false;
         }
-            
+
         if (currentPageNumber < TotalPages)
         {
             HasNext = true;
@@ -30,20 +30,20 @@ public class PaginationModel
         }
 
         ElementIdPrefix = elementIdPrefix;
-        
+
         PagesToDisplay = new List<int>();
-        
-        if(currentPageNumber != 1)
+
+        if (currentPageNumber != 1)
             PagesToDisplay.Add(1);
         if (Previous is > 1)
             PagesToDisplay.Add(Previous.Value);
         PagesToDisplay.Add(currentPageNumber);
         if (Next < TotalPages)
             PagesToDisplay.Add(Next.Value);
-        if(currentPageNumber != TotalPages)
+        if (currentPageNumber != TotalPages)
             PagesToDisplay.Add(TotalPages);
     }
-        
+
     public List<int> PagesToDisplay { get; init; }
     public string Url { get; init; }
 
@@ -73,7 +73,7 @@ public class PaginationModel
     /// Ensures we can uniquely identify the pagination for separate content containers
     /// </summary>
     public string? ElementIdPrefix { get; init; }
-        
+
     public string Prefix => !string.IsNullOrEmpty(ElementIdPrefix) ? ElementIdPrefix : "";
     public string? NextPageLink => Next.HasValue ? SetUrl(Url, Next.Value) : null;
     public string? PreviousPageLink => Previous.HasValue ? SetUrl(Url, Previous.Value) : null;
@@ -82,5 +82,5 @@ public class PaginationModel
     public string PreviousButtonId => $"{Prefix}previous-page";
     public static string SetUrl(string url, int pageNumber) => $"{url}{(url.Contains('?') ? "&" : "?")}page={pageNumber}";
 
-    public bool IsOutOfRangePage{ get; set; }
+    public bool IsOutOfRangePage { get; set; }
 }

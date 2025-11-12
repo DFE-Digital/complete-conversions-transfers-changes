@@ -104,7 +104,7 @@ public class Startup
         SetupDataProtection(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
-        services.AddCompleteClientProject(Configuration);        
+        services.AddCompleteClientProject(Configuration);
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
         services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
@@ -224,12 +224,12 @@ public class Startup
     private void ConfigureCustomAntiforgery(IServiceCollection services)
     {
         services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
-        
+
         services.Configure<AntiforgeryOptions>(options =>
         {
             options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = string.IsNullOrEmpty(Configuration["CI"]) 
-                ? CookieSecurePolicy.Always 
+            options.Cookie.SecurePolicy = string.IsNullOrEmpty(Configuration["CI"])
+                ? CookieSecurePolicy.Always
                 : CookieSecurePolicy.SameAsRequest;
             options.Cookie.SameSite = SameSiteMode.Strict;
         });
@@ -249,7 +249,7 @@ public class Startup
             AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
-        });               
+        });
     }
 
     private void SetupDataProtection(IServiceCollection services)

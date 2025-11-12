@@ -2,15 +2,17 @@ import conversionTaskListPage from "cypress/pages/projects/conversionTaskListPag
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { urnPool } from "cypress/constants/testUrns";
+import projectRemover from "cypress/api/projectRemover";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectId: string;
 
 describe("Conversion Project Tasks List Navigation", () => {
     before(() => {
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {

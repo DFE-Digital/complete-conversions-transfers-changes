@@ -19,7 +19,7 @@ namespace Dfe.Complete.TagHelpers
         public ModelExpression For { get; set; }
 
         [HtmlAttributeName("href")]
-        public string Href { get; set; } 
+        public string Href { get; set; }
 
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -36,14 +36,14 @@ namespace Dfe.Complete.TagHelpers
                 viewContextAware.Contextualize(ViewContext);
             }
 
-          //  var trustDetails = For.Model as TrustDetails;
+            //  var trustDetails = For.Model as TrustDetails;
 
             var model = new TrustDetailsViewModel()
             {
                 Id = Id,
                 Label = Label,
                 Href = Href,
-           //     TrustDetails = trustDetails
+                //     TrustDetails = trustDetails
             };
             var content = await _htmlHelper.PartialAsync("_TrustDetails", model);
 
@@ -60,6 +60,6 @@ namespace Dfe.Complete.TagHelpers
 
         public string Href { get; set; }
 
-   //     public TrustDetails TrustDetails { get; set; }
+        //     public TrustDetails TrustDetails { get; set; }
     }
 }

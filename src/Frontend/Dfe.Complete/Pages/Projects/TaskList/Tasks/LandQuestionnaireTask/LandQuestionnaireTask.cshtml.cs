@@ -27,18 +27,18 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
             Received = ConversionTaskData.LandQuestionnaireReceived;
             Cleared = ConversionTaskData.LandQuestionnaireCleared;
             Signed = ConversionTaskData.LandQuestionnaireSigned;
             Saved = ConversionTaskData.LandQuestionnaireSaved;
-         
+
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
-        { 
+        {
             await Sender.Send(new UpdateLandQuestionnaireTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Signed, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));

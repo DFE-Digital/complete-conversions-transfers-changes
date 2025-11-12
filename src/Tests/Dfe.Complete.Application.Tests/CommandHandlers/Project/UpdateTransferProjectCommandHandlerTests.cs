@@ -1,18 +1,16 @@
-using System.Linq.Expressions;
-using AutoFixture;
 using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using NSubstitute;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Microsoft.EntityFrameworkCore;
 using MockQueryable;
+using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
@@ -246,15 +244,15 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .FindAsync(Arg.Any<Expression<Func<ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(group));
 
-          var transferTasksData = new TransferTasksData
-            (
-                tasksDataId,
-                DateTime.UtcNow,
-                DateTime.UtcNow,
-                false,
-                false,
-                false
-            );
+            var transferTasksData = new TransferTasksData
+              (
+                  tasksDataId,
+                  DateTime.UtcNow,
+                  DateTime.UtcNow,
+                  false,
+                  false,
+                  false
+              );
 
             transferTaskDataRepository
                 .GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>())

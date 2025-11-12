@@ -21,12 +21,12 @@ import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectT
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
-import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
-import prepareProjectApi from "cypress/api/prepareProjectApi";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.listings.heles },
+    urn: urnPool.listings.heles,
+    provisionalConversionDate: getSignificantDateString(1),
 });
 let projectId: string;
 const schoolName = "Hele's School";
@@ -34,16 +34,17 @@ const region = "South West";
 const localAuthority = "Plymouth";
 const localAuthorityShort = localAuthority.split(" ")[0];
 const transferProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.listings.queen },
-    significantDate: getSignificantDateString(1),
+    urn: urnPool.listings.queen,
+    provisionalTransferDate: getSignificantDateString(1),
 });
 const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const transferRegion = "North West";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.listings.myddle },
+    urn: urnPool.listings.myddle,
+    provisionalTransferDate: getSignificantDateString(1),
 });
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
-const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
+const prepareProject = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.listings.themount,
     provisionalConversionDate: getSignificantDateString(1),
 });
@@ -53,16 +54,19 @@ const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" }
 
 describe("View all projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(transferProject.urn.value);
-        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(transferProject.urn);
+        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn);
         projectRemover.removeProjectIfItExists(prepareProject.urn);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
-        projectApi.createTransferProject(transferProject);
-        projectApi.createMatTransferProject(transferFormAMatProject);
-        prepareProjectApi
-            .createConversionProject(prepareProject)
-            .then((response) => (prepareProjectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => {
+            projectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", getSignificantDateString(1));
+        });
+        projectApi.createAndUpdateTransferProject(transferProject).then((response) => {
+            taskHelper.updateExternalStakeholderKickOff(response.value, "completed", getSignificantDateString(1));
+        });
+        projectApi.createAndUpdateMatTransferProject(transferFormAMatProject);
+        projectApi.createConversionProject(prepareProject).then((response) => (prepareProjectId = response.value));
     });
 
     beforeEach(() => {
@@ -89,7 +93,7 @@ describe("View all projects", () => {
             ])
             .withSchool(prepareProjectName)
             .columnHasValue("URN", `${prepareProject.urn}`)
-            .columnHasValue("Incoming trust", dimensionsTrust.name)
+            .columnHasValue("Incoming trust", macclesfieldTrust.name)
             .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
             .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisoryBoardDate))
             .columnHasValue("Project type", "Conversion")
@@ -116,7 +120,7 @@ describe("View all projects", () => {
                 "Assigned to",
             ])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project?", "No")
@@ -129,7 +133,7 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion date", "Form a MAT project?", "Assigned to"])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
@@ -145,7 +149,7 @@ describe("View all projects", () => {
             .goToPreviousPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .withSchool(transferSchoolName)
-            .columnHasValue("URN", `${transferProject.urn.value}`)
+            .columnHasValue("URN", `${transferProject.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Form a MAT project?", "No")
@@ -158,7 +162,7 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferSchoolName)
-            .columnHasValue("URN", `${transferProject.urn.value}`)
+            .columnHasValue("URN", `${transferProject.urn}`)
             .columnHasValue("Transfer date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
@@ -174,8 +178,8 @@ describe("View all projects", () => {
             .goToPreviousPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .withSchool(transferFormAMatSchoolName)
-            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("URN", `${transferFormAMatProject.urn}`)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Form a MAT project?", "Yes")
             .columnHasValue("Assigned to", cypressUser.username);
@@ -187,8 +191,8 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
-            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
-            .columnHasValue("Transfer date", "Mar 2026")
+            .columnHasValue("URN", `${transferFormAMatProject.urn}`)
+            .columnHasValue("Transfer date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "Yes")
             .columnHasValue("Assigned to", cypressUser.username);
         allProjects
@@ -205,8 +209,8 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
-            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
-            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("URN", `${transferFormAMatProject.urn}`)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(transferFormAMatSchoolName);
@@ -226,13 +230,13 @@ describe("View all projects", () => {
                 "All conditions met",
                 "Confirmed date (Original date)",
             ])
-            .contains(`${schoolName} ${project.urn.value}`)
-            .withSchool(`${schoolName} ${project.urn.value}`)
+            .contains(`${schoolName} ${project.urn}`)
+            .withSchool(`${schoolName} ${project.urn}`)
             .columnHasValue("Region", region)
             .columnHasValue("Local authority", localAuthorityShort)
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
+            .columnHasValue("Confirmed date (Original date)", `${nextMonthShortUS} (${nextMonthShortUS})`) // bug 228624
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
@@ -250,14 +254,14 @@ describe("View all projects", () => {
                 "Authority to proceed",
                 "Confirmed date (Original date)",
             ])
-            .contains(`${transferSchoolName} ${transferProject.urn.value}`)
-            .withSchool(`${transferSchoolName} ${transferProject.urn.value}`)
+            .contains(`${transferSchoolName} ${transferProject.urn}`)
+            .withSchool(`${transferSchoolName} ${transferProject.urn}`)
             .columnHasValue("Region", transferRegion)
             .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
-            .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
+            .columnHasValue("Confirmed date (Original date)", `${nextMonthShortUS} (${nextMonthShortUS})`) // bug 228624
+            .goTo(`${transferSchoolName} ${transferProject.urn}`);
         projectDetailsPage.containsHeading(transferSchoolName);
     });
 
@@ -269,7 +273,7 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnContainsValue("Assigned to", cypressUser.username)
@@ -294,7 +298,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .contains(schoolName)
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .goTo(schoolName);
@@ -316,7 +320,7 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)
@@ -335,7 +339,7 @@ describe("View all projects", () => {
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)

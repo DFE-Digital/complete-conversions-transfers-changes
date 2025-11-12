@@ -21,6 +21,6 @@ namespace Dfe.Complete.Tests.Extensions
             tempDataMock.VerifySet(td => td["NotificationType"] = "success");
             tempDataMock.VerifySet(td => td["NotificationTitle"] = "TestTitle");
             tempDataMock.VerifySet(td => td["NotificationMessage"] = "TestMessage");
-        } 
+        }
     }
 }
