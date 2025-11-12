@@ -494,6 +494,21 @@
       "Controller": "TasksDataController",
       "Action": "UpdateClosureOrTransferDeclarationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAssignedUserAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAssignedTeamAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAddedByAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

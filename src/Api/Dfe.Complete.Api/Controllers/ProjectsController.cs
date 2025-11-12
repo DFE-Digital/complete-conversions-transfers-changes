@@ -681,21 +681,12 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
-        [HttpPut]
-        [SwaggerResponse(204, "Internal contact updated successfully.")]
+        [HttpPut("project/AssignedUser")]
+        [SwaggerResponse(204, "Assigned user updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(404, "Internal contact not found.")]
-        public async Task<IActionResult> UpdateInternalContactAsync([FromBody] UpdateAssignedUserCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateAssignedUserAsync([FromBody] UpdateAssignedUserCommand request, CancellationToken cancellationToken)
         {
-            var response = await sender.Send(request, cancellationToken);
-
-            if (!response.IsSuccess)
-            {
-                if (response.ErrorType == ErrorType.NotFound)
-                    return NotFound(response.Error);
-                return StatusCode(500, response.Error);
-            }
-
+            await sender.Send(request, cancellationToken);
             return NoContent();
         }
         
@@ -705,13 +696,28 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
-        [HttpPut]
+        [HttpPut("project/AssignedTeam")]
         [SwaggerResponse(204, "Assigned team updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> UpdateAssignedTeamAsync([FromBody] UpdateAssignedTeamCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
 
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updates added by.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut("project/AddedBy")]
+        [SwaggerResponse(204, "Added by updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> UpdateAddedByAsync([FromBody] UpdateRegionalDeliveryOfficerCommand request, CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
             return NoContent();
         }
     }
