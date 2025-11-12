@@ -674,5 +674,45 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
+        /// <summary>
+        /// Updates assigned user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut]
+        [SwaggerResponse(204, "Internal contact updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Internal contact not found.")]
+        public async Task<IActionResult> UpdateInternalContactAsync([FromBody] UpdateAssignedUserCommand request, CancellationToken cancellationToken)
+        {
+            var response = await sender.Send(request, cancellationToken);
+
+            if (!response.IsSuccess)
+            {
+                if (response.ErrorType == ErrorType.NotFound)
+                    return NotFound(response.Error);
+                return StatusCode(500, response.Error);
+            }
+
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updates assigned team.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut]
+        [SwaggerResponse(204, "Assigned team updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> UpdateAssignedTeamAsync([FromBody] UpdateAssignedTeamCommand request, CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+
+            return NoContent();
+        }
     }
 }
