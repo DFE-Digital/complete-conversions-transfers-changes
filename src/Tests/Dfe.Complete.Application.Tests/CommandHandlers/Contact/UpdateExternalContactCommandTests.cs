@@ -3,7 +3,6 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -66,7 +65,7 @@ public class UpdateExternalContactCommandTests
 
         var contact = fixture.Build<Entities.Contact>()
            .With(q => q.Id, command.ContactId)
-           .Create();       
+           .Create();
 
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
         mockContactReadRepository.Contacts.Returns(queryableContacts);
@@ -100,8 +99,8 @@ public class UpdateExternalContactCommandTests
         var queryableContacts = new List<Entities.Contact>().AsQueryable().BuildMock();
         mockContactReadRepository.Contacts.Returns(queryableContacts);
 
-        var expectedMessage = $"External contact with Id {command.ContactId.Value} not found.";        
-        
+        var expectedMessage = $"External contact with Id {command.ContactId.Value} not found.";
+
         // Act
         var result = await sut.Handle(command, CancellationToken.None);
 

@@ -7,7 +7,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Queries;
 public class ListAllProjectsQueryCustomization : ICustomization
 {
     public ProjectState? ProjectStatus { get; set; }
-    public ProjectType? Type{ get; set; }
+    public ProjectType? Type { get; set; }
     public int Page { get; set; }
     public int Count { get; set; }
 

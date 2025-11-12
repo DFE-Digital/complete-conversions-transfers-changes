@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
-        TaskDataId TaskDataId, 
+        TaskDataId TaskDataId,
         bool? AnyInformationChanged,
         bool? BaselineSheetApproved,
         bool? ConfirmToProceed
@@ -27,8 +27,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var project = await projectReadRepository.Projects
                 .FirstOrDefaultAsync(p => p.TasksDataId == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Project with task data id {request.TaskDataId.Value} not found.");
-            var now = DateTime.Now; 
-            
+            var now = DateTime.Now;
+
             project.AllConditionsMet = request.ConfirmToProceed;
             project.UpdatedAt = now;
 
@@ -40,7 +40,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ConditionsMetCheckAnyInformationChanged = request.AnyInformationChanged;
             tasksData.ConditionsMetBaselineSheetApproved = request.BaselineSheetApproved;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, now, cancellationToken); 
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, now, cancellationToken);
             return Result<bool>.Success(true);
         }
     }

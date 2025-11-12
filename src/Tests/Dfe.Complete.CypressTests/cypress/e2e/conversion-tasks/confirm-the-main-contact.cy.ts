@@ -8,23 +8,22 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.spen },
+    urn: urnPool.conversionTasks.spen,
 });
 let projectId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversionTasks.grylls },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversionTasks.grylls,
 });
 let otherUserProjectId: string;
 
 describe("Conversion Tasks - Confirm the main contact", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createConversionProject(project).then((createResponse) => {
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
+        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });
-        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 public record UpdateProjectCompletedCommand(
-    ProjectId ProjectId    
+    ProjectId ProjectId
 ) : IRequest<Result<bool>>;
 
 internal class UpdateProjectCompletedCommandHandler(

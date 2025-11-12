@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Contact;
 public class DeleteExternalContactCommandTests
 {
     private readonly Mock<IUnitOfWork> mockUnitOfWork;
-    private readonly Mock<ICompleteRepository<Entities.Project>> mockProjectRepository;    
+    private readonly Mock<ICompleteRepository<Entities.Project>> mockProjectRepository;
     private readonly Mock<IContactReadRepository> mockContactReadRepository;
     private readonly Mock<IContactWriteRepository> mockContactWriteRepository;
     private readonly Mock<IKeyContactReadRepository> mockKeyContactReadRepository;
@@ -33,7 +33,7 @@ public class DeleteExternalContactCommandTests
     public DeleteExternalContactCommandTests()
     {
         mockUnitOfWork = new Mock<IUnitOfWork>();
-        mockProjectRepository = new Mock<ICompleteRepository<Entities.Project>>();        
+        mockProjectRepository = new Mock<ICompleteRepository<Entities.Project>>();
         mockContactReadRepository = new Mock<IContactReadRepository>();
         mockContactWriteRepository = new Mock<IContactWriteRepository>();
         mockKeyContactReadRepository = new Mock<IKeyContactReadRepository>();
@@ -53,7 +53,7 @@ public class DeleteExternalContactCommandTests
     [InlineData("5f7f01d0-9a2f-46a6-a971-cdf153c0df88", null, null, null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88")]
     [InlineData(null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88", null, null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88")]
     [InlineData(null, null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88", null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88")]
-    [InlineData(null, null, null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88", "5f7f01d0-9a2f-46a6-a971-cdf153c0df88")]    
+    [InlineData(null, null, null, "5f7f01d0-9a2f-46a6-a971-cdf153c0df88", "5f7f01d0-9a2f-46a6-a971-cdf153c0df88")]
     public async Task Handle_ShouldDeleteExternalContactSuccessfully(
         string EstablishmentMainContactId,
         string IncomingTrustMainContactId,
@@ -67,12 +67,12 @@ public class DeleteExternalContactCommandTests
         ProjectId projectId = fixture.Create<ProjectId>();
         ContactId contactId = new ContactId(Guid.Parse(contactIdValue));
 
-        var command = new DeleteExternalContactCommand(contactId);            
+        var command = new DeleteExternalContactCommand(contactId);
 
         var contact = fixture.Build<Entities.Contact>()
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
-                .Create();       
+                .Create();
 
         var project = fixture.Build<Entities.Project>()
                .With(t => t.Id, projectId)
@@ -80,7 +80,7 @@ public class DeleteExternalContactCommandTests
                .With(t => t.IncomingTrustMainContactId, IncomingTrustMainContactId == null ? fixture.Create<ContactId>() : new ContactId(Guid.Parse(IncomingTrustMainContactId)))
                .With(t => t.OutgoingTrustMainContactId, OutgoingTrustMainContactId == null ? fixture.Create<ContactId>() : new ContactId(Guid.Parse(OutgoingTrustMainContactId)))
                .With(t => t.LocalAuthorityMainContactId, LocalAuthorityMainContactId == null ? fixture.Create<ContactId>() : new ContactId(Guid.Parse(LocalAuthorityMainContactId)))
-               .Create();       
+               .Create();
 
         // Arrange
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
@@ -183,7 +183,7 @@ public class DeleteExternalContactCommandTests
     {
         // Arrange
         ContactId contactId = fixture.Create<ContactId>();
-        ProjectId projectId = fixture.Create<ProjectId>();        
+        ProjectId projectId = fixture.Create<ProjectId>();
 
         var command = new DeleteExternalContactCommand(contactId);
 
@@ -191,7 +191,7 @@ public class DeleteExternalContactCommandTests
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
                 .Create();
-       
+
         // Arrange
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
         mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
@@ -214,11 +214,11 @@ public class DeleteExternalContactCommandTests
             () => Assert.Equal(expectedMessage, result.Error),
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
-            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never)            
+            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never)
         );
     }
 
-    [Fact]    
+    [Fact]
     public async Task Handle_ShouldThrowException_WhenContactIsNotFound()
     {
         // Arrange
@@ -239,7 +239,7 @@ public class DeleteExternalContactCommandTests
             () => Assert.Equal(expectedMessage, result.Error),
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
-            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),            
+            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),
             () => mockContactWriteRepository.Verify(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Never)
         );
     }

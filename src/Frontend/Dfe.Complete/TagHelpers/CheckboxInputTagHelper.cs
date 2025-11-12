@@ -18,15 +18,15 @@ namespace Dfe.Complete.TagHelpers
 
         protected override async Task<IHtmlContent> RenderContentAsync()
         {
-            CheckboxInputViewModel model = new() 
-            { 
+            CheckboxInputViewModel model = new()
+            {
                 Id = Id,
                 TestId = TestId,
-                Name = Name, 
-                Label = Label, 
-                HeadingLabel = 
-                HeadingLabel, 
-                BoldLabel = BoldLabel, 
+                Name = Name,
+                Label = Label,
+                HeadingLabel =
+                HeadingLabel,
+                BoldLabel = BoldLabel,
                 Value = For.Model?.ToString(),
                 AddMargin = AddMargin,
                 Hint = Hint

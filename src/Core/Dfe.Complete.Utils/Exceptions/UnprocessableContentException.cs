@@ -12,7 +12,7 @@ public class UnprocessableContentException : Exception
         : base(message, innerException)
     {
     }
-    
+
     public UnprocessableContentException(string message, string field)
         : base(message)
     {

@@ -1,6 +1,7 @@
 namespace Dfe.Complete.Domain.Enums;
 
-public enum OrderByDirection {
+public enum OrderByDirection
+{
     Ascending,
     Descending
 }

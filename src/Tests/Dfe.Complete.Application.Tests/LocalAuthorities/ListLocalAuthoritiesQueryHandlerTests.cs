@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.LocalAuthorities.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
@@ -50,7 +49,7 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs()
         {
-            var query = new ListLocalAuthoritiesQuery{ Page = 1, Count = 10 };
+            var query = new ListLocalAuthoritiesQuery { Page = 1, Count = 10 };
 
             _mockLocalAuthoritiesQueryService
                 .Setup(service => service.ListAllLocalAuthorities(null))
@@ -59,7 +58,7 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
             var result = await _handler.Handle(query, CancellationToken.None);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Database error", result.Error); 
+            Assert.Equal("Database error", result.Error);
         }
     }
 

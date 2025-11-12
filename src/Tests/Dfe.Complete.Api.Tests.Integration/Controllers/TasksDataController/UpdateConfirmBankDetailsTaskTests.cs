@@ -4,7 +4,6 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
-using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -47,7 +46,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.BankDetailsChangingYesNo); 
+            Assert.True(existingTaskData.BankDetailsChangingYesNo);
         }
 
         [Theory]

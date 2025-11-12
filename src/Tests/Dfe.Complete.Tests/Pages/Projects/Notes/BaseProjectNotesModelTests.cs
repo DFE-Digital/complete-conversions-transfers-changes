@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.Pages.Projects.Notes;
 

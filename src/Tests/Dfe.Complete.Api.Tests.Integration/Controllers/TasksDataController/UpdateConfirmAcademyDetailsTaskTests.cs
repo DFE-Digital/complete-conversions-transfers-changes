@@ -77,7 +77,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateAcademyDetailsTaskAsync(command, default));
-            
+
             Assert.Contains($"Conversion task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }

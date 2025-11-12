@@ -33,10 +33,11 @@ public class ConversionOrTransferInProgressModelTests
             Projects = expectedProjects
         };
 
-    Assert.NotNull(model.Projects);
-    
-    for (var i = 0 ; i < expectedProjects.Count ; i++ ) {
-        Assert.Equal(expectedProjects[i].ProjectId.Value, model.Projects[i].ProjectId.Value);
-    }
+        Assert.NotNull(model.Projects);
+
+        for (var i = 0; i < expectedProjects.Count; i++)
+        {
+            Assert.Equal(expectedProjects[i].ProjectId.Value, model.Projects[i].ProjectId.Value);
+        }
     }
 }

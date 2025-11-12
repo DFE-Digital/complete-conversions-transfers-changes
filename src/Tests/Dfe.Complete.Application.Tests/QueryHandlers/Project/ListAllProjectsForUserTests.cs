@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -17,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
 using NSubstitute;
+using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -70,7 +70,7 @@ public class ListAllProjectsForUserTests
         Assert.False(result.IsSuccess);
         Assert.Contains("User not found.", result.Error);
     }
-      
+
 
     [Theory]
     [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
@@ -96,7 +96,7 @@ public class ListAllProjectsForUserTests
             _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
-        
+
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
@@ -149,7 +149,8 @@ public class ListAllProjectsForUserTests
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
-            ordering) { Page = 1 };
+            ordering)
+        { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -308,7 +309,8 @@ public class ListAllProjectsForUserTests
 
         Assert.NotNull(userDto.ActiveDirectoryUserId);
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
-            ordering) { Page = 50 };
+            ordering)
+        { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -348,7 +350,8 @@ public class ListAllProjectsForUserTests
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
-            ordering) { Page = 50 };
+            ordering)
+        { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);

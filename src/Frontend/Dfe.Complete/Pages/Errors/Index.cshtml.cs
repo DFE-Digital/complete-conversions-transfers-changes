@@ -4,38 +4,38 @@ using System.Diagnostics;
 
 namespace Dfe.Complete.Pages.Errors
 {
-	public class IndexModel(ILogger<IndexModel> logger) : PageModel
-	{
+    public class IndexModel(ILogger<IndexModel> logger) : PageModel
+    {
         public string RequestId { get; private set; } = string.Empty;
 
         public string ErrorMessage { get; private set; } = "Sorry, there is a problem with the service";
 
-		public void OnGet(int? statusCode = null)
+        public void OnGet(int? statusCode = null)
         {
             ManageErrors(statusCode);
-		}
+        }
 
-		public void OnPost(int? statusCode = null)
-        { 
+        public void OnPost(int? statusCode = null)
+        {
             ManageErrors(statusCode);
-		}
+        }
 
-		private void ManageErrors(int? statusCode)
+        private void ManageErrors(int? statusCode)
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
             if (!statusCode.HasValue)
-			{
-				ManageUnhandledErrors();
-				return;
-			}
+            {
+                ManageUnhandledErrors();
+                return;
+            }
 
-			ErrorMessage = statusCode.Value switch
-			{
-				404 => "Page not found",
-				500 => "Internal server error",
-				501 => "Not implemented",
-				_ => $"Error {statusCode}"
-			};
+            ErrorMessage = statusCode.Value switch
+            {
+                404 => "Page not found",
+                500 => "Internal server error",
+                501 => "Not implemented",
+                _ => $"Error {statusCode}"
+            };
             logger.LogInformation("ErrorPage::Something went wrong - {RequestId}, {ErrorMessage}", RequestId, ErrorMessage);
         }
 
@@ -51,5 +51,5 @@ namespace Dfe.Complete.Pages.Errors
                 HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
             }
         }
-   	}
+    }
 }

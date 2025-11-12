@@ -1,10 +1,10 @@
 ﻿using Asp.Versioning;
 using Dfe.Complete.Application.Projects.Queries.Csv;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -30,7 +30,7 @@ namespace Dfe.Complete.Api.Controllers
             {
                 FileDownloadName = "filename.csv"
             };
-         
+
         }
 
         [HttpPost]

@@ -4,11 +4,11 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -50,7 +50,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.ConfirmIncomingTrustHasCompletedAllActionsEmailed);
             Assert.True(existingTaskData.ConfirmIncomingTrustHasCompletedAllActionsSaved);
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
@@ -76,11 +76,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Emailed = true,
                 Saved = true,
             };
-            
+
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(command, default));
-              
-            Assert.Contains($"Transfer task data TaskDataId {{ Value = { command.TaskDataId.Value} }} not found.", exception.Message);
+
+            Assert.Contains($"Transfer task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }
 }

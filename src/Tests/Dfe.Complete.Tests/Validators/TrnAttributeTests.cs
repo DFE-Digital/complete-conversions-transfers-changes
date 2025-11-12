@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Domain.Validators;
+﻿using Dfe.Complete.Domain.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators;
 
@@ -21,10 +21,10 @@ public class TrnAttributeTests
         {
             MemberName = nameof(objectInstance.TestTrn)
         };
-        
+
         // Act
         var result = attribute.GetValidationResult(trn, validationContext);
-        
+
         // Assert
         if (isValid)
         {

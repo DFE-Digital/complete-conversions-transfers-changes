@@ -18,11 +18,11 @@ public class ProjectsForUser(ISender sender) : YourTeamProjectsModel(ByUserNavig
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var getUserQuery = new GetUserWithProjectsQuery(new UserId(new Guid(id)), ProjectState.Active, OrderUserProjectsByField.SignificantDate)
-            { Page = PageNumber - 1, Count = PageSize };
+        { Page = PageNumber - 1, Count = PageSize };
 
         var response = await sender.Send(getUserQuery);
         UserResult = response.Value ?? default!;
-        
+
         Pagination = new PaginationModel($"/projects/team/users/{id}", PageNumber, response.ItemCount, PageSize);
 
         var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);

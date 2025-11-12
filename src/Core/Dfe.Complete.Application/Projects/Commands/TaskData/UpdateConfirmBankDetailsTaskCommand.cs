@@ -22,8 +22,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.TransferTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Transfer task data {request.TaskDataId} not found.");
-             
-            tasksData.BankDetailsChangingYesNo = request.BankDetailsChangingYesNo; 
+
+            tasksData.BankDetailsChangingYesNo = request.BankDetailsChangingYesNo;
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

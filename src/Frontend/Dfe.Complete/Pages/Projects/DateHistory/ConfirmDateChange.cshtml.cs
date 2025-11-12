@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            
+
             if (!SigDateHelper.CanEditSignificantDate(Project, User, CurrentUserTeam))
             {
                 TempData.SetNotification(
@@ -22,7 +22,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 );
                 return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectTaskList));
             }
-            
+
             return Page();
         }
     }

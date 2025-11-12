@@ -1,11 +1,8 @@
-using AutoFixture;
-using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Extensions;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using NetEscapades.AspNetCore.SecurityHeaders.Headers.FeaturePolicy;
 
 namespace Dfe.Complete.Tests.Extensions;
 
@@ -18,11 +15,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = projects.OrderBy(_ => random.Next()).ToList();
-        
+
         var expectedOrder = projects.OrderBy(project => project.SignificantDate).ToList();
 
         // Act
@@ -39,11 +36,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = projects.OrderBy(_ => random.Next()).ToList();
-        
+
         var expectedOrder = projects.OrderByDescending(project => project.SignificantDate).ToList();
 
         // Act
@@ -62,13 +59,13 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = projects.OrderBy(_ => random.Next()).ToList();
-        
+
         var expectedOrder = projects.OrderByDescending(project => project.CreatedAt).ToList();
-        
+
         // Act
         var result = projects.AsQueryable().OrderProjectBy(
             new(OrderProjectByField.CreatedAt, OrderByDirection.Descending)
@@ -85,13 +82,13 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = projects.OrderBy(_ => random.Next()).ToList();
-        
+
         var expectedOrder = projects.OrderBy(project => project.CreatedAt).ToList();
-        
+
         // Act
         var result = projects.AsQueryable().OrderProjectBy(
             new(OrderProjectByField.CreatedAt, OrderByDirection.Ascending)
@@ -108,11 +105,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = projects.OrderBy(_ => random.Next()).ToList();
-        
+
         var expectedOrder = projects.OrderByDescending(project => project.CompletedAt).ToList();
 
         // Act
@@ -131,11 +128,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
-        
+
         // Shuffle the projects
         var random = new Random();
         projects = [.. projects.OrderBy(_ => random.Next())];
-        
+
         var expectedOrder = projects.OrderBy(project => project.CompletedAt).ToList();
 
         // Act

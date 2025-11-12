@@ -4,10 +4,10 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
