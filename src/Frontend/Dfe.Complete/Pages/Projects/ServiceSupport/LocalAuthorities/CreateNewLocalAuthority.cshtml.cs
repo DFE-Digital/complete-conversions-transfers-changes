@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
     public class CreateNewLocalAuthorityModel(ISender sender, IErrorService errorService) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(Name = nameof(Name))]
-        [Required(ErrorMessage = ValidationConstants.LocalAuthorityNameRequired)]
+        [Required(ErrorMessage = ValidationConstants.FullNameRequiredMessage)]
         public string Name { get; set; } = null!;
         [BindProperty(Name = nameof(Code))]
         [Required(ErrorMessage = ValidationConstants.LocalAuthorityCodeRequired)]

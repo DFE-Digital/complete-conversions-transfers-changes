@@ -23,7 +23,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         public required string Id { get; set; }
 
         [BindProperty(Name = nameof(Code))]
-        [Required(ErrorMessage = ValidationConstants.LocalAuthorityCodeRequired)]
+        [Required(ErrorMessage = ValidationConstants.FullNameRequiredMessage)]
         public string Code { get; set; } = null!;
         [BindProperty(Name = nameof(Name))]
         public string? Name { get; set; }

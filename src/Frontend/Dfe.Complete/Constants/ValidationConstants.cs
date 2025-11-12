@@ -52,8 +52,7 @@
         public const string RequiredSummary = "Enter the summary";
         public const string NotInTheList = "is not included in the list";
 
-        // Local Authority authority validation messages
-        public const string LocalAuthorityNameRequired = "Enter a name";
+        // Local Authority authority validation messages       
         public const string LocalAuthorityCodeRequired = "Enter a code";
         public const string LocalAuthorityAddressLine1Required = "Enter 1st line of address";
         public const string LocalAuthorityPostcodeRequired = "Enter a postcode";

@@ -193,13 +193,7 @@ namespace Dfe.Complete.Tests.Constants
         {
             var dateField = "Opened academy date";
             Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
-        }
-
-        [Fact]
-        public void LocalAuthorityNameRequired_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Enter a name", ValidationConstants.LocalAuthorityNameRequired);
-        }
+        }      
 
         [Fact]
         public void LocalAuthorityCodeRequired_ShouldReturnExpectedMessage()
