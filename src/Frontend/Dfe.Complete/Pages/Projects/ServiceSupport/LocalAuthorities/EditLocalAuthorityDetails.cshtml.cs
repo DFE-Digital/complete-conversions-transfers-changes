@@ -23,12 +23,12 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         public required string Id { get; set; }
 
         [BindProperty(Name = nameof(Code))]
-        [Required(ErrorMessage = ValidationConstants.CannotBeBlank)]
+        [Required(ErrorMessage = ValidationConstants.LocalAuthorityCodeRequired)]
         public string Code { get; set; } = null!;
         [BindProperty(Name = nameof(Name))]
         public string? Name { get; set; }
         [BindProperty(Name = nameof(Address1))]
-        [Required(ErrorMessage = ValidationConstants.CannotBeBlank)]
+        [Required(ErrorMessage = ValidationConstants.LocalAuthorityAddressLine1Required)]
         public string Address1 { get; set; } = null!;
         [BindProperty(Name = nameof(Address2))]
         public string? Address2 { get; set; }
@@ -39,7 +39,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         [BindProperty(Name = nameof(AddressCounty))]
         public string? AddressCounty { get; set; }
         [BindProperty(Name = nameof(AddressPostcode))]
-        [Required(ErrorMessage = ValidationConstants.CannotBeBlank)]
+        [Required(ErrorMessage = ValidationConstants.LocalAuthorityPostcodeRequired)]
         [RegularExpression(ValidationExpressions.UKPostCode, ErrorMessage = ValidationConstants.NotRecognisedUKPostcode)]
         public string AddressPostcode { get; set; } = null!;
         [BindProperty(Name = nameof(Title))]
