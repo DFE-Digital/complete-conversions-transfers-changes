@@ -3,16 +3,18 @@ using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Extensions;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Services.PersonsApi;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache)
+public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
     private readonly IDistributedCache _cache = cache;
@@ -40,51 +42,53 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
         var projectContacts = await Sender.Send(projectQuery);
+        var canEditContactPermission = await authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanViewEditDeleteContact);
+        var canEditContact = canEditContactPermission.Succeeded;
 
         if (projectContacts is { IsSuccess: true, Value: not null })
         {
             EstablishmentContacts.AddRange(projectContacts.Value
                 .FindAll(contact => contact.Category == ContactCategory.SchoolOrAcademy).Select(contact =>
                     new ExternalContactModel(contact,
-                        true,
+                        canEditContact,
                         contact.Id == Project.MainContactId,
-                        contact.Id == Project.EstablishmentMainContactId
+                        contact.Id == Project.EstablishmentMainContactId                        
                     )));
             IncomingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.IncomingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,
-                            true,
+                        new ExternalContactModel(contact,                       
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.IncomingTrustMainContactId
                         )));
             OutgoingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.OutgoingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,
-                            true,
+                        new ExternalContactModel(contact,                           
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.OutgoingTrustMainContactId
                         )));
             LocalAuthorityContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
                     contact =>
-                        new ExternalContactModel(contact, 
-                            true, 
+                        new ExternalContactModel(contact,
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.LocalAuthorityMainContactId)));
             SolicitorContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(
                     contact =>
-                        new ExternalContactModel(contact, true)));
+                        new ExternalContactModel(contact, canEditContact)));
             DioceseContacts.AddRange(projectContacts.Value
                 .FindAll(contact => contact.Category == ContactCategory.Diocese)
                 .Select(contact =>
-                    new ExternalContactModel(contact, true)));
+                    new ExternalContactModel(contact, canEditContact)));
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact,
-                        true, 
+                        canEditContact, 
                         contact.Id == Project.MainContactId,
                         ShowOrganisation: true)));
         }
