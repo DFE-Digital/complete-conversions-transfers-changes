@@ -27,8 +27,8 @@
         <div class="govuk-header__search" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
             <form class="govuk-header__search-form" asp-page="/Search/SearchProjects" method="get" role="search">
                 <div class="govuk-header__search-wrapper">
-                    <input class="govuk-header__search-input" id="search" name="query" type="search" placeholder="@GetSearchPlaceholder()" aria-label="Search projects">
-                    <button class="govuk-header__search-button" type="submit" aria-label="Search">
+                    <input class="govuk-header__search-input" id="searchterm" name="query" type="search" placeholder="@GetSearchPlaceholder()" aria-label="Search projects">
+                    <button class="govuk-header__search-button" id="search-submit" type="submit" aria-label="Search">
                         <svg class="govuk-header__search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="2"/>
                             <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,7 +48,7 @@ data-module="govuk-service-navigation">
                 Complete conversions, transfers and changes
             </a>
         </span>
-        <nav aria-label="Menu" class="govuk-service-navigation__wrapper" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
+        <nav aria-label="Menu" class="govuk-service-navigation__wrapper" id="header-navigation" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
             <button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
             Menu
             </button>

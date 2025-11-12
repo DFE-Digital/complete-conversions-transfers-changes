@@ -1,10 +1,10 @@
 class Search {
     private readonly searchId = "searchterm";
-    private readonly searchButtonClass = "dfe-search__submit";
+    private readonly searchButtonId = "search-submit";
 
     searchFor(phrase: string) {
         cy.getById(this.searchId).type(phrase);
-        cy.getByClass(this.searchButtonClass).click();
+        cy.getById(this.searchButtonId).click();
     }
 }
 
