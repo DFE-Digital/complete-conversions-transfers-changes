@@ -4,13 +4,12 @@ using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
-public record UpdateExternalContactCommand(ContactId ContactId, ContactDto contactDto) : IRequest<Result<bool>>;
+public record UpdateExternalContactCommand(ContactDto contactDto) : IRequest<Result<bool>>;
 
 public class UpdateExternalContactCommandHandler(
     IContactReadRepository contactReadRepository,
@@ -23,13 +22,13 @@ public class UpdateExternalContactCommandHandler(
     {
         try
         {
-            var contactEntity = new ContactIdQuery(request.ContactId)
+            var updateDto = request.contactDto;
+
+            var contactEntity = new ContactIdQuery(updateDto.Id)
                 .Apply(contactReadRepository.Contacts)
                 .FirstOrDefault();
-
-            if (contactEntity is null) return Result<bool>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", request.ContactId.Value.ToString()), ErrorType.NotFound);
-
-            var updateDto = request.contactDto;
+            
+            if (contactEntity is null) return Result<bool>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", updateDto.Id.Value.ToString()), ErrorType.NotFound);           
 
             contactEntity.Name = updateDto.Name;
             contactEntity.Title = updateDto.Title;

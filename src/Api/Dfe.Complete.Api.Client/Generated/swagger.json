@@ -163,6 +163,139 @@
         }
       }
     },
+    "/v1/Contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Gets a external contact",
+        "operationId": "Contacts_GetExternalContact",
+        "parameters": [
+          {
+            "name": "ContactId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Updates external contact.",
+        "operationId": "Contacts_UpdateExternaContact",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExternalContactCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External contact updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "External contact not found."
+          }
+        }
+      }
+    },
+    "/v1/Contacts/CreateExternalContact": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Creates a new external contact for a project.",
+        "operationId": "Contacts_CreateExternalContact",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalContactCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Contacts/DeleteExternalContact": {
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Deletes external contact.",
+        "operationId": "Contacts_DeleteExternalContact",
+        "requestBody": {
+          "x-name": "contactId",
+          "description": "contact Id.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External contact deleted successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -5186,6 +5319,134 @@
           "email": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "ContactDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ContactId"
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "$ref": "#/components/schemas/ContactCategory"
+          },
+          "organisationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactType"
+              }
+            ]
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
+          },
+          "establishmentUrn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "primaryContact": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateExternalContactCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ContactCategory"
+          },
+          "isPrimaryContact": {
+            "type": "boolean"
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "establishmentUrn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "organisationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
+          },
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactType"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateExternalContactCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contactDto": {
+            "$ref": "#/components/schemas/ContactDto"
           }
         }
       },

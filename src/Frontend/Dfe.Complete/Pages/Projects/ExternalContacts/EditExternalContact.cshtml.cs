@@ -94,6 +94,7 @@ public class EditExternalContact(
 
         var contactDto = new ContactDto
         {
+            Id = new ContactId(Guid.Parse(ContactId)),
             Name = ExternalContactInput.FullName,
             Title = ExternalContactInput.Role,
             Email = ExternalContactInput.Email ?? string.Empty,
@@ -103,8 +104,7 @@ public class EditExternalContact(
             OrganisationName = organisationName
         };
 
-        return new UpdateExternalContactCommand(
-            new ContactId(Guid.Parse(ContactId)),
+        return new UpdateExternalContactCommand(            
             contactDto
         );
     }
