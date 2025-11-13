@@ -50,6 +50,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange, "bank_details_changing", "Confirm if the bank details for the general annual grant payment need to change")]
         [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions, "confirm_incoming_trust_has_completed_all_actions", "Confirm the incoming trust has completed all actions")]
         [InlineData(NoteTaskIdentifier.AcademyDetails, "academy_details", "Confirm the academy name")]
+        [InlineData(NoteTaskIdentifier.RedactAndSend, "redact_and_send", "Redact and send documents")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act
