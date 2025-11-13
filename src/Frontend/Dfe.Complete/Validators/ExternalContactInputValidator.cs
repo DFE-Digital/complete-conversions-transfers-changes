@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace Dfe.Complete.Validators
 {
-    public class ExternalContactInputValidator<T>:  AbstractValidator<T> where T : ExternalContactInputModel
+    public class ExternalContactInputValidator<T> : AbstractValidator<T> where T : ExternalContactInputModel
     {
         public ExternalContactInputValidator()
         {
@@ -14,7 +14,7 @@ namespace Dfe.Complete.Validators
             RuleFor(x => x.Email)
            .NotEmpty()
            .WithMessage(ValidationConstants.EmailRequiredMessage)
-           .EmailAddress()           
+           .EmailAddress()
            .WithMessage(ValidationConstants.InvalidEmailMessage);
 
             RuleFor(x => x.Phone).Matches(ValidationExpressions.UKPhone)

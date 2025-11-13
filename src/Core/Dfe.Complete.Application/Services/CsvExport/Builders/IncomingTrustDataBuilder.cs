@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
 
             TrustDto trust;
 
-            if(project.IncomingTrustUkprn == null)
+            if (project.IncomingTrustUkprn == null)
             {
                 trust = trustCache.GetTrustByTrnAsync(project.NewTrustReferenceNumber).Result;
             }
@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
                 trust = trustCache.GetTrustAsync(project.IncomingTrustUkprn).Result;
             }
 
-            if(trust == null)
+            if (trust == null)
                 return string.Empty;
 
             var selection = TrustSelector(trust);

@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Queries
                 var localAuthoritiesCount = await localAuthoritiesQuery.CountAsync(cancellationToken);
 
                 var localAuthorities = await localAuthoritiesQuery
-                    .Paginate(request.Page, request.Count) 
+                    .Paginate(request.Page, request.Count)
                     .ToListAsync(cancellationToken);
 
                 return PaginatedResult<List<LocalAuthorityQueryModel>>.Success(localAuthorities, localAuthoritiesCount);
@@ -32,6 +32,6 @@ namespace Dfe.Complete.Application.LocalAuthorities.Queries
                 logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListLocalAuthoritiesQueryHandler), request);
                 return PaginatedResult<List<LocalAuthorityQueryModel>>.Failure(e.Message);
             }
-        } 
+        }
     }
 }

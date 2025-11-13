@@ -34,7 +34,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         {
             // Conversion-specific properties
             project.DirectiveAcademyOrder = request.DirectiveAcademyOrder;
-            
+
             await Task.CompletedTask; // No async operations needed for conversion-specific updates
         }
     }

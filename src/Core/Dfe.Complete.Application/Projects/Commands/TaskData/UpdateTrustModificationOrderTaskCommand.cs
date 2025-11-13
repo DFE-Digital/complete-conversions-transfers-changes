@@ -7,7 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
-{   public record UpdateTrustModificationOrderTaskCommand(
+{
+    public record UpdateTrustModificationOrderTaskCommand(
         TaskDataId TaskDataId,
         bool? NotApplicable,
         bool? Received,
@@ -29,11 +30,11 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var notApplicableSelected = request.NotApplicable == true;
 
             tasksData.TrustModificationOrderNotApplicable = request.NotApplicable;
-            tasksData.TrustModificationOrderReceived = notApplicableSelected ? null : request.Received;            
+            tasksData.TrustModificationOrderReceived = notApplicableSelected ? null : request.Received;
             tasksData.TrustModificationOrderSentLegal = notApplicableSelected ? null : request.Sent;
             tasksData.TrustModificationOrderCleared = notApplicableSelected ? null : request.Cleared;
             tasksData.TrustModificationOrderSaved = notApplicableSelected ? null : request.Saved;
-            
+
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

@@ -10,7 +10,7 @@ namespace Dfe.Complete.Tests.Services
         private DateOnly NextMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: 1));
         private DateOnly LastMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: -1));
 
-        [Theory]        
+        [Theory]
         [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotStarted)]
         [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted)]
         [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.NotStarted)]
@@ -23,15 +23,15 @@ namespace Dfe.Complete.Tests.Services
             TaskListStatus taskListStatusAcademyTransferred,
             TaskListStatus taskListStatusExpenditureCertificate
         )
-        {            
+        {
             // Arrange           
             var taskList = new TransferTaskListViewModel
             {
                 ConfirmThisTransferHasAuthorityToProceed = taskListStatusAuthorityToProceed,
                 ConfirmDateAcademyTransferred = taskListStatusAcademyTransferred,
                 DeclarationOfExpenditureCertificate = taskListStatusExpenditureCertificate
-            };            
-             
+            };
+
             // Act
             var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList);
 
@@ -42,7 +42,7 @@ namespace Dfe.Complete.Tests.Services
             Assert.Contains(ValidationConstants.ExpenditureCertificateComplete, result);
         }
 
-        [Fact]       
+        [Fact]
         public void GetTransferProjectCompletionResult_DateIsProvisional_ShouldReturn_Invalid__With_ValidationMessages()
         {
             // Arrange           
@@ -57,12 +57,12 @@ namespace Dfe.Complete.Tests.Services
             var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList);
 
             // Assert            
-            Assert.Contains(ValidationConstants.TransferDateInPast, result);            
+            Assert.Contains(ValidationConstants.TransferDateInPast, result);
         }
 
 
         [Theory]
-        [InlineData(TaskListStatus.Completed)]        
+        [InlineData(TaskListStatus.Completed)]
         public void GetTransferProjectCompletionResult_ValidData_ShouldReturn_Valid_NoValidationMessages(TaskListStatus taskListStatus)
         {
             // Arrange            
@@ -93,7 +93,7 @@ namespace Dfe.Complete.Tests.Services
             var taskList = new ConversionTaskListViewModel
             {
                 ConfirmAllConditionsHaveBeenMet = taskListStatus,
-                ConfirmDateAcademyOpened = taskListStatus,                
+                ConfirmDateAcademyOpened = taskListStatus,
             };
 
             // Act
@@ -102,7 +102,7 @@ namespace Dfe.Complete.Tests.Services
             // Assert           
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);
             Assert.Contains(ValidationConstants.AllConditionsMetComplete, result);
-            Assert.Contains(ValidationConstants.AcademyOpenedDateComplete, result);            
+            Assert.Contains(ValidationConstants.AcademyOpenedDateComplete, result);
         }
 
         [Theory]
@@ -122,7 +122,7 @@ namespace Dfe.Complete.Tests.Services
             // Assert            
             Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, result);
             Assert.DoesNotContain(ValidationConstants.AllConditionsMetComplete, result);
-            Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, result);            
+            Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, result);
         }
 
         [Fact]
@@ -132,7 +132,7 @@ namespace Dfe.Complete.Tests.Services
             var taskList = new ConversionTaskListViewModel
             {
                 ConfirmAllConditionsHaveBeenMet = TaskListStatus.Completed,
-                ConfirmDateAcademyOpened = TaskListStatus.Completed                
+                ConfirmDateAcademyOpened = TaskListStatus.Completed
             };
 
             // Act

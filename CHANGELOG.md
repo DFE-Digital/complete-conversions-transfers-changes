@@ -36,10 +36,11 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Remove buttons and links to external contacts for users without access
 
-### Deprecated
-- create conversion project end point not in use due to in-app project creations being a workaround 
-- create MAT conversion project end point not in use due to in-app project creations being a workaround 
-- create transfer project end point not in use due to in-app project creations being a workaround 
+### Removed
+- create conversion project end point deleted due to in-app project creations being a workaround 
+- create MAT conversion project end point deleted due to in-app project creations being a workaround 
+- create transfer project end point deleted due to in-app project creations being a workaround 
+- create MAT transfer project end point deleted due to in-app project creations being a workaround 
 
 ### Fixed
 - Fixed assign project return url issue.

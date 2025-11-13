@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Domain.Validators;
+﻿using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Domain.Tests.Validators
 {

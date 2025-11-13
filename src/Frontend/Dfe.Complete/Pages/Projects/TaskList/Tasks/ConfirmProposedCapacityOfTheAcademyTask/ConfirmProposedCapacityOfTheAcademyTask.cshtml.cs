@@ -49,7 +49,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
             ValidateProperty(nameof(TwelveOrAboveYears), TwelveOrAboveYears, ValidationConstants.TwelveOrAboveYears);
             ValidateProperty(nameof(SevenToElevenYears), SevenToElevenYears, ValidationConstants.SevenToElevenYears);
             ValidateProperty(nameof(ReceptionToSixYears), ReceptionToSixYears, ValidationConstants.ReceptionToSixYears);
-            if (errorService.HasErrors()|| !ModelState.IsValid)
+            if (errorService.HasErrors() || !ModelState.IsValid)
             {
                 await base.OnGetAsync();
                 errorService.AddErrors(ModelState.Keys, ModelState);
@@ -63,7 +63,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
         private void ValidateProperty(string name, string? value, string errorMessage)
         {
             var prop = typeof(ConfirmProposedCapacityOfTheAcademyTaskModel).GetProperty(name);
-            if(prop == null) return;
+            if (prop == null) return;
             var bindAttr = prop.GetCustomAttribute<BindPropertyAttribute>();
             if (bindAttr != null && NotApplicable != true && string.IsNullOrWhiteSpace(value))
             {

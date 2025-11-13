@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Dfe.Complete.TagHelpers
 {
     [HtmlTargetElement("govuk-back-link", TagStructure = TagStructure.WithoutEndTag)]
-	public class BackLinkTagHelper : TagHelper
-	{
-		[HtmlAttributeName("href")]
-		public string Href { get; set; }
+    public class BackLinkTagHelper : TagHelper
+    {
+        [HtmlAttributeName("href")]
+        public string Href { get; set; }
 
         [ViewContext]
         public ViewContext ViewContext { get; set; }
@@ -23,7 +23,7 @@ namespace Dfe.Complete.TagHelpers
         }
 
         public override async void Process(TagHelperContext context, TagHelperOutput output)
-		{
+        {
             if (_htmlHelper is IViewContextAware viewContextAware)
             {
                 viewContextAware.Contextualize(ViewContext);
@@ -54,7 +54,7 @@ namespace Dfe.Complete.TagHelpers
 
             return BackBehaviour.DirectLink;
         }
-	}
+    }
 
     public class BackLinkViewModel
     {

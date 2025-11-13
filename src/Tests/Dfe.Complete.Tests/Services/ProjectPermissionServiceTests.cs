@@ -71,7 +71,7 @@ namespace Dfe.Complete.Tests.Services
         [InlineData(ProjectState.Active, false, ProjectTeam.London, true, false)]
         [InlineData(ProjectState.Completed, true, ProjectTeam.London, true, false)]
         [InlineData(ProjectState.Active, true, ProjectTeam.London, false, false)]
-        public void UserCanDaoRevocation_ShouldReturnCorrectResult(ProjectState projectState,bool directiveAcademyOrder,
+        public void UserCanDaoRevocation_ShouldReturnCorrectResult(ProjectState projectState, bool directiveAcademyOrder,
             ProjectTeam projectTeam, bool isProjectAssignToUser, bool expectedResult)
         {
             // Arrange

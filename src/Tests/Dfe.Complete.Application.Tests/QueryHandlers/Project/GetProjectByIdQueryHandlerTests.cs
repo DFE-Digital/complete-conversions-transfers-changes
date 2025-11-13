@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockProjectRepository.Projects.Returns(queryableProjects);
             mockMapper.Map<ProjectDto>(Arg.Any<Domain.Entities.Project>()).Returns(mappedProject);
 
-            var query = new GetProjectByIdQuery(project.Id); 
+            var query = new GetProjectByIdQuery(project.Id);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);

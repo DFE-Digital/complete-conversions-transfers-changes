@@ -18,14 +18,14 @@
         public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}";
         public const string ConversionProjectsByMonths = AllProjectsPrefix + "/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
-        public const string CompletedProjects = AllProjectsPrefix + "/completed"; 
+        public const string CompletedProjects = AllProjectsPrefix + "/completed";
         public const string ProjectsHandoverCheck = ProjectsHandover + "/{0}/check";
         public const string ProjectsHandoverNew = ProjectsHandover + "/{0}/new";
 
         public const string Statistics = AllProjectsPrefix + "/statistics";
         public const string Export = AllProjectsPrefix + "/export";
         public const string Reports = AllProjectsPrefix + "/reports";
-        
+
         // Your projects
         private const string YourProjectsPrefix = "/projects/yours";
         public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
@@ -59,7 +59,7 @@
         public const string ProjectInternalContactsEditAssignedUser = ProjectInternalContacts + "/assigned-user/edit";
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
-        public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";       
+        public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
 
         public const string ProjectTaskList = Project + "/tasks";
 
@@ -71,12 +71,12 @@
         public const string ChangeProjectDateHistoryReason = Project + "/date-history/reason";
         public const string ChangeProjectDateHistoryConfirm = Project + "/date-history/reasons/later";
 
-        
+
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kick_off";
         public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
         public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
-        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement"; 
+        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
         public const string ProjectRiskProtectionArrangementTask = ProjectTaskList + "/risk_protection_arrangement";
         public const string ProjectRiskProtectionArrangementPolicyTask = ProjectTaskList + "/rpa_policy";
         public const string ProjectCheckAccuracyOfHigherNeedsTask = ProjectTaskList + "/check_accuracy_of_higher_needs";
@@ -119,7 +119,7 @@
         public const string ProjectConfirmTransferGrantFundingLevelTask = ProjectTaskList + "/confirm_new_urn_and_record";
 
         public const string ProjectFormMTask = ProjectTaskList + "/form_m";
-        public const string ProjectLandConsentLetterTask = ProjectTaskList + "/land_consent_letter"; 
+        public const string ProjectLandConsentLetterTask = ProjectTaskList + "/land_consent_letter";
         public const string ProjectDeedOfNovationAndVariationTask = ProjectTaskList + "/deed_of_novation_and_variation";
         public const string ProjectChurchSupplementalAgreementTask = ProjectTaskList + "/church_supplemental_agreement";
         public const string ProjectMasterFundingAgreementTask = ProjectTaskList + "/master_funding_agreement";

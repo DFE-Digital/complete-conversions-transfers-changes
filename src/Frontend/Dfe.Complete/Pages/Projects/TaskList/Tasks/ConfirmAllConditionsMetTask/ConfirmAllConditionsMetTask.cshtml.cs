@@ -40,7 +40,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(Type == ProjectType.Conversion 
+            await Sender.Send(Type == ProjectType.Conversion
                 ? new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm)
                 : new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
                     new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, Confirm));

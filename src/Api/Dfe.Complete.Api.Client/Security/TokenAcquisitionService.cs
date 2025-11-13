@@ -1,6 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using Dfe.Complete.Api.Client.Settings;
 using Microsoft.Identity.Client;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Api.Client.Security
 {

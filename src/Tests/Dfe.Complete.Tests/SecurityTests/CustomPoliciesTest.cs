@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.SecurityTests;
 
@@ -86,7 +86,7 @@ public class CustomPoliciesIntegrationTests
         {
             identity.AddClaim(new Claim(CustomClaimTypeConstants.UserId, "test-user-id"));
         }
-        
+
         var user = new ClaimsPrincipal(identity);
 
         _ = CreateHttpContext(user);
@@ -102,10 +102,10 @@ public class CustomPoliciesIntegrationTests
                 });
             }
         });
-        
+
         // Register the ActiveUserAuthorizationHandler for ActiveUser policy tests
         services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
-        
+
         var serviceProvider = services.BuildServiceProvider();
         var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
 
@@ -129,7 +129,7 @@ public class CustomPoliciesIntegrationTests
                 builder.AddRequirements(new ActiveUserRequirement());
             });
         services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
-        
+
         var serviceProvider = services.BuildServiceProvider();
         var authorizationService = serviceProvider.GetRequiredService<IAuthorizationService>();
 

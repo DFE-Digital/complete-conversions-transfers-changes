@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using AutoFixture;
+﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
@@ -9,6 +8,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using Project = Dfe.Complete.Domain.Entities.Project;
 

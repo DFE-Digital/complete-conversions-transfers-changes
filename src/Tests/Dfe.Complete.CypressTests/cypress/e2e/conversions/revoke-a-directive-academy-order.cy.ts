@@ -5,27 +5,28 @@ import projectApi from "cypress/api/projectApi";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import daoRevocation from "cypress/pages/projects/daoRevocation";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const directiveAcademyOrderProject = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
-    hasAcademyOrderBeenIssued: true,
+    urn: urnPool.conversion.stChads,
+    directiveAcademyOrder: true,
 });
 let directiveAcademyOrderId: string;
 
 const academyOrderProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
-    hasAcademyOrderBeenIssued: false,
+    urn: urnPool.conversion.jessons,
+    directiveAcademyOrder: false,
 });
 let academyOrderId: string;
 
 describe("Complete conversion projects tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(directiveAcademyOrderProject.urn.value);
-        projectRemover.removeProjectIfItExists(academyOrderProject.urn.value);
-        projectApi.createConversionProject(directiveAcademyOrderProject).then((response) => {
+        projectRemover.removeProjectIfItExists(directiveAcademyOrderProject.urn);
+        projectRemover.removeProjectIfItExists(academyOrderProject.urn);
+        projectApi.createAndUpdateConversionProject(directiveAcademyOrderProject).then((response) => {
             directiveAcademyOrderId = response.value;
         });
-        projectApi.createMatConversionProject(academyOrderProject).then((response) => {
+        projectApi.createAndUpdateMatConversionProject(academyOrderProject).then((response) => {
             academyOrderId = response.value;
         });
         // Intercept the POST requests to minister and date endpoints
@@ -106,5 +107,9 @@ describe("Complete conversion projects tests", () => {
     it("should not be able to revoke an academy order project", () => {
         cy.visit(`projects/${academyOrderId}/tasks`);
         taskListPage.doesntContain("Revoke a Directive Academy Order").doesntContain("Record DAO revocation");
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Models;
+using Dfe.Complete.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Dfe.Complete.Services.Interfaces; 
 
 namespace Dfe.Complete.Services
 {

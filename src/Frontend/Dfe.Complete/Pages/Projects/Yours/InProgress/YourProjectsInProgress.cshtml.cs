@@ -22,8 +22,8 @@ public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgre
         var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId,
                 ProjectUserFilter.AssignedTo,
                 new OrderProjectQueryBy
-                    { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending })
-            { Count = PageSize, Page = PageNumber - 1 });
+                { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending })
+        { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
 

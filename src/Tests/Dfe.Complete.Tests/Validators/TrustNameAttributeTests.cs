@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Validators;
 using MediatR;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators;
 

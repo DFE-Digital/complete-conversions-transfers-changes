@@ -10,7 +10,6 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using System;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -29,18 +28,19 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var referenceNumber = "TR123";
             var trustName = "Test MAT 123";
-            
+
             var matchingProjects = fixture
                 .Build<ListAllProjectsQueryModel>()
                 .CreateMany(3)
-                .Select(p => {
+                .Select(p =>
+                {
                     p.Project.NewTrustReferenceNumber = referenceNumber;
                     p.Project.NewTrustName = trustName;
                     p.Project.IncomingTrustUkprn = null;
                     return p;
                 })
                 .ToList();
-            
+
             var mockProjects = matchingProjects.BuildMock();
 
             listAllProjectsQueryService

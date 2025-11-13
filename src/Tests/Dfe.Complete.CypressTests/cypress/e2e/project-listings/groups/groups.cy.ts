@@ -14,27 +14,27 @@ const groupReferenceNumber = "GRP_00000099";
 const incomingTrust = macclesfieldTrust;
 const outgoingTrust = dimensionsTrust;
 const conversionSchoolWithGroup = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.listings.islamia },
-    groupReferenceNumber: groupReferenceNumber,
-    incomingTrustUkprn: { value: incomingTrust.ukprn },
+    urn: urnPool.listings.islamia,
+    groupId: groupReferenceNumber,
+    incomingTrustUkprn: incomingTrust.ukprn,
 });
 const conversionSchoolName = "Islamia Girls' High School";
 const localAuthority = "Kirklees Council";
 const region = "Yorkshire and the Humber";
 const transferAcademyWithGroup = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.listings.madni },
-    groupReferenceNumber: groupReferenceNumber,
-    incomingTrustUkprn: { value: incomingTrust.ukprn },
-    outgoingTrustUkprn: { value: outgoingTrust.ukprn },
+    urn: urnPool.listings.madni,
+    groupId: groupReferenceNumber,
+    incomingTrustUkprn: incomingTrust.ukprn,
+    outgoingTrustUkprn: outgoingTrust.ukprn,
 });
 const transferAcademyName = "Madni Academy";
 
 describe("Groups tests: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(conversionSchoolWithGroup.urn.value);
-        projectRemover.removeProjectIfItExists(transferAcademyWithGroup.urn.value);
-        projectApi.createConversionProject(conversionSchoolWithGroup);
-        projectApi.createTransferProject(transferAcademyWithGroup);
+        projectRemover.removeProjectIfItExists(conversionSchoolWithGroup.urn);
+        projectRemover.removeProjectIfItExists(transferAcademyWithGroup.urn);
+        projectApi.createAndUpdateConversionProject(conversionSchoolWithGroup);
+        projectApi.createAndUpdateTransferProject(transferAcademyWithGroup);
     });
 
     beforeEach(() => {
@@ -73,7 +73,7 @@ describe("Groups tests: ", () => {
             .hasSectionItem()
             .hasSubHeading(conversionSchoolName)
             .summaryShows("URN")
-            .hasValue(conversionSchoolWithGroup.urn.value)
+            .hasValue(conversionSchoolWithGroup.urn)
             .summaryShows("Project type")
             .hasValue("Conversion")
             .summaryShows("Local authority")
@@ -83,7 +83,7 @@ describe("Groups tests: ", () => {
             .hasSectionItem()
             .hasSubHeading(transferAcademyName)
             .summaryShows("URN")
-            .hasValue(transferAcademyWithGroup.urn.value)
+            .hasValue(transferAcademyWithGroup.urn)
             .summaryShows("Project type")
             .hasValue("Transfer")
             .summaryShows("Local authority")

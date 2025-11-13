@@ -7,7 +7,7 @@ namespace Dfe.Complete.Tests.Utils
     public class StringChunkerTests
     {
         [Theory]
-        [InlineData("", 5 ,"")]
+        [InlineData("", 5, "")]
         [InlineData("abcd", 5, "abcd")]
         [InlineData("abcdefg", 5, "abcde", "fg")]
         [InlineData("abcdefghijklm", 5, "abcde", "fghij", "klm")]

@@ -14,8 +14,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-[Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
-public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache)
+public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
     private readonly IDistributedCache _cache = cache;
@@ -32,9 +31,9 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
 
     [BindProperty(Name = $"new_transfer_contact_form[contact_type]")]
     public string? TransferContactType { get; set; }
-    
+
     [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
-    public string? ConversionContactType { get; set; }    
+    public string? ConversionContactType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -43,51 +42,53 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
         var projectContacts = await Sender.Send(projectQuery);
+        var canEditContactPermission = await authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanViewEditDeleteContact);
+        var canEditContact = canEditContactPermission.Succeeded;
 
         if (projectContacts is { IsSuccess: true, Value: not null })
         {
             EstablishmentContacts.AddRange(projectContacts.Value
                 .FindAll(contact => contact.Category == ContactCategory.SchoolOrAcademy).Select(contact =>
                     new ExternalContactModel(contact,
-                        true,
+                        canEditContact,
                         contact.Id == Project.MainContactId,
-                        contact.Id == Project.EstablishmentMainContactId
+                        contact.Id == Project.EstablishmentMainContactId                        
                     )));
             IncomingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.IncomingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,
-                            true,
+                        new ExternalContactModel(contact,                       
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.IncomingTrustMainContactId
                         )));
             OutgoingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.OutgoingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,
-                            true,
+                        new ExternalContactModel(contact,                           
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.OutgoingTrustMainContactId
                         )));
             LocalAuthorityContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
                     contact =>
-                        new ExternalContactModel(contact, 
-                            true, 
+                        new ExternalContactModel(contact,
+                            canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.LocalAuthorityMainContactId)));
             SolicitorContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(
                     contact =>
-                        new ExternalContactModel(contact, true)));
+                        new ExternalContactModel(contact, canEditContact)));
             DioceseContacts.AddRange(projectContacts.Value
                 .FindAll(contact => contact.Category == ContactCategory.Diocese)
                 .Select(contact =>
-                    new ExternalContactModel(contact, true)));
+                    new ExternalContactModel(contact, canEditContact)));
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact,
-                        true, 
+                        canEditContact, 
                         contact.Id == Project.MainContactId,
                         ShowOrganisation: true)));
         }
@@ -109,7 +110,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         {
             LocalAuthorityContacts.AddRange(laContacts.Value.Select(contact =>
                 new ExternalContactModel(contact, false)));
-        }       
+        }
 
         if (Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
         {
@@ -118,8 +119,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
                 cacheKey,
                 async () =>
                 {
-                    return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);                    
-                }                
+                    return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
+                }
             );
 
             if (constituencyMember != null)
@@ -128,7 +129,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             }
         }
         return Page();
-    }   
+    }
 
     private async Task<ConstituencyMemberContactDto?> GetContactByConstituency(string constituencyName)
     {
@@ -136,5 +137,5 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         var result = await Sender.Send(getContactyByConstituency);
         return result?.Value;
     }
-   
+
 }

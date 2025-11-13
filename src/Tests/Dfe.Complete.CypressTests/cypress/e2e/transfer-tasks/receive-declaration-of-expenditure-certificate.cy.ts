@@ -4,46 +4,42 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { getSignificantDateString } from "cypress/support/formatDate";
 import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/projects/tasks/receiveDeclarationOfExpenditureCertificateTaskPage";
 import { urnPool } from "cypress/constants/testUrns";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
-    isSignificantDateProvisional: true,
+    urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
-    significantDate: getSignificantDateString(12),
-    isSignificantDateProvisional: true,
-    urn: { value: urnPool.transferTasks.marden },
+    provisionalTransferDate: getSignificantDateString(12),
+    urn: urnPool.transferTasks.marden,
 });
 let project2Id: string;
 let project2TaskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    isSignificantDateProvisional: true,
-    userAdId: rdoLondonUser.adId,
-    urn: { value: urnPool.transferTasks.whitley },
+    urn: urnPool.transferTasks.whitley,
 });
 let otherUserProjectId: string;
 
 describe("Transfers tasks - Receive declaration of expenditure certificate", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(project2.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createTransferProject(project).then((createResponse) => (projectId = createResponse.value));
-        projectApi.createMatTransferProject(project2).then((createResponse) => {
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(project2.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
+        projectApi.createAndUpdateTransferProject(project).then((createResponse) => (projectId = createResponse.value));
+        projectApi.createAndUpdateMatTransferProject(project2).then((createResponse) => {
             project2Id = createResponse.value;
-            projectApi.getProject(project2.urn.value).then((response) => {
+            projectApi.getProject(project2.urn).then((response) => {
                 project2TaskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });

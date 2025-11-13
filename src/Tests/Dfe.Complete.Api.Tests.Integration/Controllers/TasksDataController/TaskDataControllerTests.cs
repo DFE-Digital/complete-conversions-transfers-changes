@@ -8,7 +8,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -54,10 +54,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Arrange
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
 
-            var dbContext = factory.GetDbContext<CompleteContext>(); 
+            var dbContext = factory.GetDbContext<CompleteContext>();
 
             var taskData = fixture.Create<ConversionTasksData>();
-            dbContext.ConversionTasksData.Add(taskData); 
+            dbContext.ConversionTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
@@ -69,7 +69,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             // Assert
             dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id); 
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.HandoverNotApplicable);
             Assert.Null(existingTaskData.HandoverReview);
@@ -87,17 +87,17 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Arrange
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
 
-            var dbContext = factory.GetDbContext<CompleteContext>(); 
+            var dbContext = factory.GetDbContext<CompleteContext>();
 
             var taskData = fixture.Create<TransferTasksData>();
-            dbContext.TransferTasksData.Add(taskData); 
+            dbContext.TransferTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.ProjectType = ProjectType.Transfer;
             command.HandoverMeetings = true;
             command.HandoverReview = false;
-            command.HandoverNotes = true; 
+            command.HandoverNotes = true;
 
             // Act
             await tasksDataClient.UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync(command, default);
@@ -110,7 +110,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.HandoverReview);
             Assert.True(existingTaskData.HandoverMeeting);
             Assert.True(existingTaskData.HandoverNotes);
-        } 
+        }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task GetConversionTasksDataByIdAsync_ShouldReturn_A_TaskData(
@@ -235,7 +235,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.TransferTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.Cleared = true;
             command.Saved = false;
             command.Received = true;
@@ -331,7 +331,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
-            Assert.False(existingTaskData.SupplementalFundingAgreementSaved); 
+            Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
@@ -388,7 +388,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.ProjectType = ProjectType.Conversion;
             command.Redact = true;
-            command.Saved = true; 
+            command.Saved = true;
             command.SendToSolicitors = true;
             command.Send = false;
 
@@ -459,7 +459,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ConversionTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.SevenToElevenYears = "3";
             command.TwelveOrAboveYears = "3";
             command.ReceptionToSixYears = "3";
@@ -547,7 +547,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.ReceiveGrantPaymentCertificateNotApplicable);
             Assert.True(existingTaskData.ReceiveGrantPaymentCertificateCheckCertificate);
             Assert.NotNull(existingTaskData.ReceiveGrantPaymentCertificateDateReceived);
-            Assert.False(existingTaskData.ReceiveGrantPaymentCertificateSaveCertificate); 
+            Assert.False(existingTaskData.ReceiveGrantPaymentCertificateSaveCertificate);
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
@@ -691,12 +691,12 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             await tasksDataClient.UpdateConfirmAllConditionsMetTaskAsync(command, default);
 
             // Assert
-            dbContext.ChangeTracker.Clear(); 
+            dbContext.ChangeTracker.Clear();
             var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
             Assert.NotNull(existingProject);
             Assert.True(existingProject.AllConditionsMet);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateConfirmAcademyOpenedDateTaskAsync_ShouldUpdate_ConversionTaskData(
@@ -714,7 +714,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ConversionTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.AcademyOpenedDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Act
@@ -762,7 +762,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
             Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived); 
+            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
@@ -826,7 +826,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             // Arrange
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
 
-            var dbContext = factory.GetDbContext<CompleteContext>(); 
+            var dbContext = factory.GetDbContext<CompleteContext>();
             var testUser = await dbContext.Users.FirstOrDefaultAsync();
             var establishment = fixture.Create<Domain.Entities.GiasEstablishment>();
             var localAuthority = fixture.Create<Domain.Entities.LocalAuthority>();
@@ -896,13 +896,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                     TasksDataType = Domain.Enums.TaskType.Conversion,
                 }
                 ).Create<Domain.Entities.Project>();
-            dbContext.Projects.Add(project); 
+            dbContext.Projects.Add(project);
 
             await dbContext.SaveChangesAsync();
             command.ProjectId = new ProjectId { Value = project.Id.Value };
             command.StakeholderKickOffSetupMeeting = false;
-            command.StakeholderKickOffIntroductoryEmails = true; 
-            command.SignificantDate = new DateTime(2025, 1, 1,0,0,0, DateTimeKind.Utc);
+            command.StakeholderKickOffIntroductoryEmails = true;
+            command.SignificantDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             command.UserEmail = testUser.Email;
             // Act
             await tasksDataClient.UpdateExternalStakeholderKickOffTaskAsync(command, default);
@@ -935,9 +935,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ConversionTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };  
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.Received = true;
-            command.Cleared = true;  
+            command.Cleared = true;
             command.Saved = false;
 
             // Act
@@ -970,12 +970,12 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
-            command.Agreed = true;          
+            command.Agreed = true;
             command.QuestionsReceived = true;
             command.QuestionsChecked = true;
             command.Saved = false;
             command.Signed = false;
-            command.ProjectType = ProjectType.Transfer;      
+            command.ProjectType = ProjectType.Transfer;
 
             // Act
             await tasksDataClient.UpdateCommercialTransferAgreementTaskAsync(command, default);
@@ -984,11 +984,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.CommercialTransferAgreementConfirmAgreed);            
+            Assert.True(existingTaskData.CommercialTransferAgreementConfirmAgreed);
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
             Assert.False(existingTaskData.CommercialTransferAgreementSaveConfirmationEmails);
-            Assert.False(existingTaskData.CommercialTransferAgreementConfirmSigned);            
+            Assert.False(existingTaskData.CommercialTransferAgreementConfirmSigned);
         }
 
         [Theory]
@@ -1065,9 +1065,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.False(existingTaskData.LandQuestionnaireSaved);
         }
-        
-        
-        
+
+
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateMasterFundingAgreementTaskAsync_ShouldUpdate_TransferTaskData(
@@ -1128,7 +1128,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            command.IncomingTrustCeoId = new ContactId { Value = contact.Id.Value };  
+            command.IncomingTrustCeoId = new ContactId { Value = contact.Id.Value };
             command.KeyContactId = new KeyContactId { Value = keycontact.Id.Value };
 
             // Act
@@ -1138,7 +1138,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingKeyContactData = await dbContext.KeyContacts.SingleOrDefaultAsync(x => x.Id == keycontact.Id);
             Assert.NotNull(existingKeyContactData);
-            Assert.Equal(contact.Id.Value, existingKeyContactData.IncomingTrustCeoId?.Value);            
+            Assert.Equal(contact.Id.Value, existingKeyContactData.IncomingTrustCeoId?.Value);
         }
     }
 }

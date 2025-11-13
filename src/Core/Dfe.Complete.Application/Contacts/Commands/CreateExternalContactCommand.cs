@@ -10,14 +10,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
-public record CreateExternalContactCommand(string FullName, 
-    string Role, 
-    string Email, 
-    string PhoneNumber, 
+public record CreateExternalContactCommand(string FullName,
+    string Role,
+    string Email,
+    string PhoneNumber,
     ContactCategory Category,
-    bool IsPrimaryContact, 
-    ProjectId? ProjectId, 
-    int? EstablishmentUrn, 
+    bool IsPrimaryContact,
+    ProjectId? ProjectId,
+    int? EstablishmentUrn,
     string? OrganisationName,
     LocalAuthorityId? LocalAuthorityId,
     ContactType? Type) : IRequest<Result<ContactId>>;
@@ -25,7 +25,7 @@ public record CreateExternalContactCommand(string FullName,
 public class CreateExternalContactCommandHandler(
     IContactWriteRepository contactWriteRepository,
     ILogger<CreateExternalContactCommandHandler> logger,
-    ISender sender) 
+    ISender sender)
     : IRequestHandler<CreateExternalContactCommand, Result<ContactId>>
 {
     public async Task<Result<ContactId>> Handle(CreateExternalContactCommand request, CancellationToken cancellationToken)
@@ -53,12 +53,12 @@ public class CreateExternalContactCommandHandler(
 
             await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId!, request.IsPrimaryContact, contact), cancellationToken);
 
-            return Result<ContactId>.Success(contact.Id);            
+            return Result<ContactId>.Success(contact.Id);
         }
         catch (Exception ex)
-        {   
+        {
             var message = ErrorMessagesConstants.CouldNotCreateExternalContact.Replace("{Id}", request.ProjectId?.Value.ToString());
-            logger.LogError(ex, ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);            
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);
             return Result<ContactId>.Failure(message);
         }
     }

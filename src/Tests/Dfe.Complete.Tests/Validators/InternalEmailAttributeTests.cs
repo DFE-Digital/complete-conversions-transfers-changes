@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Domain.Validators;
+﻿using Dfe.Complete.Domain.Validators;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators;
 
 public class InternalEmailAttributeTests
 {
     [Theory]
-    [InlineData("nicholas.warms@EDUCATION.GOV.UK",  true)]  // Valid email
-    [InlineData("nicholas.warms@education.gov.uk",  true)]  // Valid email
+    [InlineData("nicholas.warms@EDUCATION.GOV.UK", true)]  // Valid email
+    [InlineData("nicholas.warms@education.gov.uk", true)]  // Valid email
     [InlineData("@education.gov.uk", false)]  // no prefix
     [InlineData("35", false)] // Number above range
     [InlineData("abc", false)] // Non-numeric string
@@ -17,7 +17,7 @@ public class InternalEmailAttributeTests
     {
         // Arrange
         var attribute = new InternalEmailAttribute();
-        var validationContext = new ValidationContext(new { }); 
+        var validationContext = new ValidationContext(new { });
         var validationResults = new List<ValidationResult>();
 
         // Act

@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;

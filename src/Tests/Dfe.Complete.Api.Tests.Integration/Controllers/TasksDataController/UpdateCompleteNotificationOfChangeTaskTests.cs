@@ -41,7 +41,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 CheckDocument = true,
                 SendDocument = true,
             };
-            
+
             // Act
             await tasksDataClient.UpdateCompleteNotificationOfChangeTaskAsync(command, default);
 

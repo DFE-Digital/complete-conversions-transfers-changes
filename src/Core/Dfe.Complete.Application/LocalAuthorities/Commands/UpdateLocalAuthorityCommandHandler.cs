@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.LocalAuthorities.Commands
 {
-    public record UpdateLocalAuthorityCommand(LocalAuthorityId Id, 
+    public record UpdateLocalAuthorityCommand(LocalAuthorityId Id,
        string Code,
        string Address1,
        string? Address2,
@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
        string? Phone = null) : IRequest<Result<bool>>;
 
     public class UpdateLocalAuthorityCommandHandler(
-        IUnitOfWork unitOfWork, 
+        IUnitOfWork unitOfWork,
         ICompleteRepository<LocalAuthority> localAuthorityRepository,
         ICompleteRepository<Contact> contactRepository,
         ILogger<UpdateLocalAuthorityCommandHandler> logger) : IRequestHandler<UpdateLocalAuthorityCommand, Result<bool>>
@@ -35,21 +35,21 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             try
             {
                 await unitOfWork.BeginTransactionAsync();
-                var localAuthority = await localAuthorityRepository.FindAsync(x=> x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(ErrorMessagesConstants.CannotUpdateLocalAuthorityAsNotExisted);
-                if(localAuthority.Code != request.Code)
+                var localAuthority = await localAuthorityRepository.FindAsync(x => x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(ErrorMessagesConstants.CannotUpdateLocalAuthorityAsNotExisted);
+                if (localAuthority.Code != request.Code)
                 {
                     var hasLocalAuthorityWithSameCode = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                     if (hasLocalAuthorityWithSameCode)
                     {
                         throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, request.Code));
                     }
-                } 
+                }
                 localAuthority.Update(request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
-                    request.AddressPostcode), DateTime.UtcNow);  
+                    request.AddressPostcode), DateTime.UtcNow);
                 await localAuthorityRepository.UpdateAsync(localAuthority, cancellationToken);
 
-                if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName)) 
+                if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
                     var contact = await contactRepository.FindAsync(x => x.Id == request.ContactId && x.LocalAuthorityId == request.Id, cancellationToken);
                     if (contact == null)

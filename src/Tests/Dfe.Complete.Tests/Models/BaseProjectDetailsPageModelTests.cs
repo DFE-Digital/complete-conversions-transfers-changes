@@ -1,14 +1,11 @@
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectDetails;
-using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -201,7 +198,7 @@ public class BaseProjectDetailsPageModelTests
 
         // Assert
         Assert.IsType<PageResult>(result);
-        
+
         // Verify property mappings
         Assert.Equal("Test School", model.EstablishmentName);
         Assert.Equal(ProjectType.Conversion, model.ProjectType);
@@ -217,7 +214,7 @@ public class BaseProjectDetailsPageModelTests
     }
 }
 
-public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger) 
+public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger)
     : BaseProjectDetailsPageModel(sender, errorService, logger)
 {
     private IActionResult? _baseOnGetResult;

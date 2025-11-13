@@ -1,6 +1,4 @@
 import projectRemover from "cypress/api/projectRemover";
-import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
-import prepareProjectApi from "cypress/api/prepareProjectApi";
 import { beforeEach } from "mocha";
 import { Logger } from "cypress/common/logger";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
@@ -13,24 +11,26 @@ import transferHandoverForm from "cypress/pages/projects/handover/transferHandov
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import validationComponent from "cypress/pages/validationComponent";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
 
-const project = PrepareProjectBuilder.createTransferProjectRequest({ urn: 151115 });
+const project = ProjectBuilder.createTransferProjectRequest({ urn: 151115 });
 const academyName = "Rusthall St Paul's CofE Primary School";
 
-const formAMATProject = PrepareProjectBuilder.createTransferFormAMatProjectRequest({ urn: 151116 });
+const formAMATProject = ProjectBuilder.createTransferFormAMatProjectRequest({ urn: 151116 });
 const formAMATAcademyName = "Two Mile Hill Primary School";
 
-const otherProject = PrepareProjectBuilder.createTransferProjectRequest({ urn: 151118 });
+const otherProject = ProjectBuilder.createTransferProjectRequest({ urn: 151118 });
 const otherAcademyName = "Park View";
 
 describe("Handover process tests for transfer projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        // projectRemover.removeProjectIfItExists(formAMATProject.urn); // awaiting 214920
+        projectRemover.removeProjectIfItExists(formAMATProject.urn);
         projectRemover.removeProjectIfItExists(otherProject.urn);
-        prepareProjectApi.createTransferProject(project);
-        // prepareProjectApi.createTransferFormAMatProject(formAMATProject); // awaiting 214920
-        prepareProjectApi.createTransferProject(otherProject);
+        projectApi.createTransferProject(project);
+        projectApi.createMatTransferProject(formAMATProject);
+        projectApi.createTransferProject(otherProject);
     });
 
     beforeEach(() => {
@@ -94,8 +94,7 @@ describe("Handover process tests for transfer projects", () => {
         yourTeamProjects.goToNextPageUntilFieldIsVisible(academyName);
     });
 
-    // awaiting 214920
-    it.skip("Should be able to handover a transfer form a MAT project to assign to the user", () => {
+    it("Should be able to handover a transfer form a MAT project to assign to the user", () => {
         Logger.log("Add handover details for project");
         projectTable
             .goToNextPageUntilFieldIsVisible(formAMATAcademyName)

@@ -2,11 +2,11 @@
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class DfeNumberLAESTABBuilder: IColumnBuilder<ConversionCsvModel>
+    public class DfeNumberLAESTABBuilder : IColumnBuilder<ConversionCsvModel>
     {
         public string Build(ConversionCsvModel input)
         {
-            if(input.Project.AcademyUrn == null)
+            if (input.Project.AcademyUrn == null)
             {
                 return string.Empty;
             }

@@ -39,7 +39,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
         string name,
         string? email,
         string? phone,
-        LocalAuthorityId localAuthorityId,  
+        LocalAuthorityId localAuthorityId,
         DateTime createdAt
         )
     {
@@ -56,7 +56,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
             CreatedAt = createdAt
         };
     }
-    
+
     public void Update(
         string title,
         string name,

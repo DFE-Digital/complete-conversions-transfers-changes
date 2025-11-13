@@ -3,7 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask
 {
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask
         {
             await base.OnGetAsync();
 
-            if(Project.TasksDataType != TaskType.Conversion)
+            if (Project.TasksDataType != TaskType.Conversion)
             {
                 return Redirect(RouteConstants.ErrorPage);
             }

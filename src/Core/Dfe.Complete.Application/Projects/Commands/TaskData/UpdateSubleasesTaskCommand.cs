@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateSubleasesTaskCommand(
-        TaskDataId TaskDataId, 
+        TaskDataId TaskDataId,
         bool? NotApplicable,
         bool? Received,
         bool? Cleared,
-        bool? Signed, 
+        bool? Signed,
         bool? Saved,
         bool? EmailSigned,
         bool? SaveSigned,
@@ -42,6 +42,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
-        }  
+        }
     }
 }

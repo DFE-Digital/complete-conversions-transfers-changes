@@ -7,7 +7,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.DataAttributes
     public class InlineAutoNSubstituteDataAttribute : CompositeDataAttribute
     {
         public InlineAutoNSubstituteDataAttribute(params object[] values)
-            : base([            
+            : base([
                 new InlineDataAttribute(values),
                 new AutoNSubstituteDataAttribute()
             ])
