@@ -3,7 +3,6 @@
     public static class ErrorMessagesConstants
     {
         public const string AlreadyExistsProjectGroupWithIdentifier = "Project group with identifier '{0}' already exists.";
-        public const string AlreadyExistsProjectGroupWithUkprn = "Project group with UKPRN '{0}' already exists.";
         public const string AlreadyExistsUserWithCode = "User with email '{0}' already exists.";
         public const string AlreadyExistedLocalAuthorityWithCode = "Already existed local authority with code {0}.";
         public const string CannotUpdateLocalAuthorityAsNotExisted = "Cannot update Local authority as it is not existed.";
