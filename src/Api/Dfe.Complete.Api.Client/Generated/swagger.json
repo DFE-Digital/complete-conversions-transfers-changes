@@ -6540,7 +6540,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ],
         "enum": [
           "Handover",
@@ -6590,7 +6591,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ]
       },
       "CreateNoteCommand": {
