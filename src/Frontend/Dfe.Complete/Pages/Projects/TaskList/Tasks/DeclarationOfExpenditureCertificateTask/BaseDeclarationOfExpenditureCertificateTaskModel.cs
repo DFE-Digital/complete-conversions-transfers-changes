@@ -15,6 +15,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
+
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
 
@@ -27,6 +28,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
+
         [BindProperty]
         public ProjectType? Type { get; set; }
 
