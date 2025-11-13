@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
 {
     public record CreateLocalAuthorityCommand(
        string Code,
-       string Name,
+       string? Name,
        string Address1,
        string? Address2,
        string? Address3,

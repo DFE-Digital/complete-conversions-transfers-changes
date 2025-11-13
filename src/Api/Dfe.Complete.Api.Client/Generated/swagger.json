@@ -6881,7 +6881,8 @@
             "type": "string"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "address1": {
             "type": "string"
