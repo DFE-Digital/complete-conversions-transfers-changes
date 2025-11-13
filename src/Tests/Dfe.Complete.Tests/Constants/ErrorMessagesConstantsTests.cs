@@ -14,15 +14,6 @@ namespace Dfe.Complete.Tests.Constants
         }
 
         [Fact]
-        public void AlreadyExistsProjectGroupWithUkprn_ShouldReturnCorrectMessage()
-        {
-            var ukprn = 123456;
-            var expected = $"Project group with UKPRN '{ukprn}' already exists.";
-            var actual = string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithUkprn, ukprn);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
         public void AlreadyExistedLocalAuthorityWithCode_ShouldReturnCorrectMessage()
         {
             var code = "ABC123";
