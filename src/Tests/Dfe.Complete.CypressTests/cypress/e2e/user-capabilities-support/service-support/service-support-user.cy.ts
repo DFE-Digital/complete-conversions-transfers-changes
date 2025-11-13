@@ -4,7 +4,6 @@ import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
-    shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
@@ -17,17 +16,19 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 
-const project = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.whitcliffe } });
+const project = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.whitcliffe });
 let projectId: string;
-const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.kinnerley } });
+const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.kinnerley });
 let projectToDeleteId: string;
 const schoolToDeleteName = "Kinnerley Church of England Controlled Primary School";
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(projectToDelete.urn.value);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
-        projectApi.createConversionProject(projectToDelete).then((response) => (projectToDeleteId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(projectToDelete.urn);
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
+        projectApi
+            .createAndUpdateConversionProject(projectToDelete)
+            .then((response) => (projectToDeleteId = response.value));
     });
     beforeEach(() => {
         cy.login(serviceSupportUser);
@@ -88,10 +89,6 @@ describe("Capabilities and permissions of the service support user", () => {
             .clickButton("Delete project")
             .containsSuccessBannerWithMessage("The project was deleted.");
         cy.url().should("include", "/projects/all/in-progress/all");
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {

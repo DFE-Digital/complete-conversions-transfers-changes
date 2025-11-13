@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.AcademiesApi.Client.Contracts;
+﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Validators;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators
 {

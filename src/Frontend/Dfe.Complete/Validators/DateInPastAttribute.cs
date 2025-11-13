@@ -11,7 +11,7 @@ namespace Dfe.Complete.Validators
             var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
             var displayAttribute = property?.GetCustomAttribute<DisplayAttribute>();
             var displayName = displayAttribute?.GetName() ?? validationContext.DisplayName;
-            
+
             var date = value as DateTime?;
 
             if (date == null)

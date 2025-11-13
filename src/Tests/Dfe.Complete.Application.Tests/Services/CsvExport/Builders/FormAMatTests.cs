@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         public void WhenIncomingUkprnisNullIsFormAMat(Project project)
         {
             project.IncomingTrustUkprn = null;
-                
+
             var builder = new FormAMat<Project>(x => x);
 
             var result = builder.Build(project);

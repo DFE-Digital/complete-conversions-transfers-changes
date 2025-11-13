@@ -3,7 +3,6 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -30,7 +29,7 @@ public class UpdateExternalContactCommandTests
     {
         // Arrange
         var contact = fixture.Build<Entities.Contact>()
-            .With(q => q.Id, command.ContactId)
+            .With(q => q.Id, command.contactDto.Id)
             .Create();
 
         // Arrange
@@ -65,7 +64,7 @@ public class UpdateExternalContactCommandTests
         var expectedMessage = $"Could not update external contact with Id {command.contactDto.Id.Value}.";
 
         var contact = fixture.Build<Entities.Contact>()
-           .With(q => q.Id, command.ContactId)
+           .With(q => q.Id, command.contactDto.Id)
            .Create();       
 
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
@@ -100,7 +99,7 @@ public class UpdateExternalContactCommandTests
         var queryableContacts = new List<Entities.Contact>().AsQueryable().BuildMock();
         mockContactReadRepository.Contacts.Returns(queryableContacts);
 
-        var expectedMessage = $"External contact with Id {command.ContactId.Value} not found.";        
+        var expectedMessage = $"External contact with Id {command.contactDto.Id.Value} not found.";        
         
         // Act
         var result = await sut.Handle(command, CancellationToken.None);

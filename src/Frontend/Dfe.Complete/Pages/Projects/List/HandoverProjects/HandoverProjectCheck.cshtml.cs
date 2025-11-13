@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 {
@@ -19,13 +19,13 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
         public async Task OnGetAsync()
         {
             var project = await sender.Send(new GetProjectWithEstablishmentByIdQuery(new ProjectId(ProjectId)));
-            if(project.IsSuccess is false)
+            if (project.IsSuccess is false)
             {
                 throw new ApplicationException($"An error occurred when fetching project {ProjectId}");
             }
             Project = project.Value!;
         }
-        public  IActionResult OnPost()
+        public IActionResult OnPost()
         {
             return Redirect(string.Format(RouteConstants.ProjectsHandoverNew, ProjectId));
         }

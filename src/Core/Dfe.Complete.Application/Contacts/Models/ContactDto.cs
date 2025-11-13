@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Contacts.Models
 
         public string? Email { get; set; }
 
-        public string? Phone { get; set; }       
+        public string? Phone { get; set; }
 
         public ContactCategory Category { get; set; }
 

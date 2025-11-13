@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Contacts.Queries
 {
-    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<ContactDto?>>;   
+    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<ContactDto?>>;
 
     public class GetContactIdQueryHandler(
         IContactReadRepository contactReadRepository,
@@ -25,8 +25,8 @@ namespace Dfe.Complete.Application.Contacts.Queries
             {
                 var contact = await new ContactIdQuery(request.ContactId)
                     .Apply(contactReadRepository.Contacts.AsNoTracking())
-                    .FirstOrDefaultAsync(cancellationToken);               
-                
+                    .FirstOrDefaultAsync(cancellationToken);
+
                 var contactDto = mapper.Map<ContactDto?>(contact);
                 return Result<ContactDto?>.Success(contactDto);
             }

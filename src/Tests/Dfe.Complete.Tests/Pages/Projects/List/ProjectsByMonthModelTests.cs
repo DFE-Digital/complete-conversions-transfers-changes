@@ -10,7 +10,7 @@ public class ProjectsByMonthModelTests_Additional
 {
     private class TestProjectsByMonthModel : ProjectsByMonthModel
     {
-        public TestProjectsByMonthModel() : base("conversions") {}
+        public TestProjectsByMonthModel() : base("conversions") { }
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ProjectsByMonthModelTests_Additional
         Assert.NotNull(result);
         Assert.Equal(expectedUrl, result.Url);
     }
-    
+
     [Theory]
     [InlineData(ProjectType.Conversion)]
     [InlineData(ProjectType.Transfer)]
@@ -85,20 +85,20 @@ public class ProjectsByMonthModelTests_Additional
         DateTime date = DateTime.Now.AddMonths(1);
         string month = date.Month.ToString("0");
         string year = date.Year.ToString("0000");
-        
+
         // Arrange
         string expectedUrl = string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
-            
+
         // Act
         var result = ProjectsByMonthModel.GetProjectByMonthUrl(projectType);
-        
+
         // Assert
         Assert.Equal(result, expectedUrl);
     }
-    
+
     [Theory]
-    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, true)] 
-    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, true)] 
+    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, true)]
+    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, true)]
     [InlineData(ProjectType.Transfer, ProjectTeam.NorthWest, false, false)]
     public void GetProjectByMonthsUrl_ShouldReturnCorrectUrl(ProjectType projectType, ProjectTeam team, bool managesTeam, bool expectedToSeeDataConsumerUrl)
     {

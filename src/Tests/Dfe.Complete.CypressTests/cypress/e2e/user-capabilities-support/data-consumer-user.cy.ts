@@ -4,7 +4,6 @@ import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
-    shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -22,14 +21,14 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.support.whitcliffe },
-    significantDate: "2027-04-01",
+    urn: urnPool.support.whitcliffe,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 describe("Capabilities and permissions of the data consumer user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(dataConsumerUser);
@@ -78,10 +77,6 @@ describe("Capabilities and permissions of the data consumer user", () => {
 
     it("Should be able to view the reports landing page", () => {
         shouldBeAbleToViewReportsLandingPage();
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {

@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Dfe.Complete.Models;
+﻿using Dfe.Complete.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Dfe.Complete.Services.Interfaces
 {

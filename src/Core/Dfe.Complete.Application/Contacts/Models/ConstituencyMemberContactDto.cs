@@ -4,9 +4,9 @@ namespace Dfe.Complete.Application.Contacts.Models
 {
     [ExcludeFromCodeCoverage]
     public record ConstituencyMemberContactDto
-    {   
-        public string DisplayNameWithTitle { get; set; } = null!;        
+    {
+        public string DisplayNameWithTitle { get; set; } = null!;
 
-        public string? Email { get; set; }       
+        public string? Email { get; set; }
     }
 }

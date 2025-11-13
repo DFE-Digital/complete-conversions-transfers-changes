@@ -21,7 +21,7 @@ public class UpdatePrimaryContactAtOrganisationCommandTests
 
     public UpdatePrimaryContactAtOrganisationCommandTests()
     {
-        mockProjectRepository = new Mock<ICompleteRepository<Entities.Project>>();        
+        mockProjectRepository = new Mock<ICompleteRepository<Entities.Project>>();
         handler = new UpdatePrimaryContactAtOrganisation(mockProjectRepository.Object);
     }
 
@@ -41,7 +41,7 @@ public class UpdatePrimaryContactAtOrganisationCommandTests
         string LocalAuthorityMainContactId,
         string ContactIdValue,
         bool PrimaryContact,
-        ContactCategory ContactCategory        
+        ContactCategory ContactCategory
         )
     {
         // Arrange    
@@ -60,19 +60,19 @@ public class UpdatePrimaryContactAtOrganisationCommandTests
                .With(t => t.Id, contactId)
                .With(t => t.Category, ContactCategory)
                .With(t => t.ProjectId, projectId)
-               .Create();       
+               .Create();
 
         mockProjectRepository.Setup(repo => repo.FindAsync(projectId, It.IsAny<CancellationToken>()))
                .ReturnsAsync(project);
-        
-        var command = new UpdatePrimaryContactAtOrganisationCommand(projectId, PrimaryContact, contact);      
+
+        var command = new UpdatePrimaryContactAtOrganisationCommand(projectId, PrimaryContact, contact);
 
         // Act
         await handler.Handle(command, CancellationToken.None);
 
         // Assert                             
         mockProjectRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Entities.Project>(), It.IsAny<CancellationToken>()), Times.Once);
-    }    
+    }
 
     [Fact]
     public async Task Handle_ShouldNotThrowOrUpdate_WhenContactProject_ProjectPassed_NotSame()
@@ -87,7 +87,7 @@ public class UpdatePrimaryContactAtOrganisationCommandTests
                .With(t => t.Category, ContactCategory.Other)
                .With(t => t.ProjectId, contactProjectId)
                .Create();
-        
+
         var command = new UpdatePrimaryContactAtOrganisationCommand(requestedProjectId, true, contact);
 
         // Act

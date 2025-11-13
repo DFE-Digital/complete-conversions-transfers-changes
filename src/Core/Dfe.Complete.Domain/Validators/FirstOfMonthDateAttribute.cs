@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Domain.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Domain.Validators;
 

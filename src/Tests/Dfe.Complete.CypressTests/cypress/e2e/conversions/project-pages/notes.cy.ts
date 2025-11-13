@@ -12,13 +12,13 @@ import noteApi from "cypress/api/noteApi";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectId: string;
 
 before(() => {
-    projectRemover.removeProjectIfItExists(project.urn.value);
-    projectApi.createMatConversionProject(project).then((response) => {
+    projectRemover.removeProjectIfItExists(project.urn);
+    projectApi.createAndUpdateMatConversionProject(project).then((response) => {
         projectId = response.value;
         noteApi.createNote(projectId, cypressUser.id, "My note to edit");
         noteApi.createNote(projectId, cypressUser.id, "My note to delete");

@@ -35,11 +35,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateLandConsentLetterTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },                
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Drafted = true,
                 Signed = true,
                 Sent = true,
-                Saved = true               
+                Saved = true
             };
 
             // Act
@@ -52,9 +52,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.LandConsentLetterDrafted);
             Assert.True(existingTaskData.LandConsentLetterSigned);
             Assert.True(existingTaskData.LandConsentLetterSent);
-            Assert.True(existingTaskData.LandConsentLetterSaved);            
+            Assert.True(existingTaskData.LandConsentLetterSaved);
         }
-        
+
 
         [Theory]
         [CustomAutoData(
@@ -95,7 +95,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.LandConsentLetterDrafted);
             Assert.Null(existingTaskData.LandConsentLetterSigned);
             Assert.Null(existingTaskData.LandConsentLetterSent);
-            Assert.Null(existingTaskData.LandConsentLetterSaved);            
+            Assert.Null(existingTaskData.LandConsentLetterSaved);
             Assert.True(existingTaskData.LandConsentLetterNotApplicable);
         }
 

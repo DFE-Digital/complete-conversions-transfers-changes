@@ -1,9 +1,9 @@
-using MediatR;
-using Dfe.Complete.Domain.Interfaces.Repositories;
+using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
-using AutoMapper;
+using Dfe.Complete.Domain.Interfaces.Repositories;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject

@@ -1,16 +1,16 @@
-using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Models;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Models;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -26,7 +26,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    } 
+    }
 
     public override async Task<IActionResult> OnGetAsync()
     {

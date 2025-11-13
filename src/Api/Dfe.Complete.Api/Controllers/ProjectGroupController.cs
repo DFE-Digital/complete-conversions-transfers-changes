@@ -1,11 +1,11 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.ProjectGroups.Commands;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Dfe.Complete.Application.Projects.Models;
-using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.ProjectGroups.Commands;
 
 namespace Dfe.Complete.Api.Controllers
 {

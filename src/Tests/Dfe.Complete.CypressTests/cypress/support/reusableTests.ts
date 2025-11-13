@@ -43,16 +43,6 @@ export function shouldNotHaveAccessToViewProjectReports() {
     cy.visit("/projects/all/reports").notAuthorisedToPerformAction();
 }
 
-export function shouldNotBeAbleToCreateAProject() {
-    cy.visit("/projects/yours/in-progress").notAuthorisedToPerformAction();
-    cy.visit("/projects/yours/added-by").notAuthorisedToPerformAction();
-    cy.visit("/projects/new").notAuthorisedToPerformAction();
-    cy.visit("/projects/conversions/new").notAuthorisedToPerformAction();
-    cy.visit("/projects/transfers/new").notAuthorisedToPerformAction();
-    cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
-    cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
-}
-
 export function shouldNotBeAbleToSoftDeleteAProject(projectId: string) {
     const pages = ["tasks", "information", "notes", "external-contacts", "internal-contacts", "date-history"];
     for (const page of pages) {

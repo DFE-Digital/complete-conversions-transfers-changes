@@ -1,16 +1,16 @@
 using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using AutoMapper;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using NSubstitute;
-using AutoMapper;
-using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Utils;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Utils;
+using NSubstitute;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.NotNull(result.Value);
             Assert.Equal(mappedProject, result.Value);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(OmitCircularReferenceCustomization))]
         public async Task Handle_ShouldReturnFailure_WhenSignificantDateHasNoUser(
@@ -63,7 +63,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var validGuid = Guid.NewGuid();
             var query = new GetProjectHistoryByProjectIdQuery(validGuid.ToString());
-            
+
             var projects = new List<Domain.Entities.Project>
             {
                 new ()

@@ -1,8 +1,8 @@
-﻿using System.Text.RegularExpressions;
-using Dfe.Complete.Application.Common.Queries;
+﻿using Dfe.Complete.Application.Common.Queries;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Application.Projects.Queries.QueryFilters;
 

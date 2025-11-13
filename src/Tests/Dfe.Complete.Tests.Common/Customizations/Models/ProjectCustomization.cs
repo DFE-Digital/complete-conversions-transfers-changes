@@ -12,7 +12,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
     {
         public ProjectId Id { get; set; } = default!;
 
-        public Urn Urn { get; set; } = default!; 
+        public Urn Urn { get; set; } = default!;
 
         public DateTime CreatedAt { get; set; }
 

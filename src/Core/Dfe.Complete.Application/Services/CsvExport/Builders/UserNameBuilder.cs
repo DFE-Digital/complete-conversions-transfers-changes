@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class UserNameBuilder<T>(Func<T, User> selector): IColumnBuilder<T>
+    public class UserNameBuilder<T>(Func<T, User> selector) : IColumnBuilder<T>
     {
         public string Build(T model)
         {

@@ -1,6 +1,6 @@
+using Dfe.Complete.Domain.Constants;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
-using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete.Domain.Validators;
 

@@ -34,10 +34,10 @@ public class RemoveProjectCommandHandlerTests
         host.EnvironmentName = "Production";
 
         var handler = new RemoveProjectCommandHandler(
-            host, 
-            mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockConversionTaskRepository, 
+            host,
+            mockProjectRepository,
+            mockTransferTaskRepository,
+            mockConversionTaskRepository,
             unitOfWorkMock.Object);
 
         // Act & Assert

@@ -2,10 +2,10 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils.Exceptions;
 
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.TransferTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Transfer task data {request.TaskDataId} not found.");
-            
+
             tasksData.FormMNotApplicable = request.NotApplicable;
             tasksData.FormMReceivedFormM = request.NotApplicable == true ? null : request.Received;
             tasksData.FormMReceivedTitlePlans = request.NotApplicable == true ? null : request.ReceivedTitlePlans;
