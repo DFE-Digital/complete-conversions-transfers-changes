@@ -5157,8 +5157,7 @@
                 "$ref": "#/components/schemas/LocalAuthorityId"
               },
               "name": {
-                "type": "string",
-                "nullable": true
+                "type": "string"
               },
               "code": {
                 "type": "string"
@@ -7143,8 +7142,7 @@
             "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "address1": {
             "type": "string"

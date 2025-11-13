@@ -11,11 +11,12 @@ namespace Dfe.Complete.Models.LocalAuthority
     public class LocalAuthorityAddEditBaseModel() : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(Name = nameof(Code))]
-        [Required(ErrorMessage = ValidationConstants.FullNameRequiredMessage)]
+        [Required(ErrorMessage = ValidationConstants.LocalAuthorityCodeRequired)]
         public string Code { get; set; } = null!;
 
         [BindProperty(Name = nameof(Name))]
-        public string? Name { get; set; }
+        [Required(ErrorMessage = ValidationConstants.FullNameRequiredMessage)]
+        public string Name { get; set; } = null!;
 
         [BindProperty(Name = nameof(Address1))]
         [Required(ErrorMessage = ValidationConstants.LocalAuthorityAddressLine1Required)]

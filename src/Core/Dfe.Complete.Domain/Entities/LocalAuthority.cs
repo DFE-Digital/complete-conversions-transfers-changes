@@ -7,7 +7,7 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
 {
     public LocalAuthorityId Id { get; set; }
 
-    public string? Name { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public string Code { get; set; } = null!;
 
@@ -29,7 +29,7 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
 
     public static LocalAuthority Create(
         LocalAuthorityId id,
-        string? name,
+        string name,
         string code,
         AddressDetails addressDetails,
         DateTime createdAt)
