@@ -12,7 +12,6 @@ public static class UserRolesConstants
     // Teams
     public const string RegionalCaseworkServices = "regional_casework_services";
     public const string ServiceSupport = "service_support";
-    public const string BusinessSupport = "business_support";
     public const string DataConsumers = "Data.Consumer";
 }
 
