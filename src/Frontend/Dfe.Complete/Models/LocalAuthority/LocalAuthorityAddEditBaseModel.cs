@@ -3,9 +3,11 @@ using Dfe.Complete.Pages.Projects.ServiceSupport;
 using Dfe.Complete.Validators;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dfe.Complete.Models.LocalAuthority
 {
+    [ExcludeFromCodeCoverage]
     public class LocalAuthorityAddEditBaseModel() : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(Name = nameof(Code))]
