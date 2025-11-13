@@ -231,6 +231,26 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ContactsController",
+      "Action": "GetExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "CreateExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "UpdateExternaContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "DeleteExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
@@ -448,13 +468,13 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateTrustModificationOrderTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    },    
+    },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateShareInformationAboutOpeningTaskAsync",
