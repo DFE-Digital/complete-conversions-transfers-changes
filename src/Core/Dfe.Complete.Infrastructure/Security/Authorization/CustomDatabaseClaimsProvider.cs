@@ -48,9 +48,6 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userRecord.ManageTeam == true)
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageTeam));
 
-                if (userRecord.AddNewProject)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.AddNewProject));
-
                 if (userRecord.AssignToProject == true)
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.AssignToProject));
 

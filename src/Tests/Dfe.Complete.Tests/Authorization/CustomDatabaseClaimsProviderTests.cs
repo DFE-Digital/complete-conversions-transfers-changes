@@ -15,7 +15,6 @@ namespace Dfe.Complete.Tests.Authorization
     {
         private readonly ICompleteRepository<User> _repository;
         private readonly ICustomClaimProvider _provider;
-        private readonly IFixture _fixture;
 
         public CustomDatabaseClaimsProviderTests()
         {
@@ -23,7 +22,6 @@ namespace Dfe.Complete.Tests.Authorization
             // Use a real MemoryCache instance.
             IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
             _provider = new CustomDatabaseClaimsProvider(_repository, memoryCache);
-            _fixture = new Fixture();
         }
 
         [Fact]
@@ -83,7 +81,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Email = userEmail,
                 Team = "TeamA",
                 ManageTeam = true,
-                AddNewProject = true,
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
@@ -102,7 +99,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
 
@@ -132,7 +128,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Email = userEmail,
                 Team = "london",
                 ManageTeam = true,
-                AddNewProject = true,
                 AssignToProject = true,
                 ManageUserAccounts = true,
                 ManageConversionUrns = true,
@@ -152,7 +147,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
@@ -320,7 +314,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Email = userEmail,
                 Team = "TeamA",
                 ManageTeam = true,
-                AddNewProject = true,
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
