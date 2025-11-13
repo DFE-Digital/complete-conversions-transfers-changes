@@ -18,6 +18,10 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
+- Added `Direction To Transfer` task for conversion projects.
+
+### Fixed
+- Create project endpoints no longer throw exception when project group already exists for same UKPRN
 
 ### Changed
 - Throw exception when key_contacts record is missing on contact update tasks
