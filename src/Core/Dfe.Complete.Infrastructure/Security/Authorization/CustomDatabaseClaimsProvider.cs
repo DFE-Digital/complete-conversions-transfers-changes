@@ -35,7 +35,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                     throw new InvalidOperationException($"Duplicate account detected. Your current email ({email}) doesn't match the email associated with your account. This may indicate a duplicate account. Please contact service support");
 
                 // If there was no OID match but there was an email match, this is probably first login. 
-                if (userRecord == null! && !string.IsNullOrEmpty(email))
+                if (userRecord == null && !string.IsNullOrEmpty(email))
                 {
                     userRecord = await userRepository.FindAsync(u => u.Email == email);
                     if (userRecord != null)
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 }
 
                 // If no OID or email match, reject
-                if (userRecord == null!)
+                if (userRecord == null)
                     return [];
 
                 additionalClaims =
