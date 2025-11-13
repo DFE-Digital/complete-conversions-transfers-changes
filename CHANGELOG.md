@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
+- Added `Direction To Transfer` task for conversion projects.
 
 ### Fixed
 --  Task - redact and send has incorrect task_identifier
