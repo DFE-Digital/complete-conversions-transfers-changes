@@ -5157,7 +5157,8 @@
                 "$ref": "#/components/schemas/LocalAuthorityId"
               },
               "name": {
-                "type": "string"
+                "type": "string",
+                "nullable": true
               },
               "code": {
                 "type": "string"
