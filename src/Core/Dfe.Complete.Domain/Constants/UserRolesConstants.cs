@@ -7,7 +7,6 @@ public static class UserRolesConstants
     public const string AssignToProject = "assign_to_project";
     public const string ManageUserAccounts = "manage_user_accounts";
     public const string ManageConversionUrns = "manage_conversion_urns";
-    public const string ManageLocalAuthorities = "manage_local_authorities";
 
     // Teams
     public const string RegionalCaseworkServices = "regional_casework_services";

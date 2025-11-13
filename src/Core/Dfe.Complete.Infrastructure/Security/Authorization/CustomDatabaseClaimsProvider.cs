@@ -57,9 +57,6 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userRecord.ManageConversionUrns == true)
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageConversionUrns));
 
-                if (userRecord.ManageLocalAuthorities == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageLocalAuthorities));
-
                 cache.Set(cacheKey, additionalClaims, _cacheDuration);
             }
 

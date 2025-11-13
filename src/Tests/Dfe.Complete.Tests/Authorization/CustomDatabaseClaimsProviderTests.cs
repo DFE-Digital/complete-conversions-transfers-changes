@@ -84,7 +84,6 @@ namespace Dfe.Complete.Tests.Authorization
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
-                ManageLocalAuthorities = true
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
@@ -100,7 +99,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
 
             // Verify claims that should not be present.
             Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
@@ -131,7 +129,6 @@ namespace Dfe.Complete.Tests.Authorization
                 AssignToProject = true,
                 ManageUserAccounts = true,
                 ManageConversionUrns = true,
-                ManageLocalAuthorities = true
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
@@ -149,7 +146,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
         }
@@ -317,7 +313,6 @@ namespace Dfe.Complete.Tests.Authorization
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
-                ManageLocalAuthorities = true
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
