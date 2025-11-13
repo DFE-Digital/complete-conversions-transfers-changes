@@ -195,5 +195,9 @@ public enum NoteTaskIdentifier
 
     [Description("academy_details")]
     [DisplayDescription("Confirm the academy name")]
-    AcademyDetails = 48
+    AcademyDetails = 48,
+
+    [Description("redact_and_send")]
+    [DisplayDescription("Redact and send documents")]
+    RedactAndSend = 49,
 }
