@@ -72,13 +72,18 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(UkprnCustomization)
             )]
-        public async Task CreateProjectGroupAsyncShould_ProjectGroupAlreadyExistsForUkprn_ShouldNotCreateProjectGroup(
+        public async Task CreateProjectGroupAsyncShould_ProjectGroupAlreadyExistsForUkprn_ShouldCreateProjectGroup(
             CustomWebApplicationDbContextFactory<Program> factory,
             IProjectGroupClient projectGroupsClient,
             IFixture _fixture)
         {
             factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
                 .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+            Assert.NotNull(factory.WireMockServer);
+            var trustDto = _fixture.Customize(new TrustDtoCustomization() { Ukprn = "00000000" }).Create<TrustDto>();
+
+            var ukprn = new Ukprn() { Value = 12129912 };
+            factory.WireMockServer.AddGetWithJsonResponse(string.Format(TrustClientEndpointConstants.GetTrustByUkprn2Async, ukprn.Value), trustDto);
 
             var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -86,7 +91,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             {
                 Id = new Domain.ValueObjects.ProjectGroupId(Guid.NewGuid()),
                 GroupIdentifier = "GRP_87654321",
-                TrustUkprn = _fixture.Create<Domain.ValueObjects.Ukprn>(),
+                TrustUkprn = new Domain.ValueObjects.Ukprn(ukprn.Value.Value),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
@@ -94,12 +99,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             dbContext.ProjectGroups.Add(existingProjectGroup);
             await dbContext.SaveChangesAsync();
 
-            var command = new CreateProjectGroupCommand() { GroupReferenceNumber = "GRP_87654322", Ukprn = new Ukprn() { Value = existingProjectGroup.TrustUkprn!.Value } };
+            var command = new CreateProjectGroupCommand() { GroupReferenceNumber = "GRP_87654322", Ukprn = ukprn };
 
-            var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
-                await projectGroupsClient.CreateProjectGroupAsync(command, CancellationToken.None));
+            var projectGroupId = await projectGroupsClient.CreateProjectGroupAsync(command, CancellationToken.None);
 
-            Assert.Contains($"Project group with UKPRN '{existingProjectGroup.TrustUkprn!.Value}' already exists", exception.Message);
+            Assert.IsType<Guid>(projectGroupId);
         }
 
         [Theory]

@@ -36,9 +36,6 @@ internal class CreateProjectGroupCommandHandler(
             if (await new ProjectGroupIdentifierQuery(request.GroupReferenceNumber).Apply(projectGroupReadRepository.ProjectGroups).FirstOrDefaultAsync(cancellationToken) is not null)
                 throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithIdentifier, request.GroupReferenceNumber));
 
-            if (await new ProjectGroupUkprnQuery(request.Ukprn).Apply(projectGroupReadRepository.ProjectGroups).FirstOrDefaultAsync(cancellationToken) is not null)
-                throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithUkprn, request.Ukprn));
-
             var trustResponse = await sender.Send(new GetTrustByUkprnRequest(request.Ukprn.ToString()), cancellationToken);
 
             if (!trustResponse.IsSuccess || trustResponse.Value == null)
