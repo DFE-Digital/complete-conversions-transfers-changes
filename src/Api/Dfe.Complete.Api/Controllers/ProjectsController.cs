@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Dfe.Complete.Application.ApiAttributes;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Application.KeyContacts.Models;
@@ -308,8 +309,8 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
-        [SwaggerResponse(204, "Project Group returned successfully.")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerResponse(204, "Project Group returned successfully.")]        
+        [IgnoreApiInProductionAttribute]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
             if (urn == null)

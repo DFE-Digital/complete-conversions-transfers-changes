@@ -332,6 +332,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<ProjectDto> GetProjectAsync(int? urn_Value, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Removes project based on URN for test purposes.
+        /// </summary>
+        /// <param name="urn">Urn to remove.</param>
+        /// <returns>Project Group returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveProjectAsync(Urn urn);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Removes project based on URN for test purposes.
+        /// </summary>
+        /// <param name="urn">Urn to remove.</param>
+        /// <returns>Project Group returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveProjectAsync(Urn urn, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Returns a list of Projects
         /// </summary>
         /// <returns>Project</returns>

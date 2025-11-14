@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
+using Dfe.Complete.Application.ApiAttributes;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
@@ -18,6 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Dfe.Complete.Application.ApiConfig;
 
 namespace Dfe.Complete.Api
 {
@@ -27,6 +29,9 @@ namespace Dfe.Complete.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var env = builder.Environment;
+            IgnoreApiInProductionConfig.IsProduction = env.IsEnvironment("Production");
 
             builder.Host.UseSerilog((context, services, loggerConfiguration) =>
             {
