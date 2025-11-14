@@ -60,7 +60,7 @@
                 <govuk-summary-list-row-value>
                     @Model.Project.NewTrustReferenceNumber
                 </govuk-summary-list-row-value>
-                @if(Model.UserHasEditAccess()) {
+                @if(Model.UserCanEditTrn()) {
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("new_trust_reference_number")" visually-hidden-text="New trust reference number (TRN)">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
