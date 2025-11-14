@@ -309,6 +309,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [SwaggerResponse(204, "Project Group returned successfully.")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
             if (urn == null)

@@ -708,31 +708,6 @@
             "description": "Invalid request data."
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Removes project based on URN for test purposes.",
-        "operationId": "Projects_RemoveProject",
-        "requestBody": {
-          "x-name": "urn",
-          "description": "Urn to remove.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Urn"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Project Group returned successfully."
-          }
-        }
       }
     },
     "/v1/Projects/List/All": {
