@@ -17,15 +17,32 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+
+### Fixed
+
+### Changed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-13.1119...main) for everything awaiting release
+
+---
+
+## [1.28.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-13.1119) - 2025-11-13
+
+### Added
 - Added MAT Transfer creation end point for prepare to complete 
 - Added `Direction To Transfer` task for conversion projects.
+- Added API External Contacts endpoints
 
 ### Fixed
 - Create project endpoints no longer throw exception when project group already exists for same UKPRN
+- Task - redact and send has incorrect task_identifier
+- Permissions for external contacts pages
+- Fixed All project in progress form a MAT showing all project states
 
---  Task - redact and send has incorrect task_identifier
+### Changed
+- Updated `Confirm the data the academy opened` task
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...production-2025-11-13.1119) for everything in the release
 
 ---
 
