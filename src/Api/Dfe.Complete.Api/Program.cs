@@ -2,7 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
-using Dfe.Complete.Application.ApiAttributes;
+using Dfe.Complete.Application.ApiConfig;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
@@ -19,7 +19,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using Dfe.Complete.Application.ApiConfig;
 
 namespace Dfe.Complete.Api
 {
