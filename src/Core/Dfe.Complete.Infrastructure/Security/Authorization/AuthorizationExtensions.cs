@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 
 using OidcContext = Microsoft.AspNetCore.Authentication.OpenIdConnect.TokenValidatedContext;
 
@@ -114,7 +115,12 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 return true;
             }
 
-            // 4. If the email does match, allow the user into the system. Hooray!
+            // 4. If the email does match, update ManageTeam if needed and allow the user into the system
+            userByOid.ManageTeam = ShouldUserManageTeam(context.Principal);
+            userByOid.UpdatedAt = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
+
+
             logger.LogInformation("User {UserId} authenticated successfully", userId);
             return true;
         }
@@ -142,14 +148,16 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 return;
             }
 
-            // 8. If the OID is empty, update it
+            // 8. If the OID is empty, update it, and also update ManageTeam based on roles
             if (string.IsNullOrEmpty(userByEmail.EntraUserObjectId) && !string.IsNullOrEmpty(userId))
             {
                 logger.LogInformation("Updating user {Email} with Entra Object ID {OID} for first login", email, userId);
                 userByEmail.EntraUserObjectId = userId;
-                userByEmail.UpdatedAt = DateTime.UtcNow;
-                await dbContext.SaveChangesAsync();
             }
+
+            userByEmail.ManageTeam = ShouldUserManageTeam(context.Principal);
+            userByEmail.UpdatedAt = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync();
 
             // 9. Let the user in
             logger.LogInformation("User {Email} authenticated successfully", email);
@@ -160,5 +168,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             context.HttpContext.Response.Redirect($"/sign-in?error={validationFailure.ToDescription()}");
             context.HandleResponse();
         }
+
+        private static bool ShouldUserManageTeam(ClaimsPrincipal? principal) => principal?.IsInRole(UserRolesConstants.RegionalCaseworkServicesTeamLead) == true;
     }
 }

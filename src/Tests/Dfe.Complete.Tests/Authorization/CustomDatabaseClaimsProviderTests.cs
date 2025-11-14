@@ -9,6 +9,10 @@ using NSubstitute;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
+// TODO revisit TODOs
+// TODO update manage_team on sign in 
+// That should be it for thiS? 
+
 namespace Dfe.Complete.Tests.Authorization
 {
     public class CustomDatabaseClaimsProviderTests
@@ -80,7 +84,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                ManageTeam = true,
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
@@ -97,12 +100,11 @@ namespace Dfe.Complete.Tests.Authorization
 
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts"); // TODO revisit
 
             // Verify claims that should not be present.
             Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
+            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");// TODO revisit
         }
 
         [Fact]
@@ -125,7 +127,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "london",
-                ManageTeam = true,
                 AssignToProject = true,
                 ManageUserAccounts = true,
                 ManageConversionUrns = true,
@@ -143,7 +144,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
@@ -265,7 +265,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Email = userEmail, // Same as claim email
                 ActiveDirectoryUserId = userId,
                 Team = "TeamA",
-                ManageTeam = false,
                 AddNewProject = true
             };
 
@@ -287,7 +286,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
         }
 
         [Fact]
@@ -309,7 +307,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                ManageTeam = true,
                 AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
