@@ -44,6 +44,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...production-2025-11-13.1119) for everything in the release
 
+### Fixed
+- Error summary showing in Add/Edit Local Authority and Add/Edit User pages
 ---
 
 ## [1.27.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-06.1066) - 2025-11-06
