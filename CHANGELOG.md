@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Fixed
+-- Added Debounce to UserAutoComplete
+
 
 ### Changed
 
