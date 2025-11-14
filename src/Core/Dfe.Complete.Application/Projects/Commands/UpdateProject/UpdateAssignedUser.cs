@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;
@@ -23,6 +24,18 @@ public class UpdateAssignedUser(
         if (user is null || user.AssignToProject is false)
         {
             throw new NotFoundException("Email is not assignable", "email");
+        }
+
+        // Only raise event if assignment is changing
+        if (project.AssignedToId != request.AssignedUser)
+        {
+            var schoolName = project.GiasEstablishment?.Name ?? $"School URN {project.Urn.Value}";
+            project.RaiseProjectAssignedToUserEvent(
+                project.Id.Value.ToString(),
+                request.AssignedUser,
+                user.Email ?? string.Empty,
+                user.FirstName ?? string.Empty,
+                schoolName);
         }
 
         project.AssignedAt = DateTime.UtcNow;

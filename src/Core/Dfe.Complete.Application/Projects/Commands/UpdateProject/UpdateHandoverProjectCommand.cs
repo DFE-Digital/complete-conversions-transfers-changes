@@ -75,9 +75,21 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
         private static void AssignedToRegionalCaseworkerTeam(UpdateHandoverProjectCommand request, Project project, DateTime dateTime)
         {
-            project.Team = request.AssignedToRegionalCaseworkerTeam ? ProjectTeam.RegionalCaseWorkerServices : request.UserTeam;
-            project.AssignedToId = request.AssignedToRegionalCaseworkerTeam ? null : request.UserId;
+            var wasAssignedToRegionalTeam = project.Team == ProjectTeam.RegionalCaseWorkerServices;
+            var isAssignedToRegionalTeam = request.AssignedToRegionalCaseworkerTeam;
+
+            project.Team = isAssignedToRegionalTeam ? ProjectTeam.RegionalCaseWorkerServices : request.UserTeam;
+            project.AssignedToId = isAssignedToRegionalTeam ? null : request.UserId;
             project.AssignedAt = dateTime;
+
+            // Raise event if project is newly assigned to regional team
+            if (isAssignedToRegionalTeam && !wasAssignedToRegionalTeam)
+            {
+                var schoolName = project.GiasEstablishment?.Name ?? $"School URN {project.Urn.Value}";
+                project.RaiseProjectAssignedToRegionalTeamEvent(
+                    project.Id.Value.ToString(),
+                    schoolName);
+            }
         }
 
         private static void AddNoteWhenHandoverCommentsPresent(Project project, UpdateHandoverProjectCommand request, DateTime dateTime)
