@@ -17,6 +17,7 @@ export class AuthenticationInterceptor {
                     "x-user-context-id": user.id, // must be present for antiforgery claims
                     "x-user-ad-id": user.adId,
                     "x-cypress-user": userType,
+                    "x-user-context-role-0": user.role,
                 };
             },
         ).as("AuthInterceptor");
