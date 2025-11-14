@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Fixed
+-- Hide delete project end point from api swagger in production environment
 
 ### Changed
 
