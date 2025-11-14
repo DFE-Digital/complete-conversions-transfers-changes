@@ -7250,7 +7250,8 @@ namespace Dfe.Complete.Client.Contracts
         public bool? NotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? SponsoredSupportGrantType { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SponsoredSupportGrantType? SponsoredSupportGrantType { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("paymentAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? PaymentAmount { get; set; } = default!;
@@ -7276,6 +7277,24 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmSponsoredSupportGrantTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum SponsoredSupportGrantType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StandardTransferGrant")]
+        StandardTransferGrant = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FastTrack")]
+        FastTrack = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Intermediate")]
+        Intermediate = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FullSponsored")]
+        FullSponsored = 3,
 
     }
 

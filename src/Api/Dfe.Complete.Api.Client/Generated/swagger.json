@@ -9533,8 +9533,12 @@
             "nullable": true
           },
           "sponsoredSupportGrantType": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SponsoredSupportGrantType"
+              }
+            ]
           },
           "paymentAmount": {
             "type": "boolean",
@@ -9553,6 +9557,22 @@
             "nullable": true
           }
         }
+      },
+      "SponsoredSupportGrantType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ],
+        "enum": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ]
       },
       "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
         "type": "object",

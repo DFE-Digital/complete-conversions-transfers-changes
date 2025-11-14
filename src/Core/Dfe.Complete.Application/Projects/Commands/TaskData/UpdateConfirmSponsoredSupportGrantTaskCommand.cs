@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         [Required] TaskDataId TaskDataId,
         [Required] [ProjectType] ProjectType? ProjectType,
         bool? NotApplicable,
-        string? SponsoredSupportGrantType,
+        SponsoredSupportGrantType? SponsoredSupportGrantType,
         bool? PaymentAmount,
         bool? PaymentForm,
         bool? SendInformation,
@@ -47,7 +48,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
             
             tasksData.SponsoredSupportGrantNotApplicable = request.NotApplicable;
-            tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType;
+            tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType.ToDescription();
 
             tasksData.SponsoredSupportGrantPaymentAmount = request.NotApplicable == true ? null : request.PaymentAmount;
             tasksData.SponsoredSupportGrantPaymentForm = request.NotApplicable == true ? null : request.PaymentForm;
@@ -63,7 +64,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                             ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
 
             tasksData.SponsoredSupportGrantNotApplicable = request.NotApplicable;
-            tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType;
+            tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType.ToDescription();
             
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
