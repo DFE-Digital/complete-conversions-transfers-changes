@@ -4,6 +4,8 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.AcademiesApi.Client.Security;
 using Dfe.AcademiesApi.Client.Settings;
 using Dfe.Complete.Api.Client.Extensions;
+using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
@@ -51,6 +53,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                             .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", options => { });
 
                         services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapping>(); });
+
+                        // Register mock email sender BEFORE infrastructure services
+                        // This will be overridden by AddNotifyEmailServices, so we need to remove and re-add after
+                        services.AddScoped<IEmailSender, NoOpEmailSender>();
                     },
                     ExternalHttpClientConfiguration = client =>
                     {
@@ -67,6 +73,20 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                         cfgBuilder.AddInMemoryCollection(new Dictionary<string, string?>
                         {
                             ["PersonsApiClient:BaseUrl"] = mockServer.Urls[0].TrimEnd('/') + "/",
+                        });
+
+                        // Add minimal Notify configuration to prevent validation errors in tests
+                        cfgBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+                        {
+                            ["Notify:ApiKey"] = "test-api-key",
+                            ["Notify:TestMode"] = "true",
+                            ["Notify:Email:Templates:NewAccountAdded"] = "test-template-id",
+                            ["Notify:Email:Templates:NewConversionProjectCreated"] = "test-template-id",
+                            ["Notify:Email:Templates:NewTransferProjectCreated"] = "test-template-id",
+                            ["Notify:Email:Templates:AssignedNotificationConversion"] = "test-template-id",
+                            ["Notify:Email:Templates:AssignedNotificationTransfer"] = "test-template-id",
+                            ["Notify:Email:ProjectBaseUrl"] = "https://test.com/projects/",
+                            ["FeatureManagement:EmailNotifications"] = "true"
                         });
                     },
                     ExternalWireMockClientRegistration = (services, config, wireHttp) =>
@@ -151,6 +171,23 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
 
                 return factory;
             }));
+        }
+    }
+
+    /// <summary>
+    /// No-op email sender implementation for integration tests.
+    /// Prevents email sending failures from breaking tests.
+    /// </summary>
+    internal class NoOpEmailSender : IEmailSender
+    {
+        public Task<Result<EmailSendResult>> SendAsync(EmailMessage message, CancellationToken cancellationToken = default)
+        {
+            // Return success without actually sending emails in tests
+            return Task.FromResult(Result<EmailSendResult>.Success(
+                new EmailSendResult(
+                    ProviderMessageId: "test-message-id",
+                    Reference: message.Reference ?? "test-reference",
+                    SentAt: DateTime.UtcNow)));
         }
     }
 }

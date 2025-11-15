@@ -1,3 +1,4 @@
+using AutoFixture;
 using Dfe.Complete.Application.Common.EventHandlers;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
@@ -6,6 +7,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -211,7 +213,11 @@ namespace Dfe.Complete.Application.Tests.Notify
 
         private static Project CreateTestProject(ProjectId projectId, ProjectType projectType, ProjectTeam team)
         {
-            var urn = new Urn(12345);
+            // Use AutoFixture to generate valid URN
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(12345); // Use valid URN from customization
+            
             var now = DateTime.UtcNow;
             var userId = new UserId(Guid.NewGuid());
             var ukprn = new Ukprn(10001234);

@@ -1,3 +1,4 @@
+using AutoFixture;
 using Dfe.Complete.Application.Common.EventHandlers;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
@@ -6,6 +7,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -48,8 +50,11 @@ namespace Dfe.Complete.Application.Tests.Notify
         public async Task EndToEnd_ConversionProjectCreatedAndAssignedToRegionalTeam_SendsEmailsToAllTeamLeaders()
         {
             // Arrange: Create a conversion project assigned to regional team
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(123456); // Use valid URN from customization
+            
             var projectId = new ProjectId(Guid.NewGuid());
-            var urn = new Urn(123456);
             var ukprn = new Ukprn(10001234);
             var userId = new UserId(Guid.NewGuid());
             var now = DateTime.UtcNow;
@@ -121,8 +126,11 @@ namespace Dfe.Complete.Application.Tests.Notify
         public async Task EndToEnd_TransferProjectCreatedAndAssignedToRegionalTeam_SendsEmailsWithTransferTemplate()
         {
             // Arrange: Create a transfer project assigned to regional team
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(654321); // Use valid URN from customization
+            
             var projectId = new ProjectId(Guid.NewGuid());
-            var urn = new Urn(654321);
             var userId = new UserId(Guid.NewGuid());
             var now = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();
@@ -177,8 +185,11 @@ namespace Dfe.Complete.Application.Tests.Notify
         public async Task EndToEnd_ProjectCreatedAndAssignedToSpecificUser_DoesNotSendEmailsToTeamLeaders()
         {
             // Arrange: Create a conversion project assigned to a specific user (not regional team)
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(789012); // Use valid URN from customization
+            
             var projectId = new ProjectId(Guid.NewGuid());
-            var urn = new Urn(789012);
             var assignedUserId = new UserId(Guid.NewGuid());
             var now = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();
@@ -216,8 +227,11 @@ namespace Dfe.Complete.Application.Tests.Notify
         public async Task EndToEnd_EmailSendingPartiallyFails_LogsErrorsButContinuesSending()
         {
             // Arrange: Create a conversion project
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(345678); // Use valid URN from customization
+            
             var projectId = new ProjectId(Guid.NewGuid());
-            var urn = new Urn(345678);
             var userId = new UserId(Guid.NewGuid());
             var now = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();
@@ -272,8 +286,11 @@ namespace Dfe.Complete.Application.Tests.Notify
         public async Task EndToEnd_ProjectUrlIncludesConfiguredBaseUrl()
         {
             // Arrange
+            var fixture = new Fixture();
+            var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
+            var urn = giasEstablishment.Urn ?? new Urn(111222); // Use valid URN from customization
+            
             var projectId = new ProjectId(Guid.NewGuid());
-            var urn = new Urn(111222);
             var userId = new UserId(Guid.NewGuid());
             var now = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();

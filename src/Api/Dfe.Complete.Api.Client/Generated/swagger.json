@@ -9726,6 +9726,35 @@
           }
         }
       },
+      "UpdateDirectionToTransferTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "EmailTestResponse": {
         "type": "object",
         "description": "Response model for email test endpoints.",
@@ -9764,35 +9793,6 @@
           "errorType": {
             "type": "string",
             "description": "The type of error that occurred.",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateDirectionToTransferTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
             "nullable": true
           }
         }
