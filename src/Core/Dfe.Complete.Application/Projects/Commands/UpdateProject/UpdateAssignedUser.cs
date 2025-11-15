@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;

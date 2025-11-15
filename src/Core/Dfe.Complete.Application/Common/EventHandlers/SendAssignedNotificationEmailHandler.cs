@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Users.Interfaces;
@@ -47,8 +48,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             // Select template based on project type
             var templateKey = notification.ProjectType switch
             {
-                ProjectType.Conversion => "AssignedNotificationConversion",
-                ProjectType.Transfer => "AssignedNotificationTransfer",
+                ProjectType.Conversion => EmailTemplateKeys.AssignedNotificationConversion,
+                ProjectType.Transfer => EmailTemplateKeys.AssignedNotificationTransfer,
                 _ => throw new InvalidOperationException($"Unsupported project type for assignment notification: {notification.ProjectType}")
             };
 
@@ -63,8 +64,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                 TemplateKey: templateKey,
                 Personalisation: new Dictionary<string, string>
                 {
-                    { "first_name", notification.AssignedToFirstName },
-                    { "project_url", projectUrl }
+                    { EmailPersonalisationKeys.FirstName, notification.AssignedToFirstName },
+                    { EmailPersonalisationKeys.ProjectUrl, projectUrl }
                 });
 
             var result = await emailSender.SendAsync(emailMessage, cancellationToken);
@@ -72,16 +73,16 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             if (result.IsSuccess)
             {
                 logger.LogInformation(
-                    "Assignment notification sent to {Email} using template {TemplateKey}. MessageId: {MessageId}",
-                    notification.AssignedToEmail,
+                    "Assignment notification sent to user {UserId} using template {TemplateKey}. MessageId: {MessageId}",
+                    notification.AssignedToUserId,
                     templateKey,
                     result.Value?.ProviderMessageId);
             }
             else
             {
                 logger.LogError(
-                    "Failed to send assignment notification to {Email} using template {TemplateKey}. Error: {Error}",
-                    notification.AssignedToEmail,
+                    "Failed to send assignment notification to user {UserId} using template {TemplateKey}. Error: {Error}",
+                    notification.AssignedToUserId,
                     templateKey,
                     result.Error);
             }

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Events;
@@ -19,18 +20,17 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             CancellationToken cancellationToken)
         {
             logger.LogInformation(
-                "Sending new account email to user {UserId} ({Email})",
-                notification.UserId,
-                notification.Email);
+                "Sending new account email to user {UserId}",
+                notification.UserId);
 
             var emailAddress = EmailAddress.Create(notification.Email);
 
             var emailMessage = new EmailMessage(
                 To: emailAddress,
-                TemplateKey: "NewAccountAdded",
+                TemplateKey: EmailTemplateKeys.NewAccountAdded,
                 Personalisation: new Dictionary<string, string>
                 {
-                    { "first_name", notification.FirstName }
+                    { EmailPersonalisationKeys.FirstName, notification.FirstName ?? string.Empty }
                 });
 
             var result = await emailSender.SendAsync(emailMessage, cancellationToken);
@@ -38,15 +38,15 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             if (result.IsSuccess)
             {
                 logger.LogInformation(
-                    "New account email sent successfully to {Email}. MessageId: {MessageId}",
-                    notification.Email,
+                    "New account email sent successfully to user {UserId}. MessageId: {MessageId}",
+                    notification.UserId,
                     result.Value?.ProviderMessageId);
             }
             else
             {
                 logger.LogError(
-                    "Failed to send new account email to {Email}. Error: {Error}",
-                    notification.Email,
+                    "Failed to send new account email to user {UserId}. Error: {Error}",
+                    notification.UserId,
                     result.Error);
             }
         }

@@ -1,5 +1,3 @@
-using Dfe.Complete.Domain.Common;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Domain.ValueObjects

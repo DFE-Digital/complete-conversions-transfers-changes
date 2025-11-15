@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.EventHandlers;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
@@ -52,7 +53,7 @@ namespace Dfe.Complete.Application.Tests.Notify
                 x => x.SendAsync(
                     It.Is<EmailMessage>(m =>
                         m.To.Value == "test@education.gov.uk" &&
-                        m.TemplateKey == "NewAccountAdded" &&
+                        m.TemplateKey == EmailTemplateKeys.NewAccountAdded &&
                         m.Personalisation.ContainsKey("first_name") &&
                         m.Personalisation["first_name"] == "John"),
                     It.IsAny<CancellationToken>()),

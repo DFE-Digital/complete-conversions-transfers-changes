@@ -1,4 +1,5 @@
 using AutoFixture;
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.EventHandlers;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
@@ -102,7 +103,7 @@ namespace Dfe.Complete.Application.Tests.Notify
             _emailSenderMock.Verify(
                 x => x.SendAsync(
                     It.Is<EmailMessage>(m =>
-                        m.TemplateKey == "NewConversionProjectCreated" &&
+                        m.TemplateKey == EmailTemplateKeys.NewConversionProjectCreated &&
                         m.Personalisation.ContainsKey("first_name") &&
                         m.Personalisation.ContainsKey("project_url") &&
                         m.Personalisation["project_url"].Contains(projectId.Value.ToString())),
@@ -176,7 +177,7 @@ namespace Dfe.Complete.Application.Tests.Notify
             _emailSenderMock.Verify(
                 x => x.SendAsync(
                     It.Is<EmailMessage>(m =>
-                        m.TemplateKey == "NewTransferProjectCreated"),
+                        m.TemplateKey == EmailTemplateKeys.NewTransferProjectCreated),
                     It.IsAny<CancellationToken>()),
                 Times.Exactly(2));
         }

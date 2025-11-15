@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.ValueObjects;
@@ -19,35 +20,28 @@ namespace Dfe.Complete.Api.Controllers
     [ApiVersion("1.0")]
     [Authorize(Policy = "CanReadWrite")]
     [Route("v{version:apiVersion}/[controller]")]
-    public class TestEmailController(IEmailSender emailSender, ILogger<TestEmailController> logger) : ControllerBase
+    public class TestEmailController(
+        IEmailSender emailSender, 
+        IProjectUrlBuilder projectUrlBuilder,
+        ILogger<TestEmailController> logger) : ControllerBase
     {
-        /// <summary>
-        /// Send a test welcome email.
-        /// </summary>
-        /// <param name="email">The recipient email address.</param>
-        /// <param name="firstName">The recipient's first name.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>Result of the email send operation.</returns>
-        [HttpGet("welcome")]
-        [SwaggerResponse(200, "Email sent successfully.", typeof(EmailTestResponse))]
-        [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(500, "Failed to send email.")]
-        public async Task<IActionResult> SendWelcomeEmailAsync(
-            [FromQuery] string email,
-            [FromQuery] string firstName,
-            CancellationToken cancellationToken = default)
+
+        private async Task<IActionResult> SendTestEmailAsync(
+            string email,
+            string templateKey,
+            Dictionary<string, string> personalisation,
+            string referencePrefix,
+            string logMessage,
+            CancellationToken cancellationToken)
         {
-            logger.LogInformation("Test request: Send welcome email to {Email}", email);
+            logger.LogInformation("Test request: {LogMessage}", logMessage);
 
             var emailAddress = EmailAddress.Create(email);
             var message = new EmailMessage(
                 To: emailAddress,
-                TemplateKey: "NewAccountAdded",
-                Personalisation: new Dictionary<string, string>
-                {
-                    { "first_name", firstName }
-                },
-                Reference: $"test-welcome-{Guid.NewGuid().ToString()[..8]}"
+                TemplateKey: templateKey,
+                Personalisation: personalisation,
+                Reference: $"{referencePrefix}-{Guid.NewGuid().ToString()[..8]}"
             );
 
             var result = await emailSender.SendAsync(message, cancellationToken);
@@ -71,6 +65,30 @@ namespace Dfe.Complete.Api.Controllers
                 ErrorType = result.ErrorType.ToString(),
                 Message = $"Failed to send email to {email}"
             });
+        }
+        /// <summary>
+        /// Send a test welcome email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>Result of the email send operation.</returns>
+        [HttpGet("welcome")]
+        [SwaggerResponse(200, "Email sent successfully.", typeof(EmailTestResponse))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(500, "Failed to send email.")]
+        public async Task<IActionResult> SendWelcomeEmailAsync(
+            [FromQuery] string email,
+            [FromQuery] string firstName,
+            CancellationToken cancellationToken = default)
+        {
+            return await SendTestEmailAsync(
+                email,
+                "NewAccountAdded",
+                new Dictionary<string, string> { { EmailPersonalisationKeys.FirstName, firstName } },
+                "test-welcome",
+                $"Send welcome email to {email}",
+                cancellationToken);
         }
 
         /// <summary>
@@ -91,41 +109,17 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] string projectRef = "TEST-PROJECT-001",
             CancellationToken cancellationToken = default)
         {
-            logger.LogInformation("Test request: Send assignment email to {Email} for project {ProjectRef}", email, projectRef);
-
-            var emailAddress = EmailAddress.Create(email);
-            var message = new EmailMessage(
-                To: emailAddress,
-                TemplateKey: "AssignedNotification",
-                Personalisation: new Dictionary<string, string>
+            return await SendTestEmailAsync(
+                email,
+                "AssignedNotification",
+                new Dictionary<string, string>
                 {
-                    { "first_name", firstName },
-                    { "project_url", $"https://complete-conversions-transfers.education.gov.uk/projects/{projectRef}" }
+                    { EmailPersonalisationKeys.FirstName, firstName },
+                    { EmailPersonalisationKeys.ProjectUrl, projectUrlBuilder.BuildProjectUrl(projectRef) }
                 },
-                Reference: $"test-assignment-{projectRef}-{Guid.NewGuid().ToString()[..8]}"
-            );
-
-            var result = await emailSender.SendAsync(message, cancellationToken);
-
-            if (result.IsSuccess)
-            {
-                return Ok(new EmailTestResponse
-                {
-                    Success = true,
-                    MessageId = result.Value?.ProviderMessageId,
-                    Reference = result.Value?.Reference,
-                    SentAt = result.Value?.SentAt,
-                    Message = $"Email sent successfully to {email}"
-                });
-            }
-
-            return StatusCode(500, new EmailTestResponse
-            {
-                Success = false,
-                Error = result.Error,
-                ErrorType = result.ErrorType.ToString(),
-                Message = $"Failed to send email to {email}"
-            });
+                $"test-assignment-{projectRef}",
+                $"Send assignment email to {email} for project {projectRef}",
+                cancellationToken);
         }
 
         /// <summary>
@@ -146,41 +140,17 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] string projectRef = "TEST-CONV-001",
             CancellationToken cancellationToken = default)
         {
-            logger.LogInformation("Test request: Send team leader conversion email to {Email} for project {ProjectRef}", email, projectRef);
-
-            var emailAddress = EmailAddress.Create(email);
-            var message = new EmailMessage(
-                To: emailAddress,
-                TemplateKey: "NewConversionProjectCreated",
-                Personalisation: new Dictionary<string, string>
+            return await SendTestEmailAsync(
+                email,
+                "NewConversionProjectCreated",
+                new Dictionary<string, string>
                 {
-                    { "first_name", firstName },
-                    { "project_url", $"https://complete-conversions-transfers.education.gov.uk/projects/{projectRef}" }
+                    { EmailPersonalisationKeys.FirstName, firstName },
+                    { EmailPersonalisationKeys.ProjectUrl, projectUrlBuilder.BuildProjectUrl(projectRef) }
                 },
-                Reference: $"test-tl-conv-{projectRef}-{Guid.NewGuid().ToString()[..8]}"
-            );
-
-            var result = await emailSender.SendAsync(message, cancellationToken);
-
-            if (result.IsSuccess)
-            {
-                return Ok(new EmailTestResponse
-                {
-                    Success = true,
-                    MessageId = result.Value?.ProviderMessageId,
-                    Reference = result.Value?.Reference,
-                    SentAt = result.Value?.SentAt,
-                    Message = $"Email sent successfully to {email}"
-                });
-            }
-
-            return StatusCode(500, new EmailTestResponse
-            {
-                Success = false,
-                Error = result.Error,
-                ErrorType = result.ErrorType.ToString(),
-                Message = $"Failed to send email to {email}"
-            });
+                $"test-tl-conv-{projectRef}",
+                $"Send team leader conversion email to {email} for project {projectRef}",
+                cancellationToken);
         }
 
         /// <summary>
@@ -201,41 +171,17 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] string projectRef = "TEST-TRANS-001",
             CancellationToken cancellationToken = default)
         {
-            logger.LogInformation("Test request: Send team leader transfer email to {Email} for project {ProjectRef}", email, projectRef);
-
-            var emailAddress = EmailAddress.Create(email);
-            var message = new EmailMessage(
-                To: emailAddress,
-                TemplateKey: "NewTransferProjectCreated",
-                Personalisation: new Dictionary<string, string>
+            return await SendTestEmailAsync(
+                email,
+                "NewTransferProjectCreated",
+                new Dictionary<string, string>
                 {
-                    { "first_name", firstName },
-                    { "project_url", $"https://complete-conversions-transfers.education.gov.uk/projects/{projectRef}" }
+                    { EmailPersonalisationKeys.FirstName, firstName },
+                    { EmailPersonalisationKeys.ProjectUrl, projectUrlBuilder.BuildProjectUrl(projectRef) }
                 },
-                Reference: $"test-tl-trans-{projectRef}-{Guid.NewGuid().ToString()[..8]}"
-            );
-
-            var result = await emailSender.SendAsync(message, cancellationToken);
-
-            if (result.IsSuccess)
-            {
-                return Ok(new EmailTestResponse
-                {
-                    Success = true,
-                    MessageId = result.Value?.ProviderMessageId,
-                    Reference = result.Value?.Reference,
-                    SentAt = result.Value?.SentAt,
-                    Message = $"Email sent successfully to {email}"
-                });
-            }
-
-            return StatusCode(500, new EmailTestResponse
-            {
-                Success = false,
-                Error = result.Error,
-                ErrorType = result.ErrorType.ToString(),
-                Message = $"Failed to send email to {email}"
-            });
+                $"test-tl-trans-{projectRef}",
+                $"Send team leader transfer email to {email} for project {projectRef}",
+                cancellationToken);
         }
     }
 

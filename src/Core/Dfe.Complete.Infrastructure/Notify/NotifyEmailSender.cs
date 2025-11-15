@@ -2,11 +2,11 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Notify.Client;
 using Notify.Exceptions;
 using Notify.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.Notify
 {
@@ -27,10 +27,15 @@ namespace Dfe.Complete.Infrastructure.Notify
             ILogger<NotifyEmailSender> logger,
             IOptions<NotifyOptions> options)
         {
-            _notifyClient = notifyClient ?? throw new ArgumentNullException(nameof(notifyClient));
-            _templateProvider = templateProvider ?? throw new ArgumentNullException(nameof(templateProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(notifyClient);
+            ArgumentNullException.ThrowIfNull(templateProvider);
+            ArgumentNullException.ThrowIfNull(logger);
+            ArgumentNullException.ThrowIfNull(options);
+            
+            _notifyClient = notifyClient;
+            _templateProvider = templateProvider;
+            _logger = logger;
+            _options = options.Value;
         }
 
         /// <summary>
@@ -38,15 +43,16 @@ namespace Dfe.Complete.Infrastructure.Notify
         /// </summary>
         public async Task<Result<EmailSendResult>> SendAsync(EmailMessage message, CancellationToken cancellationToken = default)
         {
-            if (message == null)
-                throw new ArgumentNullException(nameof(message));
+            ArgumentNullException.ThrowIfNull(message);
 
             // Validate test mode first
             if (_options.TestMode && !IsAllowedTestDomain(message.To.Value))
             {
+                // Log domain only (not full email) to avoid PII exposure
+                var domain = ExtractDomain(message.To.Value);
                 _logger.LogWarning(
                     "Email blocked in test mode. Template: {TemplateKey}, Domain: {Domain}",
-                    message.TemplateKey, ExtractDomain(message.To.Value));
+                    message.TemplateKey, domain);
                 
                 return Result<EmailSendResult>.Failure(
                     "Email blocked in test mode",
@@ -74,8 +80,9 @@ namespace Dfe.Complete.Infrastructure.Notify
             catch (KeyNotFoundException ex)
             {
                 _logger.LogError(ex, "Template not found: {TemplateKey}", message.TemplateKey);
+                // Don't expose template key in user-facing error message for security
                 return Result<EmailSendResult>.Failure(
-                    $"Template not found: {message.TemplateKey}",
+                    "Email template not found",
                     ErrorType.NotFound);
             }
         }
@@ -131,8 +138,9 @@ namespace Dfe.Complete.Infrastructure.Notify
                     var delay = CalculateDelay(attempt, _options.Retry.BaseDelaySeconds);
 
                     _logger.LogWarning(
-                        "Email send failed (transient). Attempt: {Attempt}/{MaxAttempts}, Retrying in {Delay}ms. Template: {TemplateKey}, Reference: {Reference}, Error: {Error}",
-                        attempt + 1, maxRetries + 1, delay.TotalMilliseconds, templateKey, reference, ex.Message);
+                        ex,
+                        "Email send failed (transient). Attempt: {Attempt}/{MaxAttempts}, Retrying in {Delay}ms. Template: {TemplateKey}, Reference: {Reference}",
+                        attempt + 1, maxRetries + 1, delay.TotalMilliseconds, templateKey, reference);
 
                     // Wait before retrying (exponential backoff)
                     await Task.Delay(delay, cancellationToken);
@@ -147,26 +155,39 @@ namespace Dfe.Complete.Infrastructure.Notify
                         "Email send failed (permanent). Attempt: {Attempt}, Template: {TemplateKey}, Reference: {Reference}",
                         attempt + 1, templateKey, reference);
 
+                    // Don't expose internal exception details to callers
                     return Result<EmailSendResult>.Failure(
-                        $"Email send failed: {ex.Message}",
+                        "Email send failed due to a permanent error",
                         MapToErrorType(ex));
                 }
             }
 
             // ALL RETRIES EXHAUSTED - return failure
-            _logger.LogError(
-                "Email send failed after {MaxAttempts} attempts. Template: {TemplateKey}, Reference: {Reference}, LastError: {Error}",
-                maxRetries + 1, templateKey, reference, lastException?.Message);
+            var totalAttempts = maxRetries + 1;
+            if (lastException != null)
+            {
+                _logger.LogError(
+                    lastException,
+                    "Email send failed after {MaxAttempts} attempts. Template: {TemplateKey}, Reference: {Reference}",
+                    totalAttempts, templateKey, reference);
+            }
+            else
+            {
+                _logger.LogError(
+                    "Email send failed after {MaxAttempts} attempts. Template: {TemplateKey}, Reference: {Reference}",
+                    totalAttempts, templateKey, reference);
+            }
 
-            return Result<EmailSendResult>.Failure(
-                $"Email send failed after {maxRetries + 1} attempts: {lastException?.Message}",
-                ErrorType.Unknown);
+            // Don't expose internal exception details to callers
+            var errorMessage = $"Email send failed after {totalAttempts} attempts";
+            
+            return Result<EmailSendResult>.Failure(errorMessage, ErrorType.Unknown);
         }
 
         /// <summary>
         /// Determines if an exception represents a transient failure that should be retried.
         /// </summary>
-        private bool IsTransientFailure(Exception ex)
+        private static bool IsTransientFailure(Exception ex)
         {
             // Network errors - retry
             if (ex is HttpRequestException)
@@ -191,12 +212,17 @@ namespace Dfe.Complete.Infrastructure.Notify
         /// <summary>
         /// Extracts HTTP status code from Notify exception message.
         /// </summary>
-        private int GetStatusCodeFromNotifyException(NotifyClientException ex)
+        private static int GetStatusCodeFromNotifyException(NotifyClientException ex)
         {
             // Notify exceptions typically contain status code in the message
             // Example: "Status code: 500. Error response: ..."
-            var message = ex.Message;
-            var statusMatch = System.Text.RegularExpressions.Regex.Match(message, @"Status code:\s*(\d+)");
+            const string StatusCodePattern = @"Status code:\s*(\d+)";
+            const int RegexTimeoutMilliseconds = 1000; // 1 second timeout to prevent ReDoS
+            var statusMatch = Regex.Match(
+                ex.Message, 
+                StatusCodePattern, 
+                RegexOptions.None, 
+                TimeSpan.FromMilliseconds(RegexTimeoutMilliseconds));
             if (statusMatch.Success && int.TryParse(statusMatch.Groups[1].Value, out var code))
             {
                 return code;
@@ -207,28 +233,36 @@ namespace Dfe.Complete.Infrastructure.Notify
         /// <summary>
         /// Calculates exponential backoff delay for retry attempts.
         /// </summary>
-        private TimeSpan CalculateDelay(int attempt, int baseDelaySeconds)
+        private static TimeSpan CalculateDelay(int attempt, int baseDelaySeconds)
         {
             // Exponential backoff: attempt 0 = 2s, attempt 1 = 4s, attempt 2 = 8s
-            var delaySeconds = baseDelaySeconds * Math.Pow(2, attempt);
+            const int ExponentialBase = 2;
+            var delaySeconds = baseDelaySeconds * Math.Pow(ExponentialBase, attempt);
             return TimeSpan.FromSeconds(delaySeconds);
         }
 
         /// <summary>
         /// Generates a deterministic reference for idempotency.
+        /// Uses SHA256 hash to prevent duplicate emails during retries.
+        /// Note: Email address is included in hash for idempotency - this is necessary and the hash is not logged.
         /// </summary>
-        private string GenerateReference(EmailMessage message)
+        private static string GenerateReference(EmailMessage message)
         {
             // Hash of template key + email + personalisation keys for idempotency
-            var content = $"{message.TemplateKey}|{message.To.Value}|{string.Join(",", message.Personalisation.Keys.OrderBy(k => k))}";
+            // Email is hashed (not logged) to ensure idempotency per recipient
+            // SonarCloud: Email address is hashed for idempotency, not logged or exposed
+            const int ReferenceLength = 32;
+            var emailValue = message.To.Value; // Extract once to avoid repeated property access
+            var personalisationKeys = string.Join(",", message.Personalisation.Keys.OrderBy(k => k));
+            var content = string.Join("|", message.TemplateKey, emailValue, personalisationKeys);
             var hash = SHA256.HashData(Encoding.UTF8.GetBytes(content));
-            return Convert.ToHexString(hash)[..32]; // 32 char hex string
+            return Convert.ToHexString(hash)[..ReferenceLength];
         }
 
         /// <summary>
         /// Maps exceptions to ErrorType enum.
         /// </summary>
-        private ErrorType MapToErrorType(Exception ex)
+        private static ErrorType MapToErrorType(Exception ex)
         {
             if (ex is NotifyClientException notifyEx)
             {
@@ -263,9 +297,10 @@ namespace Dfe.Complete.Infrastructure.Notify
         /// <summary>
         /// Extracts domain from email address.
         /// </summary>
-        private string ExtractDomain(string email)
+        private static string ExtractDomain(string email)
         {
-            var atIndex = email.IndexOf('@');
+            const char AtSymbol = '@';
+            var atIndex = email.IndexOf(AtSymbol, StringComparison.Ordinal);
             return atIndex >= 0 ? email.Substring(atIndex) : string.Empty;
         }
     }

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Users.Interfaces;
@@ -54,8 +55,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             // Determine template based on project type
             var templateKey = project.Type switch
             {
-                ProjectType.Conversion => "NewConversionProjectCreated",
-                ProjectType.Transfer => "NewTransferProjectCreated",
+                ProjectType.Conversion => EmailTemplateKeys.NewConversionProjectCreated,
+                ProjectType.Transfer => EmailTemplateKeys.NewTransferProjectCreated,
                 _ => throw new InvalidOperationException($"Unsupported project type: {project.Type}")
             };
 
@@ -68,6 +69,27 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             {
                 try
                 {
+                    // Guard: Skip if email or first name is null
+                    if (string.IsNullOrWhiteSpace(teamLeader.Email))
+                    {
+                        logger.LogWarning(
+                            "Skipping email for team leader {UserId} - email is null or empty for project {ProjectId}",
+                            teamLeader.Id,
+                            project.Id);
+                        emailsFailed++;
+                        continue;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(teamLeader.FirstName))
+                    {
+                        logger.LogWarning(
+                            "Skipping email for team leader {UserId} - first name is null or empty for project {ProjectId}",
+                            teamLeader.Id,
+                            project.Id);
+                        emailsFailed++;
+                        continue;
+                    }
+
                     var emailAddress = EmailAddress.Create(teamLeader.Email);
 
                     var emailMessage = new EmailMessage(
@@ -75,8 +97,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                         TemplateKey: templateKey,
                         Personalisation: new Dictionary<string, string>
                         {
-                            { "first_name", teamLeader.FirstName },
-                            { "project_url", projectUrl }
+                            { EmailPersonalisationKeys.FirstName, teamLeader.FirstName },
+                            { EmailPersonalisationKeys.ProjectUrl, projectUrl }
                         });
 
                     var result = await emailSender.SendAsync(emailMessage, cancellationToken);
@@ -85,8 +107,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                     {
                         emailsSent++;
                         logger.LogInformation(
-                            "New project email sent to team leader {Email} for project {ProjectId}. MessageId: {MessageId}",
-                            teamLeader.Email,
+                            "New project email sent to team leader {UserId} for project {ProjectId}. MessageId: {MessageId}",
+                            teamLeader.Id,
                             project.Id,
                             result.Value?.ProviderMessageId);
                     }
@@ -94,19 +116,21 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                     {
                         emailsFailed++;
                         logger.LogError(
-                            "Failed to send new project email to team leader {Email} for project {ProjectId}. Error: {Error}",
-                            teamLeader.Email,
+                            "Failed to send new project email to team leader {UserId} for project {ProjectId}. Error: {Error}",
+                            teamLeader.Id,
                             project.Id,
                             result.Error);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is ArgumentException || ex is InvalidOperationException || ex is KeyNotFoundException)
                 {
+                    // Catch specific exceptions that can occur during email creation/sending
+                    // These are expected and should be logged but not rethrown
                     emailsFailed++;
                     logger.LogError(
                         ex,
-                        "Exception sending new project email to team leader {Email} for project {ProjectId}",
-                        teamLeader.Email,
+                        "Exception sending new project email to team leader {UserId} for project {ProjectId}",
+                        teamLeader.Id,
                         project.Id);
                 }
             }
