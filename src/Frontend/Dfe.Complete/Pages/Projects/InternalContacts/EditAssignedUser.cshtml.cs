@@ -2,16 +2,19 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
+[Authorize(Policy = UserPolicyConstants.CanManageInternalContacts)]
 public class EditAssignedUser(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger)
     : BaseProjectPageModel(sender, logger)
 {
