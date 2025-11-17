@@ -79,7 +79,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    // bug 247499
+    // bug 219321
     it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
@@ -105,7 +105,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
     });
 
-    // bug 247499
+    // bug 219321
     it.skip("Should be able to change the added by user of the project in internal projects", () => {
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn, projectId, cypressUser, regionalCaseworkerUser);
     });

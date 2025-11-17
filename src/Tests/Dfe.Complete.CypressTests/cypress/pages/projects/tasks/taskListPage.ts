@@ -27,7 +27,9 @@ class TaskListPage extends basePage {
 
     public hasImportantCompletedBannerWith(description: string, outstandingTasks: string[]) {
         cy.getByClass(this.bannerClass)
-            .first()
+            .contains("p", description)
+            .parent()
+            .parent()
             .within(() => {
                 cy.get("h2").should("contain.text", "Important");
                 cy.get("p").shouldHaveText(description);
