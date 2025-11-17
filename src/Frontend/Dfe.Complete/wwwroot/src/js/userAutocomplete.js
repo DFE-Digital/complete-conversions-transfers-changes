@@ -77,14 +77,25 @@ export class UserAutocomplete {
         return this.format(user)
     }
 
+    // a reusable debounce 
+    debounce = (fn, wait = 300) => {
+        let timeout
+        return (...args) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => fn(...args), wait)
+        }
+    }
+
     // the main suggestion method calls the endpoint and populates the suggestion list
-    suggest = async (query, populateResults) => {
+    getResults = async (query, populateResults) => {
         if (query) {
             const response = await fetch('/search/user?type=assignable&query=' + query)
             const results = await response.json()
             populateResults(results)
         }
     }
+
+    suggest = this.debounce(this.getResults, 300)  
 
     // main initialisation of the object, switches the form element to the autocomplete
     init = async (element, field, label) => {
