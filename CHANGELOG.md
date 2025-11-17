@@ -47,6 +47,12 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Updated `Confirm the data the academy opened` task
 
+### Removed
+- create conversion project end point deleted due to in-app project creations being a workaround 
+- create MAT conversion project end point deleted due to in-app project creations being a workaround 
+- create transfer project end point deleted due to in-app project creations being a workaround 
+- create MAT transfer project end point deleted due to in-app project creations being a workaround 
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...production-2025-11-13.1119) for everything in the release
 
 ---
@@ -63,12 +69,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - Remove buttons and links to external contacts for users without access
-
-### Removed
-- create conversion project end point deleted due to in-app project creations being a workaround 
-- create MAT conversion project end point deleted due to in-app project creations being a workaround 
-- create transfer project end point deleted due to in-app project creations being a workaround 
-- create MAT transfer project end point deleted due to in-app project creations being a workaround 
 
 ### Fixed
 - Fixed assign project return url issue.
@@ -91,8 +91,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.
-
-### Fixed
 
 ### Security
 - Secure cookies should contain the HTTPOnly attribute
