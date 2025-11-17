@@ -6,6 +6,7 @@ import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import { UserAutocomplete } from './js/userAutocomplete.js'
+import { initSearchToggle } from './js/searchToggle.js'
 import * as GOVUKFrontend from "govuk-frontend";
 import * as MOJFrontend from "@ministryofjustice/frontend";
 
@@ -20,6 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize MOJ Frontend
     MOJFrontend.initAll();
+    
+    // Initialize search toggle
+    initSearchToggle();
     
     //Temporary solution until the TagHelper Library provides a Date component that only accepts a month and year
     function setAndDisableSignificantDateDayField() {
