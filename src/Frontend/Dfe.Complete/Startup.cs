@@ -148,6 +148,9 @@ public class Startup
             OpenIdConnectDefaults.AuthenticationScheme
         );
 
+        // Configure OpenIdConnect events for user validation
+        services.AddWebAuthenticationWithUserValidation();
+
         // Configure the primary auth cookie: login + access denied behaviour.
         ConfigureCookies(services);
 

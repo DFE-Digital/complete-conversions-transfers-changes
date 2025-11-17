@@ -13,6 +13,19 @@
         <h1 class="govuk-heading-xl">
             Sign in
         </h1>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" data-module="govuk-error-summary">
+                <h2 class="govuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <p class="govuk-error-summary__list">@Model.ErrorMessage</p>
+                </div>
+            </div>
+        }
+
         <p class="govuk-body">This product can be used by delivery officers or caseworkers at the Department for Education.</p>
         <p class="govuk-body">It can also be used by the Academies Operational Practice Unit and Service Support team, as well as some teams at the Education and Skills Funding Agency.</p>
         <p class="govuk-body">You can use this product to manage work that helps DfE to convert schools to academies.</p>
