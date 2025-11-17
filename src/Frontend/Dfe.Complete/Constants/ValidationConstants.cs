@@ -50,7 +50,7 @@
         public const string AllConditionsMetComplete = "The confirm all conditions have been met task is completed";
         public const string AcademyOpenedDateComplete = "The confirm the date the academy opened task is completed";
         public const string RequiredSummary = "Enter the summary";
-        public const string NotInTheList = "is not included in the list";
+        public const string RiskProtectionArrangementOptionRequired = "Please select an option to confirm the academy's risk protection arrangements";
 
         // Local Authority authority validation messages       
         public const string LocalAuthorityCodeRequired = "Enter a code";
