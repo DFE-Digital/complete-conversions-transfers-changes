@@ -19,6 +19,9 @@ Security in case of vulnerabilities.
 ### Fixed
 -- Added Debounce to UserAutoComplete
 
+### Added
+- Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
 
 ## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
