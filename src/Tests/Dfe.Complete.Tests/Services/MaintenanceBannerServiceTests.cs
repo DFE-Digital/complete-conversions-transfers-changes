@@ -70,16 +70,16 @@ namespace Dfe.Complete.Tests.Services
         }
 
         [Fact]
-        public void ShouldShowBanner_WhenMissingDates_ShouldReturnFalseAndLogError()
+        public void ShouldShowBanner_WhenMissingNotifyFrom_ShouldReturnFalseAndLogError()
         {
             // Arrange
             _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
             var options = new MaintenanceBannerOptions
             {
                 Enabled = true,
-                MaintenanceStart = null,
+                MaintenanceStart = DateTime.UtcNow.AddHours(1),
                 MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
+                NotifyFrom = null // Missing NotifyFrom
             };
             var service = CreateService(options);
 
@@ -92,7 +92,7 @@ namespace Dfe.Complete.Tests.Services
                 x => x.Log(
                     LogLevel.Error,
                     It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Maintenance banner configuration is incomplete")),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("NotifyFrom must be set")),
                     It.IsAny<Exception>(),
                     It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
                 Times.Once);
@@ -380,7 +380,7 @@ namespace Dfe.Complete.Tests.Services
 
             // Assert
             result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
-            result.Should().Contain("until");
+            result.Should().Contain("on");
             result.Should().EndWith("due to scheduled maintenance work.");
         }
 
@@ -448,6 +448,117 @@ namespace Dfe.Complete.Tests.Services
 
             // Assert
             result.Should().BeFalse();
+        }
+
+        [Fact]
+        public void GetBannerMessage_WhenOnlyStartDate_ShouldReturnFromMessage()
+        {
+            // Arrange
+            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+            var options = new MaintenanceBannerOptions
+            {
+                Message = string.Empty,
+                MaintenanceStart = startDate,
+                MaintenanceEnd = null
+            };
+            var service = CreateService(options);
+
+            // Act
+            var result = service.GetBannerMessage();
+
+            // Assert
+            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
+            result.Should().Contain("due to scheduled maintenance work.");
+            result.Should().NotContain("until");
+        }
+
+        [Fact]
+        public void GetBannerMessage_WhenOnlyEndDate_ShouldReturnUntilMessage()
+        {
+            // Arrange
+            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
+            var options = new MaintenanceBannerOptions
+            {
+                Message = string.Empty,
+                MaintenanceStart = null,
+                MaintenanceEnd = endDate
+            };
+            var service = CreateService(options);
+
+            // Act
+            var result = service.GetBannerMessage();
+
+            // Assert
+            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable until");
+            result.Should().Contain("due to scheduled maintenance work.");
+            result.Should().NotContain("from");
+        }
+
+        [Fact]
+        public void GetBannerMessage_WhenSameDay_ShouldReturnSameDayFormat()
+        {
+            // Arrange
+            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
+            var options = new MaintenanceBannerOptions
+            {
+                Message = string.Empty,
+                MaintenanceStart = startDate,
+                MaintenanceEnd = endDate
+            };
+            var service = CreateService(options);
+
+            // Act
+            var result = service.GetBannerMessage();
+
+            // Assert
+            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
+            result.Should().Contain("to");
+            result.Should().Contain("on");
+            result.Should().NotContain("until");
+        }
+
+        [Fact]
+        public void GetBannerMessage_WhenDifferentDays_ShouldReturnFullFormat()
+        {
+            // Arrange
+            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+            var endDate = new DateTime(2025, 11, 20, 6, 0, 0, DateTimeKind.Utc);
+            var options = new MaintenanceBannerOptions
+            {
+                Message = string.Empty,
+                MaintenanceStart = startDate,
+                MaintenanceEnd = endDate
+            };
+            var service = CreateService(options);
+
+            // Act
+            var result = service.GetBannerMessage();
+
+            // Assert
+            result.Should().Be("The Complete conversions, transfers and changes service will be unavailable from 19 November 2025 4:00PM until 20 November 2025 6:00AM due to scheduled maintenance work.");
+        }
+
+        [Fact]
+        public void ShouldShowBanner_WhenOnlyNotifyFromSet_ShouldWorkCorrectly()
+        {
+            // Arrange
+            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+            var options = new MaintenanceBannerOptions
+            {
+                Enabled = true,
+                MaintenanceStart = null,
+                MaintenanceEnd = null,
+                NotifyFrom = DateTime.UtcNow.AddMinutes(-30), // Started notifying
+                NotifyTo = DateTime.UtcNow.AddHours(1) // Will stop notifying in future
+            };
+            var service = CreateService(options);
+
+            // Act
+            var result = service.ShouldShowBanner();
+
+            // Assert
+            result.Should().BeTrue();
         }
     }
 }

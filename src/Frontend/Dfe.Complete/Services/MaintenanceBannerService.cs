@@ -30,34 +30,32 @@ namespace Dfe.Complete.Services
                     return false;
 
                 // Validate required dates are set
-                if (!_options.MaintenanceStart.HasValue || !_options.MaintenanceEnd.HasValue || !_options.NotifyFrom.HasValue)
+                if (!_options.NotifyFrom.HasValue)
                 {
-                    _logger.LogError("Maintenance banner configuration is incomplete. MaintenanceStart, MaintenanceEnd, and NotifyFrom must all be set.");
+                    _logger.LogError("Maintenance banner configuration is incomplete. NotifyFrom must be set.");
                     return false;
                 }
 
                 var now = DateTime.UtcNow;
-                var maintenanceStart = _options.MaintenanceStart.Value;
-                var maintenanceEnd = _options.MaintenanceEnd.Value;
                 var notifyFrom = _options.NotifyFrom.Value;
                 
-                // Set NotifyTo to MaintenanceEnd if not specified
-                var notifyTo = _options.NotifyTo ?? maintenanceEnd;
-
-                // Validate maintenance end is not in the past
-                if (maintenanceEnd < now)
+                // Validate maintenance end is not in the past (if provided)
+                if (_options.MaintenanceEnd.HasValue && _options.MaintenanceEnd.Value < now)
                 {
-                    _logger.LogError("Maintenance banner configuration error: MaintenanceEnd ({MaintenanceEnd}) is in the past", maintenanceEnd);
+                    _logger.LogError("Maintenance banner configuration error: MaintenanceEnd ({MaintenanceEnd}) is in the past", _options.MaintenanceEnd.Value);
                     return false;
                 }
 
-                // Validate maintenance end is not before maintenance start
-                if (maintenanceEnd < maintenanceStart)
+                // Validate maintenance end is not before maintenance start (if both provided)
+                if (_options.MaintenanceStart.HasValue && _options.MaintenanceEnd.HasValue && _options.MaintenanceEnd.Value < _options.MaintenanceStart.Value)
                 {
                     _logger.LogError("Maintenance banner configuration error: MaintenanceEnd ({MaintenanceEnd}) is before MaintenanceStart ({MaintenanceStart})",
-                        maintenanceEnd, maintenanceStart);
+                        _options.MaintenanceEnd.Value, _options.MaintenanceStart.Value);
                     return false;
                 }
+                
+                // Set NotifyTo to MaintenanceEnd if not specified, or to far future if no MaintenanceEnd
+                var notifyTo = _options.NotifyTo ?? _options.MaintenanceEnd ?? DateTime.MaxValue;
 
                 // Validate NotifyTo is after NotifyFrom
                 if (notifyTo <= notifyFrom)
@@ -71,7 +69,7 @@ namespace Dfe.Complete.Services
                 var shouldShow = notifyFrom <= now && notifyTo > now;
 
                 _logger.LogInformation("Maintenance banner check: NotifyFrom={NotifyFrom}, NotifyTo={NotifyTo}, MaintenanceStart={MaintenanceStart}, MaintenanceEnd={MaintenanceEnd}, Now={Now}, ShouldShow={ShouldShow}",
-                    notifyFrom, notifyTo, maintenanceStart, maintenanceEnd, now, shouldShow);
+                    notifyFrom, notifyTo, _options.MaintenanceStart, _options.MaintenanceEnd, now, shouldShow);
 
                 return shouldShow;
             }
@@ -88,13 +86,34 @@ namespace Dfe.Complete.Services
             if (!string.IsNullOrWhiteSpace(_options.Message))
                 return _options.Message;
 
-            // Generate default message based on dates
-            if (!_options.MaintenanceStart.HasValue || !_options.MaintenanceEnd.HasValue)
+            // Generate default message based on available dates
+            var hasStart = _options.MaintenanceStart.HasValue;
+            var hasEnd = _options.MaintenanceEnd.HasValue;
+
+            if (!hasStart && !hasEnd)
                 return "The Complete conversions, transfers and changes service will be temporarily unavailable due to scheduled maintenance work.";
 
-            var startDateTime = _options.MaintenanceStart.Value;
-            var endDateTime = _options.MaintenanceEnd.Value;
+            if (hasStart && !hasEnd)
+                return $"The Complete conversions, transfers and changes service will be unavailable from {_options.MaintenanceStart!.Value.ToUkDateTimeWithAmPmString()} due to scheduled maintenance work.";
 
+            if (!hasStart)
+                return $"The Complete conversions, transfers and changes service will be unavailable until {_options.MaintenanceEnd!.Value.ToUkDateTimeWithAmPmString()} due to scheduled maintenance work.";
+
+            // Both dates provided (hasStart && hasEnd)
+            var startDateTime = _options.MaintenanceStart!.Value;
+            var endDateTime = _options.MaintenanceEnd!.Value;
+
+            // Check if same date: "from {start time} to {end time} on {date}"
+            if (startDateTime.Date == endDateTime.Date)
+            {
+                var date = startDateTime.ToDateString(); // Just the date part
+                var startTime = startDateTime.ToString("h:mm tt").ToLower(); // Time part in AM/PM format
+                var endTime = endDateTime.ToString("h:mm tt").ToLower();
+                
+                return $"The Complete conversions, transfers and changes service will be unavailable from {startTime} to {endTime} on {date} due to scheduled maintenance work.";
+            }
+
+            // Different dates: "from {full start date/time} until {full end date/time}"
             return $"The Complete conversions, transfers and changes service will be unavailable from {startDateTime.ToUkDateTimeWithAmPmString()} until {endDateTime.ToUkDateTimeWithAmPmString()} due to scheduled maintenance work.";
         }
 
