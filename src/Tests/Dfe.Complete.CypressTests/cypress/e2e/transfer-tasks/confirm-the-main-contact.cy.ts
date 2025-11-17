@@ -2,19 +2,28 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import taskPage from "cypress/pages/projects/tasks/taskPage";
-import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import taskListPage from "cypress/pages/projects/tasks/taskListPage";
+import {
+    checkAccessibilityAcrossPages,
+    shouldBeAbleToConfirmContact,
+    shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
+} from "cypress/support/reusableTests";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { ContactBuilder } from "cypress/api/contactBuilder";
+import contactApi from "cypress/api/contactApi";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
+});
+const schoolName = "The Coquet School";
+const projectMainContact = ContactBuilder.createContactRequest({
+    organisationName: schoolName,
 });
 let projectId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
 });
 let otherUserProjectId: string;
+const task = "main_contact";
 
 describe("Transfer Tasks - Confirm the main contact", () => {
     before(() => {
@@ -22,9 +31,12 @@ describe("Transfer Tasks - Confirm the main contact", () => {
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
+            projectMainContact.projectId = { value: projectId };
+            contactApi.createContact(projectMainContact);
         });
         projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
+            contactApi.createContact(ContactBuilder.createContactRequest({ projectId: { value: projectId } }));
         });
     });
 
@@ -33,16 +45,12 @@ describe("Transfer Tasks - Confirm the main contact", () => {
         cy.acceptCookies();
     });
 
-    // awaiting 238981 to add a contact via API
-    it.skip("Should be able to choose contact and save the task", () => {
-        cy.visit(`projects/${projectId}/tasks/main_contact`);
-        taskPage.hasCheckboxLabel("__").tick().saveAndReturn();
-        taskListPage.hasTaskStatusCompleted("Confirm the main contact");
+    it("Should be able to choose contact and save the task", () => {
+        shouldBeAbleToConfirmContact(projectId, projectMainContact.fullName!, task, "Confirm the main contact");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/main_contact`);
-        taskPage.noSaveAndReturnExists();
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, task);
     });
 
     it("Check accessibility across pages", () => {

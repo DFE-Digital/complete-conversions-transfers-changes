@@ -2,12 +2,26 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import taskPage from "cypress/pages/projects/tasks/taskPage";
-import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import {
+    checkAccessibilityAcrossPages,
+    shouldBeAbleToConfirmContact,
+    shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
+    shouldSeeAddContactButtonIfNoContactExists,
+} from "cypress/support/reusableTests";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { ContactBuilder } from "cypress/api/contactBuilder";
+import { ContactCategory } from "cypress/api/apiDomain";
+import contactApi from "cypress/api/contactApi";
 
 const project = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transferTasks.coquet,
+});
+const schoolName = "Coquet High School";
+const projectCEOContact = ContactBuilder.createContactRequest({
+    fullName: "CEO McIncomingTrust",
+    role: "CEO",
+    organisationName: schoolName,
+    category: ContactCategory.IncomingTrust,
 });
 let projectId: string;
 const projectWithoutCEOContact = ProjectBuilder.createTransferProjectRequest({
@@ -18,6 +32,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transferTasks.marden,
 });
 let otherUserProjectId: string;
+const task = "confirm_incoming_trust_ceo_contact";
 
 describe("Transfer Tasks - Confirm the incoming trust CEO's details", () => {
     before(() => {
@@ -26,12 +41,20 @@ describe("Transfer Tasks - Confirm the incoming trust CEO's details", () => {
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
+            projectCEOContact.projectId = { value: projectId };
+            contactApi.createContact(projectCEOContact);
         });
         projectApi.createAndUpdateTransferProject(projectWithoutCEOContact).then((createResponse) => {
             projectWithoutCEOContactId = createResponse.value;
         });
         projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
             otherUserProjectId = createResponse.value;
+            contactApi.createContact(
+                ContactBuilder.createContactRequest({
+                    projectId: { value: otherUserProjectId },
+                    category: ContactCategory.IncomingTrust,
+                }),
+            );
         });
     });
 
@@ -40,20 +63,21 @@ describe("Transfer Tasks - Confirm the incoming trust CEO's details", () => {
         cy.acceptCookies();
     });
 
-    // awaiting 238981 to add a contact via API
-    it.skip("Should", () => {
-        cy.visit(`projects/${projectId}/tasks/confirm_incoming_trust_ceo_contact`);
+    it("Should be able to choose the incoming trust ceo contact", () => {
+        shouldBeAbleToConfirmContact(
+            projectId,
+            projectCEOContact.fullName!,
+            task,
+            "Confirm the incoming trust CEO's details",
+        );
     });
 
     it("Should see add contact button if no ceo exists", () => {
-        cy.visit(`projects/${projectWithoutCEOContactId}/tasks/confirm_incoming_trust_ceo_contact`);
-        taskPage.hasButton("Add a contact");
+        shouldSeeAddContactButtonIfNoContactExists(projectWithoutCEOContactId, task);
     });
 
-    // awaiting 238981 to add a contact via API
-    it.skip("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/confirm_incoming_trust_ceo_contact`);
-        taskPage.noSaveAndReturnExists();
+    it("Should NOT see the 'save and return' button for another user's project", () => {
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, task);
     });
 
     it("Check accessibility across pages", () => {
