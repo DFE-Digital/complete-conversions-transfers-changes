@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
+using MockQueryable;
 using Moq;
 using System.Linq;
 using Xunit;
@@ -72,7 +73,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -141,7 +142,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(new List<User>().AsQueryable()); // No team leaders
+                .Returns(new List<User>().AsQueryable().BuildMock()); // No team leaders
 
             // Act
             await handler.Handle(@event, CancellationToken.None);
@@ -191,7 +192,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -252,7 +253,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -305,7 +306,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -355,7 +356,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))

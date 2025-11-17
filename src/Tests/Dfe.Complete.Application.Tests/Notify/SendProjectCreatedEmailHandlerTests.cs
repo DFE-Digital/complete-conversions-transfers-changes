@@ -10,6 +10,7 @@ using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Microsoft.Extensions.Logging;
+using MockQueryable;
 using Moq;
 using System.Linq;
 using Xunit;
@@ -60,7 +61,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -87,12 +88,12 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             var teamLeaders = new List<User>
             {
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader@education.gov.uk", FirstName = "Alice", DeactivatedAt = null }
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader@education.gov.uk", FirstName = "Alice", ManageTeam = true, DeactivatedAt = null }
             };
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -136,7 +137,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(new List<User>().AsQueryable());
+                .Returns(new List<User>().AsQueryable().BuildMock());
 
             // Act
             await _handler.Handle(notification, CancellationToken.None);
@@ -163,7 +164,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             // First call fails, second succeeds
             _emailSenderMock
@@ -190,12 +191,12 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             var teamLeaders = new List<User>
             {
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader@education.gov.uk", FirstName = "Alice", DeactivatedAt = null }
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader@education.gov.uk", FirstName = "Alice", ManageTeam = true, DeactivatedAt = null }
             };
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(teamLeaders.AsQueryable());
+                .Returns(teamLeaders.AsQueryable().BuildMock());
 
             EmailMessage? capturedMessage = null;
             _emailSenderMock

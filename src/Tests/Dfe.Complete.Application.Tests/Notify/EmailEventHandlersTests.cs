@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
+using MockQueryable;
 using Moq;
 using System.Linq;
 using Xunit;
@@ -96,7 +97,7 @@ namespace Dfe.Complete.Application.Tests.Notify
             };
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(new List<User> { user }.AsQueryable());
+                .Returns(new List<User> { user }.AsQueryable().BuildMock());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -147,7 +148,7 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             _userRepositoryMock
                 .Setup(x => x.Users)
-                .Returns(new List<User>().AsQueryable());
+                .Returns(new List<User>().AsQueryable().BuildMock());
 
             // Act
             await handler.Handle(@event, CancellationToken.None);

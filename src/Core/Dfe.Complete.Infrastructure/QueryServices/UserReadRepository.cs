@@ -1,6 +1,5 @@
 ﻿using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 

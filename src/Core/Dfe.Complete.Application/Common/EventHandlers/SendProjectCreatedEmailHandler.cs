@@ -47,7 +47,7 @@ namespace Dfe.Complete.Application.Common.EventHandlers
             var teamLeadersQuery = new ActiveTeamLeadersQuery().Apply(userRepository.Users);
             var teamLeaders = await teamLeadersQuery.ToListAsync(cancellationToken);
 
-            if (!teamLeaders.Any())
+            if (teamLeaders.Count == 0)
             {
                 logger.LogWarning(
                     "No active team leaders found for project {ProjectId}. No emails sent.",
