@@ -16,13 +16,18 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
+
+## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
+
 ### Added
+- Added `Confirm the school has completed all actions` task for conversion project.
 
 ### Fixed
+- Error summary showing in Add/Edit Local Authority and Add/Edit User pages
 
-### Changed
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-13.1119...production-2025-11-14.1133) for everything in the release
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-13.1119...main) for everything awaiting release
 
 ---
 
@@ -42,10 +47,14 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Updated `Confirm the data the academy opened` task
 
+### Removed
+- create conversion project end point deleted due to in-app project creations being a workaround 
+- create MAT conversion project end point deleted due to in-app project creations being a workaround 
+- create transfer project end point deleted due to in-app project creations being a workaround 
+- create MAT transfer project end point deleted due to in-app project creations being a workaround 
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...production-2025-11-13.1119) for everything in the release
 
-### Fixed
-- Error summary showing in Add/Edit Local Authority and Add/Edit User pages
 ---
 
 ## [1.27.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-06.1066) - 2025-11-06
@@ -60,12 +69,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - Remove buttons and links to external contacts for users without access
-
-### Removed
-- create conversion project end point deleted due to in-app project creations being a workaround 
-- create MAT conversion project end point deleted due to in-app project creations being a workaround 
-- create transfer project end point deleted due to in-app project creations being a workaround 
-- create MAT transfer project end point deleted due to in-app project creations being a workaround 
 
 ### Fixed
 - Fixed assign project return url issue.
@@ -89,8 +92,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.
 
-### Fixed
-
 ### Security
 - Secure cookies should contain the HTTPOnly attribute
 
@@ -105,7 +106,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Deed of termination for the master funding agreement` task for transfer project.
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
 - Added `Delete project` functionality.
-- Added `Confirm the school has completed all actions` task for conversion project.
 
 ### Changed
 
