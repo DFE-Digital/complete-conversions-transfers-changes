@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 -- Added Debounce to UserAutoComplete
+-- Hide delete project end point from api swagger in production environment
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
 
