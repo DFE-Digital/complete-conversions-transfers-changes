@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 -- Added Debounce to UserAutoComplete
+-- Hide delete project end point from api swagger in production environment
 
 ### Added
 - Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
