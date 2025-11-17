@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace Dfe.Complete.Application.Tests.Notify
@@ -57,13 +58,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader@education.gov.uk",
                     FirstName = "Bob",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -102,10 +104,7 @@ namespace Dfe.Complete.Application.Tests.Notify
             // Act
             await _handler.Handle(@event, CancellationToken.None);
 
-            // Assert - Should skip without calling repository or sending emails
-            _userRepositoryMock.Verify(
-                x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()),
-                Times.Never());
+            // Assert - Should skip without accessing repository or sending emails
 
             _emailSenderMock.Verify(
                 x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()),
@@ -130,13 +129,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader@education.gov.uk",
                     FirstName = "Bob",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))

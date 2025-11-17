@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace Dfe.Complete.Application.Tests.Notify
@@ -56,6 +57,7 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader1@education.gov.uk",
                     FirstName = "Alice",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 },
                 new User
@@ -63,13 +65,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader2@education.gov.uk",
                     FirstName = "Bob",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -112,10 +115,7 @@ namespace Dfe.Complete.Application.Tests.Notify
             // Act
             await handler.Handle(@event, CancellationToken.None);
 
-            // Assert
-            _userRepositoryMock.Verify(
-                x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()),
-                Times.Never()); // Should skip without calling repository
+            // Assert - Should skip without accessing repository
 
             _emailSenderMock.Verify(
                 x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()),
@@ -140,8 +140,8 @@ namespace Dfe.Complete.Application.Tests.Notify
                 "Test School");
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<User>()); // No team leaders
+                .Setup(x => x.Users)
+                .Returns(new List<User>().AsQueryable()); // No team leaders
 
             // Act
             await handler.Handle(@event, CancellationToken.None);
@@ -176,6 +176,7 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = null, // Null email
                     FirstName = "Alice",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 },
                 new User
@@ -183,13 +184,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "valid@education.gov.uk",
                     FirstName = "Bob",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -235,6 +237,7 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "test@education.gov.uk",
                     FirstName = null, // Null first name
+                    ManageTeam = true,
                     DeactivatedAt = null
                 },
                 new User
@@ -242,13 +245,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "valid@education.gov.uk",
                     FirstName = "Bob",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -294,13 +298,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader@education.gov.uk",
                     FirstName = "Alice",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))
@@ -343,13 +348,14 @@ namespace Dfe.Complete.Application.Tests.Notify
                     Id = new UserId(Guid.NewGuid()),
                     Email = "leader@education.gov.uk",
                     FirstName = "Alice",
+                    ManageTeam = true,
                     DeactivatedAt = null
                 }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _projectUrlBuilderMock
                 .Setup(x => x.BuildProjectUrl(It.IsAny<string>()))

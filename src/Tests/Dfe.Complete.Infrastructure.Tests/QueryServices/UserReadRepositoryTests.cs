@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
@@ -28,7 +29,7 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
         }
 
         [Fact]
-        public async Task GetByIdAsync_WithExistingUser_ReturnsUser()
+        public async Task Users_WithUserIdQuery_ReturnsMatchingUser()
         {
             // Arrange
             var userId = new UserId(Guid.NewGuid());
@@ -46,7 +47,8 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetByIdAsync(userId);
+            var query = new UserIdQuery(userId).Apply(_repository.Users);
+            var result = await query.FirstOrDefaultAsync();
 
             // Assert
             Assert.NotNull(result);
@@ -55,20 +57,21 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
         }
 
         [Fact]
-        public async Task GetByIdAsync_WithNonExistingUser_ReturnsNull()
+        public async Task Users_WithUserIdQuery_NonExistingUser_ReturnsNull()
         {
             // Arrange
             var nonExistingUserId = new UserId(Guid.NewGuid());
 
             // Act
-            var result = await _repository.GetByIdAsync(nonExistingUserId);
+            var query = new UserIdQuery(nonExistingUserId).Apply(_repository.Users);
+            var result = await query.FirstOrDefaultAsync();
 
             // Assert
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetActiveTeamLeadersAsync_WithTeamLeaders_ReturnsOnlyTeamLeaders()
+        public async Task Users_WithActiveTeamLeadersQuery_ReturnsOnlyTeamLeaders()
         {
             // Arrange
             var teamLeader1 = new User
@@ -114,11 +117,11 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetActiveTeamLeadersAsync();
+            var query = new ActiveTeamLeadersQuery().Apply(_repository.Users);
+            var leaders = await query.ToListAsync();
 
             // Assert
-            Assert.NotNull(result);
-            var leaders = result.ToList();
+            Assert.NotNull(leaders);
             Assert.Equal(2, leaders.Count);
             Assert.Contains(leaders, u => u.Id == teamLeader1.Id);
             Assert.Contains(leaders, u => u.Id == teamLeader2.Id);
@@ -126,7 +129,7 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
         }
 
         [Fact]
-        public async Task GetActiveTeamLeadersAsync_WithNoTeamLeaders_ReturnsEmptyList()
+        public async Task Users_WithActiveTeamLeadersQuery_NoTeamLeaders_ReturnsEmptyList()
         {
             // Arrange
             var regularUser = new User
@@ -144,7 +147,8 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetActiveTeamLeadersAsync();
+            var query = new ActiveTeamLeadersQuery().Apply(_repository.Users);
+            var result = await query.ToListAsync();
 
             // Assert
             Assert.NotNull(result);
@@ -152,7 +156,7 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
         }
 
         [Fact]
-        public async Task GetActiveTeamLeadersAsync_IncludesDeactivatedTeamLeaders()
+        public async Task Users_WithActiveTeamLeadersQuery_IncludesDeactivatedTeamLeaders()
         {
             // Arrange
             var activeLeader = new User
@@ -185,11 +189,11 @@ namespace Dfe.Complete.Infrastructure.Tests.QueryServices
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetActiveTeamLeadersAsync();
+            var query = new ActiveTeamLeadersQuery().Apply(_repository.Users);
+            var leaders = await query.ToListAsync();
 
             // Assert - Both should be returned (no DeactivatedAt filtering)
-            Assert.NotNull(result);
-            var leaders = result.ToList();
+            Assert.NotNull(leaders);
             Assert.Equal(2, leaders.Count);
             Assert.Contains(leaders, u => u.Id == activeLeader.Id);
             Assert.Contains(leaders, u => u.Id == deactivatedLeader.Id);

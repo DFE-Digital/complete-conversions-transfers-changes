@@ -2,9 +2,11 @@ using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Users.Interfaces;
+using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Common.EventHandlers
@@ -70,7 +72,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                 notification.ProjectId);
 
             // Get all active team leaders
-            var teamLeaders = await UserRepository.GetActiveTeamLeadersAsync(cancellationToken);
+            var teamLeadersQuery = new ActiveTeamLeadersQuery().Apply(UserRepository.Users);
+            var teamLeaders = await teamLeadersQuery.ToListAsync(cancellationToken);
 
             if (!teamLeaders.Any())
             {

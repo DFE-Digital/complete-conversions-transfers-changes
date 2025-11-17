@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace Dfe.Complete.Application.Tests.Notify
@@ -86,15 +87,16 @@ namespace Dfe.Complete.Application.Tests.Notify
                 123456,
                 "Test School");
 
+            var user = new User
+            {
+                Id = userId,
+                Email = "test@education.gov.uk",
+                FirstName = "John",
+                DeactivatedAt = null // IsActive is computed from DeactivatedAt
+            };
             _userRepositoryMock
-                .Setup(x => x.GetByIdAsync(userId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new User
-                {
-                    Id = userId,
-                    Email = "test@education.gov.uk",
-                    FirstName = "John",
-                    DeactivatedAt = null // IsActive is computed from DeactivatedAt
-                });
+                .Setup(x => x.Users)
+                .Returns(new List<User> { user }.AsQueryable());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -144,8 +146,8 @@ namespace Dfe.Complete.Application.Tests.Notify
                 "Test School");
 
             _userRepositoryMock
-                .Setup(x => x.GetByIdAsync(userId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync((User?)null);
+                .Setup(x => x.Users)
+                .Returns(new List<User>().AsQueryable());
 
             // Act
             await handler.Handle(@event, CancellationToken.None);

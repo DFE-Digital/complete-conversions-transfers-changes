@@ -11,6 +11,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Linq;
 using Xunit;
 
 namespace Dfe.Complete.Application.Tests.Notify
@@ -53,13 +54,13 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             var teamLeaders = new List<User>
             {
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader1@education.gov.uk", FirstName = "Alice", DeactivatedAt = null },
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader2@education.gov.uk", FirstName = "Bob", DeactivatedAt = null }
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader1@education.gov.uk", FirstName = "Alice", ManageTeam = true, DeactivatedAt = null },
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader2@education.gov.uk", FirstName = "Bob", ManageTeam = true, DeactivatedAt = null }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -90,8 +91,8 @@ namespace Dfe.Complete.Application.Tests.Notify
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             _emailSenderMock
                 .Setup(x => x.SendAsync(It.IsAny<EmailMessage>(), It.IsAny<CancellationToken>()))
@@ -134,8 +135,8 @@ namespace Dfe.Complete.Application.Tests.Notify
             var notification = new ProjectCreatedEvent(project);
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<User>());
+                .Setup(x => x.Users)
+                .Returns(new List<User>().AsQueryable());
 
             // Act
             await _handler.Handle(notification, CancellationToken.None);
@@ -156,13 +157,13 @@ namespace Dfe.Complete.Application.Tests.Notify
 
             var teamLeaders = new List<User>
             {
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader1@education.gov.uk", FirstName = "Alice", DeactivatedAt = null },
-                new() { Id = new UserId(Guid.NewGuid()), Email = "leader2@education.gov.uk", FirstName = "Bob", DeactivatedAt = null }
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader1@education.gov.uk", FirstName = "Alice", ManageTeam = true, DeactivatedAt = null },
+                new() { Id = new UserId(Guid.NewGuid()), Email = "leader2@education.gov.uk", FirstName = "Bob", ManageTeam = true, DeactivatedAt = null }
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             // First call fails, second succeeds
             _emailSenderMock
@@ -193,8 +194,8 @@ namespace Dfe.Complete.Application.Tests.Notify
             };
 
             _userRepositoryMock
-                .Setup(x => x.GetActiveTeamLeadersAsync(It.IsAny<CancellationToken>()))
-                .ReturnsAsync(teamLeaders);
+                .Setup(x => x.Users)
+                .Returns(teamLeaders.AsQueryable());
 
             EmailMessage? capturedMessage = null;
             _emailSenderMock

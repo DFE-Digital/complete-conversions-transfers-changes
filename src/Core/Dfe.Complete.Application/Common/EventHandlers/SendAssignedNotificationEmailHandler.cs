@@ -2,9 +2,11 @@ using Dfe.Complete.Application.Common.Constants;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Users.Interfaces;
+using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Common.EventHandlers
@@ -30,7 +32,8 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                 notification.ProjectType);
 
             // Guard: Check if user exists
-            var user = await userRepository.GetByIdAsync(notification.AssignedToUserId, cancellationToken);
+            var userQuery = new UserIdQuery(notification.AssignedToUserId).Apply(userRepository.Users);
+            var user = await userQuery.FirstOrDefaultAsync(cancellationToken);
             
             if (user == null)
             {
