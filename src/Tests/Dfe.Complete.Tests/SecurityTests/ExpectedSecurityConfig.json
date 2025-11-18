@@ -73,6 +73,10 @@
       "ExpectedSecurity": "AllowAnonymous"
     },
     {
+      "Route": "/Public/SignIn",
+      "ExpectedSecurity": "AllowAnonymous"
+    },
+    {
       "Route": "/Search/SearchProjects",
       "ExpectedSecurity": "Authorize"
     },

@@ -1,5 +1,7 @@
 using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -18,7 +20,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
     public static class AuthorizationExtensions
     {
         public static IServiceCollection AddCustomAuthorization(this IServiceCollection services,
-            IConfiguration configuration)
+                IConfiguration configuration)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(configuration.GetSection("AzureAd"));
@@ -47,7 +49,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
                     if (context.Principal == null)
                     {
-                        HandleSigninFailure(context, "no_principal");
+                        HandleSigninFailure(context, AuthenticationValidationFailure.NoPrincipal);
                         return;
                     }
 
@@ -61,12 +63,12 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
         private static async Task ValidateUserAsync(OidcContext context)
         {
             // 1. Get users OID from claims
-            var userId = context.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            var email = context.Principal.FindFirst(CustomClaimTypeConstants.PreferredUsername)?.Value;
+            var userId = context.Principal?.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            var email = context.Principal?.FindFirst(CustomClaimTypeConstants.PreferredUsername)?.Value;
 
             if (string.IsNullOrEmpty(email))
             {
-                HandleSigninFailure(context, "no_email");
+                HandleSigninFailure(context, AuthenticationValidationFailure.NoEmail);
                 return;
             }
 
@@ -86,7 +88,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             }
             catch (Exception ex)
             {
-                HandleSigninFailure(context, "validation_failed");
+                HandleSigninFailure(context, AuthenticationValidationFailure.ValidationFailed);
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<OpenIdConnectEvents>>();
                 logger.LogError(ex, "Error during user validation for user {UserId}", userId);
                 context.HttpContext.Response.Redirect("/sign-in?error=validation_failed");
@@ -94,7 +96,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             }
         }
 
-        private static async Task<bool> ValidateUserByOidAsync(CompleteContext dbContext, ILogger logger, 
+        private static async Task<bool> ValidateUserByOidAsync(CompleteContext dbContext, ILogger logger,
             string userId, string email, OidcContext context)
         {
             // 2. Check if they have a matching DB record by OID
@@ -108,7 +110,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             {
                 logger.LogWarning("Email mismatch for user {UserId}. DB email: {DbEmail}, Claims email: {ClaimsEmail}",
                     userId, userByOid.Email, email);
-                HandleSigninFailure(context, "duplicate_account");
+                HandleSigninFailure(context, AuthenticationValidationFailure.DuplicateAccount);
                 return true;
             }
 
@@ -118,7 +120,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
         }
 
         private static async Task ValidateUserByEmailAsync(CompleteContext dbContext, ILogger logger,
-            string userId, string email, OidcContext context)
+            string? userId, string email, OidcContext context)
         {
             // 5. If the user record isn't found using OID, read the email from claims
             var userByEmail = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -127,7 +129,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             {
                 // 6. If that's not found, reject with account not found
                 logger.LogWarning("No user found with email {Email}", email);
-                HandleSigninFailure(context, "user_not_found");
+                HandleSigninFailure(context, AuthenticationValidationFailure.UserNotFound);
                 return;
             }
 
@@ -136,7 +138,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             {
                 logger.LogError("Email {Email} is registered to a different user. DB OID: {DbOid}, Claims OID: {ClaimsOid}",
                     email, userByEmail.EntraUserObjectId, userId);
-                HandleSigninFailure(context, "email_conflict");
+                HandleSigninFailure(context, AuthenticationValidationFailure.EmailConflict);
                 return;
             }
 
@@ -153,9 +155,9 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             logger.LogInformation("User {Email} authenticated successfully", email);
         }
 
-        private static void HandleSigninFailure(OidcContext context, string validationFailure)
+        private static void HandleSigninFailure(OidcContext context, AuthenticationValidationFailure validationFailure)
         {
-            context.HttpContext.Response.Redirect($"/sign-in?error={validationFailure}");
+            context.HttpContext.Response.Redirect($"/sign-in?error={validationFailure.ToDescription()}");
             context.HandleResponse();
         }
     }
