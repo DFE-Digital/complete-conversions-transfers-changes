@@ -25,7 +25,10 @@ using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using Region = Dfe.Complete.Domain.Enums.Region;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using User = Dfe.Complete.Domain.Entities.User;
 using UserId = Dfe.Complete.Client.Contracts.UserId;
+using DomainProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
+using ClientProjectTeam = Dfe.Complete.Client.Contracts.ProjectTeam;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -2213,5 +2216,182 @@ public partial class ProjectsControllerTests
         var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
         Assert.NotNull(existingProject);
         Assert.Equal(ProjectState.Active, existingProject.State);
+    }
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(GiasEstablishmentsCustomization))]
+    public async Task UpdateAssignedUserAsync_ShouldUpdateAssignedUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[]
+        {
+            ApiRoles.ReadRole,
+            ApiRoles.WriteRole,
+            ApiRoles.UpdateRole
+        }.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var originalAssignedUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
+        originalAssignedUser.AssignToProject = true;
+
+        var assignableUser = fixture.Customize(new UserCustomization())
+            .Create<User>();
+        assignableUser.AssignToProject = true;
+
+        await dbContext.Users.AddAsync(assignableUser);
+
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = originalAssignedUser.Id,
+            CaseworkerId = originalAssignedUser.Id,
+            AssignedToId = originalAssignedUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn!,
+            AssignedAt = null
+        }).Create<Project>();
+
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var command = new UpdateAssignedUserCommand
+        {
+            ProjectId = new ProjectId { Value = project.Id.Value },
+            AssignedUser = new UserId { Value = assignableUser.Id.Value }
+        };
+
+        await projectsClient.UpdateAssignedUserAsync(command);
+
+        dbContext.ChangeTracker.Clear();
+
+        var updatedProject = await dbContext.Projects.SingleAsync(p => p.Id == project.Id);
+
+        Assert.Equal(assignableUser.Id, updatedProject.AssignedToId);
+        Assert.NotNull(updatedProject.AssignedAt);
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(GiasEstablishmentsCustomization))]
+    public async Task UpdateAssignedTeamAsync_ShouldUpdateAssignedTeam(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[]
+        {
+            ApiRoles.ReadRole,
+            ApiRoles.WriteRole,
+            ApiRoles.UpdateRole
+        }.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var testUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
+
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn!,
+            Team = DomainProjectTeam.EastMidlands
+        }).Create<Project>();
+
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var command = new UpdateAssignedTeamCommand
+        {
+            ProjectId = new ProjectId { Value = project.Id.Value },
+            AssignedTeam = ClientProjectTeam.NorthEast
+        };
+
+        await projectsClient.UpdateAssignedTeamAsync(command);
+
+        dbContext.ChangeTracker.Clear();
+
+        var updatedProject = await dbContext.Projects.SingleAsync(p => p.Id == project.Id);
+
+        Assert.Equal(DomainProjectTeam.NorthEast, updatedProject.Team);
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(GiasEstablishmentsCustomization))]
+    public async Task UpdateAddedByAsync_ShouldUpdateRegionalDeliveryOfficer(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[]
+        {
+            ApiRoles.ReadRole,
+            ApiRoles.WriteRole,
+            ApiRoles.UpdateRole
+        }.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var currentRegionalDeliveryOfficer = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
+        currentRegionalDeliveryOfficer.AssignToProject = true;
+
+        var newRegionalDeliveryOfficer = fixture.Customize(new UserCustomization())
+            .Create<User>();
+        newRegionalDeliveryOfficer.AssignToProject = true;
+
+        await dbContext.Users.AddAsync(newRegionalDeliveryOfficer);
+
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = currentRegionalDeliveryOfficer.Id,
+            CaseworkerId = currentRegionalDeliveryOfficer.Id,
+            AssignedToId = currentRegionalDeliveryOfficer.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn!
+        }).Create<Project>();
+
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var command = new UpdateRegionalDeliveryOfficerCommand
+        {
+            ProjectId = new ProjectId { Value = project.Id.Value },
+            RegionalDeliveryOfficer = new UserId { Value = newRegionalDeliveryOfficer.Id.Value }
+        };
+
+        await projectsClient.UpdateAddedByAsync(command);
+
+        dbContext.ChangeTracker.Clear();
+
+        var updatedProject = await dbContext.Projects
+            .Include(p => p.RegionalDeliveryOfficer)
+            .SingleAsync(p => p.Id == project.Id);
+
+        Assert.Equal(newRegionalDeliveryOfficer.Id, updatedProject.RegionalDeliveryOfficerId);
+        Assert.NotNull(updatedProject.RegionalDeliveryOfficer);
+        Assert.Equal(newRegionalDeliveryOfficer.FullName, updatedProject.RegionalDeliveryOfficer.FullName);
     }
 }

@@ -21,6 +21,9 @@ Security in case of vulnerabilities.
 -- Updated error wording on Confirm the academy's risk protection arrangements for conversiont task
 -- Hide delete project end point from api swagger in production environment
 
+### Added
+- Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
 
 ## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
@@ -48,6 +51,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
+- Added `Sponsored support grant` task for conversion and transfer project.
 - Added `Direction To Transfer` task for conversion projects.
 - Added API External Contacts endpoints
 
@@ -100,7 +104,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
-
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.
