@@ -43,6 +43,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
+- Added `Sponsored support grant` task for conversion and transfer project.
 - Added `Direction To Transfer` task for conversion projects.
 - Added API External Contacts endpoints
 
@@ -95,7 +96,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
-
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.
