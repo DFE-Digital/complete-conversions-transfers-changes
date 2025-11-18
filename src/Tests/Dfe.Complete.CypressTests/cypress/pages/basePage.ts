@@ -136,16 +136,25 @@ class BasePage {
     }
 
     private containsBannerWithMessage(bannerType: string, title: string, message?: string) {
+        let foundMatch = false;
         cy.getByClass(this.bannerClass)
-            .first()
-            .within(() => {
-                cy.get("h2").should("contain.text", bannerType);
-                if (title) {
-                    cy.get("h3").shouldHaveText(title);
+            .should("exist")
+            .each(($banner) => {
+                const hasCorrectType = $banner.find("h2").text().includes(bannerType);
+                const hasCorrectTitle = title ? $banner.find("h3").text().includes(title) : true;
+                const hasCorrectMessage = message ? $banner.find("p").text().includes(message) : true;
+
+                if (hasCorrectType && hasCorrectTitle && hasCorrectMessage) {
+                    foundMatch = true;
                 }
-                if (message) {
-                    cy.get("p").shouldHaveText(message);
-                }
+            })
+            .then(() => {
+                expect(
+                    foundMatch,
+                    `Expected to find banner with type "${bannerType}", title "${title}"${
+                        message ? `, and message "${message}"` : ""
+                    }`,
+                ).to.be.true;
             });
         return this;
     }
