@@ -67,10 +67,12 @@ namespace Dfe.Complete.Tests.Authorization
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
-            });
+            var userEmail = "user@example.com";
+
+            var identity = new ClaimsIdentity([
+                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
+                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
+            ]);
             var principal = new ClaimsPrincipal(identity);
 
             // Create a user record with specific properties.
@@ -78,6 +80,7 @@ namespace Dfe.Complete.Tests.Authorization
             {
                 Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
+                Email = userEmail,
                 Team = "TeamA",
                 ManageTeam = true,
                 AddNewProject = true,
@@ -113,9 +116,11 @@ namespace Dfe.Complete.Tests.Authorization
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000001234";
-            var identity = new ClaimsIdentity(
-            [
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
+            var userEmail = "user@example.com";
+
+            var identity = new ClaimsIdentity([
+                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
+                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
             ]);
             var principal = new ClaimsPrincipal(identity);
 
@@ -124,6 +129,7 @@ namespace Dfe.Complete.Tests.Authorization
             {
                 Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
+                Email = userEmail,
                 Team = "london",
                 ManageTeam = true,
                 AddNewProject = true,
@@ -140,7 +146,7 @@ namespace Dfe.Complete.Tests.Authorization
             var claims = await _provider.GetClaimsAsync(principal);
 
             // Assert: Verify the expected claims are present.
-            var collection = claims as Claim[] ?? claims.ToArray();
+            var collection = claims as Claim[] ?? [.. claims];
 
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
@@ -155,7 +161,7 @@ namespace Dfe.Complete.Tests.Authorization
         }
 
         [Fact]
-        public async Task GetClaimsAsync_UserFoundByOid_EmailMismatch_ThrowsException()
+        public async Task GetClaimsAsync_UserFoundByOid_EmailMismatch_ReturnsEmpty()
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
@@ -183,55 +189,13 @@ namespace Dfe.Complete.Tests.Authorization
                        .Returns(Task.FromResult(userRecord));
 
             // Act
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await _provider.GetClaimsAsync(principal));
-            // Assert: Verify exception message
-            Assert.Contains("Duplicate account detected", exception.Message);
-        }
-
-        [Fact]
-        public async Task GetClaimsAsync_NoOidMatch_EmailMatch_UpdatesOidAndReturnsClaims()
-        {
-            // Arrange
-            var userId = "00000000-0000-0000-0000-000000000123";
-            var userEmail = "user@example.com";
-
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
-                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
-            });
-            var principal = new ClaimsPrincipal(identity);
-
-            var userRecord = new User
-            {
-                Id = new UserId(Guid.NewGuid()),
-                EntraUserObjectId = null, // No OID set initially
-                Email = userEmail,
-                ActiveDirectoryUserId = "old-ad-id",
-                Team = "TeamA",
-                ManageTeam = true,
-                AddNewProject = false
-            };
-
-            // Setup repository calls in sequence - first OID lookup (null), then email lookup (user found)
-            _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                       .Returns(Task.FromResult<User>(null!), Task.FromResult(userRecord));
-
-            // Act
             var claims = await _provider.GetClaimsAsync(principal);
 
-            // Assert: Should update OID and return claims
-            Assert.NotEmpty(claims);
+            // Assert: Should return empty as no user found
+            Assert.Empty(claims);
 
-            // Verify OID was updated
-            await _repository.Received(1).UpdateAsync(Arg.Is<User>(u => u.EntraUserObjectId == userId));
-
-            // Verify expected claims
-            var collection = claims as Claim[] ?? claims.ToArray();
-            Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
+            // Verify no update was attempted
+            await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
         }
 
         [Fact]
@@ -286,7 +250,7 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Empty(claims);
 
             // Verify email lookup was not attempted
-            await _repository.Received(1).FindAsync(Arg.Any<Expression<Func<User, bool>>>());
+            await _repository.DidNotReceive().FindAsync(Arg.Any<Expression<Func<User, bool>>>());
             await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
         }
 
@@ -341,16 +305,19 @@ namespace Dfe.Complete.Tests.Authorization
         {
             // Arrange
             var userId = "00000000-0000-0000-0000-000000000123";
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
-            });
+            var userEmail = "user@example.com";
+
+            var identity = new ClaimsIdentity([
+                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
+                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
+            ]);
             var principal = new ClaimsPrincipal(identity);
 
             var userRecord = new User
             {
                 Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
+                Email = userEmail,
                 Team = "TeamA",
                 ManageTeam = true,
                 AddNewProject = true,

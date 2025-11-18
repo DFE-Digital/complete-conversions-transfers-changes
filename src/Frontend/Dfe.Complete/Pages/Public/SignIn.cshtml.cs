@@ -22,8 +22,10 @@ public class SignInModel : PageModel
         {
             "duplicate_account" => "Your email address doesn't match the email associated with your account. This may indicate a duplicate account. Please contact service support.",
             "user_not_found" => "You do not have access to this system. Please contact your administrator if you believe this is an error.",
+            "email_conflict" => "This email address may be registered to a different user account. Please contact service support.",
             "validation_failed" => "An error occurred during sign in. Please try again or contact support.",
             "no_principal" => "Authentication failed. Please try again.",
+            "no_email" => "No email address found in your authentication details. Please try again or contact support.",
             _ => null
         };
 

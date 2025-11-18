@@ -1,10 +1,16 @@
+using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Infrastructure.Database;
 using GovUK.Dfe.CoreLibs.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using System.Diagnostics.CodeAnalysis;
+
+using OidcContext = Microsoft.AspNetCore.Authentication.OpenIdConnect.TokenValidatedContext;
 
 namespace Dfe.Complete.Infrastructure.Security.Authorization
 {
@@ -27,62 +33,130 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
         /// </summary>
         public static IServiceCollection AddWebAuthenticationWithUserValidation(this IServiceCollection services)
         {
-            // Register the authentication user validation service
-            services.AddScoped<IAuthenticationUserValidationService, AuthenticationUserValidationService>();
-
             services.Configure<OpenIdConnectOptions>(OpenIdConnectDefaults.AuthenticationScheme, options =>
             {
                 options.Events ??= new OpenIdConnectEvents();
-                
+
                 var originalOnTokenValidated = options.Events.OnTokenValidated;
-                
+
                 options.Events.OnTokenValidated = async context =>
                 {
                     // Call the original event if it exists
                     if (originalOnTokenValidated != null)
-                    {
                         await originalOnTokenValidated(context);
+
+                    if (context.Principal == null)
+                    {
+                        HandleSigninFailure(context, "no_principal");
+                        return;
                     }
 
-                    // Perform user validation
-                    var validationService = context.HttpContext.RequestServices
-                        .GetRequiredService<IAuthenticationUserValidationService>();
-
-                    if (context.Principal != null)
-                    {
-                        try
-                        {
-                            var isValid = await validationService.ValidateUserOnAuthenticationAsync(context.Principal);
-                            
-                            if (!isValid)
-                            {
-                                // User not found in system - redirect to sign in with message
-                                context.HttpContext.Response.Redirect("/Public/SignIn?error=user_not_found");
-                                context.HandleResponse(); // Prevent default authentication flow
-                            }
-                        }
-                        catch (InvalidOperationException ex) when (ex.Message.Contains("Duplicate account detected"))
-                        {
-                            // Duplicate account detected - redirect to sign in with specific message
-                            context.HttpContext.Response.Redirect("/Public/SignIn?error=duplicate_account");
-                            context.HandleResponse(); // Prevent default authentication flow
-                        }
-                        catch (Exception)
-                        {
-                            // General error - redirect to sign in with generic message
-                            context.HttpContext.Response.Redirect("/Public/SignIn?error=validation_failed");
-                            context.HandleResponse(); // Prevent default authentication flow
-                        }
-                    }
-                    else
-                    {
-                        context.HttpContext.Response.Redirect("/Public/SignIn?error=no_principal");
-                        context.HandleResponse(); // Prevent default authentication flow
-                    }
+                    await ValidateUserAsync(context);
                 };
             });
 
             return services;
+        }
+
+        private static async Task ValidateUserAsync(OidcContext context)
+        {
+            // 1. Get users OID from claims
+            var userId = context.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            var email = context.Principal.FindFirst(CustomClaimTypeConstants.PreferredUsername)?.Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                HandleSigninFailure(context, "no_email");
+                return;
+            }
+
+            try
+            {
+                var dbContext = context.HttpContext.RequestServices.GetRequiredService<CompleteContext>();
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<OpenIdConnectEvents>>();
+
+                // Check if user exists by OID first
+                if (!string.IsNullOrEmpty(userId) && await ValidateUserByOidAsync(dbContext, logger, userId, email, context))
+                {
+                    return;
+                }
+
+                // If not found by OID, check by email
+                await ValidateUserByEmailAsync(dbContext, logger, userId, email, context);
+            }
+            catch (Exception ex)
+            {
+                HandleSigninFailure(context, "validation_failed");
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<OpenIdConnectEvents>>();
+                logger.LogError(ex, "Error during user validation for user {UserId}", userId);
+                context.HttpContext.Response.Redirect("/sign-in?error=validation_failed");
+                context.HandleResponse();
+            }
+        }
+
+        private static async Task<bool> ValidateUserByOidAsync(CompleteContext dbContext, ILogger logger, 
+            string userId, string email, OidcContext context)
+        {
+            // 2. Check if they have a matching DB record by OID
+            var userByOid = await dbContext.Users.FirstOrDefaultAsync(u => u.EntraUserObjectId == userId);
+
+            if (userByOid == null)
+                return false;
+
+            // 3. If they have a matching DB record but the email doesn't match, send error
+            if (!string.Equals(userByOid.Email, email, StringComparison.OrdinalIgnoreCase))
+            {
+                logger.LogWarning("Email mismatch for user {UserId}. DB email: {DbEmail}, Claims email: {ClaimsEmail}",
+                    userId, userByOid.Email, email);
+                HandleSigninFailure(context, "duplicate_account");
+                return true;
+            }
+
+            // 4. If the email does match, allow the user into the system. Hooray!
+            logger.LogInformation("User {UserId} authenticated successfully", userId);
+            return true;
+        }
+
+        private static async Task ValidateUserByEmailAsync(CompleteContext dbContext, ILogger logger,
+            string userId, string email, OidcContext context)
+        {
+            // 5. If the user record isn't found using OID, read the email from claims
+            var userByEmail = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (userByEmail == null)
+            {
+                // 6. If that's not found, reject with account not found
+                logger.LogWarning("No user found with email {Email}", email);
+                HandleSigninFailure(context, "user_not_found");
+                return;
+            }
+
+            // 7. If it is found but the OID doesn't match, flag an error
+            if (!string.IsNullOrEmpty(userByEmail.EntraUserObjectId) && userByEmail.EntraUserObjectId != userId)
+            {
+                logger.LogError("Email {Email} is registered to a different user. DB OID: {DbOid}, Claims OID: {ClaimsOid}",
+                    email, userByEmail.EntraUserObjectId, userId);
+                HandleSigninFailure(context, "email_conflict");
+                return;
+            }
+
+            // 8. If the OID is empty, update it
+            if (string.IsNullOrEmpty(userByEmail.EntraUserObjectId) && !string.IsNullOrEmpty(userId))
+            {
+                logger.LogInformation("Updating user {Email} with Entra Object ID {OID} for first login", email, userId);
+                userByEmail.EntraUserObjectId = userId;
+                userByEmail.UpdatedAt = DateTime.UtcNow;
+                await dbContext.SaveChangesAsync();
+            }
+
+            // 9. Let the user in
+            logger.LogInformation("User {Email} authenticated successfully", email);
+        }
+
+        private static void HandleSigninFailure(OidcContext context, string validationFailure)
+        {
+            context.HttpContext.Response.Redirect($"/sign-in?error={validationFailure}");
+            context.HandleResponse();
         }
     }
 }
