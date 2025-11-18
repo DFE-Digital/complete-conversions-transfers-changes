@@ -522,8 +522,8 @@ namespace Dfe.Complete.Tests.Services
         public void GetBannerMessage_WhenDifferentDays_ShouldReturnFullFormat()
         {
             // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
-            var endDate = new DateTime(2025, 11, 20, 6, 0, 0, DateTimeKind.Utc);
+            var startDate = new DateTime(2025, 11, 19, 16, 0, 0);
+            var endDate = new DateTime(2025, 11, 20, 6, 0, 0);
             var options = new MaintenanceBannerOptions
             {
                 Message = string.Empty,
