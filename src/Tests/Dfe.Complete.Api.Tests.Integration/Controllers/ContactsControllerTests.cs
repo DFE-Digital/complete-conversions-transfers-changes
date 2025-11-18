@@ -6,6 +6,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.PersonsApi.Client.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -245,5 +246,190 @@ public class ContactsControllerTests
         {
             await contactsClient.GetParliamentMPContactByConstituencyAsync(constituencyName, default);
         });
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(LocalAuthorityCustomization),
+        typeof(ContactCustomization))]
+    public async Task GetExternalContactById_Should_Return_The_Contact(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IContactsClient contactsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole}
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var expected = fixture.Create<Domain.Entities.Contact>();
+        expected.Type = Domain.Enums.ContactType.Project;
+        expected.Category = Domain.Enums.ContactCategory.Other;
+        dbContext.Contacts.Add(expected);
+
+        await dbContext.SaveChangesAsync();
+
+        var actual = await contactsClient.GetExternalContactAsync(expected.Id.Value);
+
+        Assert.Equivalent(expected.Id, actual.Id);
+        Assert.Equivalent(expected.ProjectId, actual.ProjectId);
+        Assert.Equivalent(expected.Name, actual.Name);        
+        Assert.Equivalent(expected.Title, actual.Title);
+        Assert.Equivalent(expected.Email, actual.Email);        
+        Assert.Equivalent(expected.Phone, actual.Phone);       
+        Assert.Equivalent(expected.OrganisationName, actual.OrganisationName);
+        Assert.Equal(expected.LocalAuthorityId?.Value, actual.LocalAuthorityId?.Value);
+        Assert.Equal(ContactCategory.Other, actual.Category);
+        Assert.Equal(ContactType.Project, actual.Type);
+        Assert.Equivalent(expected.EstablishmentUrn, actual.EstablishmentUrn);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task CreateExternalContact_Async_ShouldCreateContact(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        CreateExternalContactCommand createExternalContactCommand,
+        IContactsClient contactsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var contactId = await contactsClient.CreateExternalContactAsync(createExternalContactCommand, CancellationToken.None);
+        Assert.IsType<Complete.Client.Contracts.ContactId>(contactId);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ContactCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task UpdateExternalContactAsync_ShouldUpdateContact(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        UpdateExternalContactCommand updateExternalContactCommand,
+        IContactsClient contactsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Create a contact to update
+        var existingContact = fixture.Create<Domain.Entities.Contact>();
+
+        dbContext.Contacts.Add(existingContact);
+        await dbContext.SaveChangesAsync();
+
+        updateExternalContactCommand.ContactDto!.Id = new Complete.Client.Contracts.ContactId() { Value = existingContact.Id.Value }; 
+
+        await contactsClient.UpdateExternaContactAsync(updateExternalContactCommand, CancellationToken.None);
+
+        dbContext.ChangeTracker.Clear();
+
+        // Verify the contact was updated
+        var updatedContact = await dbContext.Contacts.FindAsync(existingContact.Id);
+        var updateContactDto = updateExternalContactCommand.ContactDto;
+        Assert.NotNull(updatedContact);
+        Assert.Equal(updateContactDto?.Name, updatedContact.Name);
+        Assert.Equal(updateContactDto?.Title, updatedContact.Title);
+        Assert.Equal(updateContactDto?.Email, updatedContact.Email);
+        Assert.Equal(updateContactDto?.OrganisationName, updatedContact.OrganisationName);
+        Assert.Equal(updateContactDto?.Phone, updatedContact.Phone);        
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ContactCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task UpdateUserAsync_ContactNotFound_ShouldThrowException(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        UpdateExternalContactCommand updateExternalContactCommand,
+        IContactsClient contactsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Create a contact to update
+        var existingContact = fixture.Create<Domain.Entities.Contact>();
+
+        dbContext.Contacts.Add(existingContact);
+        await dbContext.SaveChangesAsync();
+
+        var nonExistendContactId = new Complete.Client.Contracts.ContactId() { Value = Guid.NewGuid() };
+        updateExternalContactCommand.ContactDto!.Id = nonExistendContactId;        
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await contactsClient.UpdateExternaContactAsync(updateExternalContactCommand, CancellationToken.None));
+        
+        Assert.Contains($"External contact with Id {nonExistendContactId.Value} not found", exception.Response);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ContactCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task DeleteExternalContactAsync_ShouldDeleteContact(
+        CustomWebApplicationDbContextFactory<Program> factory,        
+        IContactsClient contactsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole, ApiRoles.DeleteRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Create a contact
+        var existingContact = fixture.Create<Domain.Entities.Contact>();
+
+        dbContext.Contacts.Add(existingContact);
+        await dbContext.SaveChangesAsync();
+
+        await contactsClient.DeleteExternalContactAsync(new Complete.Client.Contracts.ContactId() { Value = existingContact.Id.Value }, CancellationToken.None);
+
+        dbContext.ChangeTracker.Clear();
+
+        // Verify the contact was deleted
+        var contact = await dbContext.Contacts.SingleOrDefaultAsync(x => x.Id == existingContact.Id);
+        Assert.Null(contact);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ContactCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task DeleteExternalContactAsync_ContactNotFound_ShouldThrowException(
+        CustomWebApplicationDbContextFactory<Program> factory,        
+        IContactsClient contactsClient,
+        IFixture fixture)
+    {
+
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole, ApiRoles.DeleteRole }
+           .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Create a contact
+        var existingContact = fixture.Create<Domain.Entities.Contact>();
+
+        dbContext.Contacts.Add(existingContact);
+        await dbContext.SaveChangesAsync();
+
+        var nonExistendContactId = new Complete.Client.Contracts.ContactId() { Value = Guid.NewGuid() };
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+           await contactsClient.DeleteExternalContactAsync(new Complete.Client.Contracts.ContactId() { Value = nonExistendContactId.Value }, CancellationToken.None));
+
+        Assert.Contains($"External contact with Id {nonExistendContactId.Value} not found", exception.Response);
     }
 }
