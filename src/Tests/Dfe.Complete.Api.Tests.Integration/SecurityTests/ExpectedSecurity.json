@@ -467,6 +467,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmSchoolHasCompletedAllActionsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
@@ -512,6 +517,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateSponsoredSupportGrantTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateClosureOrTransferDeclarationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
@@ -528,6 +538,11 @@
     {
       "Controller": "ProjectsController",
       "Action": "UpdateAddedByAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDirectionToTransferTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

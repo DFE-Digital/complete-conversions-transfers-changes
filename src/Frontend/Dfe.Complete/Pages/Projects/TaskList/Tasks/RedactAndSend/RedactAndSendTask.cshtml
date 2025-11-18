@@ -1,9 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/redact_and_send"
 @using Dfe.Complete.Utils;
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask.RedactAndSendDocumentsTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask.RedactAndSendTaskModel
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @{
-  Layout = "_ProjectTaskLayout";
+    Layout = "_ProjectTaskLayout";
     ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
@@ -14,37 +14,36 @@
 
 @section TaskSection {
     <form method="post">
-        <input type="hidden" asp-for="TasksDataId" />
-        <input type="hidden" name="type" asp-for="Type" />
+        <input type="hidden" asp-for="TasksDataId" />        
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item data-cy="redact" id="redact" asp-for="@Model.Redact" value="true" name="redact" checked="@Model.Redact">
                     <b>Redact all relevant documents</b>
-                     <govuk-checkboxes-item-hint>
-                         <govuk-details>
-                             <govuk-details-summary>
+                    <govuk-checkboxes-item-hint>
+                        <govuk-details>
+                            <govuk-details-summary>
                                 <span class="govuk-details__summary-text">Help redacting the documents</span>
                             </govuk-details-summary>
                             <govuk-details-text>
                                 <p>You need to create a redacted version of each applicable document after they've been signed by the Secretary of State:</p>
                                 <ul>
                                     <li>supplemental funding agreement</li>
-                                    <li>master funding agreement</li> 
+                                    <li>master funding agreement</li>
                                     <li>church supplemental agreement (if applicable)</li>
                                     <li>deed of variation</li>
                                 </ul>
                                 <p>You must remove or hide:</p>
-                                <ul> 
+                                <ul>
                                     <li>names</li>
                                     <li>signatures</li>
                                     <li>home addresses</li>
-                                    <li>any other personal information</li> 
+                                    <li>any other personal information</li>
                                 </ul>
                             </govuk-details-text>
-                         </govuk-details>
-                     </govuk-checkboxes-item-hint>
+                        </govuk-details>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save relevant documents in the school's SharePoint folder</b>

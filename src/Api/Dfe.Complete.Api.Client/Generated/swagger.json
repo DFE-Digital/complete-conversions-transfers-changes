@@ -3828,6 +3828,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/UpdateConfirmSchoolHasCompletedAllActions": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the confirmation the school has completed all actions task data for conversion project.",
+        "operationId": "TasksData_UpdateConfirmSchoolHasCompletedAllActionsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSchoolHasCompletedAllActionsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update confirm school has completed all actions task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
       "patch": {
         "tags": [
@@ -3993,6 +4026,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the sponsored support grant",
+        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The sponsored support grant task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease": {
       "patch": {
         "tags": [
@@ -4016,6 +4082,39 @@
         "responses": {
           "204": {
             "description": "Updated the 125 year lease task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DirectionToTransfer": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the direction to transfer task data for conversion project.",
+        "operationId": "TasksData_UpdateDirectionToTransferTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDirectionToTransferTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update direction to transfer task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -6597,7 +6696,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ],
         "enum": [
           "Handover",
@@ -6647,7 +6747,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ]
       },
       "CreateNoteCommand": {
@@ -9393,6 +9494,23 @@
           }
         }
       },
+      "UpdateConfirmSchoolHasCompletedAllActionsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "emailed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9526,6 +9644,67 @@
           }
         }
       },
+      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SponsoredSupportGrantType"
+              }
+            ]
+          },
+          "paymentAmount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "paymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "informTrust": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SponsoredSupportGrantType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ],
+        "enum": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ]
+      },
       "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9546,6 +9725,35 @@
             "nullable": true
           },
           "save": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDirectionToTransferTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }

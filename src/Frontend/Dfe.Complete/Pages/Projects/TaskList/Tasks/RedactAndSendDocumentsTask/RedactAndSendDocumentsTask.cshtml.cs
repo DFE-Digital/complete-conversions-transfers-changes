@@ -29,34 +29,24 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
-        [BindProperty(Name = "type")]
-        public ProjectType? Type { get; set; }
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            Type = Project.Type;
+            
             TasksDataId = Project.TasksDataId?.Value;
-            if (Project.Type == ProjectType.Transfer)
-            {
-                Redact = TransferTaskData.RedactAndSendDocumentsRedact;
-                Saved = TransferTaskData.RedactAndSendDocumentsSaved;
-                SendToEsfa = TransferTaskData.RedactAndSendDocumentsSendToEsfa;
-                Send = TransferTaskData.RedactAndSendDocumentsSendToFundingTeam;
-                SendToSolicitors = TransferTaskData.RedactAndSendDocumentsSendToSolicitors;
-            }
-            else
-            {
-                Redact = ConversionTaskData.RedactAndSendRedact;
-                Saved = ConversionTaskData.RedactAndSendSaveRedaction;
-                Send = ConversionTaskData.RedactAndSendSendRedaction;
-                SendToSolicitors = ConversionTaskData.RedactAndSendSendSolicitors;
-            }
+            Redact = TransferTaskData.RedactAndSendDocumentsRedact;
+            Saved = TransferTaskData.RedactAndSendDocumentsSaved;
+            SendToEsfa = TransferTaskData.RedactAndSendDocumentsSendToEsfa;
+            Send = TransferTaskData.RedactAndSendDocumentsSendToFundingTeam;
+            SendToSolicitors = TransferTaskData.RedactAndSendDocumentsSendToSolicitors;
+
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
-                new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Redact, Saved, SendToEsfa, Send, SendToSolicitors));
+            await Sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
+                new TaskDataId(TasksDataId.GetValueOrDefault())!, ProjectType.Transfer, Redact, Saved, SendToEsfa, Send, SendToSolicitors));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
