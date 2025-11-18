@@ -72,7 +72,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
         }
         public async Task<IActionResult> OnPost()
         {
-            await _sender.Send(new UpdateConfirmSponsoredSupportGrantTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, EnumExtensions.FromDescriptionValue<SponsoredSupportGrantType>(SponsoredSupportGrantType), PaymentAmount, PaymentForm, SendInformation, InformTrust));
+            var sponsoredSupportGrantType = SponsoredSupportGrantType == null ? null : EnumExtensions.FromDescriptionValue<SponsoredSupportGrantType>(SponsoredSupportGrantType);
+            await _sender.Send(new UpdateConfirmSponsoredSupportGrantTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, sponsoredSupportGrantType, PaymentAmount, PaymentForm, SendInformation, InformTrust));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
