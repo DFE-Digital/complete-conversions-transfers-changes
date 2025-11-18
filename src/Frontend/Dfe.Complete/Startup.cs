@@ -6,6 +6,7 @@ using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Security;
+using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
 using Dfe.Complete.Validators;
 using GovUk.Frontend.AspNetCore;
@@ -154,6 +155,10 @@ public class Startup
         services.AddAutoMapper(typeof(AutoMapping));
 
         services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
+        services.Configure<MaintenanceBannerOptions>(Configuration.GetSection(MaintenanceBannerOptions.Section));
+        
+        // Register services
+        services.AddScoped<IMaintenanceBannerService, MaintenanceBannerService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
