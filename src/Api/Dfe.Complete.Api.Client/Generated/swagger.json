@@ -2340,6 +2340,96 @@
         }
       }
     },
+    "/v1/Projects/project/AssignedUser": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates assigned user.",
+        "operationId": "Projects_UpdateAssignedUser",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignedUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Assigned user updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/project/AssignedTeam": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates assigned team.",
+        "operationId": "Projects_UpdateAssignedTeam",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignedTeamCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Assigned team updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/project/AddedBy": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates added by.",
+        "operationId": "Projects_UpdateAddedBy",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRegionalDeliveryOfficerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Added by updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -3926,6 +4016,39 @@
         "responses": {
           "204": {
             "description": "Updated the trust modification order task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the sponsored support grant",
+        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The sponsored support grant task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -7218,6 +7341,47 @@
           }
         }
       },
+      "UpdateAssignedUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "assignedUser": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      },
+      "UpdateAssignedTeamCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "assignedTeam": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateRegionalDeliveryOfficerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "regionalDeliveryOfficer": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      },
       "CreateLocalAuthorityDto": {
         "type": "object",
         "additionalProperties": false,
@@ -9512,6 +9676,67 @@
             "nullable": true
           }
         }
+      },
+      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SponsoredSupportGrantType"
+              }
+            ]
+          },
+          "paymentAmount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "paymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "informTrust": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SponsoredSupportGrantType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ],
+        "enum": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ]
       },
       "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
         "type": "object",

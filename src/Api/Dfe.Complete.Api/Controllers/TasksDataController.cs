@@ -828,6 +828,28 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+       
+        
+        
+        /// <summary>
+        /// Confirm the sponsored support grant
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/SponsoredSupportGrant")]
+        [SwaggerResponse(204, "The sponsored support grant task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateSponsoredSupportGrantTaskAsync(
+            [FromBody] UpdateConfirmSponsoredSupportGrantTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
         /// <summary>
         /// Updating the 125 year lease for conversion project.
         /// </summary>
