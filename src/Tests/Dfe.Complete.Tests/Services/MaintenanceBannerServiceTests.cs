@@ -7,558 +7,533 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
-namespace Dfe.Complete.Tests.Services
+namespace Dfe.Complete.Tests.Services;
+
+public class MaintenanceBannerServiceTests
 {
-    public class MaintenanceBannerServiceTests
+    private readonly Mock<ILogger<MaintenanceBannerService>> _mockLogger;
+    private readonly Mock<IWebHostEnvironment> _mockEnvironment;
+
+    public MaintenanceBannerServiceTests()
     {
-        private readonly Mock<ILogger<MaintenanceBannerService>> _mockLogger;
-        private readonly Mock<IWebHostEnvironment> _mockEnvironment;
+        _mockLogger = new Mock<ILogger<MaintenanceBannerService>>();
+        _mockEnvironment = new Mock<IWebHostEnvironment>();
+    }
 
-        public MaintenanceBannerServiceTests()
+    private MaintenanceBannerService CreateService(MaintenanceBannerOptions options)
+    {
+        var mockOptions = new Mock<IOptions<MaintenanceBannerOptions>>();
+        mockOptions.Setup(x => x.Value).Returns(options);
+        return new MaintenanceBannerService(mockOptions.Object, _mockLogger.Object, _mockEnvironment.Object);
+    }
+
+    [Fact]
+    public void ShouldShowBanner_WhenNotProduction_ShouldReturnFalse()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Development);
+        var options = new MaintenanceBannerOptions
         {
-            _mockLogger = new Mock<ILogger<MaintenanceBannerService>>();
-            _mockEnvironment = new Mock<IWebHostEnvironment>();
-        }
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
+        };
+        var service = CreateService(options);
 
-        private MaintenanceBannerService CreateService(MaintenanceBannerOptions options)
+        // Act
+        var result = service.ShouldShowBanner();
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldShowBanner_WhenProductionButDisabled_ShouldReturnFalse()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            var mockOptions = new Mock<IOptions<MaintenanceBannerOptions>>();
-            mockOptions.Setup(x => x.Value).Returns(options);
-            return new MaintenanceBannerService(mockOptions.Object, _mockLogger.Object, _mockEnvironment.Object);
-        }
+            Enabled = false,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
+        };
+        var service = CreateService(options);
 
-        [Fact]
-        public void ShouldShowBanner_WhenNotProduction_ShouldReturnFalse()
+        // Act
+        var result = service.ShouldShowBanner();
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldShowBanner_WhenMissingNotifyFrom_ShouldReturnFalseAndLogError()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Development);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = null // Missing NotifyFrom
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        result.Should().BeFalse();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("NotifyFrom must be set")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenProductionButDisabled_ShouldReturnFalse()
+    [Fact]
+    public void ShouldShowBanner_WhenMaintenanceEndInPast_ShouldReturnFalseAndLogError()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = false,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(-3),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(-1), // In the past
+            NotifyFrom = DateTime.UtcNow.AddHours(-4)
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        result.Should().BeFalse();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("MaintenanceEnd") && v.ToString()!.Contains("is in the past")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenMissingNotifyFrom_ShouldReturnFalseAndLogError()
+    [Fact]
+    public void ShouldShowBanner_WhenMaintenanceEndBeforeStart_ShouldReturnFalseAndLogError()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = null // Missing NotifyFrom
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(3),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(1), // Before start
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("NotifyFrom must be set")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        result.Should().BeFalse();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("is before MaintenanceStart")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenMaintenanceEndInPast_ShouldReturnFalseAndLogError()
+    [Fact]
+    public void ShouldShowBanner_WhenNotifyToBeforeNotifyFrom_ShouldReturnFalseAndLogError()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(-3),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(-1), // In the past
-                NotifyFrom = DateTime.UtcNow.AddHours(-4)
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(2),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(4),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
+            NotifyTo = DateTime.UtcNow.AddMinutes(-60) // Before NotifyFrom
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("MaintenanceEnd") && v.ToString()!.Contains("is in the past")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        result.Should().BeFalse();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("NotifyTo") && v.ToString()!.Contains("must be after NotifyFrom")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenMaintenanceEndBeforeStart_ShouldReturnFalseAndLogError()
+    [Fact]
+    public void ShouldShowBanner_WhenNotifyToIsNull_ShouldDefaultToMaintenanceEnd()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(3),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(1), // Before start
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
+            NotifyTo = null // Should default to MaintenanceEnd
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("is before MaintenanceStart")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        result.Should().BeTrue();
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenNotifyToBeforeNotifyFrom_ShouldReturnFalseAndLogError()
+    [Fact]
+    public void ShouldShowBanner_WhenNotifyToPassed_ShouldReturnFalse()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(2),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(4),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
-                NotifyTo = DateTime.UtcNow.AddMinutes(-60) // Before NotifyFrom
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddHours(-2),
+            NotifyTo = DateTime.UtcNow.AddMinutes(-30) // In the past
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("NotifyTo") && v.ToString()!.Contains("must be after NotifyFrom")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        result.Should().BeFalse();
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenNotifyToIsNull_ShouldDefaultToMaintenanceEnd()
+    [Fact]
+    public void ShouldShowBanner_WhenNotifyTimeNotReached_ShouldReturnFalse()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
-                NotifyTo = null // Should default to MaintenanceEnd
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(2),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(4),
+            NotifyFrom = DateTime.UtcNow.AddHours(1) // In the future
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeTrue();
-        }
+        // Assert
+        result.Should().BeFalse();
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenNotifyToPassed_ShouldReturnFalse()
+    [Fact]
+    public void ShouldShowBanner_WhenMaintenanceHasEnded_ShouldReturnFalse()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddHours(-2),
-                NotifyTo = DateTime.UtcNow.AddMinutes(-30) // In the past
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(-3),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(-1), // In the past but after start
+            NotifyFrom = DateTime.UtcNow.AddHours(-4)
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        result.Should().BeFalse();
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenNotifyTimeNotReached_ShouldReturnFalse()
+    [Fact]
+    public void ShouldShowBanner_WhenValidConditions_ShouldReturnTrue()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(2),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(4),
-                NotifyFrom = DateTime.UtcNow.AddHours(1) // In the future
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30) // Started notifying
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        result.Should().BeTrue();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Maintenance banner check")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenMaintenanceHasEnded_ShouldReturnFalse()
+    [Fact]
+    public void ShouldShowBanner_WhenExceptionThrown_ShouldReturnFalseAndLogError()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Throws(new Exception("Test exception"));
+        var options = new MaintenanceBannerOptions { Enabled = true };
+        var service = CreateService(options);
+
+        // Act
+        var result = service.ShouldShowBanner();
+
+        // Assert
+        result.Should().BeFalse();
+        _mockLogger.Verify(
+            x => x.Log(
+                LogLevel.Error,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error checking if maintenance banner should be shown")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
+
+    [Fact]
+    public void GetBannerMessage_WhenCustomMessageProvided_ShouldReturnCustomMessage()
+    {
+        // Arrange
+        var customMessage = "Custom maintenance message";
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(-3),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(-1), // In the past but after start
-                NotifyFrom = DateTime.UtcNow.AddHours(-4)
-            };
-            var service = CreateService(options);
+            Message = customMessage
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        result.ToLowerInvariant().Should().Be(customMessage.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenValidConditions_ShouldReturnTrue()
+    [Fact]
+    public void GetBannerMessage_WhenNoDatesProvided_ShouldReturnDefaultMessage()
+    {
+        // Arrange
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30) // Started notifying
-            };
-            var service = CreateService(options);
+            Message = string.Empty,
+            MaintenanceStart = null,
+            MaintenanceEnd = null
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().BeTrue();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Information,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Maintenance banner check")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be temporarily unavailable due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void ShouldShowBanner_WhenExceptionThrown_ShouldReturnFalseAndLogError()
+    [Fact]
+    public void GetBannerMessage_WhenEmptyMessage_ShouldGenerateDefault()
+    {
+        // Arrange
+        var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+        var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Throws(new Exception("Test exception"));
-            var options = new MaintenanceBannerOptions { Enabled = true };
-            var service = CreateService(options);
+            Message = "   ", // Whitespace only
+            MaintenanceStart = startDate,
+            MaintenanceEnd = endDate
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().BeFalse();
-            _mockLogger.Verify(
-                x => x.Log(
-                    LogLevel.Error,
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("Error checking if maintenance banner should be shown")),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Once);
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be unavailable from 4:00 pm to 6:00 pm on 19 November 2025 due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void GetBannerMessage_WhenCustomMessageProvided_ShouldReturnCustomMessage()
+    [Fact]
+    public void GetConfiguration_ShouldReturnOptions()
+    {
+        // Arrange
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var customMessage = "Custom maintenance message";
-            var options = new MaintenanceBannerOptions
-            {
-                Message = customMessage
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow,
+            MaintenanceEnd = DateTime.UtcNow.AddHours(2),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
+            Message = "Test message"
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetBannerMessage();
+        // Act
+        var result = service.GetConfiguration();
 
-            // Assert
-            result.Should().Be(customMessage);
-        }
+        // Assert
+        result.Should().BeSameAs(options);
+    }
 
-        [Fact]
-        public void GetBannerMessage_WhenNoDatesProvided_ShouldReturnDefaultMessage()
+    [Theory]
+    [InlineData("Development")]
+    [InlineData("Staging")]
+    [InlineData("Test")]
+    public void ShouldShowBanner_WhenNonProductionEnvironment_ShouldAlwaysReturnFalse(string environment)
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(environment);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = null,
-                MaintenanceEnd = null
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = DateTime.UtcNow.AddHours(1),
+            MaintenanceEnd = DateTime.UtcNow.AddHours(3),
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetBannerMessage();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().Be("The Complete conversions, transfers and changes service will be temporarily unavailable due to scheduled maintenance work.");
-        }
+        // Assert
+        result.Should().BeFalse();
+    }
 
-        [Fact]
-        public void GetBannerMessage_WhenDatesProvided_ShouldReturnFormattedMessage()
+    [Fact]
+    public void GetBannerMessage_WhenOnlyStartDate_ShouldReturnFromMessage()
+    {
+        // Arrange
+        var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
-            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = startDate,
-                MaintenanceEnd = endDate
-            };
-            var service = CreateService(options);
+            Message = string.Empty,
+            MaintenanceStart = startDate,
+            MaintenanceEnd = null
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetBannerMessage();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
-            result.Should().Contain("on");
-            result.Should().EndWith("due to scheduled maintenance work.");
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be unavailable from 19 November 2025 4:00pm due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void GetBannerMessage_WhenEmptyMessage_ShouldGenerateDefault()
+    [Fact]
+    public void GetBannerMessage_WhenOnlyEndDate_ShouldReturnUntilMessage()
+    {
+        // Arrange
+        var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
-            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = "   ", // Whitespace only
-                MaintenanceStart = startDate,
-                MaintenanceEnd = endDate
-            };
-            var service = CreateService(options);
+            Message = string.Empty,
+            MaintenanceStart = null,
+            MaintenanceEnd = endDate
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetBannerMessage();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be unavailable until 19 November 2025 6:00pm due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void GetConfiguration_ShouldReturnOptions()
+    [Fact]
+    public void GetBannerMessage_WhenSameDay_ShouldReturnSameDayFormat()
+    {
+        // Arrange
+        var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+        var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow,
-                MaintenanceEnd = DateTime.UtcNow.AddHours(2),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30),
-                Message = "Test message"
-            };
-            var service = CreateService(options);
+            Message = string.Empty,
+            MaintenanceStart = startDate,
+            MaintenanceEnd = endDate
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetConfiguration();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().BeSameAs(options);
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be unavailable from 4:00 pm to 6:00 pm on 19 November 2025 due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Theory]
-        [InlineData("Development")]
-        [InlineData("Staging")]
-        [InlineData("Test")]
-        public void ShouldShowBanner_WhenNonProductionEnvironment_ShouldAlwaysReturnFalse(string environment)
+    [Fact]
+    public void GetBannerMessage_WhenDifferentDays_ShouldReturnFullFormat()
+    {
+        // Arrange
+        var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
+        var endDate = new DateTime(2025, 11, 20, 6, 0, 0, DateTimeKind.Utc);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(environment);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = DateTime.UtcNow.AddHours(1),
-                MaintenanceEnd = DateTime.UtcNow.AddHours(3),
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30)
-            };
-            var service = CreateService(options);
+            Message = string.Empty,
+            MaintenanceStart = startDate,
+            MaintenanceEnd = endDate
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.ShouldShowBanner();
+        // Act
+        var result = service.GetBannerMessage();
 
-            // Assert
-            result.Should().BeFalse();
-        }
+        // Assert
+        var expected = "The Complete conversions, transfers and changes service will be unavailable from 19 November 2025 4:00pm until 20 November 2025 6:00am due to scheduled maintenance work.";
+        result.ToLowerInvariant().Should().Be(expected.ToLowerInvariant());
+    }
 
-        [Fact]
-        public void GetBannerMessage_WhenOnlyStartDate_ShouldReturnFromMessage()
+    [Fact]
+    public void ShouldShowBanner_WhenOnlyNotifyFromSet_ShouldWorkCorrectly()
+    {
+        // Arrange
+        _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
+        var options = new MaintenanceBannerOptions
         {
-            // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = startDate,
-                MaintenanceEnd = null
-            };
-            var service = CreateService(options);
+            Enabled = true,
+            MaintenanceStart = null,
+            MaintenanceEnd = null,
+            NotifyFrom = DateTime.UtcNow.AddMinutes(-30), // Started notifying
+            NotifyTo = DateTime.UtcNow.AddHours(1) // Will stop notifying in future
+        };
+        var service = CreateService(options);
 
-            // Act
-            var result = service.GetBannerMessage();
+        // Act
+        var result = service.ShouldShowBanner();
 
-            // Assert
-            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
-            result.Should().Contain("due to scheduled maintenance work.");
-            result.Should().NotContain("until");
-        }
-
-        [Fact]
-        public void GetBannerMessage_WhenOnlyEndDate_ShouldReturnUntilMessage()
-        {
-            // Arrange
-            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = null,
-                MaintenanceEnd = endDate
-            };
-            var service = CreateService(options);
-
-            // Act
-            var result = service.GetBannerMessage();
-
-            // Assert
-            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable until");
-            result.Should().Contain("due to scheduled maintenance work.");
-            result.Should().NotContain("from");
-        }
-
-        [Fact]
-        public void GetBannerMessage_WhenSameDay_ShouldReturnSameDayFormat()
-        {
-            // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0, DateTimeKind.Utc);
-            var endDate = new DateTime(2025, 11, 19, 18, 0, 0, DateTimeKind.Utc);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = startDate,
-                MaintenanceEnd = endDate
-            };
-            var service = CreateService(options);
-
-            // Act
-            var result = service.GetBannerMessage();
-
-            // Assert
-            result.Should().StartWith("The Complete conversions, transfers and changes service will be unavailable from");
-            result.Should().Contain("to");
-            result.Should().Contain("on");
-            result.Should().NotContain("until");
-        }
-
-        [Fact]
-        public void GetBannerMessage_WhenDifferentDays_ShouldReturnFullFormat()
-        {
-            // Arrange
-            var startDate = new DateTime(2025, 11, 19, 16, 0, 0);
-            var endDate = new DateTime(2025, 11, 20, 6, 0, 0);
-            var options = new MaintenanceBannerOptions
-            {
-                Message = string.Empty,
-                MaintenanceStart = startDate,
-                MaintenanceEnd = endDate
-            };
-            var service = CreateService(options);
-
-            // Act
-            var result = service.GetBannerMessage();
-
-            // Assert
-            result.Should().Be("The Complete conversions, transfers and changes service will be unavailable from 19 November 2025 4:00PM until 20 November 2025 6:00AM due to scheduled maintenance work.");
-        }
-
-        [Fact]
-        public void ShouldShowBanner_WhenOnlyNotifyFromSet_ShouldWorkCorrectly()
-        {
-            // Arrange
-            _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
-            var options = new MaintenanceBannerOptions
-            {
-                Enabled = true,
-                MaintenanceStart = null,
-                MaintenanceEnd = null,
-                NotifyFrom = DateTime.UtcNow.AddMinutes(-30), // Started notifying
-                NotifyTo = DateTime.UtcNow.AddHours(1) // Will stop notifying in future
-            };
-            var service = CreateService(options);
-
-            // Act
-            var result = service.ShouldShowBanner();
-
-            // Assert
-            result.Should().BeTrue();
-        }
+        // Assert
+        result.Should().BeTrue();
     }
 }
