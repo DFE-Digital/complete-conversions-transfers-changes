@@ -9097,14 +9097,34 @@
             "nullable": true
           },
           "academySurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           },
           "trustSurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           }
         }
+      },
+      "AcademyAndTrustFinancialStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Surplus",
+          "Deficit"
+        ],
+        "enum": [
+          "Surplus",
+          "Deficit"
+        ]
       },
       "UpdateOutgoingTrustCeoCommand": {
         "type": "object",
