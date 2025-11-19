@@ -6808,10 +6808,12 @@ namespace Dfe.Complete.Client.Contracts
         public bool? NotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("academySurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? AcademySurplusOrDeficit { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AcademyAndTrustFinancialStatus? AcademySurplusOrDeficit { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("trustSurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? TrustSurplusOrDeficit { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AcademyAndTrustFinancialStatus? TrustSurplusOrDeficit { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6825,6 +6827,18 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAcademyAndTrustFinancialInformationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum AcademyAndTrustFinancialStatus
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Surplus")]
+        Surplus = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Deficit")]
+        Deficit = 1,
 
     }
 
