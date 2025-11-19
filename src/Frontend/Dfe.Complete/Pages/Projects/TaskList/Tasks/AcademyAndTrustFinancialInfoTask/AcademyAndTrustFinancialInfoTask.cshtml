@@ -4,7 +4,6 @@
 @{
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
-    var financialStatus = new[] { "Surplus", "Deficit" };
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
@@ -34,10 +33,10 @@
                 <govuk-radios-hint>
                     Ask the academy for this information if you don't have it already. 
                 </govuk-radios-hint>
-                @foreach (var status in financialStatus)
+                @foreach (var status in Model.FinancialStatuses)
                 {
-                    var statusInLowerCase = status.ToLower();
-                    <govuk-radios-item data-cy="academy-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.AcademySurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
+                    var statusInLowerCase = status.ToDescription().ToLower();
+                    <govuk-radios-item data-cy="academy-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.AcademySurplusOrDeficit?.ToLower() == statusInLowerCase)">@status.ToDisplayDescription()</govuk-radios-item>
                 }
             </govuk-radios-fieldset>
         </govuk-radios>
@@ -49,10 +48,10 @@
                 <govuk-radios-hint>
                     You should work with SFSO (Schools Finance and Support Oversight) to ask the trust for this information if you don't have it already.
                 </govuk-radios-hint>
-                @foreach (var status in financialStatus)
+                @foreach (var status in Model.FinancialStatuses)
                 {
-                    var statusInLowerCase = status.ToLower();
-                    <govuk-radios-item data-cy="trust-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.TrustSurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
+                    var statusInLowerCase = status.ToDescription().ToLower();
+                    <govuk-radios-item data-cy="trust-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.TrustSurplusOrDeficit?.ToLower() == statusInLowerCase)">@status.ToDisplayDescription()</govuk-radios-item>
                 }
             </govuk-radios-fieldset>
         </govuk-radios>
