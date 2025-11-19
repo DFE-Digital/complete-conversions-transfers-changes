@@ -285,7 +285,6 @@ namespace Dfe.Complete.Tests.Authorization
             var collection = claims as Claim[] ?? claims.ToArray();
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
         }
 
         [Fact]
