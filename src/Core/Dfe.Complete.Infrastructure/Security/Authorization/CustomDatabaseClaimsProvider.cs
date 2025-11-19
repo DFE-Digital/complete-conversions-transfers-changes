@@ -45,9 +45,6 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userTeam.TeamIsRegionalDeliveryOfficer())
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.RegionalDeliveryOfficer));
 
-                if (userRecord.ManageConversionUrns == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageConversionUrns));
-
                 cache.Set(cacheKey, additionalClaims, _cacheDuration);
             }
 
