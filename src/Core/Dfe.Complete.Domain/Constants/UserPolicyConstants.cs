@@ -17,5 +17,3 @@ public static class UserPolicyConstants
     public const string CanViewEditDeleteContact = "CanViewEditDeleteContact";
     public const string CanManageInternalContacts = "CanManageInternalContacts";
 }
-
-// TODO do also need to utilise "AllowedRoles"

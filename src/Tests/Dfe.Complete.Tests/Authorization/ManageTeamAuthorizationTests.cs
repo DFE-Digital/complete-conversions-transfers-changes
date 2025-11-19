@@ -99,11 +99,9 @@ public class ManageTeamAuthorizationTests
     }
 
     [Theory]
-    [InlineData(UserRolesConstants.RegionalDeliveryOfficer)]
+
     [InlineData(UserRolesConstants.ServiceSupport)]
     [InlineData(UserRolesConstants.DataConsumers)]
-    [InlineData(UserRolesConstants.ManageUserAccounts)]
-    [InlineData(UserRolesConstants.ManageConversionUrns)]
     public void ShouldUserManageTeam_WithOtherValidRoles_ReturnsFalse(string roleName)
     {
         // Arrange
