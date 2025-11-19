@@ -84,7 +84,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                ManageUserAccounts = true,
                 ManageConversionUrns = false,
             };
 
@@ -99,7 +98,6 @@ namespace Dfe.Complete.Tests.Authorization
 
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts"); // TODO revisit
 
             // Verify claims that should not be present.
             Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");// TODO revisit
@@ -125,7 +123,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "london",
-                ManageUserAccounts = true,
                 ManageConversionUrns = true,
             };
 
@@ -141,7 +138,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
         }
