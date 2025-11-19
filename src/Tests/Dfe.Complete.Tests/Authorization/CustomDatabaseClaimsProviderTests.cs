@@ -118,7 +118,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
-                Team = "london",
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
@@ -132,8 +131,6 @@ namespace Dfe.Complete.Tests.Authorization
 
             Assert.NotEmpty(collection);
             Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
         }
 
         [Fact]

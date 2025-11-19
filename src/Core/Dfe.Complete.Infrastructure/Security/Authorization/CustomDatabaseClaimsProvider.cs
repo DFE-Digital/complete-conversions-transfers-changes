@@ -35,16 +35,6 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                     new (CustomClaimTypeConstants.UserId, userRecord.Id.Value.ToString())
                 ];
 
-
-                if (!string.IsNullOrEmpty(userRecord.Team))
-                {
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, userRecord.Team));
-                }
-
-                var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord.Team);
-                if (userTeam.TeamIsRegionalDeliveryOfficer())
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.RegionalDeliveryOfficer));
-
                 cache.Set(cacheKey, additionalClaims, _cacheDuration);
             }
 
