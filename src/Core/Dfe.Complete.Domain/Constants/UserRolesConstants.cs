@@ -12,7 +12,6 @@ namespace Dfe.Complete.Domain.Constants;
 public static class UserRolesConstants
 {
     public const string RegionalDeliveryOfficer = "regional_delivery_officer";
-    public const string AssignToProject = "assign_to_project";
     public const string ManageUserAccounts = "manage_user_accounts";
     public const string ManageConversionUrns = "manage_conversion_urns";
 

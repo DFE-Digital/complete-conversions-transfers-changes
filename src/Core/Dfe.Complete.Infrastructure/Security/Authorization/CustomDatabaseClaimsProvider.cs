@@ -45,9 +45,6 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userTeam.TeamIsRegionalDeliveryOfficer())
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.RegionalDeliveryOfficer));
 
-                if (userRecord.AssignToProject == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.AssignToProject));
-
                 if (userRecord.ManageUserAccounts == true)
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageUserAccounts));
 

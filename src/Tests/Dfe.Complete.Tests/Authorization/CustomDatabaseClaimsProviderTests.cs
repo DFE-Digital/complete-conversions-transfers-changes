@@ -84,7 +84,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
             };
@@ -103,7 +102,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts"); // TODO revisit
 
             // Verify claims that should not be present.
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
             Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");// TODO revisit
         }
 
@@ -127,7 +125,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "london",
-                AssignToProject = true,
                 ManageUserAccounts = true,
                 ManageConversionUrns = true,
             };
@@ -146,7 +143,6 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
         }
 
@@ -306,7 +302,6 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                AssignToProject = false,
                 ManageUserAccounts = true,
                 ManageConversionUrns = false,
             };

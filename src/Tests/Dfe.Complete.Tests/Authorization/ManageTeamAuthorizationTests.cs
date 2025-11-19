@@ -102,7 +102,6 @@ public class ManageTeamAuthorizationTests
     [InlineData(UserRolesConstants.RegionalDeliveryOfficer)]
     [InlineData(UserRolesConstants.ServiceSupport)]
     [InlineData(UserRolesConstants.DataConsumers)]
-    [InlineData(UserRolesConstants.AssignToProject)]
     [InlineData(UserRolesConstants.ManageUserAccounts)]
     [InlineData(UserRolesConstants.ManageConversionUrns)]
     public void ShouldUserManageTeam_WithOtherValidRoles_ReturnsFalse(string roleName)
@@ -115,7 +114,7 @@ public class ManageTeamAuthorizationTests
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
         // Act
-        var result = (bool)_shouldUserManageTeamMethod.Invoke(null, new object[] { principal })!;
+        var result = (bool)_shouldUserManageTeamMethod.Invoke(null, [principal])!;
 
         // Assert
         Assert.False(result);

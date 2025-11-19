@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Projects.Models
         public string? EntraUserObjectId { get; set; }
 
         public bool? AssignToProject { get; set; }
-
+        public bool IsAssignableToProject { get; set; }
         public bool? ManageUserAccounts { get; set; }
 
         public string? ActiveDirectoryUserGroupIds { get; set; }
