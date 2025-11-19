@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GovUK.Dfe.CoreLibs.Security" Version="1.1.18" />
+
     <PackageReference Include="GovukNotify" Version="7.2.0" />
+    <PackageReference Include="GovUK.Dfe.CoreLibs.Security" Version="1.1.20" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.21">

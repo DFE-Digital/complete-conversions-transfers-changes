@@ -4333,12 +4333,37 @@
                 }
               }
             }
+    "/v1/TasksData/TaskData/ProcessConversionSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the process conversion support grant task data for conversion project.",
+        "operationId": "TasksData_UpdateProcessConversionSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProcessSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update the process conversion support grant task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "500": {
             "description": "Failed to send email."
+          "404": {
+            "description": "Project not found."
           }
         }
       }
@@ -5428,6 +5453,10 @@
                 "nullable": true
               },
               "activeDirectoryUserId": {
+                "type": "string",
+                "nullable": true
+              },
+              "entraUserObjectId": {
                 "type": "string",
                 "nullable": true
               },
@@ -9449,14 +9478,34 @@
             "nullable": true
           },
           "academySurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           },
           "trustSurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           }
         }
+      },
+      "AcademyAndTrustFinancialStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Surplus",
+          "Deficit"
+        ],
+        "enum": [
+          "Surplus",
+          "Deficit"
+        ]
       },
       "UpdateOutgoingTrustCeoCommand": {
         "type": "object",
@@ -10018,6 +10067,31 @@
           "errorType": {
             "type": "string",
             "description": "The type of error that occurred.",
+      "UpdateProcessSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantCheckVendorAccount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantPaymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSharePaymentDate": {
+            "type": "boolean",
             "nullable": true
           }
         }

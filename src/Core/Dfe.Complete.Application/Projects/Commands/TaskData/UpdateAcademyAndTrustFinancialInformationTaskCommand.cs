@@ -6,14 +6,16 @@ using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateAcademyAndTrustFinancialInformationTaskCommand(
         [Required] TaskDataId TaskDataId,
         bool? NotApplicable,
-        string? AcademySurplusOrDeficit,
-        string? TrustSurplusOrDeficit
+        AcademyAndTrustFinancialStatus? AcademySurplusOrDeficit,
+        AcademyAndTrustFinancialStatus? TrustSurplusOrDeficit
     ) : IRequest<Result<bool>>;
 
     internal class UpdateAcademyAndTrustFinancialInformationTaskCommandHandler(
@@ -27,8 +29,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Transfer task data {request.TaskDataId} not found.");
 
             tasksData.CheckAndConfirmFinancialInformationNotApplicable = request.NotApplicable;
-            tasksData.CheckAndConfirmFinancialInformationAcademySurplusDeficit = request.NotApplicable == true ? null : request.AcademySurplusOrDeficit;
-            tasksData.CheckAndConfirmFinancialInformationTrustSurplusDeficit = request.NotApplicable == true ? null : request.TrustSurplusOrDeficit;
+            tasksData.CheckAndConfirmFinancialInformationAcademySurplusDeficit = request.NotApplicable == true ? null : request.AcademySurplusOrDeficit.ToDescription();
+            tasksData.CheckAndConfirmFinancialInformationTrustSurplusDeficit = request.NotApplicable == true ? null : request.TrustSurplusOrDeficit.ToDescription();
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

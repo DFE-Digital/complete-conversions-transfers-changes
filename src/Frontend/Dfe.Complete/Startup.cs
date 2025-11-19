@@ -1,7 +1,6 @@
 using Azure.Identity;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Configuration;
-using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
@@ -19,7 +18,6 @@ using GovUK.Dfe.CoreLibs.Security.Enums;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
@@ -60,12 +58,14 @@ public class Startup
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
+
         services
             .AddRazorPages(options =>
             {
-                options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
-                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+                options.Conventions.AuthorizeFolder("/");
+
                 options.Conventions.AllowAnonymousToFolder("/Public");
+                options.Conventions.AllowAnonymousToFolder("/Errors");
             })
             .AddViewOptions(options =>
             {
@@ -74,32 +74,32 @@ public class Startup
 
         SetupApplicationInsights(services);
 
-        services.AddControllersWithViews()
-           .AddMicrosoftIdentityUI()
-           .AddCookieTempDataProvider(options =>
-           {
-               options.Cookie.Name = ".Complete.TempData";
-               options.Cookie.HttpOnly = true;
-               options.Cookie.IsEssential = true;
-               if (string.IsNullOrEmpty(Configuration["CI"]))
-               {
-                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-               }
-               options.Cookie.SameSite = SameSiteMode.Lax;
-           })
-           .AddCustomAntiForgeryHandling(opts =>
-           {
-               opts.CheckerGroups =
-               [
-                   new() {
-                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
-                       CheckerOperator = CheckerOperator.Or
-                   }
-               ];
-           });
+        services
+            .AddControllersWithViews()
+            .AddMicrosoftIdentityUI()
+            .AddCookieTempDataProvider(options =>
+            {
+                options.Cookie.Name = ".Complete.TempData";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                if (string.IsNullOrEmpty(Configuration["CI"]))
+                {
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                }
+                options.Cookie.SameSite = SameSiteMode.Lax;
+            })
+            .AddCustomAntiForgeryHandling(opts =>
+            {
+                opts.CheckerGroups = [new()
+                {
+                    TypeNames = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                    CheckerOperator = CheckerOperator.Or
+                }];
+            });
+
         services.AddControllers().AddMicrosoftIdentityUI();
 
-        // Configure antiforgery AFTER all services are added to ensure our settings take precedence
+        // Configure antiforgery AFTER all services are added
         ConfigureCustomAntiforgery(services);
 
         SetupDataProtection(services);
@@ -108,7 +108,10 @@ public class Startup
         services.AddCompleteClientProject(Configuration);
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
-        services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
+        services.AddScoped(sp =>
+            sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session
+            ?? throw new InvalidOperationException("Session is not available."));
+
         services.AddSession(options =>
         {
             options.IdleTimeout = _authenticationExpiration;
@@ -120,20 +123,31 @@ public class Startup
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             }
         });
+
         services.AddHttpContextAccessor();
 
         services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
 
-        services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
+        var authenticationBuilder = services
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = "MultiAuth";
+                options.DefaultAuthenticateScheme = "MultiAuth";
 
-        var authenticationBuilder = services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = "MultiAuth";
-            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-        }).AddCypressMultiAuthentication();
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCypressMultiAuthentication();
 
-        authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
+        authenticationBuilder.AddMicrosoftIdentityWebApp(
+            Configuration.GetSection("AzureAd"),
+            OpenIdConnectDefaults.AuthenticationScheme
+        );
 
+        // Configure OpenIdConnect events for user validation
+        services.AddWebAuthenticationWithUserValidation();
+
+        // Configure the primary auth cookie: login + access denied behaviour.
         ConfigureCookies(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
@@ -143,8 +157,6 @@ public class Startup
         RegisterClients(services);
 
         services.AddGovUkFrontend();
-
-        // New API client
 
         services.AddApplicationDependencyGroup(Configuration);
         services.AddInfrastructureDependencyGroup(Configuration);
@@ -170,7 +182,6 @@ public class Startup
         else
         {
             app.UseExceptionHandler("/Errors");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
@@ -178,9 +189,9 @@ public class Startup
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
-           SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
-              .AddXssProtectionDisabled()
-              .AddCustomHeader("Cross-Origin-Opener-Policy", "same-origin")
+            SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
+                .AddXssProtectionDisabled()
+                .AddCustomHeader("Cross-Origin-Opener-Policy", "same-origin")
         );
 
         app.UseStatusCodePagesWithReExecute("/Errors", "?statusCode={0}");
@@ -188,8 +199,12 @@ public class Startup
         app.UseHttpsRedirection();
         app.UseHealthChecks("/health");
 
-        //For Azure AD redirect uri to remain https
-        ForwardedHeadersOptions forwardOptions = new() { ForwardedHeaders = ForwardedHeaders.All, RequireHeaderSymmetry = false };
+        // For Azure AD redirect uri to remain https
+        var forwardOptions = new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.All,
+            RequireHeaderSymmetry = false
+        };
         forwardOptions.KnownNetworks.Clear();
         forwardOptions.KnownProxies.Clear();
         app.UseForwardedHeaders(forwardOptions);
@@ -199,6 +214,7 @@ public class Startup
         app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapRazorPages();
@@ -208,23 +224,26 @@ public class Startup
 
     private void ConfigureCookies(IServiceCollection services)
     {
-        services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme,
-           options =>
-           {
-               options.AccessDeniedPath = "/access-denied";
-               options.Cookie.Name = ".Complete.Login";
-               options.Cookie.HttpOnly = true;
-               options.Cookie.IsEssential = true;
-               options.ExpireTimeSpan = _authenticationExpiration;
-               options.SlidingExpiration = true;
-               if (string.IsNullOrEmpty(Configuration["CI"]))
-               {
-                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-               }
-           });
+        services.Configure<CookieAuthenticationOptions>(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            options =>
+            {
+                options.LoginPath = "/sign-in";
+                options.AccessDeniedPath = "/access-denied";
+                options.Cookie.Name = ".Complete.Login";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.ExpireTimeSpan = _authenticationExpiration;
+                options.SlidingExpiration = true;
+                if (string.IsNullOrEmpty(Configuration["CI"]))
+                {
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                }
+            });
     }
 
-    private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
+    private void SetupApplicationInsights(IServiceCollection services) =>
+        services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
     private void ConfigureCustomAntiforgery(IServiceCollection services)
     {
@@ -244,14 +263,14 @@ public class Startup
     {
         services.AddHttpClient("CompleteClient", (_, client) =>
         {
-            CompleteOptions completeOptions = GetTypedConfigurationFor<CompleteOptions>();
+            var completeOptions = GetTypedConfigurationFor<CompleteOptions>();
             client.BaseAddress = new Uri(completeOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", completeOptions.ApiKey);
         });
 
         services.AddHttpClient("AcademiesApiClient", (sp, client) =>
         {
-            AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
+            var academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
         });
@@ -260,7 +279,7 @@ public class Startup
     private void SetupDataProtection(IServiceCollection services)
     {
         var dp = services.AddDataProtection();
-        DataProtectionOptions options = GetTypedConfigurationFor<DataProtectionOptions>();
+        var options = GetTypedConfigurationFor<DataProtectionOptions>();
 
         var dpTargetPath = options?.DpTargetPath ?? @"/srv/app/storage";
 
@@ -269,7 +288,7 @@ public class Startup
             dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
 
             // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
-            string? kvProtectionKeyUri = options?.KeyVaultKey;
+            var kvProtectionKeyUri = options?.KeyVaultKey;
 
             if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
             {

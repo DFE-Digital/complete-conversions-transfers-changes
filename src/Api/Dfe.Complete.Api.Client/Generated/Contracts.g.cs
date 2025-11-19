@@ -1741,6 +1741,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateDirectionToTransferTaskAsync(UpdateDirectionToTransferTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Updating the process conversion support grant task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Update the process conversion support grant task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateProcessConversionSupportGrantTaskAsync(UpdateProcessSupportGrantTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the process conversion support grant task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Update the process conversion support grant task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateProcessConversionSupportGrantTaskAsync(UpdateProcessSupportGrantTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2681,6 +2698,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("activeDirectoryUserId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? ActiveDirectoryUserId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("entraUserObjectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? EntraUserObjectId { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("assignToProject", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? AssignToProject { get; set; } = default!;
@@ -6881,10 +6901,12 @@ namespace Dfe.Complete.Client.Contracts
         public bool? NotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("academySurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? AcademySurplusOrDeficit { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AcademyAndTrustFinancialStatus? AcademySurplusOrDeficit { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("trustSurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? TrustSurplusOrDeficit { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AcademyAndTrustFinancialStatus? TrustSurplusOrDeficit { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6898,6 +6920,18 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAcademyAndTrustFinancialInformationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum AcademyAndTrustFinancialStatus
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Surplus")]
+        Surplus = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Deficit")]
+        Deficit = 1,
 
     }
 
@@ -7639,6 +7673,42 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<EmailTestResponse>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateProcessSupportGrantTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantCheckVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantCheckVendorAccount { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantPaymentForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantPaymentForm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantSendInformation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantSendInformation { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantSharePaymentDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantSharePaymentDate { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateProcessSupportGrantTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProcessSupportGrantTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

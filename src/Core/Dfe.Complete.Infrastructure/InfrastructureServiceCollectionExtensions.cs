@@ -64,7 +64,6 @@ namespace Dfe.Complete.Infrastructure
             services.AddNotifyEmailServices(config);
 
             // Authentication
-            //services.AddCustomAuthorization(config);
 
             AddInfrastructureHealthChecks(services);
 
