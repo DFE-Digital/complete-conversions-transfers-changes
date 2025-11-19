@@ -31,7 +31,6 @@
         <p class="govuk-body">You can use this product to manage work that helps DfE to convert schools to academies.</p>
 
         <form method="post" data-cy="sign-in-form">
-            @Html.AntiForgeryToken()
             <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" data-cy="return-url-input" />
             <button class="govuk-button" data-module="govuk-button" type="submit" data-cy="sign-in-button">
                 Sign in with your DfE Microsoft account

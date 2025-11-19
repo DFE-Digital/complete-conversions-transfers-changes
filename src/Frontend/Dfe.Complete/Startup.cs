@@ -64,10 +64,6 @@ public class Startup
             {
                 options.Conventions.AuthorizeFolder("/");
 
-                // Routes
-                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
-
-                // ...except explicitly anonymous/public areas
                 options.Conventions.AllowAnonymousToFolder("/Public");
                 options.Conventions.AllowAnonymousToFolder("/Errors");
             })
