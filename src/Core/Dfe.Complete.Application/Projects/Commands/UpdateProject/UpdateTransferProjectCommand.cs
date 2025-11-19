@@ -9,7 +9,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     public record UpdateTransferProjectCommand(
         ProjectId ProjectId,
         Ukprn IncomingTrustUkprn,
-        Ukprn OutgoingTrustUkprn,
         string? NewTrustReferenceNumber,
         string? GroupReferenceNumber,
         DateOnly AdvisoryBoardDate,
