@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+- Added `Process conversion support grant` task for conversion project.
+
 ### Fixed
 -- Added Debounce to UserAutoComplete
 -- Updated error wording on Confirm the academy's risk protection arrangements for conversiont task

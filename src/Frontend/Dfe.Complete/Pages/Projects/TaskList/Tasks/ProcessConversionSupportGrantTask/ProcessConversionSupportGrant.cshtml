@@ -1,17 +1,81 @@
 ﻿@page "/projects/{projectId}/tasks/conversion_grant"
 @using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ProcessConversionSupportGrant.ProcessConversionSupportGrantModel
 @{
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
-@section TaskHeaderHintSection {
-    <div class="govuk-hint">
-    </div>
-}
+
 @section TaskSection {
 
+    <govuk-details>
+        <govuk-details-summary>
+            How to process a conversion support grant
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>Check the grant claim form is ready, the school or trust has a vendor account and send the correct information to the Grant Payments team.</p>
+            <p>Start this as soon as possible. Schools and trusts can start getting charged by solicitors and the local authority early in the process.</p>
+        </govuk-details-text>
+    </govuk-details>
+
     <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="not-applicable-checkbox" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item data-cy="grant-check-vendor-account-checkbox" id="checked" asp-for="@Model.ConversionGrantCheckVendorAccount" value="true" name="checked" checked="@Model.ConversionGrantCheckVendorAccount">
+                    <b>Check the school or trust have a vendor account</b>
+                    <p>You can <external-link href="@_configuration["ExternalLinks:ConversionSupportGrantCheckVendorAccountGuidance"]">check if the school or trust has a vendor account (opens in new tab)</external-link> on SharePoint.</p>
+                    <govuk-checkboxes-item-hint>
+                        <div class="guidance">
+                            <details data-module="govuk-details" class="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">How to set up a vendor account</span>
+                                </summary>
+                                <div class="govuk-details__text">
+                                    <p>The school or trust receiving the conversion support grant must have a vendor account.</p>
+                                    <p>Schools and trusts can <external-link href="@_configuration["ExternalLinks:ConversionSupportGrantSetUpVendorAccountGuidance"]">set up a vendor account (opens in new tab)</external-link> when they provide information about their banking and payments to Department for Education.</p>
+                                    <p>Share the link with them so they can register if needed.</p> <p>It can take 15 to 20 days for an account to be created.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="grant-check-payment-form-checkbox" id="received" asp-for="@Model.ConversionGrantPaymentForm" value="true" name="received" checked="@Model.ConversionGrantPaymentForm">
+                    <b>Receive, check and save the grant claim form in the school's SharePoint folder</b>
+                    <p>Make sure no information is missing.</p>
+                    <govuk-checkboxes-item-hint>
+                        <div class="guidance">
+                            <details data-module="govuk-details" class="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">How to check and save the form</span>
+                                </summary>
+                                <div class="govuk-details__text">
+                                    <p>The school or trust must send you the grant claim form.</p>
+                                    <p>Check it's complete and save it in the school's SharePoint folder.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item data-cy="grant-sent-information-checkbox" id="sent" asp-for="@Model.ConversionGrantSendInformation" value="true" name="sent" checked="@Model.ConversionGrantSendInformation">
+                    <b>Send the grant information and vendor account details to the payments team</b>
+                    <p>Guidance on <external-link href="@_configuration["ExternalLinks:ConversionSupportGrantPaymentInformationGuidance"]">what information is required by the grant payments team (opens in new tab)</external-link> is on Sharepoint.</p>
+                    
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="grant-share-payment-date-checkbox" id="shared" asp-for="@Model.ConversionGrantSharePaymentDate" value="true" name="shared" checked="@Model.ConversionGrantSharePaymentDate">
+                    <b>Tell the school or trust the grant information has been sent</b>                   
+                </govuk-checkboxes-item>
+
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
