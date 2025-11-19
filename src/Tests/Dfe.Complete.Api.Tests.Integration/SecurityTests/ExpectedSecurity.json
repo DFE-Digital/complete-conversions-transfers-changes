@@ -544,6 +544,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateDirectionToTransferTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateProcessConversionSupportGrantTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }   
   ]
 }
