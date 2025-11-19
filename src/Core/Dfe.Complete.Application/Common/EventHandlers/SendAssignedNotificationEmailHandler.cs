@@ -44,9 +44,38 @@ namespace Dfe.Complete.Application.Common.EventHandlers
                 return;
             }
 
-            var projectUrl = projectUrlBuilder.BuildProjectUrl(notification.ProjectReference);
+            // Use user's email from database, fallback to notification email if user email is null/empty
+            var emailToUse = !string.IsNullOrWhiteSpace(user.Email) 
+                ? user.Email 
+                : notification.AssignedToEmail;
 
-            var emailAddress = EmailAddress.Create(notification.AssignedToEmail);
+            // Guard: Validate email before attempting to send
+            if (string.IsNullOrWhiteSpace(emailToUse))
+            {
+                logger.LogWarning(
+                    "User {UserId} has no email address. Cannot send assignment notification for project {ProjectId}.",
+                    notification.AssignedToUserId,
+                    notification.ProjectId);
+                return;
+            }
+
+            EmailAddress emailAddress;
+            try
+            {
+                emailAddress = EmailAddress.Create(emailToUse);
+            }
+            catch (ArgumentException ex)
+            {
+                logger.LogWarning(
+                    ex,
+                    "Invalid email address format for user {UserId}: {Email}. Cannot send assignment notification for project {ProjectId}.",
+                    notification.AssignedToUserId,
+                    emailToUse,
+                    notification.ProjectId);
+                return;
+            }
+
+            var projectUrl = projectUrlBuilder.BuildProjectUrl(notification.ProjectReference);
 
             // Select template based on project type
             var templateKey = notification.ProjectType switch
