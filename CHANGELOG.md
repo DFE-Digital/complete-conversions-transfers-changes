@@ -16,18 +16,24 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
+
+## [1.30.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-19.1160) - 2025-11-19
+
 ### Added
 - Added `Process conversion support grant` task for conversion project.
-
-### Fixed
--- Added Debounce to UserAutoComplete
--- Updated error wording on Confirm the academy's risk protection arrangements for conversiont task
--- Hide delete project end point from api swagger in production environment
-
-### Added
+- Added `Sponsored support grant` task for conversion and transfer project.
 - Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
+### Fixed
+- Added Debounce to UserAutoComplete
+- Updated error wording on Confirm the academy's risk protection arrangements for conversion task
+- Hide delete project end point from api swagger in production environment
+- Updated `Check and confirm academy and trust financial information` API to use enums
+- Added internal contacts API endpoints
+- Removed internal contacts update access for data consumers
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...production-2025-11-19.1160) for everything in the release
 
 ## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
 
@@ -46,7 +52,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - Added MAT Transfer creation end point for prepare to complete 
-- Added `Sponsored support grant` task for conversion and transfer project.
 - Added `Direction To Transfer` task for conversion projects.
 - Added API External Contacts endpoints
 
