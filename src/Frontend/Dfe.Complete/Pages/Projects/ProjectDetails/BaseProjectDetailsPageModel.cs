@@ -27,10 +27,8 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
         [BindProperty] public ProjectType? ProjectType { get; set; } // Common
 
-        [BindProperty]
-        [GovukRequired]
-        [Ukprn]
-        [Required(ErrorMessage = "Enter an incoming trust UKPRN")]
+        [BindProperty]        
+        [Ukprn]        
         [DisplayName("incoming trust UKPRN")]
         public string? IncomingTrustUkprn { get; set; }  // Common
 

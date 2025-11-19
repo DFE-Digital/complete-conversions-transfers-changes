@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
     public record UpdateTransferProjectCommand(
         ProjectId ProjectId,
-        Ukprn IncomingTrustUkprn,
+        Ukprn IncomingTrustUkprn,        
         string? NewTrustReferenceNumber,
         string? GroupReferenceNumber,
         DateOnly AdvisoryBoardDate,
@@ -39,8 +39,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
         protected override async Task UpdateSpecificProjectProperties(Project project, UpdateTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            // Transfer-specific properties
-            project.OutgoingTrustUkprn = request.OutgoingTrustUkprn;
+            // Transfer-specific properties           
             project.OutgoingTrustSharepointLink = request.OutgoingTrustSharepointLink;
 
             // Update transfer tasks data
