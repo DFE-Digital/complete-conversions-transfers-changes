@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
 
 ## [1.30.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-19.1160) - 2025-11-19
