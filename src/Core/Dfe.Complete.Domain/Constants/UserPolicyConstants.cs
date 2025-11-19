@@ -2,7 +2,6 @@ namespace Dfe.Complete.Domain.Constants;
 
 public static class UserPolicyConstants
 {
-    public const string CanCreateProjects = "CanCreateProjects";
     public const string CanViewYourProjects = "CanViewYourProjects";
     public const string CanViewTeamProjects = "CanViewTeamProjects";
     public const string CanViewTeamProjectsHandedOver = "CanViewTeamProjectsHandedOver";
