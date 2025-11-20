@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
-    [Authorize(policy: UserPolicyConstants.ManageLocalAuthorities)]
+    [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
     public class DeleteLocalAuthorityModel(ISender sender) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         public required string Name { get; set; }

@@ -4,14 +4,12 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Models.LocalAuthority;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
-    [Authorize(policy: UserPolicyConstants.ManageLocalAuthorities)]
     public class CreateNewLocalAuthorityModel(ISender sender, IErrorService errorService) : LocalAuthorityAddEditBaseModel()
     {  
         public async Task<IActionResult> OnPostAsync()

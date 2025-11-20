@@ -2654,6 +2654,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("projectRegionalDeliveryOfficers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<Project>? ProjectRegionalDeliveryOfficers { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("isAssignableToProject", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsAssignableToProject { get; set; } = default!;
+
         public string ToJson()
         {
 

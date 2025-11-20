@@ -94,23 +94,23 @@
     },
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/ViewLocalAuthorityDetails",
-      "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/ListLocalAuthorities",
-      "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/EditLocalAuthorityDetails",
-      "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/DeleteLocalAuthority",
-      "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/CreateNewLocalAuthority",
-      "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/ServiceSupport/Users/ListUsers",

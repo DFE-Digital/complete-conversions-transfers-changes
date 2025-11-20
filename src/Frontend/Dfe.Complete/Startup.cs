@@ -126,7 +126,7 @@ public class Startup
 
         services.AddHttpContextAccessor();
 
-        services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
+        services.AddApplicationAuthorization(Configuration);
 
         var authenticationBuilder = services
             .AddAuthentication(options =>

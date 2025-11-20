@@ -48,7 +48,7 @@ public class UpdateAssignedUserCommandHandlerTests
         var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>()).Returns(sourceProject);
-        _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, AssignToProject = true });
+        _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, Team = "regional_casework_services" });
 
         // Act & Assert
         await _handler.Handle(command, CancellationToken.None);
@@ -79,7 +79,7 @@ public class UpdateAssignedUserCommandHandlerTests
         var sourceProject = Domain.Entities.Project.CreateConversionProject(parameters);
 
         _mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>()).Returns(sourceProject);
-        _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, AssignToProject = false });
+        _mockUserRepository.GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.AssignedUser.Value.ToString()), Arg.Any<CancellationToken>()).Returns(new User { Id = command.AssignedUser, Team = "data_consumers" });
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(async () => await _handler.Handle(command, CancellationToken.None));

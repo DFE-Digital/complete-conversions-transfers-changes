@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
             {
                 var searchQuery = await users.FetchAsync(
                     user =>
-                        (!request.FilterToAssignableUsers || user.AssignToProject == true) &&
+                        (!request.FilterToAssignableUsers || user.IsAssignableToProject) &&
                         EF.Functions.Like(
                             (user.FirstName ?? "") + " " + (user.LastName ?? "") + " " + (user.Email ?? ""),
                             "%" + request.Query + "%"
