@@ -20,7 +20,7 @@ using System.Web;
 namespace Dfe.Complete.Tests.Models;
 
 public class BaseProjectDetailsPageModelTests
-{
+{  
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
     public async Task SetGroupReferenceNumberAsync_WhenGroupIdIsNull_DoesNotSetGroupReferenceNumber(
@@ -217,7 +217,7 @@ public class BaseProjectDetailsPageModelTests
 public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger)
     : BaseProjectDetailsPageModel(sender, errorService, logger)
 {
-    private IActionResult? _baseOnGetResult;
+    private IActionResult? _baseOnGetResult;   
 
     public void SetBaseOnGetResult(IActionResult result)
     {
@@ -256,5 +256,78 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
     public async Task TestSetGroupReferenceNumberAsync()
     {
         await SetGroupReferenceNumberAsync();
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public void ValidateTrustReferenceNumber_AddsError_WhenOriginalExistsAndNewIsMissing(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        Fixture fixture)
+    {
+        // Arrange      
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        {
+            OriginalTrustReferenceNumber = fixture.Create<string>(), // non-empty
+            NewTrustReferenceNumber = "" // missing
+        };
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.False(model.ModelState.IsValid);
+        Assert.True(model.ModelState.ContainsKey("NewTrustReferenceNumber"));
+
+        var entry = model.ModelState["NewTrustReferenceNumber"];
+        Assert.NotNull(entry);
+
+        var error = Assert.Single(entry.Errors);
+        Assert.Equal("Enter a trust reference number (TRN)", error.ErrorMessage);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public void ValidateTrustReferenceNumber_DoesNotAddError_WhenOriginalIsEmpty(
+       [Frozen] ISender mockSender,
+       [Frozen] IErrorService mockErrorService,
+       [Frozen] ILogger mockLogger
+       )
+    {
+        // Arrange      
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        {
+            OriginalTrustReferenceNumber = "", // non-empty
+            NewTrustReferenceNumber = null // missing
+        };
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public void ValidateTrustReferenceNumber_DoesNotAddError_WhenNewTrustReferenceProvided(
+      [Frozen] ISender mockSender,
+      [Frozen] IErrorService mockErrorService,
+      [Frozen] ILogger mockLogger,
+      Fixture fixture)
+    {
+        // Arrange      
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        {
+            OriginalTrustReferenceNumber = fixture.Create<string>(), // non-empty
+            NewTrustReferenceNumber = fixture.Create<string>(), // non-empty
+        };
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
     }
 }
