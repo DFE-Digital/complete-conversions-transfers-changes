@@ -23,6 +23,7 @@ import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.support.whitcliffe,
@@ -33,7 +34,10 @@ const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the data consumer user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createAndUpdateConversionProject(project).then((response) => {
+            projectId = response.value;
+            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", project.provisionalConversionDate);
+        });
     });
     beforeEach(() => {
         cy.login(dataConsumerUser);
@@ -91,12 +95,12 @@ describe("Capabilities and permissions of the data consumer user", () => {
                 "All conditions met",
                 "Confirmed date (Original date)",
             ])
-            .withSchool(`${schoolName} ${project.urn.value}`)
+            .withSchool(`${schoolName} ${project.urn}`)
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", "Apr 2027")
+            .columnHasValue("Confirmed date (Original date)", "Apr 2027 (Apr 2027)")
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
