@@ -113,7 +113,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             return Page();
         }
 
-        protected void ValidateTrustReferenceNumber()
+        public void ValidateTrustReferenceNumber()
         {
             if (!string.IsNullOrWhiteSpace(OriginalTrustReferenceNumber) && string.IsNullOrWhiteSpace(NewTrustReferenceNumber))
             {
