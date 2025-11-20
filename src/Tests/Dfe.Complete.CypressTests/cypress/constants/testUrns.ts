@@ -62,5 +62,6 @@ export const urnPool = {
         whitcliffe: 107780,
         kinnerley: 123481,
         gomersal: 107781,
+        halesowen: 103847, // academy, not project
     },
 };

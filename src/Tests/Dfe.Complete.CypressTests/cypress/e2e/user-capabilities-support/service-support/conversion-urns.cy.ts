@@ -20,9 +20,9 @@ const project = ProjectBuilder.createConversionProjectRequest({
 });
 const schoolName = "Kinnerley Church of England Controlled Primary School";
 const academy = {
-    urn: 103846,
-    name: "Cradley CofE Primary School",
-    address: "Church Road",
+    urn: urnPool.support.halesowen,
+    name: "Halesowen CofE Primary School",
+    address: "High Street",
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
