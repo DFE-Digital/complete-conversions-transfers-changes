@@ -18,15 +18,16 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
         public async Task<IEnumerable<Claim>> GetClaimsAsync(ClaimsPrincipal principal)
         {
             var userId = principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
-            if (string.IsNullOrEmpty(userId))
+            var email = principal.FindFirst(CustomClaimTypeConstants.PreferredUsername)?.Value;
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email))
                 return [];
 
             string cacheKey = $"UserClaims_{userId}";
 
             if (!cache.TryGetValue(cacheKey, out List<Claim>? additionalClaims))
             {
-                var userRecord = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == userId && u.DeactivatedAt == null);
-                if (userRecord == null!)
+                var userRecord = await userRepository.FindAsync(u => u.EntraUserObjectId == userId && u.DeactivatedAt == null);
+                if (userRecord == null || !string.Equals(userRecord.Email, email, StringComparison.OrdinalIgnoreCase))
                     return [];
 
                 additionalClaims =

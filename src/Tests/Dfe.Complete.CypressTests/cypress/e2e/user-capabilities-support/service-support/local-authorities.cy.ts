@@ -183,7 +183,7 @@ describe("Service support user - Local authorities: ", () => {
 
         Logger.log("Verify validation errors are displayed");
         validationComponent
-            .hasLinkedValidationErrorForField("Address1", "Can't be blank")
+            .hasLinkedValidationErrorForField("Address1", "Enter 1st line of address")
             .hasLinkedValidationErrorForField("AddressPostcode", "Not recognised as a UK postcode")
             .hasLinkedValidationErrorForField("Email", "Email address must be in correct format");
 
@@ -206,10 +206,10 @@ describe("Service support user - Local authorities: ", () => {
 
         Logger.log("Verify validation errors are displayed");
         validationComponent
-            .hasLinkedValidationErrorForField("Name", "Can't be blank")
-            .hasLinkedValidationErrorForField("Code", "Can't be blank")
-            .hasLinkedValidationErrorForField("Address1", "Can't be blank")
-            .hasLinkedValidationErrorForField("AddressPostcode", "Can't be blank");
+            .hasLinkedValidationErrorForField("Name", "Enter a name")
+            .hasLinkedValidationErrorForField("Code", "Enter a code")
+            .hasLinkedValidationErrorForField("Address1", "Enter 1st line of address")
+            .hasLinkedValidationErrorForField("AddressPostcode", "Enter a postcode");
     });
 
     it("Should show 'code has already been taken' error when trying to add a new local authority with a duplicate local authority code", () => {
