@@ -5886,6 +5886,10 @@
           "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6013,6 +6017,10 @@
             "nullable": true
           },
           "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
             "type": "string",
             "nullable": true
           }
