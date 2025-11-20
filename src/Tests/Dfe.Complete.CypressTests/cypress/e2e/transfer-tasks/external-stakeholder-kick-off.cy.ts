@@ -107,11 +107,10 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
             .isUnticked();
     });
 
-    // bug 235385
-    it.skip("Should NOT be able to set a transfer date in the past", () => {
+    it("Should NOT be able to set a transfer date in the past", () => {
         cy.visit(`projects/${project2Id}/tasks/stakeholder_kick_off`);
         stakeholderKickOffTaskPage.enterSignificantDate(1, 2020).saveAndReturn();
-        validationComponent.hasLinkedValidationError("The Significant date cannot be in the past");
+        validationComponent.hasLinkedValidationError("The Significant date must be in the future");
     });
 
     it("Should only be able to confirm the transfer date once", () => {
