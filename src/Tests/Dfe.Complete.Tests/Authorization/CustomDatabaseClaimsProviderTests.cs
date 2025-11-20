@@ -9,10 +9,6 @@ using NSubstitute;
 using System.Linq.Expressions;
 using System.Security.Claims;
 
-// TODO revisit TODOs
-// TODO update manage_team on sign in 
-// That should be it for thiS? 
-
 namespace Dfe.Complete.Tests.Authorization
 {
     public class CustomDatabaseClaimsProviderTests
