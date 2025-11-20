@@ -109,13 +109,12 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Form a MAT project", "No")
             .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(teammatesSchoolName);
-        // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesSchoolName);
     });
 
     it("Should be able to view my team projects that are new", () => {
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsTable
-            // .schoolIsFirstInTable(teammatesSchoolName) // race condition issue
             .hasTableHeaders([
                 "School or academy",
                 "URN",
@@ -133,7 +132,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Conversion or transfer date", "Apr 2028")
             .goTo(teammatesSchoolName);
-        // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesSchoolName);
     });
 
     it("Should be able to view my team projects by user and all a user's projects", () => {
@@ -152,14 +151,13 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Conversion or transfer date", "Apr 2028")
             .columnHasValue("Project type", "Conversion")
             .goTo(teammatesSchoolName);
-        // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesSchoolName);
     });
 
     it("Should be able to view my team projects that are completed", () => {
         projectApi.completeProject(teammatesProjectId);
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         projectTable
-            // .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeaders([
                 "School or academy",
                 "URN",

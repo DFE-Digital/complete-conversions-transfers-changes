@@ -77,8 +77,9 @@ describe("Capabilities and permissions of the service support user", () => {
         shouldBeAbleToViewReportsLandingPage();
     });
 
-    it.skip("Should be able to review projects newly handed over from prepare", () => {
-        // not implemented 187511
+    it("Should be able to review projects newly handed over from prepare", () => {
+        cy.visit("/projects/all/handover");
+        cy.contains("Projects to handover");
     });
 
     it("Should be able to soft delete a project", () => {
