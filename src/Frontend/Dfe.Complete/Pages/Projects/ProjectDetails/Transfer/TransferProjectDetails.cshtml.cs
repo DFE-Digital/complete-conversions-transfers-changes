@@ -11,7 +11,6 @@ using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -102,8 +101,13 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
+            if (!string.IsNullOrWhiteSpace(OriginalTrustReferenceNumber)  && string.IsNullOrWhiteSpace(NewTrustReferenceNumber))
+            {  
+                ModelState.AddModelError("NewTrustReferenceNumber", "Enter a trust reference number (TRN)");             
+            }
+
             if (!ModelState.IsValid)
-            {
+            {  
                 ErrorService.AddErrors(ModelState);
                 return Page();
             }
@@ -115,7 +119,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
             var updateProjectCommand = new UpdateTransferProjectCommand(
                 ProjectId: new ProjectId(Guid.Parse(ProjectId)),
-                IncomingTrustUkprn: new Ukprn(IncomingTrustUkprn!.ToInt()),
+                IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue

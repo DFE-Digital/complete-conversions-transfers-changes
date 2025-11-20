@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 -- Added Debounce to UserAutoComplete
+-- Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
 

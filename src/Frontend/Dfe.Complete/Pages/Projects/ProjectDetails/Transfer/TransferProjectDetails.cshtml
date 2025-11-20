@@ -16,9 +16,9 @@
     const string isDueTo2RIField = nameof(Model.TwoRequiresImprovement);
     const string isDueToInedaquateOfstedRatingField = nameof(Model.InadequateOfsted);
     const string isDueToIssuesField = nameof(Model.FinancialSafeguardingGovernanceIssues);
-    const string outgoingTrustWillCloseField = nameof(Model.OutgoingTrustToClose);
+    const string outgoingTrustWillCloseField = nameof(Model.OutgoingTrustToClose);    
 
-    var matProject = !string.IsNullOrWhiteSpace(Model.NewTrustReferenceNumber);
+    var matProject = !string.IsNullOrWhiteSpace(Model.OriginalTrustReferenceNumber);
     var canViewServiceSupport = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanViewServiceSupport);
 }
 
@@ -54,7 +54,7 @@
             
             @if (matProject && canViewServiceSupport.Succeeded)
             {
-                @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)
+                @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)                
             }
             else
             {

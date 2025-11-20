@@ -28,7 +28,7 @@
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@Model.Project.IncomingTrustUkprn</govuk-summary-list-row-value>
-                @if(Model.UserHasEditAccess() && @Model.Project.FormAMat) {
+                @if(Model.UserHasEditAccess() && !string.IsNullOrWhiteSpace(@Model.Project.NewTrustReferenceNumber)) {
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("incoming-trust-ukprn")" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>

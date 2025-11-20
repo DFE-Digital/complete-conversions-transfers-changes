@@ -14,7 +14,8 @@
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharepointLink);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
     const string isDueTo2RIField = nameof(Model.TwoRequiresImprovement);
-    var matProject = !string.IsNullOrWhiteSpace(Model.NewTrustReferenceNumber);
+
+    var matProject = !string.IsNullOrWhiteSpace(Model.OriginalTrustReferenceNumber);
     var canViewServiceSupport = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanViewServiceSupport);
 }
 
@@ -50,7 +51,7 @@
 
             @if (matProject && canViewServiceSupport.Succeeded)
             {
-                @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)
+                @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)                
             }
             else
             {

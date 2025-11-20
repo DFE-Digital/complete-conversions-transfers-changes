@@ -33,7 +33,11 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         public string? IncomingTrustUkprn { get; set; }  // Common
 
         [BindProperty]
+      
         public string? NewTrustReferenceNumber { get; set; }  // Common
+
+        [BindProperty]        
+        public string? OriginalTrustReferenceNumber { get; set; }  // Common
 
         [BindProperty]
         [GroupReferenceNumber(ShouldMatchWithTrustUkprn: true, nameof(IncomingTrustUkprn))]
@@ -95,6 +99,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
             IncomingTrustUkprn = Project.IncomingTrustUkprn?.ToString();
             NewTrustReferenceNumber = Project.NewTrustReferenceNumber;
+            OriginalTrustReferenceNumber = Project.NewTrustReferenceNumber;
 
             await SetGroupReferenceNumberAsync();
 
