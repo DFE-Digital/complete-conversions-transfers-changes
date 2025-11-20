@@ -676,6 +676,43 @@ class TaskHelper {
         }
     }
 
+    updateProcessConversionSupportGrant(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            conversionGrantCheckVendorAccount: false,
+            conversionGrantPaymentForm: false,
+            conversionGrantSendInformation: false,
+            conversionGrantSharePaymentDate: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateProcessConversionSupportGrantTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateProcessConversionSupportGrantTask({
+                    ...defaultBody,
+                    conversionGrantCheckVendorAccount: true,
+                });
+
+            case "completed":
+                return taskApi.updateProcessConversionSupportGrantTask({
+                    ...defaultBody,
+                    conversionGrantCheckVendorAccount: true,
+                    conversionGrantPaymentForm: true,
+                    conversionGrantSendInformation: true,
+                    conversionGrantSharePaymentDate: true,
+                });
+
+            default:
+                return taskApi.updateProcessConversionSupportGrantTask(defaultBody);
+        }
+    }
+
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
         projectType: ProjectType,

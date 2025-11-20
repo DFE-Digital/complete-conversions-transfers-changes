@@ -199,6 +199,15 @@ interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
     save?: boolean;
 }
 
+interface UpdateProcessConversionSupportGrantTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    conversionGrantCheckVendorAccount?: boolean;
+    conversionGrantPaymentForm?: boolean;
+    conversionGrantSendInformation?: boolean;
+    conversionGrantSharePaymentDate?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -379,6 +388,10 @@ class TaskApi extends ApiBase {
 
     public updateOneHundredAndTwentyFiveYearLeaseTask(requestBody: UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest) {
         return this.taskDataBaseRequest<void>("OneHundredAndTwentyFiveYearLease", requestBody);
+    }
+
+    public updateProcessConversionSupportGrantTask(requestBody: UpdateProcessConversionSupportGrantTaskRequest) {
+        return this.taskDataBaseRequest<void>("ProcessConversionSupportGrant", requestBody);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
