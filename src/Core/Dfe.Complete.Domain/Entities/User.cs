@@ -23,6 +23,8 @@ public class User : BaseAggregateRoot, IEntity<UserId>
 
     public string? ActiveDirectoryUserId { get; set; }
 
+    public string? EntraUserObjectId { get; set; }
+
     public bool? AssignToProject { get; set; }
 
     public bool? ManageUserAccounts { get; set; }
@@ -67,6 +69,7 @@ public class User : BaseAggregateRoot, IEntity<UserId>
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             ActiveDirectoryUserId = null,
+            EntraUserObjectId = null,
             ActiveDirectoryUserGroupIds = null,
             ManageUserAccounts = null,
             ManageConversionUrns = false,

@@ -58,7 +58,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
                 return Page();
             }
 
-            var user = await Sender.Send(new GetUserByAdIdQuery(User.GetUserAdId()), cancellationToken);
+            var user = await Sender.Send(new GetUserByOidQuery(User.GetUserOid()), cancellationToken);
 
             if (user is not { IsSuccess: true })
                 throw new NotFoundException("No user found.", innerException: new Exception(user?.Error));

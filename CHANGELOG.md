@@ -16,11 +16,28 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Fixed
--- Added Debounce to UserAutoComplete
--- Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+- Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
+
+## [1.30.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-19.1160) - 2025-11-19
+
+### Added
+- Added `Process conversion support grant` task for conversion project.
+- Added `Sponsored support grant` task for conversion and transfer project.
+- Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
+
+### Fixed
+- Added Debounce to UserAutoComplete
+- Updated error wording on Confirm the academy's risk protection arrangements for conversion task
+- Hide delete project end point from api swagger in production environment
+- Updated `Check and confirm academy and trust financial information` API to use enums
+- Added internal contacts API endpoints
+- Removed internal contacts update access for data consumers
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...production-2025-11-19.1160) for everything in the release
 
 ## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
 
@@ -91,7 +108,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
-
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.

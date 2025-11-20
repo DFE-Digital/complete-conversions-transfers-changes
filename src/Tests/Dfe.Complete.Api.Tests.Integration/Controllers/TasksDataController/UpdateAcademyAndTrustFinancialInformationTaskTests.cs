@@ -9,6 +9,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -36,8 +37,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 NotApplicable = null,
-                AcademySurplusOrDeficit = "surplus",
-                TrustSurplusOrDeficit = "deficit"
+                AcademySurplusOrDeficit = AcademyAndTrustFinancialStatus.Surplus,
+                TrustSurplusOrDeficit = AcademyAndTrustFinancialStatus.Deficit
             };
 
             // Act
@@ -47,8 +48,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.Equal(command.AcademySurplusOrDeficit, existingTaskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit);
-            Assert.Equal(command.TrustSurplusOrDeficit, existingTaskData.CheckAndConfirmFinancialInformationTrustSurplusDeficit);
+            Assert.Equal(command.AcademySurplusOrDeficit.ToDescription().ToLower(), existingTaskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit);
+            Assert.Equal(command.TrustSurplusOrDeficit.ToDescription().ToLower(), existingTaskData.CheckAndConfirmFinancialInformationTrustSurplusDeficit);
             Assert.Null(existingTaskData.CheckAndConfirmFinancialInformationNotApplicable);
         }
 
@@ -76,8 +77,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 NotApplicable = true,
-                AcademySurplusOrDeficit = "surplus",
-                TrustSurplusOrDeficit = "deficit"
+                AcademySurplusOrDeficit = AcademyAndTrustFinancialStatus.Surplus,
+                TrustSurplusOrDeficit = AcademyAndTrustFinancialStatus.Deficit
             };
 
             // Act
