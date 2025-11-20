@@ -23,7 +23,8 @@ public record CreateTransferMatProjectCommand(
     [Required] bool? InadequateOfsted,
     [Required] bool? FinancialSafeguardingGovernanceIssues,
     [Required] bool? OutgoingTrustToClose,
-    string? AdvisoryBoardConditions) : IRequest<ProjectId>, IBaseHandoverTransferProjectCommand;
+    string? AdvisoryBoardConditions,
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>, IBaseHandoverTransferProjectCommand;
 
 public class CreateTransferMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
