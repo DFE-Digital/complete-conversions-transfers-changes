@@ -112,5 +112,13 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
             return Page();
         }
+
+        protected void ValidateTrustReferenceNumber()
+        {
+            if (!string.IsNullOrWhiteSpace(OriginalTrustReferenceNumber) && string.IsNullOrWhiteSpace(NewTrustReferenceNumber))
+            {
+                ModelState.AddModelError("NewTrustReferenceNumber", "Enter a trust reference number (TRN)");
+            }
+        }
     }
 }

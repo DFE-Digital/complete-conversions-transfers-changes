@@ -101,10 +101,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            if (!string.IsNullOrWhiteSpace(OriginalTrustReferenceNumber)  && string.IsNullOrWhiteSpace(NewTrustReferenceNumber))
-            {  
-                ModelState.AddModelError("NewTrustReferenceNumber", "Enter a trust reference number (TRN)");             
-            }
+            ValidateTrustReferenceNumber();
 
             if (!ModelState.IsValid)
             {  
