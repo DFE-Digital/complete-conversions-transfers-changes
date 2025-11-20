@@ -43,6 +43,8 @@ public class User : BaseAggregateRoot, IEntity<UserId>
 
     public string FullName => $"{FirstName} {LastName}";
 
+    public bool IsActive => DeactivatedAt == null;
+
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual ICollection<Project> ProjectAssignedTos { get; set; } = new List<Project>();
@@ -58,8 +60,7 @@ public class User : BaseAggregateRoot, IEntity<UserId>
         string lastName,
         string? team)
     {
-
-        return new User
+        var user = new User
         {
             Id = id,
             Email = email,
@@ -80,5 +81,10 @@ public class User : BaseAggregateRoot, IEntity<UserId>
             DeactivatedAt = null,
             LatestSession = null
         };
+
+        //event to trigger welcome email
+        user.AddDomainEvent(new Events.UserCreatedEvent(id, email, firstName, lastName, team ?? string.Empty));
+
+        return user;
     }
 }
