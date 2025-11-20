@@ -11,7 +11,6 @@ using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 
@@ -19,13 +18,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 {
     public class TransferProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<TransferProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
     {
-        [BindProperty]
-        [GovukRequired]
-        [Ukprn]
-        [Required(ErrorMessage = "Enter an outgoing trust UKPRN")]
-        [DisplayName("outgoing trust UKPRN")]
-        public string? OutgoingTrustUkprn { get; set; }
-
         [BindProperty]
         [SharePointLink]
         [Required(ErrorMessage = "Enter an outgoing trust SharePoint link")]
@@ -86,8 +78,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
             }
 
             EstablishmentName = Establishment?.Name;
-
-            OutgoingTrustUkprn = Project.OutgoingTrustUkprn?.ToString();
+            
             IncomingTrustUkprn = Project.IncomingTrustUkprn?.ToString();
             NewTrustReferenceNumber = Project.NewTrustReferenceNumber;
 
@@ -110,8 +101,10 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
+            ValidateTrustReferenceNumber();
+
             if (!ModelState.IsValid)
-            {
+            {  
                 ErrorService.AddErrors(ModelState);
                 return Page();
             }
@@ -123,8 +116,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
             var updateProjectCommand = new UpdateTransferProjectCommand(
                 ProjectId: new ProjectId(Guid.Parse(ProjectId)),
-                IncomingTrustUkprn: new Ukprn(IncomingTrustUkprn!.ToInt()),
-                OutgoingTrustUkprn: new Ukprn(OutgoingTrustUkprn!.ToInt()),
+                IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue
