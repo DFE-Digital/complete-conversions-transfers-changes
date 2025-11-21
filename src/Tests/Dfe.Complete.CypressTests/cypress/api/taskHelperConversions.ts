@@ -1,11 +1,8 @@
 import { TaskHelper, TaskStatus } from "cypress/api/taskHelper";
 import taskApiConversions from "cypress/api/taskApiConversions";
-import taskApi, { ProjectType, RPAOption } from "cypress/api/taskApi";
-import { cypressUser } from "cypress/constants/cypressConstants";
-
+import { ProjectType, RPAOption } from "cypress/api/taskApi";
 
 class TaskHelperConversions extends TaskHelper {
-
     public updateCheckAccuracyOfHigherNeeds(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -364,7 +361,6 @@ class TaskHelperConversions extends TaskHelper {
                 return taskApiConversions.updateTrustModificationOrderTask(defaultBody);
         }
     }
-
 }
 
 const taskHelperConversions = new TaskHelperConversions();
