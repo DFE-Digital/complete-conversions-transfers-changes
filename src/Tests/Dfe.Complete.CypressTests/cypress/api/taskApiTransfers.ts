@@ -7,6 +7,15 @@ interface UpdateAcademyAndTrustFinancialInformationTaskRequest {
     trustSurplusOrDeficit?: string | null;
 }
 
+interface UpdateClosureOrTransferDeclarationTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+    sent?: boolean;
+}
+
 interface UpdateConfirmDateAcademyTransferredTaskRequest {
     taskDataId: TaskDataId;
     dateAcademyTransferred?: string | null;
@@ -92,6 +101,10 @@ class TaskApiTransfers extends TaskApi {
         requestBody: UpdateAcademyAndTrustFinancialInformationTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("AcademyAndTrustFinancialInformation", requestBody);
+    }
+
+    public updateClosureOrTransferDeclarationTask(requestBody: UpdateClosureOrTransferDeclarationTaskRequest) {
+        return this.taskDataBaseRequest<void>("ClosureOrTransferDeclaration", requestBody);
     }
 
     public updateConfirmDateAcademyTransferredTask(requestBody: UpdateConfirmDateAcademyTransferredTaskRequest) {

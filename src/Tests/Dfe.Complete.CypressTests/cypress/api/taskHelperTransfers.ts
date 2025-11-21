@@ -34,6 +34,43 @@ class TaskHelperTransfers extends TaskHelper {
         }
     }
 
+    public updateClosureOrTransferDeclaration(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            saved: false,
+            sent: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApiTransfers.updateClosureOrTransferDeclarationTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApiTransfers.updateClosureOrTransferDeclarationTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApiTransfers.updateClosureOrTransferDeclarationTask({
+                    ...defaultBody,
+                    received: true,
+                    cleared: true,
+                    saved: true,
+                    sent: true,
+                });
+
+            default:
+                return taskApiTransfers.updateClosureOrTransferDeclarationTask(defaultBody);
+        }
+    }
+
     public updateConfirmDateAcademyTransferred(taskDataId: string, dateAcademyTransferred?: string) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
