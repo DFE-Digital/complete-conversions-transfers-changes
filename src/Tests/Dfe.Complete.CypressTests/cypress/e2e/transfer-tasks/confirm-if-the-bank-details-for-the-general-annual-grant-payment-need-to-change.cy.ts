@@ -4,7 +4,7 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const taskPath = "confirm_bank_details";
+const taskPath = "bank_details_changing";
 
 describe("Transfer tasks - Confirm if the bank details for the general annual grant payment need to change", () => {
     let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;

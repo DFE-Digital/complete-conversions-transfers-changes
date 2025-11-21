@@ -30,7 +30,7 @@ describe("Transfer tasks - Check and confirm academy and trust financial informa
         taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
         taskListPage
             .hasTaskStatusNotStarted("Check and confirm academy and trust financial information")
-            .selectTask("Check and confirm academy and trust financial_information");
+            .selectTask("Check and confirm academy and trust financial information");
         taskPage.hasCheckboxLabel("Not applicable").isUnticked();
     });
 

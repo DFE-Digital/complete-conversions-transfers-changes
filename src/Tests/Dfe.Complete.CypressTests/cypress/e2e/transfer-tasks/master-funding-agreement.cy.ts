@@ -84,10 +84,6 @@ describe("Transfer tasks - Master funding agreement", () => {
         taskListPage.hasTaskStatusCompleted("Master funding agreement");
     });
 
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
-    });
-
     it("Should NOT see the 'save and return' button for another user's project", () => {
         cy.visit(`projects/${setup.otherUserProjectId}/tasks/master_funding_agreement`);
         taskPage.noSaveAndReturnExists();

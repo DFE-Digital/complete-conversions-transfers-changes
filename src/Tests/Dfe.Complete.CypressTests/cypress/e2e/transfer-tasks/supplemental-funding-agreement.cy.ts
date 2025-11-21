@@ -71,10 +71,6 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
 
-        TaskHelperTransfers.updateSupplementalFundingAgreement(setup.taskId, ProjectType.Transfer, "notApplicable");
-        cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Supplemental funding agreement");
-
         TaskHelperTransfers.updateSupplementalFundingAgreement(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
@@ -82,6 +78,10 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
         TaskHelperTransfers.updateSupplementalFundingAgreement(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
+    });
+
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {

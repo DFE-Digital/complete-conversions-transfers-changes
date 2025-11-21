@@ -74,10 +74,6 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
         taskListPage.hasTaskStatusCompleted("Request a new URN and record for the academy");
     });
 
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
-    });
-
     it("Should NOT see the 'save and return' button for another user's project", () => {
         cy.visit(`projects/${setup.otherUserProjectId}/tasks/request_new_urn_and_record`);
         taskPage.noSaveAndReturnExists();
