@@ -192,6 +192,44 @@ class TaskHelperTransfers extends TaskHelper {
         }
     }
 
+    updateFormM(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            receivedTitlePlans: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApiTransfers.updateFormMTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApiTransfers.updateFormMTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApiTransfers.updateFormMTask({
+                    ...defaultBody,
+                    received: true,
+                    receivedTitlePlans: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApiTransfers.updateFormMTask(defaultBody);
+        }
+    }
+
     updateIncomingTrustHasCompletedAllActions(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

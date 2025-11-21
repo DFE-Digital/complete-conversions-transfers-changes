@@ -54,6 +54,16 @@ interface UpdateDeedOfTerminationMasterFundingAgreementTaskRequest {
     savedAcademySharePointHolder?: boolean;
 }
 
+interface UpdateFormMTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received: boolean;
+    receivedTitlePlans: boolean;
+    cleared: boolean;
+    signed: boolean;
+    saved: boolean;
+}
+
 interface UpdateIncomingTrustHasCompletedAllActionsTaskRequest {
     taskDataId: TaskDataId;
     emailed?: boolean;
@@ -108,6 +118,10 @@ class TaskApiTransfers extends TaskApi {
         requestBody: UpdateDeedOfTerminationMasterFundingAgreementTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("DeedOfTerminationMasterFundingAgreement", requestBody);
+    }
+
+    public updateFormMTask(requestBody: UpdateFormMTaskRequest) {
+        return this.taskDataBaseRequest<void>("FormM", requestBody);
     }
 
     public updateIncomingTrustHasCompletedAllActionsTask(
