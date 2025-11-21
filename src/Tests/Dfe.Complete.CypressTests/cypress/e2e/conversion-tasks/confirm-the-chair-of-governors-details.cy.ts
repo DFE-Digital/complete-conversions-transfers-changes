@@ -1,8 +1,3 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
-import projectRemover from "cypress/api/projectRemover";
-import projectApi from "cypress/api/projectApi";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToConfirmContact,
@@ -10,56 +5,32 @@ import {
     shouldSeeAddContactButtonIfNoContactExists,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import contactApi from "cypress/api/contactApi";
+import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ContactCategory } from "cypress/api/apiDomain";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
-const schoolName = "Spen Valley High School";
 const chairOfGovernorsContact = ContactBuilder.createContactRequest({
     fullName: "Chair McGovernor",
     role: "Chair of Governors",
-    organisationName: schoolName,
+    organisationName: "Spen Valley High School",
 });
 
-const projectWithoutContact = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.huddersfield,
-});
-let projectWithoutContactId: string;
-const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.grylls,
-});
-let otherUserProjectId: string;
 const taskPath = "confirm_chair_of_governors_contact";
 
 describe("Conversion tasks - Confirm the chair of governors' details", () => {
+    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(projectWithoutContact.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            chairOfGovernorsContact.projectId = { value: projectId };
-            contactApi.createContact(chairOfGovernorsContact);
-        });
-        projectApi.createAndUpdateConversionProject(projectWithoutContact).then((createResponse) => {
-            projectWithoutContactId = createResponse.value;
-        });
-        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-            contactApi.createContact(ContactBuilder.createContactRequest({ projectId: { value: otherUserProjectId } }));
-        });
+        ConversionTasksTestSetup.setupConfirmContactProjects(chairOfGovernorsContact, ContactCategory.SchoolOrAcademy);
+        setup = ConversionTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
+        ConversionTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose the chair of governors contact", () => {
         shouldBeAbleToConfirmContact(
-            projectId,
+            setup.projectId,
             chairOfGovernorsContact.fullName!,
             taskPath,
             "Confirm the chair of governors' details",
@@ -67,11 +38,11 @@ describe("Conversion tasks - Confirm the chair of governors' details", () => {
     });
 
     it("Should see add contact button if no headteacher or chair of governors contact exists", () => {
-        shouldSeeAddContactButtonIfNoContactExists(projectWithoutContactId, taskPath);
+        shouldSeeAddContactButtonIfNoContactExists(setup.projectWithoutContactId!, taskPath);
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, taskPath);
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(setup.otherUserProjectId, taskPath);
     });
 
     it("Check accessibility across pages", () => {

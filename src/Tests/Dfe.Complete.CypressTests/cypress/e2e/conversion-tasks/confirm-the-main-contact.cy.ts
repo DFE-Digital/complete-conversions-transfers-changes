@@ -1,56 +1,37 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
-import projectRemover from "cypress/api/projectRemover";
-import projectApi from "cypress/api/projectApi";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToConfirmContact,
     shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
 } from "cypress/support/reusableTests";
-import contactApi from "cypress/api/contactApi";
 import { ContactBuilder } from "cypress/api/contactBuilder";
+import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ContactCategory } from "cypress/api/apiDomain";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
-const schoolName = "Spen Valley High School";
 const projectMainContact = ContactBuilder.createContactRequest({
-    organisationName: schoolName,
+    fullName: "Main Contact Person",
+    organisationName: "Spen Valley High School",
 });
-const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.grylls,
-});
-let otherUserProjectId: string;
+
 const taskPath = "main_contact";
 
-describe("Conversion Tasks - Confirm the main contact", () => {
+describe("Conversion tasks - Confirm the main contact", () => {
+    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectMainContact.projectId = { value: projectId };
-            contactApi.createContact(projectMainContact);
-        });
-        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-            contactApi.createContact(ContactBuilder.createContactRequest({ projectId: { value: projectId } }));
-        });
+        ConversionTasksTestSetup.setupConfirmContactProjects(projectMainContact, ContactCategory.SchoolOrAcademy);
+        setup = ConversionTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
+        ConversionTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose contact and save the task", () => {
-        shouldBeAbleToConfirmContact(projectId, projectMainContact.fullName!, taskPath, "Confirm the main contact");
+        shouldBeAbleToConfirmContact(setup.projectId, projectMainContact.fullName!, taskPath, "Confirm the main contact");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, taskPath);
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(setup.otherUserProjectId, taskPath);
     });
 
     it("Check accessibility across pages", () => {
