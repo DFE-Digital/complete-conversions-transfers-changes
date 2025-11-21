@@ -12,7 +12,7 @@ const userNewDetails = {
     team: "East of England",
 };
 
-describe("Service support user - Local authorities: ", () => {
+describe("Service support - Users tests: ", () => {
     before(() => {
         userApi.updateUser({
             id: {
