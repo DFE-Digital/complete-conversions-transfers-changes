@@ -114,6 +114,42 @@ class TaskHelperConversions extends TaskHelper {
         }
     }
 
+    updateDirectionToTransfer(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApiConversions.updateDirectionToTransferTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+            case "inProgress":
+                return taskApiConversions.updateDirectionToTransferTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updateDirectionToTransferTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApiConversions.updateDirectionToTransferTask(defaultBody);
+        }
+    }
+
     updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

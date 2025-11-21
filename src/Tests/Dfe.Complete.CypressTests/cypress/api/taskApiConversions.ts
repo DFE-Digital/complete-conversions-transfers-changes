@@ -38,6 +38,15 @@ interface UpdateConfirmSchoolHasCompletedAllActionsTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateDirectionToTransferTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateLandQuestionnaireTaskRequest {
     taskDataId: TaskDataId;
     received?: boolean;
@@ -122,8 +131,14 @@ class TaskApiConversions extends TaskApi {
         return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
     }
 
-    public updateConfirmSchoolHasCompletedAllActionsTask(requestBody: UpdateConfirmSchoolHasCompletedAllActionsTaskRequest) {
+    public updateConfirmSchoolHasCompletedAllActionsTask(
+        requestBody: UpdateConfirmSchoolHasCompletedAllActionsTaskRequest,
+    ) {
         return this.taskDataBaseRequest<void>("UpdateConfirmSchoolHasCompletedAllActions", requestBody);
+    }
+
+    public updateDirectionToTransferTask(requestBody: UpdateDirectionToTransferTaskRequest) {
+        return this.taskDataBaseRequest<void>("DirectionToTransfer", requestBody);
     }
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
