@@ -36,7 +36,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ProcessConversionSupportGra
             if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
 
-
             TasksDataId = Project.TasksDataId?.Value;
 
             NotApplicable = ConversionTaskData.ConversionGrantNotApplicable;

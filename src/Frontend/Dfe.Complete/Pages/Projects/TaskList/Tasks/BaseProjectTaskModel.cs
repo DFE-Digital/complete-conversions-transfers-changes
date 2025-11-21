@@ -23,8 +23,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
 
     private readonly List<NoteTaskIdentifier> TransferTasksExclusiveNoteIdentifier = [    
        NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails,
-       NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy,
-       NoteTaskIdentifier.ConfirmTransferGrantFundingLevel,
+       NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy,       
        NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation,
        NoteTaskIdentifier.FormM,
        NoteTaskIdentifier.LandConsentLetter,
@@ -34,14 +33,14 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
        NoteTaskIdentifier.ClosureOrTransferDeclaration,
        NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange,
        NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions,       
-       NoteTaskIdentifier.ConfirmDateAcademyTransferred
+       NoteTaskIdentifier.ConfirmDateAcademyTransferred,
+       NoteTaskIdentifier.RedactAndSendDocuments
     ];
 
     private readonly List<NoteTaskIdentifier> ConversionTasksExclusiveNoteIdentifier = [    
        NoteTaskIdentifier.CheckAccuracyOfHigherNeeds,
        NoteTaskIdentifier.CompleteNotificationOfChange,
-       NoteTaskIdentifier.ProcessConversionSupportGrant,
-       NoteTaskIdentifier.ConfirmAndProcessTheSponsoredSupportGrant,
+       NoteTaskIdentifier.ProcessConversionSupportGrant,       
        NoteTaskIdentifier.AcademyDetails,
        NoteTaskIdentifier.ConfirmChairOfGovernorsDetails,
        NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy,
@@ -54,7 +53,8 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
        NoteTaskIdentifier.TenancyAtWill,
        NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions,       
        NoteTaskIdentifier.ShareInformationAboutOpening,
-       NoteTaskIdentifier.ConfirmAcademyOpenedDate
+       NoteTaskIdentifier.ConfirmAcademyOpenedDate,
+       NoteTaskIdentifier.RedactAndSend
     ];
 
     public bool CanEditNote(UserId noteUserId)

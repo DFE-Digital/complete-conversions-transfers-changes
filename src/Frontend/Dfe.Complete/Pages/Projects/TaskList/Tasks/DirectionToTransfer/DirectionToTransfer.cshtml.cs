@@ -37,7 +37,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DirectionToTransfer
 
             if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
-
             
             TasksDataId = Project.TasksDataId?.Value;
             

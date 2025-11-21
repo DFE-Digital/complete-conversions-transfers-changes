@@ -25,7 +25,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolHasCompletedAl
 
             if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
-
             
             TasksDataId = Project.TasksDataId?.Value;
 
