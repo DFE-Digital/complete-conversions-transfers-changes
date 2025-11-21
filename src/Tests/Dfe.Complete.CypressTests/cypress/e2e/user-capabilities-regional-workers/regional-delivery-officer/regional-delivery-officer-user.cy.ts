@@ -17,14 +17,14 @@ import projectApi from "cypress/api/projectApi";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.regionalWorker.ark },
-    significantDate: "2027-04-01",
+    urn: urnPool.regionalWorker.ark,
+    provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
 describe("Capabilities and permissions of the regional delivery officer user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectApi.createAndUpdateConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(cypressUser);

@@ -16,24 +16,84 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
+
+## [1.30.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-19.1160) - 2025-11-19
+
 ### Added
-- Added 'Confirm the incoming trust has completed all actions' task
-- Added `Request a new URN and record for the academy` task for transfer projects.
-- Added `Trust modification order task` task for conversion projects.
-- Added `Delete project` functionality.
-- Added `Share the information about the opening' task for conversion project.
-- Added `Subleases` task
-- Added `Tenancy at will` task for conversion project.
+- Added `Process conversion support grant` task for conversion project.
+- Added `Sponsored support grant` task for conversion and transfer project.
+- Implemented a configurable maintenance banner system that automatically displays scheduled maintenance notifications to users
+
+### Fixed
+- Added Debounce to UserAutoComplete
+- Updated error wording on Confirm the academy's risk protection arrangements for conversion task
+- Hide delete project end point from api swagger in production environment
+- Updated `Check and confirm academy and trust financial information` API to use enums
+- Added internal contacts API endpoints
+- Removed internal contacts update access for data consumers
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-14.1133...production-2025-11-19.1160) for everything in the release
+
+## [1.29.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-14.1133) - 2025-11-13
+
+### Added
+- Added `Confirm the school has completed all actions` task for conversion project.
+
+### Fixed
+- Error summary showing in Add/Edit Local Authority and Add/Edit User pages
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-13.1119...production-2025-11-14.1133) for everything in the release
+
+
+---
+
+## [1.28.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-13.1119) - 2025-11-13
+
+### Added
+- Added MAT Transfer creation end point for prepare to complete 
+- Added `Direction To Transfer` task for conversion projects.
+- Added API External Contacts endpoints
+
+### Fixed
+- Create project endpoints no longer throw exception when project group already exists for same UKPRN
+- Task - redact and send has incorrect task_identifier
+- Permissions for external contacts pages
+- Fixed All project in progress form a MAT showing all project states
+
+### Changed
+- Updated `Confirm the data the academy opened` task
+
+### Removed
+- create conversion project end point deleted due to in-app project creations being a workaround 
+- create MAT conversion project end point deleted due to in-app project creations being a workaround 
+- create transfer project end point deleted due to in-app project creations being a workaround 
+- create MAT transfer project end point deleted due to in-app project creations being a workaround 
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...production-2025-11-13.1119) for everything in the release
+
+---
+
+## [1.27.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-06.1066) - 2025-11-06
+
+### Added
 - Added project group creation end point
 - Added MAT Conversion creation end point for prepare to complete 
 - Added `Check and clear Form M` task for transfer projects.
+- Added `Closure or transfer declraration` task for transfer projects.
+- Added `125 year lease` task for conversion project.
+- Added `Confirm the incoming trust has completed all actions` task for transfer projects.
 
-### Deprecated
-- create conversion project end point not in use due to in-app project creations being a workaround 
-- create MAT conversion project end point not in use due to in-app project creations being a workaround 
-- create transfer project end point not in use due to in-app project creations being a workaround 
+### Changed
+- Remove buttons and links to external contacts for users without access
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
+### Fixed
+- Fixed assign project return url issue.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...production-2025-11-06.1066) for everything in the release
 
 ---
 
@@ -47,13 +107,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
-- Added `125 year lease` task for conversion project.
-
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.
-
-### Fixed
 
 ### Security
 - Secure cookies should contain the HTTPOnly attribute

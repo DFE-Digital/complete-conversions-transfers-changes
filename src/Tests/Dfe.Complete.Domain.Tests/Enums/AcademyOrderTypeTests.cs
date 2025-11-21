@@ -7,7 +7,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
     {
         [Theory]
         [InlineData(AcademyOrderType.AcademyOrder, "AO (Academy order)")]
-        [InlineData(AcademyOrderType.DirectiveAcademyOrder, "DAO (Directive academy order)")] 
+        [InlineData(AcademyOrderType.DirectiveAcademyOrder, "DAO (Directive academy order)")]
         public void TaskIdentifier_ShouldHaveCorrectDescription(AcademyOrderType academyOrderType, string expectedDescription)
         {
             // Act

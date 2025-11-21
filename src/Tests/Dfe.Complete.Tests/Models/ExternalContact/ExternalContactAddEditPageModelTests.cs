@@ -6,7 +6,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.LocalAuthorities.Models;
     using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
-    using Dfe.Complete.Application.Projects.Models;    
+    using Dfe.Complete.Application.Projects.Models;
     using Dfe.Complete.Application.Services.AcademiesApi;
     using Dfe.Complete.Application.Services.TrustCache;
     using Dfe.Complete.Domain.Enums;
@@ -15,7 +15,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
-    using Dfe.Complete.Utils;    
+    using Dfe.Complete.Utils;
     using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
     using Microsoft.Extensions.Logging;
@@ -36,13 +36,13 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
                 return await base.GetOrganisationNameAsync(contactType);
             }
         }
-        
-        private readonly Mock<ITrustCache> trustCacheService;        
+
+        private readonly Mock<ITrustCache> trustCacheService;
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
         private readonly Mock<ISender> mockSender;
 
         public ExternalContactAddEditPageModelTests()
-        {  
+        {
             trustCacheService = fixture.Freeze<Mock<ITrustCache>>();
             mockSender = fixture.Freeze<Mock<ISender>>();
         }
@@ -60,13 +60,13 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
         public async Task CanCallGetOrganisationName(ExternalContactType contactType, string input, string expectedResult)
         {
             // Arrange
-            
+
             ProjectId projectId = fixture.Create<ProjectId>();
-            ContactId contactId = fixture.Create<ContactId>(); 
+            ContactId contactId = fixture.Create<ContactId>();
             string urn = "123";
             string localAuthorityCode = fixture.Create<string>();
 
-            var mockTrustDto = fixture.Build<TrustDto>().With(x => x.Name, input).Create();   
+            var mockTrustDto = fixture.Build<TrustDto>().With(x => x.Name, input).Create();
             var mockEstablishmentDto = fixture.Build<EstablishmentDto>()
                 .With(x => x.Name, input)
                 .With(x => x.Urn, urn)
@@ -104,7 +104,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             mockSender.Setup(s => s.Send(laQuery, It.IsAny<CancellationToken>()))
              .ReturnsAsync(Result<LocalAuthorityDto?>.Success(mockLocalAuthorityDto));
 
-            trustCacheService.Setup(x => x.GetTrustAsync(It.IsAny<Ukprn>())).ReturnsAsync(mockTrustDto);           
+            trustCacheService.Setup(x => x.GetTrustAsync(It.IsAny<Ukprn>())).ReturnsAsync(mockTrustDto);
 
             // Act
             var result = await testClass.PublicGetOrganisationName(contactType);

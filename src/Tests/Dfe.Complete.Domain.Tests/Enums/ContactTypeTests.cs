@@ -1,5 +1,5 @@
 ﻿using Dfe.Complete.Domain.Enums;
-using System.ComponentModel; 
+using System.ComponentModel;
 
 namespace Dfe.Complete.Domain.Tests.Enums
 {

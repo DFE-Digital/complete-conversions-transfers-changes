@@ -21,7 +21,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
         public bool? Cleared { get; set; }
 
         [BindProperty]
-        public bool? Signed { get; set; } 
+        public bool? Signed { get; set; }
 
         [BindProperty]
         public bool? Saved { get; set; }
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
         [BindProperty]
         public bool? SaveSigned { get; set; }
         [BindProperty]
-        public bool? ReceiveSigned { get; set; } 
+        public bool? ReceiveSigned { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }

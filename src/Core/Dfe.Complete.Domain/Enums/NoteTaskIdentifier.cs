@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using Dfe.Complete.Utils.Attributes;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Domain.Enums;
 
@@ -66,12 +66,12 @@ public enum NoteTaskIdentifier
     ReceiveGrantPaymentCertificate = 15,
 
     [Description("confirm_date_academy_opened")]
-    [DisplayDescription("Confirm the date the academy opened")]
+    [DisplayDescription("Confirm the academy open date")]
     ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]
     [DisplayDescription("Church supplemental agreement")]
-    ChurchSupplementalAgreement = 17,    
+    ChurchSupplementalAgreement = 17,
 
     [Description("commercial_transfer_agreement")]
     [DisplayDescription("Commercial transfer agreement")]
@@ -80,7 +80,7 @@ public enum NoteTaskIdentifier
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
     MainContact = 19,
-    
+
     [Description("master_funding_agreement")]
     [DisplayDescription("Master funding agreement")]
     MasterFundingAgreement = 20,
@@ -108,11 +108,11 @@ public enum NoteTaskIdentifier
     [Description("conversion_grant")]
     [DisplayDescription("Process conversion support grant")]
     ProcessConversionSupportGrant = 26,
-    
+
     [Description("sponsored_support_grant")]
     [DisplayDescription("Confirm and process the sponsored support grant")]
     ConfirmAndProcessTheSponsoredSupportGrant = 27,
-    
+
     [Description("confirm_headteacher_contact")]
     [DisplayDescription("Confirm the headteacher's details")]
     ConfirmHeadTeacherDetails = 28,
@@ -195,5 +195,9 @@ public enum NoteTaskIdentifier
 
     [Description("academy_details")]
     [DisplayDescription("Confirm the academy name")]
-    AcademyDetails = 48
+    AcademyDetails = 48,
+
+    [Description("redact_and_send")]
+    [DisplayDescription("Redact and send documents")]
+    RedactAndSend = 49,
 }

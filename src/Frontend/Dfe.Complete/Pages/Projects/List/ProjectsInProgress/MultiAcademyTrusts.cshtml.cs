@@ -16,14 +16,15 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
         public async Task<IActionResult> OnGet()
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-            var listProjectQuery = new ListAllMaTsQuery(ProjectState.Active) { 
-                Page = PageNumber - 1, 
+            var listProjectQuery = new ListAllMaTsQuery(ProjectState.Active)
+            {
+                Page = PageNumber - 1,
                 Count = PageSize
             };
 
             var response = await sender.Send(listProjectQuery);
             MATS = response.Value?.ToList() ?? [];
-            
+
             Pagination = new PaginationModel("/projects/all/in-progress/form-a-multi-academy-trust", PageNumber, response.ItemCount, PageSize);
 
             var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
@@ -32,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 
         public async Task<IActionResult> OnGetMovePage()
         {
-           return await OnGet();
+            return await OnGet();
         }
     }
 }

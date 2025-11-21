@@ -32,17 +32,14 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
         }
         public async Task<IActionResult> OnPost()
         {
-            if(OpenedDate?.ToDateTime(new TimeOnly()) > DateTime.Today)
-            {
-                ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.DateInPast, "Opened academy"));
-            }
             if (!ModelState.IsValid)
             {
                 await base.OnGetAsync();
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            await sender.Send(new UpdateConfirmAcademyOpenedDateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, OpenedDate));
+
+            await Sender.Send(new UpdateConfirmAcademyOpenedDateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, OpenedDate));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

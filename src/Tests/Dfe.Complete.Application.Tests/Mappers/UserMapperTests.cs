@@ -1,9 +1,9 @@
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
+using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using Dfe.Complete.Application.Mappers;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {
@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public async Task Map_UserToUserDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.User user)
+        public void Map_UserToUserDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.User user)
         {
             // Act
             var userDto = _mapper.Map<UserDto>(user);
@@ -39,6 +39,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
             Assert.Equal(user.FirstName, userDto.FirstName);
             Assert.Equal(user.LastName, userDto.LastName);
             Assert.Equal(user.ActiveDirectoryUserId, userDto.ActiveDirectoryUserId);
+            Assert.Equal(user.EntraUserObjectId, userDto.EntraUserObjectId);
             Assert.Equal(user.AssignToProject, userDto.AssignToProject);
             Assert.Equal(user.ManageUserAccounts, userDto.ManageUserAccounts);
             Assert.Equal(user.ActiveDirectoryUserGroupIds, userDto.ActiveDirectoryUserGroupIds);

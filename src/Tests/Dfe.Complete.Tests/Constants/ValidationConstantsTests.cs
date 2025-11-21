@@ -38,13 +38,7 @@ namespace Dfe.Complete.Tests.Constants
         public void LinkMaxLength_ShouldReturnExpectedValue()
         {
             Assert.Equal(500, ValidationConstants.LinkMaxLength);
-        }
-
-        [Fact]
-        public void CannotBeBlank_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Can't be blank", ValidationConstants.CannotBeBlank);
-        }
+        }        
 
         [Fact]
         public void NotRecognisedUKPostcode_ShouldReturnExpectedMessage()
@@ -122,7 +116,7 @@ namespace Dfe.Complete.Tests.Constants
         public void ValidDate_ShouldReturnExpectedMessage()
         {
             Assert.Equal("Enter a valid date, like 1 1 2025", ValidationConstants.ValidDate);
-        } 
+        }
         [Fact]
         public void ChooseAtLeastOneReason_ShouldReturnExpectedMessage()
         {
@@ -145,7 +139,7 @@ namespace Dfe.Complete.Tests.Constants
         {
             Assert.Equal(
                 "Enter a valid date the decision was made, like 27 3 2021", ValidationConstants.DecisionDateRequired);
-        }        
+        }
 
         [Fact]
         public void TransferDateInPast_ShouldReturnExpectedMessage()
@@ -199,7 +193,25 @@ namespace Dfe.Complete.Tests.Constants
         {
             var dateField = "Opened academy date";
             Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
-        } 
-        
+        }      
+
+        [Fact]
+        public void LocalAuthorityCodeRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter a code", ValidationConstants.LocalAuthorityCodeRequired);
+        }
+
+        [Fact]
+        public void LocalAuthorityAddressLine1Required_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter 1st line of address", ValidationConstants.LocalAuthorityAddressLine1Required);
+        }
+
+        [Fact]
+        public void LocalAuthorityPostcodeRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter a postcode", ValidationConstants.LocalAuthorityPostcodeRequired);
+        }
+
     }
 }

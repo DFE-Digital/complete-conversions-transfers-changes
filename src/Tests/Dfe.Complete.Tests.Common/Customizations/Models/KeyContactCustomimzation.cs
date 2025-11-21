@@ -1,13 +1,13 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects; 
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models;
 
 public class KeyContactCustomimzation : ICustomization
 {
     public KeyContactId? Id { get; set; }
-    public ProjectId? ProjectId { get; set; } 
+    public ProjectId? ProjectId { get; set; }
     public ContactId? ChairOfGovernorsId { get; set; }
     public ContactId? IncomingTrustCeoId { get; set; }
     public ContactId? OutgoingTrustCeoId { get; set; }
@@ -25,7 +25,7 @@ public class KeyContactCustomimzation : ICustomization
                 .With(c => c.OutgoingTrustCeoId, OutgoingTrustCeoId ?? fixture.Create<ContactId>())
                 .With(c => c.HeadteacherId, HeadteacherId ?? fixture.Create<ContactId>())
                 .With(c => c.CreatedAt, DateTime.UtcNow.AddDays(-10))
-                .With(c => c.UpdatedAt, DateTime.UtcNow) 
+                .With(c => c.UpdatedAt, DateTime.UtcNow)
                 .With(c => c.ProjectId, ProjectId)
         );
     }

@@ -1,5 +1,5 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
-using Dfe.Complete.Constants; 
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
@@ -48,7 +48,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
             NotApplicable = ConversionTaskData.HandoverNotApplicable;
         }
         return Page();
-    } 
+    }
 
     public async Task<IActionResult> OnPost()
     {

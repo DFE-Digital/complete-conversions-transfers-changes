@@ -3,7 +3,7 @@
 namespace Dfe.Complete.Models.ProjectCompletion;
 
 public class TransferCompletionModel : CompletionModel
-{   
+{
     private bool AuthorityToProceedTaskCompleted => ConfirmThisTransferHasAuthorityToProceed == TaskListStatus.Completed;
     private bool ExpenditureCertificateTaskCompleted => DeclarationOfExpenditureCertificate == TaskListStatus.Completed || DeclarationOfExpenditureCertificate == TaskListStatus.NotApplicable;
     private bool AcademyTransferDateTaskCompleted => ConfirmDateAcademyTransferred == TaskListStatus.Completed;
@@ -30,5 +30,5 @@ public class TransferCompletionModel : CompletionModel
 
         return validationErrors;
     }
-   
+
 }

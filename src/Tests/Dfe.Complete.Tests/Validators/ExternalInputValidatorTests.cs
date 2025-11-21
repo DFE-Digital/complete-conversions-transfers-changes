@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Constants;
-using Dfe.Complete.Models.ExternalContact;
+﻿using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Validators;
 using FluentValidation.TestHelper;
 
@@ -33,10 +32,10 @@ public class ExternalInputValidatorTests
     [Fact]
     public void Should_Have_Errors_When_FullName_Is_Empty()
     {
-       
+
         // Arrange       
         var model = new ExternalContactInputModel
-        {  
+        {
             Email = "TestUser@test.com"
         };
 
@@ -50,8 +49,8 @@ public class ExternalInputValidatorTests
             () => Assert.False(result.IsValid),
             () => Assert.Contains(result.Errors, x => x.PropertyName == "FullName")
         );
-    }   
-    
+    }
+
     [Theory]
     [InlineData("")]
     [InlineData(null)]
@@ -76,7 +75,7 @@ public class ExternalInputValidatorTests
             () => Assert.Contains(result.Errors, x => x.PropertyName == "Email")
         );
 
-    }    
+    }
 
     [Theory]
     [InlineData("")]
@@ -94,17 +93,17 @@ public class ExternalInputValidatorTests
     {
         // Arrange       
         var model = new ExternalContactInputModel
-        {   
-            Phone =  phoneNumber
+        {
+            Phone = phoneNumber
         };
 
         var validator = new ExternalContactInputValidator<ExternalContactInputModel>();
 
         // Act
         var result = validator.TestValidate(model);
-        
+
         // Assert
-        Assert.Multiple(            
+        Assert.Multiple(
             () => Assert.DoesNotContain(result.Errors, x => x.PropertyName == "Phone")
         );
     }
@@ -132,5 +131,5 @@ public class ExternalInputValidatorTests
             () => Assert.False(result.IsValid),
             () => Assert.Contains(result.Errors, x => x.PropertyName == "Phone")
         );
-    }    
+    }
 }

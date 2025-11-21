@@ -27,7 +27,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask
                 return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
-            AcademyName = ConversionTaskData.AcademyDetailsName;            
+            AcademyName = ConversionTaskData.AcademyDetailsName;
 
             return Page();
         }

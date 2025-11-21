@@ -1,0 +1,16 @@
+@using Dfe.Complete.Services
+@inject IMaintenanceBannerService MaintenanceBannerService
+
+@if (MaintenanceBannerService.ShouldShowBanner())
+{
+    <div class="dfe-width-container govuk-main-wrapper">
+        <govuk-notification-banner class="govuk-notification-banner govuk-!-margin-0">
+            <govuk-notification-banner-title>
+                Important
+            </govuk-notification-banner-title>
+            <h3 class="govuk-notification-banner__heading" id="maintenance-notification">
+                @MaintenanceBannerService.GetBannerMessage()
+            </h3>
+        </govuk-notification-banner>
+    </div>
+}

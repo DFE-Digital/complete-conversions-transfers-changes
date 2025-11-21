@@ -7,42 +7,42 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Dfe.Complete.TagHelpers
 {
     [HtmlTargetElement("govuk-yesno-input", TagStructure = TagStructure.WithoutEndTag)]
-	public class YesNoInputTagHelper : InputTagHelperBase
-	{
-		[HtmlAttributeName("leading-paragraph")]
-		public string LeadingParagraph { get; set; }
-		
-		[HtmlAttributeName("heading-label")]
-		public bool HeadingLabel { get; set; }
+    public class YesNoInputTagHelper : InputTagHelperBase
+    {
+        [HtmlAttributeName("leading-paragraph")]
+        public string LeadingParagraph { get; set; }
 
-		private readonly IErrorService _errorService;
+        [HtmlAttributeName("heading-label")]
+        public bool HeadingLabel { get; set; }
 
-		public YesNoInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper) 
-		{
+        private readonly IErrorService _errorService;
+
+        public YesNoInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
+        {
             _errorService = errorService;
         }
 
-		protected override async Task<IHtmlContent> RenderContentAsync()
-		{
+        protected override async Task<IHtmlContent> RenderContentAsync()
+        {
             var value = (bool?)For.Model;
             var model = new YesNoInputViewModel
-			{
-				Id = Id,
-				Name = Name,
-				Label = Label,
-				Value = value,
-				HeadingLabel = HeadingLabel,
-				LeadingParagraph = LeadingParagraph,
+            {
+                Id = Id,
+                Name = Name,
+                Label = Label,
+                Value = value,
+                HeadingLabel = HeadingLabel,
+                LeadingParagraph = LeadingParagraph,
             };
 
             var error = _errorService.GetError(Name);
 
-			if (error != null)
-			{
-				model.ErrorMessage = error.Message;
-			}
+            if (error != null)
+            {
+                model.ErrorMessage = error.Message;
+            }
 
             return await _htmlHelper.PartialAsync("_YesNoInput", model);
-		}
-	}
+        }
+    }
 }

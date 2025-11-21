@@ -1,7 +1,5 @@
-using System.Collections.ObjectModel;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
@@ -9,10 +7,12 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using NSubstitute;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
+using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -100,9 +100,9 @@ public class ListAllMATsQueryHandlerTests
                 return p;
             })
             .ToList();
-    
+
         var dbProjects = matProjects.AsQueryable().BuildMock();
-    
+
         listAllProjectsQueryService
             .ListAllProjects(new ProjectFilters(ProjectState.Active, null, IsFormAMat: true))
             .Returns(dbProjects);
@@ -112,14 +112,14 @@ public class ListAllMATsQueryHandlerTests
             Urn = p.Project.Urn.Value.ToString(),
             Name = $"School {p.Project.Urn.Value}"
         }).ToList();
-    
+
         establishmentsClient
             .GetByUrns2Async(Arg.Any<List<int>>(), Arg.Any<CancellationToken>())
             .Returns(new ObservableCollection<EstablishmentDto>(establishments));
 
-    
+
         var query = new ListAllMaTsQuery(ProjectState.Active) { Count = 10, Page = 0 };
-    
+
         // Act
         var result = await handler.Handle(query, default);
         var expectedModel = result.Value[0];
@@ -131,7 +131,7 @@ public class ListAllMATsQueryHandlerTests
         Assert.Equal(trustName, expectedModel.TrustName);
         Assert.Equal(5, expectedModel.ProjectModels.Count());
     }
-    
+
     [Theory]
     [CustomAutoData]
     public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown(
@@ -140,18 +140,18 @@ public class ListAllMATsQueryHandlerTests
     {
         // Arrange
         var query = new ListAllMaTsQuery(ProjectState.Active) { Count = 10, Page = 0 };
-    
+
         listAllProjectsQueryService
             .ListAllProjects(new ProjectFilters(ProjectState.Active, null, IsFormAMat: true))
             .Throws(new Exception("Exception"));
-    
+
         // Act
         var result = await handler.Handle(query, default);
-    
+
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal("Exception", result.Error);
     }
-    
-    
+
+
 }

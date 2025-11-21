@@ -29,18 +29,15 @@ internal class CreateProjectGroupCommandHandler(
    ILogger<CreateProjectGroupCommandHandler> logger
 ) : IRequestHandler<CreateProjectGroupCommand, Result<ProjectGroupId>>
 {
-   public async Task<Result<ProjectGroupId>> Handle(CreateProjectGroupCommand request, CancellationToken cancellationToken)
-   {
+    public async Task<Result<ProjectGroupId>> Handle(CreateProjectGroupCommand request, CancellationToken cancellationToken)
+    {
         try
         {
-            if(await new ProjectGroupIdentifierQuery(request.GroupReferenceNumber).Apply(projectGroupReadRepository.ProjectGroups).FirstOrDefaultAsync(cancellationToken) is not null)
+            if (await new ProjectGroupIdentifierQuery(request.GroupReferenceNumber).Apply(projectGroupReadRepository.ProjectGroups).FirstOrDefaultAsync(cancellationToken) is not null)
                 throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithIdentifier, request.GroupReferenceNumber));
 
-            if(await new ProjectGroupUkprnQuery(request.Ukprn).Apply(projectGroupReadRepository.ProjectGroups).FirstOrDefaultAsync(cancellationToken) is not null)
-                throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithUkprn, request.Ukprn));
-
             var trustResponse = await sender.Send(new GetTrustByUkprnRequest(request.Ukprn.ToString()), cancellationToken);
-                
+
             if (!trustResponse.IsSuccess || trustResponse.Value == null)
                 throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, request.Ukprn.ToString()));
 
@@ -63,5 +60,5 @@ internal class CreateProjectGroupCommandHandler(
             logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(CreateProjectGroupCommandHandler), request);
             return Result<ProjectGroupId>.Failure($"Could not create project group: {ex.Message}");
         }
-   }
+    }
 }

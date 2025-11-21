@@ -13,25 +13,25 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.FormM
     {
         [BindProperty]
         public Guid? TasksDataId { get; set; }
-        
+
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
-        
+
         [BindProperty(Name = "received")]
         public bool? Received { get; set; }
-        
+
         [BindProperty(Name = "receivedTitlePlans")]
         public bool? ReceivedTitlePlans { get; set; }
-        
+
         [BindProperty(Name = "cleared")]
-        public bool? Cleared { get; set; } 
-        
+        public bool? Cleared { get; set; }
+
         [BindProperty(Name = "signed")]
         public bool? Signed { get; set; }
-        
+
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
-        
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
@@ -47,13 +47,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.FormM
             Cleared = TransferTaskData.FormMCleared;
             Signed = TransferTaskData.FormMSigned;
             Saved = TransferTaskData.FormMSaved;
-            
+
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
-        {            
-            await Sender.Send(new UpdateFormMTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Received, ReceivedTitlePlans, Cleared, Signed, Saved ));
+        {
+            await Sender.Send(new UpdateFormMTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Received, ReceivedTitlePlans, Cleared, Signed, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

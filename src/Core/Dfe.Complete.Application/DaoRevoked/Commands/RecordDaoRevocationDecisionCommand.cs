@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
     public class RecordDaoRevocationDecisionCommandHandler(
         IProjectReadRepository projectReadRepository,
         IProjectWriteRepository projectWriteRepository,
-        INoteWriteRepository noteWriteRepository,  
+        INoteWriteRepository noteWriteRepository,
         IDaoRevocationWriteRepository daoRevocationWriteRepository,
         ILogger<RecordDaoRevocationDecisionCommandHandler> logger)
         : IRequestHandler<RecordDaoRevocationDecisionCommand, Result<bool>>

@@ -3,7 +3,7 @@
 namespace Dfe.Complete.TagHelpers
 {
     public record ContactRadioListModel(
-        IEnumerable<ContactDto> Contacts, 
+        IEnumerable<ContactDto> Contacts,
         Guid? SelectedContactId,
         string PropertyName)
     {

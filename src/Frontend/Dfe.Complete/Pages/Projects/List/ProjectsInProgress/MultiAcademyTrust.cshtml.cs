@@ -18,7 +18,9 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
             var listProjectQuery = new ListEstablishmentsInMatQuery(Reference);
 
             var response = await sender.Send(listProjectQuery);
-            MAT = response.Value;
+
+            if(response != null && response.Value != null)
+                MAT = response.Value;
         }
 
         public async Task OnGetMovePage()

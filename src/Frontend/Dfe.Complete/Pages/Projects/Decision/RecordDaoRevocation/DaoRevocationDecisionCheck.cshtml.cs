@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
     public class DaoRevocationCheckModel(ISender sender, ILogger<AddDaoRevocationMinisterNameModel> logger,
         ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
     {
-        [BindProperty] 
+        [BindProperty]
         public RecordDaoRevocationDecisionCommand? Decision { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
@@ -25,7 +25,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
         }
 
         public async Task<IActionResult> OnPostAsync()
-        {  
+        {
             var decision = await GetCachedDecisionAsync();
             decision.UserId = User.GetUserId();
             await sender.Send(decision);

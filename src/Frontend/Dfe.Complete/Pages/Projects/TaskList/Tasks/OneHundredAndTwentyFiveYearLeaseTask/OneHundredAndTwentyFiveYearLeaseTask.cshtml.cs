@@ -13,16 +13,16 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
     {
         [BindProperty]
         public Guid? TasksDataId { get; set; }
-        
+
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
-        
+
         [BindProperty(Name = "email")]
-        public bool? Email { get; set; } 
-        
+        public bool? Email { get; set; }
+
         [BindProperty(Name = "receive")]
         public bool? Receive { get; set; }
-        
+
         [BindProperty(Name = "save")]
         public bool? Save { get; set; }
 
@@ -40,13 +40,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
             Email = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseEmail;
             Receive = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseReceive;
             Save = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease;
-            
+
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
-        {            
-            await Sender.Send(new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Email, Receive, Save ));
+        {
+            await Sender.Send(new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Email, Receive, Save));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

@@ -33,32 +33,12 @@
       "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
     },
     {
-      "Route": "/Projects/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/Conversion/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/MatConversion/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/Transfer/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
-      "Route": "/Projects/MatTransfer/CreateNewProject",
-      "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
-    },
-    {
       "Route": "/Demonstration/TagHelper",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Diagnostics/Diagnostics",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/AddProjectNote",
@@ -66,15 +46,15 @@
     },
     {
       "Route": "/Projects/Notes/DeleteProjectNote",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/EditProjectNote",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Notes/ViewProjectNotes",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser "
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Projects/Yours/InProgress/YourProjectsInProgress",
@@ -93,8 +73,12 @@
       "ExpectedSecurity": "AllowAnonymous"
     },
     {
+      "Route": "/Public/SignIn",
+      "ExpectedSecurity": "AllowAnonymous"
+    },
+    {
       "Route": "/Search/SearchProjects",
-      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
+      "ExpectedSecurity": "Authorize"
     },
     {
       "Route": "/Account/AccessDenied",

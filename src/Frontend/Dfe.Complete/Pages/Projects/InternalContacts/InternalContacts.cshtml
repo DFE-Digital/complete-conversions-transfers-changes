@@ -11,6 +11,7 @@
   Layout = "_ProjectLayout";
   ViewData["Title"] = Model.Establishment.Name;
   var canEditAddedByUser = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);
+  var canManageInternalContacts = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanManageInternalContacts);
 }
 
 <div class="govuk-grid-row">
@@ -29,7 +30,10 @@
           {
             <govuk-summary-list-row-action href="mailto:@Model.UserAssignedTo.Email" visually-hidden-text="Assigned to user">Email</govuk-summary-list-row-action>
           }
-          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedUser)?returnUrl=internal-contacts" visually-hidden-text="Assigned to user">Change</govuk-summary-list-row-action>
+          @if (canManageInternalContacts.Succeeded)
+          {
+            <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedUser)?returnUrl=internal-contacts" visually-hidden-text="Assigned to user">Change</govuk-summary-list-row-action>
+          }
         </govuk-summary-list-row-actions>
       </govuk-summary-list-row>
 
@@ -41,7 +45,10 @@
           @(ProjectTeamPresentationMapper.Map(Model.TeamAssignedTo) ?? "Not yet assigned")
         </govuk-summary-list-row-value>
         <govuk-summary-list-row-actions>
-          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedTeam)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+          @if (canManageInternalContacts.Succeeded)
+          {
+            <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedTeam)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+          }
         </govuk-summary-list-row-actions>
       </govuk-summary-list-row>
 

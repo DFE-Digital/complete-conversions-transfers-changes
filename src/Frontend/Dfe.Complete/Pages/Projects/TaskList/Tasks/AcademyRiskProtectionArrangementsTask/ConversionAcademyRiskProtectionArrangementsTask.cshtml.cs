@@ -14,7 +14,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements)
     {
         [BindProperty]
-        [Required(ErrorMessage = ValidationConstants.NotInTheList)]
+        [Required(ErrorMessage = ValidationConstants.RiskProtectionArrangementOptionRequired)]
         public RiskProtectionArrangementOption? RpaOption { get; set; }
         [BindProperty]
         public string? RpaReason { get; set; }

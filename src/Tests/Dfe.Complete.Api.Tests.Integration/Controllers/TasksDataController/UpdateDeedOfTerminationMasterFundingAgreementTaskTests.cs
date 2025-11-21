@@ -35,9 +35,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateDeedOfTerminationMasterFundingAgreementTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },                
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Received = true,
-                Cleared = true,                
+                Cleared = true,
                 Saved = true,
                 Signed = true,
                 ContactFinancialReportingTeam = true,
@@ -58,7 +58,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedOfTerminationForTheMasterFundingAgreementSavedAcademyAndOutgoingTrustSharepoint);
             Assert.True(existingTaskData.DeedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam);
             Assert.True(existingTaskData.DeedOfTerminationForTheMasterFundingAgreementSignedSecretaryState);
-            Assert.True(existingTaskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder);            
+            Assert.True(existingTaskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder);
         }
 
         [Theory]

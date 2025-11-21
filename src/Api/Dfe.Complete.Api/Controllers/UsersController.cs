@@ -1,13 +1,13 @@
 using Asp.Versioning;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Users.Commands;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Users.Commands;
-using Dfe.Complete.Application.Common.Models;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Dfe.Complete.Api.Controllers
 {

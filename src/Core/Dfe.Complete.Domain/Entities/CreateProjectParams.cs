@@ -1,9 +1,9 @@
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public record CreateHandoverConversionProjectParams(
+public record CreateConversionProjectParams(
     ProjectId Id,
     Urn Urn,
     Guid TasksDataId,
@@ -17,7 +17,7 @@ public record CreateHandoverConversionProjectParams(
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId);
 
-public record CreateHandoverConversionMatProjectParams(
+public record CreateConversionMatProjectParams(
     ProjectId Id,
     Urn Urn,
     Guid TasksDataId,
@@ -31,7 +31,7 @@ public record CreateHandoverConversionMatProjectParams(
     string NewTrustReferenceNumber,
     string NewTrustName);
 
-public record CreateHandoverTransferProjectParams(
+public record CreateTransferProjectParams(
     ProjectId Id,
     Urn Urn,
     Guid TasksDataId,
@@ -44,3 +44,17 @@ public record CreateHandoverTransferProjectParams(
     ProjectGroupId? GroupId,
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId);
+
+public record CreateTransferMatProjectParams(
+    ProjectId Id,
+    Urn Urn,
+    Guid TasksDataId,
+    DateOnly SignificantDate,
+    Ukprn OutgoingTrustUkprn,
+    Region? Region,
+    DateOnly AdvisoryBoardDate,
+    string? AdvisoryBoardConditions,
+    UserId RegionalDeliveryOfficerId,
+    Guid LocalAuthorityId,
+    string NewTrustReferenceNumber,
+    string NewTrustName);

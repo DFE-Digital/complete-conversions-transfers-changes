@@ -163,6 +163,139 @@
         }
       }
     },
+    "/v1/Contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Gets a external contact",
+        "operationId": "Contacts_GetExternalContact",
+        "parameters": [
+          {
+            "name": "ContactId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Updates external contact.",
+        "operationId": "Contacts_UpdateExternaContact",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExternalContactCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External contact updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "External contact not found."
+          }
+        }
+      }
+    },
+    "/v1/Contacts/CreateExternalContact": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Creates a new external contact for a project.",
+        "operationId": "Contacts_CreateExternalContact",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateExternalContactCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Contacts/DeleteExternalContact": {
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Deletes external contact.",
+        "operationId": "Contacts_DeleteExternalContact",
+        "requestBody": {
+          "x-name": "contactId",
+          "description": "contact Id.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External contact deleted successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -394,123 +527,12 @@
         }
       }
     },
-    "/v1/Projects/projects/conversions": {
+    "/v1/Projects/Conversions": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/projects/conversions/form-a-mat": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new MAT conversion project (handover version).",
-        "operationId": "Projects_CreateHandoverConversionMatProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverConversionMatProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/projects/transfers": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new transfer project (handover version).",
-        "operationId": "Projects_CreateHandoverTransferProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHandoverTransferProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/Create/Conversion": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new conversion project",
+        "summary": "Creates a new conversion project.",
         "operationId": "Projects_CreateConversionProject",
         "requestBody": {
           "x-name": "request",
@@ -539,16 +561,52 @@
           "400": {
             "description": "Invalid request data."
           }
-        },
-        "deprecated": true
+        }
       }
     },
-    "/v1/Projects/Create/Transfer": {
+    "/v1/Projects/MatConversions": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new Transfer project",
+        "summary": "Creates a new MAT conversion project.",
+        "operationId": "Projects_CreateConversionMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConversionMatProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Transfers": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new transfer project.",
         "operationId": "Projects_CreateTransferProject",
         "requestBody": {
           "x-name": "request",
@@ -577,62 +635,23 @@
           "400": {
             "description": "Invalid request data."
           }
-        },
-        "deprecated": true
+        }
       }
     },
-    "/v1/Projects/Create/MatConversion": {
+    "/v1/Projects/MatTransfers": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "summary": "Creates a new Form a Mat Conversion project",
-        "operationId": "Projects_CreateMatConversionProject",
+        "summary": "Creates a new transfer MAT project.",
+        "operationId": "Projects_CreateTransferMatProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateMatConversionProjectCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Project created successfully.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectId"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/v1/Projects/Create/MatTransfer": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Creates a new Form a Mat Transfer project",
-        "operationId": "Projects_CreateMatTransferProject",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateMatTransferProjectCommand"
+                "$ref": "#/components/schemas/CreateTransferMatProjectCommand"
               }
             }
           },
@@ -2321,6 +2340,96 @@
         }
       }
     },
+    "/v1/Projects/project/AssignedUser": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates assigned user.",
+        "operationId": "Projects_UpdateAssignedUser",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignedUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Assigned user updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/project/AssignedTeam": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates assigned team.",
+        "operationId": "Projects_UpdateAssignedTeam",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssignedTeamCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Assigned team updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/project/AddedBy": {
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates added by.",
+        "operationId": "Projects_UpdateAddedBy",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRegionalDeliveryOfficerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Added by updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -3719,6 +3828,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/UpdateConfirmSchoolHasCompletedAllActions": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the confirmation the school has completed all actions task data for conversion project.",
+        "operationId": "TasksData_UpdateConfirmSchoolHasCompletedAllActionsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSchoolHasCompletedAllActionsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update confirm school has completed all actions task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
       "patch": {
         "tags": [
@@ -3884,6 +4026,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the sponsored support grant",
+        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The sponsored support grant task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease": {
       "patch": {
         "tags": [
@@ -3907,6 +4082,72 @@
         "responses": {
           "204": {
             "description": "Updated the 125 year lease task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DirectionToTransfer": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the direction to transfer task data for conversion project.",
+        "operationId": "TasksData_UpdateDirectionToTransferTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDirectionToTransferTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update direction to transfer task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ProcessConversionSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the process conversion support grant task data for conversion project.",
+        "operationId": "TasksData_UpdateProcessConversionSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProcessSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update the process conversion support grant task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -5005,6 +5246,10 @@
                 "type": "string",
                 "nullable": true
               },
+              "entraUserObjectId": {
+                "type": "string",
+                "nullable": true
+              },
               "assignToProject": {
                 "type": "boolean",
                 "nullable": true
@@ -5303,6 +5548,134 @@
           }
         }
       },
+      "ContactDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ContactId"
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "category": {
+            "$ref": "#/components/schemas/ContactCategory"
+          },
+          "organisationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactType"
+              }
+            ]
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
+          },
+          "establishmentUrn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "primaryContact": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateExternalContactCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/ContactCategory"
+          },
+          "isPrimaryContact": {
+            "type": "boolean"
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "establishmentUrn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "organisationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
+          },
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactType"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateExternalContactCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contactDto": {
+            "$ref": "#/components/schemas/ContactDto"
+          }
+        }
+      },
       "CreateProjectGroupCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -5413,7 +5786,7 @@
           }
         }
       },
-      "CreateHandoverConversionProjectCommand": {
+      "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5465,7 +5838,7 @@
           }
         }
       },
-      "CreateHandoverConversionMatProjectCommand": {
+      "CreateConversionMatProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5513,10 +5886,14 @@
           "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
-      "CreateHandoverTransferProjectCommand": {
+      "CreateTransferProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -5581,232 +5958,69 @@
           }
         }
       },
-      "CreateConversionProjectCommand": {
+      "CreateTransferMatProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "incomingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "hasAcademyOrderBeenIssued": {
-            "type": "boolean"
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "groupReferenceNumber": {
-            "type": "string",
+            "type": "integer",
+            "format": "int32",
             "nullable": true
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "handoverComments": {
-            "type": "string"
-          },
-          "userAdId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateTransferProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "outgoingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "incomingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "isDueToInedaquateOfstedRating": {
-            "type": "boolean"
-          },
-          "isDueToIssues": {
-            "type": "boolean"
-          },
-          "outGoingTrustWillClose": {
-            "type": "boolean"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "outgoingTrustSharepointLink": {
-            "type": "string"
-          },
-          "groupReferenceNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "handoverComments": {
-            "type": "string"
-          },
-          "userAdId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateMatConversionProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "newTrustName": {
-            "type": "string"
           },
           "newTrustReferenceNumber": {
-            "type": "string"
-          },
-          "significantDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "hasAcademyOrderBeenIssued": {
-            "type": "boolean"
-          },
-          "advisoryBoardDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
-          },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "handoverComments": {
             "type": "string",
             "nullable": true
-          },
-          "userAdId": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "CreateMatTransferProjectCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
           },
           "newTrustName": {
-            "type": "string"
-          },
-          "newTrustReferenceNumber": {
-            "type": "string"
-          },
-          "outgoingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
-          },
-          "significantDate": {
             "type": "string",
-            "format": "date"
-          },
-          "isSignificantDateProvisional": {
-            "type": "boolean"
-          },
-          "isDueTo2Ri": {
-            "type": "boolean"
-          },
-          "isDueToInedaquateOfstedRating": {
-            "type": "boolean"
-          },
-          "isDueToIssues": {
-            "type": "boolean"
-          },
-          "handingOverToRegionalCaseworkService": {
-            "type": "boolean"
-          },
-          "outGoingTrustWillClose": {
-            "type": "boolean"
+            "nullable": true
           },
           "advisoryBoardDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outgoingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
+            "type": "boolean",
+            "nullable": true
           },
           "advisoryBoardConditions": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
-          "establishmentSharepointLink": {
-            "type": "string"
-          },
-          "incomingTrustSharepointLink": {
-            "type": "string"
-          },
-          "outgoingTrustSharepointLink": {
-            "type": "string"
-          },
-          "handoverComments": {
-            "type": "string"
-          },
-          "userAdId": {
+          "groupId": {
             "type": "string",
             "nullable": true
           }
@@ -6527,7 +6741,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ],
         "enum": [
           "Handover",
@@ -6577,7 +6792,8 @@
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
-          "AcademyDetails"
+          "AcademyDetails",
+          "RedactAndSend"
         ]
       },
       "CreateNoteCommand": {
@@ -7134,6 +7350,47 @@
         "properties": {
           "projectId": {
             "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
+      "UpdateAssignedUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "assignedUser": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      },
+      "UpdateAssignedTeamCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "assignedTeam": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateRegionalDeliveryOfficerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "regionalDeliveryOfficer": {
+            "$ref": "#/components/schemas/UserId"
           }
         }
       },
@@ -9016,14 +9273,34 @@
             "nullable": true
           },
           "academySurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           },
           "trustSurplusOrDeficit": {
-            "type": "string",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AcademyAndTrustFinancialStatus"
+              }
+            ]
           }
         }
+      },
+      "AcademyAndTrustFinancialStatus": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Surplus",
+          "Deficit"
+        ],
+        "enum": [
+          "Surplus",
+          "Deficit"
+        ]
       },
       "UpdateOutgoingTrustCeoCommand": {
         "type": "object",
@@ -9282,6 +9559,23 @@
           }
         }
       },
+      "UpdateConfirmSchoolHasCompletedAllActionsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "emailed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9415,6 +9709,67 @@
           }
         }
       },
+      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SponsoredSupportGrantType"
+              }
+            ]
+          },
+          "paymentAmount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "paymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "informTrust": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "SponsoredSupportGrantType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ],
+        "enum": [
+          "StandardTransferGrant",
+          "FastTrack",
+          "Intermediate",
+          "FullSponsored"
+        ]
+      },
       "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9435,6 +9790,64 @@
             "nullable": true
           },
           "save": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDirectionToTransferTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateProcessSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantCheckVendorAccount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantPaymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSharePaymentDate": {
             "type": "boolean",
             "nullable": true
           }

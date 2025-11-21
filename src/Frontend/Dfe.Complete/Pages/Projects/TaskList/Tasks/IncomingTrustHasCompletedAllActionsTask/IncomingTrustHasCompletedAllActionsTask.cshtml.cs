@@ -16,7 +16,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustHasCompletedAl
 
         [BindProperty(Name = "emailed")]
         public bool? Emailed { get; set; }
-        
+
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
 
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustHasCompletedAl
             Saved = TransferTaskData.ConfirmIncomingTrustHasCompletedAllActionsSaved;
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
         {
             await Sender.Send(new UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Emailed, Saved));

@@ -30,8 +30,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTitlePlansTask
                 return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
-            Cleared = ConversionTaskData.LandRegistryCleared; 
-            Received = ConversionTaskData.LandRegistryReceived; 
+            Cleared = ConversionTaskData.LandRegistryCleared;
+            Received = ConversionTaskData.LandRegistryReceived;
             Saved = ConversionTaskData.LandRegistrySaved;
 
             return Page();

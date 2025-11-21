@@ -1,8 +1,8 @@
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Tests.Common.Customizations.Models;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
@@ -29,6 +29,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.True(user.CreatedAt <= DateTime.UtcNow);
             Assert.True(user.UpdatedAt <= DateTime.UtcNow);
             Assert.Null(user.ActiveDirectoryUserId);
+            Assert.Null(user.EntraUserObjectId);
             Assert.Null(user.ActiveDirectoryUserGroupIds);
             Assert.Null(user.ManageUserAccounts);
             Assert.False(user.ManageConversionUrns);

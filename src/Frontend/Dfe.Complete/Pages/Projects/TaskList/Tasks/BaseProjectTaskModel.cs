@@ -11,7 +11,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Policy;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -63,7 +62,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    } 
+    }
 
     public override async Task<IActionResult> OnGetAsync()
     {

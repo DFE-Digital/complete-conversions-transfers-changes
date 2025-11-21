@@ -8,7 +8,7 @@ namespace Dfe.Complete.Infrastructure.CommandServices
     {
         public async Task UpdateConversionAsync(ConversionTasksData conversionTasksData, DateTime dateTime, CancellationToken cancellationToken)
         {
-            conversionTasksData.UpdatedAt = dateTime; 
+            conversionTasksData.UpdatedAt = dateTime;
             context.ConversionTasksData.Update(conversionTasksData);
             await context.SaveChangesAsync(cancellationToken);
         }

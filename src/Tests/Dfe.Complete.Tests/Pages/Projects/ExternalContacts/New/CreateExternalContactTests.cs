@@ -26,15 +26,15 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     {
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
         private readonly Mock<ISender> mockSender;
-        private readonly Mock<ILogger<CreateExternalContact>> mockLogger;        
+        private readonly Mock<ILogger<CreateExternalContact>> mockLogger;
 
         public CreateExternalContactTests()
         {
             mockSender = fixture.Freeze<Mock<ISender>>();
-            mockLogger = fixture.Freeze<Mock<ILogger<CreateExternalContact>>>();            
+            mockLogger = fixture.Freeze<Mock<ILogger<CreateExternalContact>>>();
         }
 
-        [Theory]        
+        [Theory]
         [InlineData(ProjectType.Conversion)]
         [InlineData(ProjectType.Transfer)]
         public async Task OnGetAsync_Loads_Successfully(ProjectType projectType)
@@ -44,7 +44,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             var testClass = fixture.Build<CreateExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
-               .With(t => t.ProjectId, projectId.Value.ToString())   
+               .With(t => t.ProjectId, projectId.Value.ToString())
                .With(t => t.SelectedExternalContactType, ExternalContactType.HeadTeacher.ToDescription())
                .Create();
 
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.Id, projectId)
                .With(t => t.Type, projectType)
                .With(t => t.EstablishmentName, "Test School")
-               .Create();            
+               .Create();
 
             var getProjectByIdQuery = new GetProjectByIdQuery(projectDto.Id);
 
@@ -72,8 +72,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
         }
 
         [Theory]
-        [InlineData(ProjectType.Transfer, "headteacher")]       
-        [InlineData(ProjectType.Conversion, "headteacher")]      
+        [InlineData(ProjectType.Transfer, "headteacher")]
+        [InlineData(ProjectType.Conversion, "headteacher")]
         public async Task OnPost_ValidModel_ReturnsRedirectResult(ProjectType projectType, string contactType)
         {
             // Arrange             
@@ -109,7 +109,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Contains($"/projects/{projectId.Value}/external-contacts", redirectResult.Url);
         }
 
-        [Fact]       
+        [Fact]
         public async Task OnPost_WhenExceptionThrown_LogsErrorAndReturnsPageResult()
         {
             // Arrange             
@@ -119,7 +119,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())
                .With(t => t.SelectedExternalContactType, "headteacher")
-               .Create();               
+               .Create();
 
             var projectDto = fixture.Build<ProjectDto>()
                .With(t => t.Id, projectId)
@@ -149,7 +149,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.True(testClass.ModelState.ContainsKey("UnexpectedError")),
-                () => Assert.Equal("An unexpected error occurred. Please try again later.",testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
+                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
                 () => mockLogger.Verify(
                 logger => logger.Log(
                     It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),

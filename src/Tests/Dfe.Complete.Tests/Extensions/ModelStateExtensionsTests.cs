@@ -1,5 +1,5 @@
 ﻿using Dfe.Complete.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding; 
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Dfe.Complete.Tests.Extensions
 {
@@ -10,7 +10,7 @@ namespace Dfe.Complete.Tests.Extensions
         {
             // Arrange
             var modelState = new ModelStateDictionary();
-             
+
             modelState.AddModelError("SignificantDate", "SignificantDate must include a month and year");
             modelState.AddModelError("SignificantDate", "Another error");
 
@@ -39,7 +39,7 @@ namespace Dfe.Complete.Tests.Extensions
 
             // Assert
             var entry = modelState["SignificantDate"];
-            Assert.NotNull(entry); 
+            Assert.NotNull(entry);
             Assert.Empty(entry.Errors);
             Assert.False(modelState.IsValidState());
         }
@@ -56,7 +56,7 @@ namespace Dfe.Complete.Tests.Extensions
 
             // Assert
             var entry = modelState["SignificantDate"];
-            Assert.Null(entry); 
+            Assert.Null(entry);
             Assert.True(modelState.IsValidState());
         }
 
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Tests.Extensions
             var entry = modelState["SignificantDate"];
             Assert.NotNull(entry);
             var error = entry.Errors.FirstOrDefault();
-            Assert.NotNull(error); 
+            Assert.NotNull(error);
             Assert.Equal("Some other error", error.ErrorMessage);
             Assert.True(modelState.IsValidState());
         }

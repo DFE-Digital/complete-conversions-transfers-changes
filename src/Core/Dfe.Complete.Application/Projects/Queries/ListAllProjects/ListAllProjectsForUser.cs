@@ -32,9 +32,9 @@ public class ListAllProjectsForUserQueryHandler(
         try
         {
             Result<UserDto?>? user = null;
-            if(!string.IsNullOrEmpty(request.UserAdId))
+            if (!string.IsNullOrEmpty(request.UserAdId))
             {
-                user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+                user = await sender.Send(new GetUserByOidQuery(request.UserAdId), cancellationToken);
             }
 
             if (!string.IsNullOrEmpty(request.UserEmail))
@@ -62,7 +62,7 @@ public class ListAllProjectsForUserQueryHandler(
                 .Distinct()
                 .ToList();
 
-            if(allProjectTrustUkPrns.Count == 0)
+            if (allProjectTrustUkPrns.Count == 0)
             {
                 return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success([], projectsForUser.Count);
             }

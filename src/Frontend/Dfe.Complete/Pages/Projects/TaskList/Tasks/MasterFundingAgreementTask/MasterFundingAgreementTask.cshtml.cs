@@ -13,25 +13,25 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
     {
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
-        
+
         [BindProperty(Name = "received")]
         public bool? Received { get; set; }
 
         [BindProperty(Name = "cleared")]
-        public bool? Cleared { get; set; } 
-        
+        public bool? Cleared { get; set; }
+
         [BindProperty(Name = "signedBySchoolOrTrust")]
         public bool? SignedBySchoolOrTrust { get; set; }
-        
+
         [BindProperty(Name = "savedInTheSchoolsSharepoint")]
         public bool? SavedInTheSchoolsSharepoint { get; set; }
 
         [BindProperty(Name = "savedInSchoolAndTrustSharepoint")]
         public bool? SavedInSchoolAndTrustSharepoint { get; set; }
-        
+
         [BindProperty(Name = "signedOnBehalfOfSeceratyOfState")]
         public bool? SignedOnBehalfOfSeceratyOfState { get; set; }
-      
+
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -64,8 +64,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
             return Page();
         }
         public async Task<IActionResult> OnPost()
-        {            
-            await Sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
+        {
+            await Sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

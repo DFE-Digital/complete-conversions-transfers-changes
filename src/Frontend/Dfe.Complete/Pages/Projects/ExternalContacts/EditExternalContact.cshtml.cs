@@ -24,8 +24,8 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class EditExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
-    ITrustCache trustCacheService, IErrorService errorService, 
-    ISender sender, 
+    ITrustCache trustCacheService, IErrorService errorService,
+    ISender sender,
     ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender)
 {
     private readonly IErrorService errorService = errorService;
@@ -37,7 +37,7 @@ public class EditExternalContact(
     public string ContactId { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
-    {        
+    {
         return await GetPage();
     }
 
@@ -65,7 +65,7 @@ public class EditExternalContact(
         {
             return await HandleUnexpectedErrorAsync(ex);
         }
-    }      
+    }
 
     protected async Task<IActionResult> GetPage()
     {
@@ -94,6 +94,7 @@ public class EditExternalContact(
 
         var contactDto = new ContactDto
         {
+            Id = new ContactId(Guid.Parse(ContactId)),
             Name = ExternalContactInput.FullName,
             Title = ExternalContactInput.Role,
             Email = ExternalContactInput.Email ?? string.Empty,
@@ -103,8 +104,7 @@ public class EditExternalContact(
             OrganisationName = organisationName
         };
 
-        return new UpdateExternalContactCommand(
-            new ContactId(Guid.Parse(ContactId)),
+        return new UpdateExternalContactCommand(            
             contactDto
         );
     }
@@ -146,7 +146,7 @@ public class EditExternalContact(
         this.ExternalContactInput.FullName = contactDto.Name;
         this.ExternalContactInput.Role = contactDto.Title;
         this.ExternalContactInput.Email = contactDto.Email;
-        this.ExternalContactInput.Phone = contactDto.Phone;        
+        this.ExternalContactInput.Phone = contactDto.Phone;
 
         var externalContactType = ExternalContactMapper.MapCategoryToContactType(contactDto.Category);
         this.ExternalContactInput.SelectedExternalContactType = externalContactType.ToDescription();
@@ -158,13 +158,13 @@ public class EditExternalContact(
             case ExternalContactType.Solicitor:
                 this.ExternalContactInput.OrganisationSolicitor = contactDto.OrganisationName;
                 break;
-            case ExternalContactType.Diocese:     
-              this.ExternalContactInput.OrganisationDiocese = contactDto.OrganisationName;
-              break;
+            case ExternalContactType.Diocese:
+                this.ExternalContactInput.OrganisationDiocese = contactDto.OrganisationName;
+                break;
             case ExternalContactType.Other:
                 this.ExternalContactInput.OrganisationOther = contactDto.OrganisationName;
                 break;
-            default:                      
+            default:
                 break;
         }
     }

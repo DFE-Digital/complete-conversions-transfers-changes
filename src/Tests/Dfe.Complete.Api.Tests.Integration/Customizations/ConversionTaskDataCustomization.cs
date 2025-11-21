@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Api.Tests.Integration.Customizations;

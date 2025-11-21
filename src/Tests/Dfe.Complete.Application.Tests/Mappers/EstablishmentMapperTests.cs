@@ -1,9 +1,9 @@
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Application.Mappers;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {
@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
 
             _mapper = config.CreateMapper();
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public void Map_GiasEstablishmentToEstablishmentDto_ShouldMapCommonPropertiesCorrectly(Domain.Entities.GiasEstablishment giasEstablishment)

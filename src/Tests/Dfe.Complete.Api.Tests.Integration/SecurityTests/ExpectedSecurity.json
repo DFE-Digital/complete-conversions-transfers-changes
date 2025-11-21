@@ -2,22 +2,12 @@
   "Endpoints": [
     {
       "Controller": "ProjectsController",
-      "Action": "CreateHandoverConversionProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateHandoverConversionMatProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateHandoverTransferProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
       "Action": "CreateConversionProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateConversionMatProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
@@ -27,12 +17,7 @@
     },
     {
       "Controller": "ProjectsController",
-      "Action": "CreateMatConversionProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateMatTransferProjectAsync",
+      "Action": "CreateTransferMatProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
@@ -244,6 +229,26 @@
       "Controller": "ContactsController",
       "Action": "GetParliamentMPContactByConstituencyAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "GetExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "CreateExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "UpdateExternaContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "DeleteExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
     },
     {
       "Controller": "ProjectsController",
@@ -462,14 +467,19 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmSchoolHasCompletedAllActionsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateTrustModificationOrderTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    },    
+    },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateShareInformationAboutOpeningTaskAsync",
@@ -507,8 +517,38 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateSponsoredSupportGrantTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateClosureOrTransferDeclarationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAssignedUserAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAssignedTeamAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAddedByAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDirectionToTransferTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateProcessConversionSupportGrantTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }   
   ]
 }

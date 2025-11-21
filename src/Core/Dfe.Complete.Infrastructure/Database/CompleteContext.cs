@@ -27,7 +27,7 @@ public partial class CompleteContext : DbContext
         _configuration = configuration;
         _serviceProvider = serviceProvider;
     }
-    
+
     public virtual DbSet<Contact> Contacts { get; set; }
 
     public virtual DbSet<ConversionTasksData> ConversionTasksData { get; set; }
@@ -190,7 +190,7 @@ public partial class CompleteContext : DbContext
             .HasMaxLength(4000)
             .HasColumnName("region")
             .HasConversion(
-                r => r.GetCharValue(), 
+                r => r.GetCharValue(),
                 regionDbValue => regionDbValue.ToEnumFromChar<Region>());
         projectConfiguration.Property(e => e.RegionalDeliveryOfficerId)
             .HasColumnName("regional_delivery_officer_id")
@@ -211,13 +211,13 @@ public partial class CompleteContext : DbContext
             .HasMaxLength(4000)
             .HasColumnName("tasks_data_type")
             .HasConversion(
-                tasksType => tasksType.ToDescription(), 
+                tasksType => tasksType.ToDescription(),
                 tasksTypeDbValue => tasksTypeDbValue.FromDescriptionValue<TaskType>());
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
             .HasColumnName("team")
             .HasConversion(
-                team => team.ToDescription(), 
+                team => team.ToDescription(),
                 teamDbValue => teamDbValue.FromDescriptionValue<ProjectTeam>());
         projectConfiguration.Property(e => e.TwoRequiresImprovement)
             .HasDefaultValue(null)
@@ -226,7 +226,7 @@ public partial class CompleteContext : DbContext
             .HasMaxLength(4000)
             .HasColumnName("type")
             .HasConversion(
-                projectType => projectType.ToDescription(), 
+                projectType => projectType.ToDescription(),
                 projectTypeDbValue => projectTypeDbValue.FromDescriptionValue<ProjectType>());
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
@@ -235,12 +235,12 @@ public partial class CompleteContext : DbContext
             .HasConversion(
                 v => v!.Value,
                 v => new Urn(v));
-        
+
         projectConfiguration.Property(e => e.Urn)
            .HasConversion(
                v => v!.Value,
                v => new Urn(v));
-        
+
         projectConfiguration.Property(e => e.IncomingTrustUkprn)
           .HasConversion(
               v => v!.Value,
@@ -290,13 +290,13 @@ public partial class CompleteContext : DbContext
           .HasConversion(
               v => v!.Value,
               v => new ContactId(v));
-        
+
         projectConfiguration.Property(e => e.LocalAuthorityId)
             .HasColumnName("local_authority_id")
             .HasConversion(
                 v => v.Value,
                 v => new LocalAuthorityId(v));
-                
+
         projectConfiguration.HasOne(d => d.AssignedTo).WithMany(p => p.ProjectAssignedTos)
             .HasForeignKey(d => d.AssignedToId)
             .HasConstraintName("fk_rails_9cf9d80ba9");
@@ -377,6 +377,9 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
             .HasColumnName("team");
+        projectConfiguration.Property(e => e.EntraUserObjectId)
+            .HasMaxLength(4000)
+            .HasColumnName("entra_user_object_id");
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
@@ -390,6 +393,12 @@ public partial class CompleteContext : DbContext
             .HasMany(c => c.ProjectAssignedTos)
             .WithOne(e => e.AssignedTo)
             .HasForeignKey(e => e.AssignedToId);
+
+        projectConfiguration
+            .HasIndex(e => e.EntraUserObjectId)
+            .IsUnique()
+            .HasDatabaseName("UQ_users_entra_user_object_id")
+            .HasFilter("[entra_user_object_id] IS NOT NULL");
     }
 
     private static void ConfigureContact(EntityTypeBuilder<Contact> projectConfiguration)
@@ -437,7 +446,7 @@ public partial class CompleteContext : DbContext
             .HasMaxLength(4000)
             .HasColumnName("type")
             .HasConversion(
-                contactType => contactType.ToDescription(), 
+                contactType => contactType.ToDescription(),
                 contactTypeDbValue => contactTypeDbValue.FromDescriptionValue<ContactType>());
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
@@ -1163,7 +1172,7 @@ public partial class CompleteContext : DbContext
                 v => new UserId(v));
     }
 
-    private static void ConfigureSignificantDateHistoryReason(EntityTypeBuilder<SignificantDateHistoryReason> projectConfiguration) 
+    private static void ConfigureSignificantDateHistoryReason(EntityTypeBuilder<SignificantDateHistoryReason> projectConfiguration)
     {
         projectConfiguration.HasKey(e => e.Id);
 
@@ -1189,6 +1198,6 @@ public partial class CompleteContext : DbContext
             .HasPrecision(6)
             .HasColumnName("updated_at");
     }
-    
+
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

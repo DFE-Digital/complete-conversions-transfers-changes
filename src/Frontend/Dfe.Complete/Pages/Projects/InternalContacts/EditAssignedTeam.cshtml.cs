@@ -7,15 +7,18 @@ using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
+[Authorize(Policy = UserPolicyConstants.CanManageInternalContacts)]
 public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
 {
     [BindProperty]
     [Required]
     public ProjectTeam? Team { get; set; } = default!;
-    
+
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
@@ -26,7 +29,7 @@ public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogge
     public async Task<IActionResult> OnPost()
     {
         await UpdateCurrentProject();
-        
+
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
