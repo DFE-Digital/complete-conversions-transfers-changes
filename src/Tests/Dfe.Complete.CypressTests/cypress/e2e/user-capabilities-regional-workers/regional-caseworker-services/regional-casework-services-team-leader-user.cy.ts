@@ -59,8 +59,8 @@ describe("Capabilities and permissions of the regional casework services team le
         cy.url().should("include", "/projects/team/unassigned");
     });
 
-    it("Should be able to view 'Your team projects', 'All projects' and 'Groups' sections and filters", () => {
-        navBar.ableToView(["Your team projects", "All projects", "Groups"]);
+    it("Should be able to view 'Your team projects', 'All projects', 'Your projects' and 'Groups' sections and filters", () => {
+        navBar.ableToView(["Your team projects", "All projects", "Your projects", "Groups"]);
         navBar.goToYourTeamProjects();
         yourTeamProjects.ableToViewFilters(["Unassigned", "In progress", "New", "By user", "Completed"]);
         navBar.goToAllProjects();
@@ -78,7 +78,7 @@ describe("Capabilities and permissions of the regional casework services team le
     });
 
     it("Should NOT be able to view 'Your projects' and 'Service support' sections", () => {
-        navBar.unableToView(["Your projects", "Service support"]);
+        navBar.unableToView(["Service support"]);
     });
 
     it("Should NOT have access to view All projects -> handed over projects", () => {

@@ -2616,6 +2616,7 @@ namespace Dfe.Complete.Client.Contracts
         public string? EntraUserObjectId { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("assignToProject", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [System.Obsolete("Use IsAssignableToProject property instead")]
         public bool? AssignToProject { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("manageUserAccounts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
