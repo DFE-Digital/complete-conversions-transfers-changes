@@ -11,19 +11,7 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <NoWarn>0436</NoWarn>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <Content Remove="ViewComponents\**" />
-	  <EmbeddedResource Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />	  
-	  <EmbeddedResource Remove="ViewComponents\**" />	  
-	  <None Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <None Remove="ViewComponents\**" />
-	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
-	</ItemGroup>
+	</PropertyGroup>	
 
 	<ItemGroup>
 	  <None Remove="Resources\htb-template.docx" />

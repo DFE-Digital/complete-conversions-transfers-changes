@@ -28,6 +28,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);         
             
             FinancialStatuses = EnumExtensions.ToList<AcademyAndTrustFinancialStatus>();
             

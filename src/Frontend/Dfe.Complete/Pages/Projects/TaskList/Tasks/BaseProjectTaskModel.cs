@@ -21,6 +21,42 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
 
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
 
+    private readonly List<NoteTaskIdentifier> TransferTasksExclusiveNoteIdentifier = [    
+       NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails,
+       NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy,       
+       NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation,
+       NoteTaskIdentifier.FormM,
+       NoteTaskIdentifier.LandConsentLetter,
+       NoteTaskIdentifier.DeedOfNovationAndVariation,
+       NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement,
+       NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement,
+       NoteTaskIdentifier.ClosureOrTransferDeclaration,
+       NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange,
+       NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions,       
+       NoteTaskIdentifier.ConfirmDateAcademyTransferred,
+       NoteTaskIdentifier.RedactAndSendDocuments
+    ];
+
+    private readonly List<NoteTaskIdentifier> ConversionTasksExclusiveNoteIdentifier = [    
+       NoteTaskIdentifier.CheckAccuracyOfHigherNeeds,
+       NoteTaskIdentifier.CompleteNotificationOfChange,
+       NoteTaskIdentifier.ProcessConversionSupportGrant,       
+       NoteTaskIdentifier.AcademyDetails,
+       NoteTaskIdentifier.ConfirmChairOfGovernorsDetails,
+       NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy,
+       NoteTaskIdentifier.LandQuestionnaire,
+       NoteTaskIdentifier.LandRegistryTitlePlans,
+       NoteTaskIdentifier.TrustModificationOrder,
+       NoteTaskIdentifier.DirectionToTransfer,
+       NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease,
+       NoteTaskIdentifier.Subleases,
+       NoteTaskIdentifier.TenancyAtWill,
+       NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions,       
+       NoteTaskIdentifier.ShareInformationAboutOpening,
+       NoteTaskIdentifier.ConfirmAcademyOpenedDate,
+       NoteTaskIdentifier.RedactAndSend
+    ];
+
     public bool CanEditNote(UserId noteUserId)
     {
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
@@ -68,10 +104,35 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         }
 
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
+    }   
+
+    public bool InvalidTaskRequestByProjectType()
+    {
+        if (Project.Type == ProjectType.Conversion && TaskIdentifierIsTransferTaskExclusive())
+        {
+            return true;
+        }
+
+        if (Project.Type == ProjectType.Transfer && TaskIdentifierIsConversionTaskExclusive())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     internal void SetTaskSuccessNotification()
     {
         TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+    }
+
+    private bool TaskIdentifierIsTransferTaskExclusive()
+    {
+        return TransferTasksExclusiveNoteIdentifier.Contains(TaskIdentifier);
+    }
+
+    private bool TaskIdentifierIsConversionTaskExclusive()
+    {
+        return ConversionTasksExclusiveNoteIdentifier.Contains(TaskIdentifier);
     }
 }

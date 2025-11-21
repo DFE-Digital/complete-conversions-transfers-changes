@@ -207,4 +207,69 @@ public class BaseProjectTaskModelTests
         var redirect = Assert.IsType<RedirectResult>(result);
         Assert.Equal($"/projects/{ValidProjectId}/notes/new?task_identifier=handover", redirect.Url);
     }
+
+    // transfer-exclusive list
+    [Theory]
+    [InlineData(NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails)]
+    [InlineData(NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy)]
+    [InlineData(NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation)]
+    [InlineData(NoteTaskIdentifier.FormM)]
+    [InlineData(NoteTaskIdentifier.LandConsentLetter)]
+    [InlineData(NoteTaskIdentifier.DeedOfNovationAndVariation)]
+    [InlineData(NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement)]
+    [InlineData(NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement)]
+    [InlineData(NoteTaskIdentifier.ClosureOrTransferDeclaration)]
+    [InlineData(NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange)]
+    [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions)]
+    [InlineData(NoteTaskIdentifier.ConfirmDateAcademyTransferred)]
+    [InlineData(NoteTaskIdentifier.RedactAndSendDocuments)]
+    public void InvalidTaskRequestByProjectType_ReturnsTrue_ForConversionProjectAndTransferExclusiveTask(
+    NoteTaskIdentifier taskIdentifier)
+    {
+        // Act
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        {
+            Project = new ProjectDto { Type = ProjectType.Conversion },
+            TaskIdentifier = taskIdentifier
+        };
+
+        var result = model.InvalidTaskRequestByProjectType();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds)]
+    [InlineData(NoteTaskIdentifier.CompleteNotificationOfChange)]
+    [InlineData(NoteTaskIdentifier.ProcessConversionSupportGrant)]
+    [InlineData(NoteTaskIdentifier.AcademyDetails)]
+    [InlineData(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails)]
+    [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)]
+    [InlineData(NoteTaskIdentifier.LandQuestionnaire)]
+    [InlineData(NoteTaskIdentifier.LandRegistryTitlePlans)]
+    [InlineData(NoteTaskIdentifier.TrustModificationOrder)]
+    [InlineData(NoteTaskIdentifier.DirectionToTransfer)]
+    [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease)]
+    [InlineData(NoteTaskIdentifier.Subleases)]
+    [InlineData(NoteTaskIdentifier.TenancyAtWill)]
+    [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions)]
+    [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening)]
+    [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate)]
+    [InlineData(NoteTaskIdentifier.RedactAndSend)]
+    public void InvalidTaskRequestByProjectType_ReturnsTrue_ForTransferProjectAndConversionExclusiveTask(
+        NoteTaskIdentifier taskIdentifier)
+    {       
+        // Act
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        {
+            Project = new ProjectDto { Type = ProjectType.Transfer },
+            TaskIdentifier = taskIdentifier
+        };
+
+        var result = model.InvalidTaskRequestByProjectType();
+
+        // Assert
+        Assert.True(result);
+    }
 }

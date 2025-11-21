@@ -20,6 +20,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             var contacts = await Sender.Send(new GetContactsForProjectAndLocalAuthorityQuery(Project.Id,
                 Project.LocalAuthorityId));
 

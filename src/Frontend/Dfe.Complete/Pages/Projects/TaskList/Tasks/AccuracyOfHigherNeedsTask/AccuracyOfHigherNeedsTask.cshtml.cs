@@ -21,6 +21,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
             ConfirmNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmNumber;
             ConfirmPublishedNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber;

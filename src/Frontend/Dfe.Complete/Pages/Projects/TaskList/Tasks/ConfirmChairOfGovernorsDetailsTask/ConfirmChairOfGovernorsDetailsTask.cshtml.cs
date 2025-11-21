@@ -27,6 +27,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDeta
         {
             await base.OnGetAsync();
 
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.SchoolOrAcademy));
             var chairOfGovernorsKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 
