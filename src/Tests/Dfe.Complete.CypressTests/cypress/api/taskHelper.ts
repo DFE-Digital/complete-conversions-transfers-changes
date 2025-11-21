@@ -1,4 +1,4 @@
-import taskApi, { ProjectType } from "./taskApi";
+import taskApi, { ProjectType, SponsoredSupportGrantType } from "./taskApi";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 export type TaskStatus = "notStarted" | "notApplicable" | "inProgress" | "completed";
@@ -325,6 +325,44 @@ export class TaskHelper {
 
             default:
                 return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
+        }
+    }
+
+    updateSponsoredSupportGrant(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            paymentAmount: false,
+            paymentForm: false,
+            sendInformation: false,
+            informTrust: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateSponsoredSupportGrantTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateSponsoredSupportGrantTask({
+                    ...defaultBody,
+                    informTrust: true,
+                });
+
+            case "completed":
+                return taskApi.updateSponsoredSupportGrantTask({
+                    ...defaultBody,
+                    sponsoredSupportGrantType: "FastTrack" as SponsoredSupportGrantType,
+                    paymentAmount: true,
+                    paymentForm: true,
+                    sendInformation: true,
+                    informTrust: true,
+                });
+
+            default:
+                return taskApi.updateSponsoredSupportGrantTask(defaultBody);
         }
     }
 

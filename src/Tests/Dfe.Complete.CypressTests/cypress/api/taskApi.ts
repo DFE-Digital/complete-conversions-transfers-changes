@@ -101,6 +101,18 @@ interface UpdateRedactAndSendDocumentsTaskRequest {
     send?: boolean;
     sendToSolicitors?: boolean;
 }
+export type SponsoredSupportGrantType = "StandardTransferGrant" | "FastTrack" | "Intermediate" | "FullSponsored";
+
+interface UpdateSponsoredSupportGrantTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    notApplicable?: boolean;
+    sponsoredSupportGrantType?: SponsoredSupportGrantType;
+    paymentAmount: boolean;
+    paymentForm: boolean;
+    sendInformation: boolean;
+    informTrust: boolean;
+}
 
 export type RPAOption = "Standard" | "ChurchOrTrust" | "Commercial";
 
@@ -159,6 +171,10 @@ export class TaskApi extends ApiBase {
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
         return this.taskDataBaseRequest<void>("RedactAndSendDocuments", requestBody);
+    }
+
+    public updateSponsoredSupportGrantTask(requestBody: UpdateSponsoredSupportGrantTaskRequest) {
+        return this.taskDataBaseRequest<void>("SponsoredSupportGrant", requestBody);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {

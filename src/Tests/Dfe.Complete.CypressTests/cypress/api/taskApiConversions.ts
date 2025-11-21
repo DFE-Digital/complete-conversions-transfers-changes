@@ -19,6 +19,14 @@ interface UpdateConfirmAcademyOpenedDateTaskRequest {
     academyOpenedDate?: string | null;
 }
 
+interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    rpaPolicyConfirm?: boolean;
+    rpaOption?: RPAOption;
+    rpaReason?: string;
+}
+
 interface UpdateConfirmAllConditionsMetTaskRequest {
     projectId: TaskDataId;
     confirm?: boolean;
@@ -54,14 +62,6 @@ interface UpdateProcessConversionSupportGrantTaskRequest {
     conversionGrantPaymentForm?: boolean;
     conversionGrantSendInformation?: boolean;
     conversionGrantSharePaymentDate?: boolean;
-}
-
-interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
-    taskDataId: TaskDataId;
-    projectType: ProjectType;
-    rpaPolicyConfirm?: boolean;
-    rpaOption?: RPAOption;
-    rpaReason?: string;
 }
 
 interface UpdateSubleasesTaskRequest {
@@ -106,6 +106,12 @@ class TaskApiConversions extends TaskApi {
         return this.taskDataBaseRequest<void>("ConfirmAcademyOpenedDate", requestBody);
     }
 
+    public updateConfirmAcademyRiskProtectionArrangementsTask(
+        requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("ConfirmAcademyRiskProtectionArrangements", requestBody);
+    }
+
     public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
         return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
     }
@@ -124,12 +130,6 @@ class TaskApiConversions extends TaskApi {
 
     public updateProcessConversionSupportGrantTask(requestBody: UpdateProcessConversionSupportGrantTaskRequest) {
         return this.taskDataBaseRequest<void>("ProcessConversionSupportGrant", requestBody);
-    }
-
-    public updateConfirmAcademyRiskProtectionArrangementsTask(
-        requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
-    ) {
-        return this.taskDataBaseRequest<void>("ConfirmAcademyRiskProtectionArrangements", requestBody);
     }
 
     public updateSubleasesTask(requestBody: UpdateSubleasesTaskRequest) {
