@@ -32,6 +32,12 @@ interface UpdateConfirmAllConditionsMetTaskRequest {
     confirm?: boolean;
 }
 
+interface UpdateConfirmSchoolHasCompletedAllActionsTaskRequest {
+    taskDataId: TaskDataId;
+    emailed?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateLandQuestionnaireTaskRequest {
     taskDataId: TaskDataId;
     received?: boolean;
@@ -114,6 +120,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
         return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
+    }
+
+    public updateConfirmSchoolHasCompletedAllActionsTask(requestBody: UpdateConfirmSchoolHasCompletedAllActionsTaskRequest) {
+        return this.taskDataBaseRequest<void>("UpdateConfirmSchoolHasCompletedAllActions", requestBody);
     }
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {

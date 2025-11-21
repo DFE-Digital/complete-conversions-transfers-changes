@@ -88,6 +88,32 @@ class TaskHelperConversions extends TaskHelper {
         });
     }
 
+    updateConfirmSchoolHasCompletedAllActions(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            emailed: false,
+            saved: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApiConversions.updateConfirmSchoolHasCompletedAllActionsTask({
+                    ...defaultBody,
+                    emailed: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updateConfirmSchoolHasCompletedAllActionsTask({
+                    taskDataId: { value: taskDataId },
+                    emailed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApiConversions.updateConfirmSchoolHasCompletedAllActionsTask(defaultBody);
+        }
+    }
+
     updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
