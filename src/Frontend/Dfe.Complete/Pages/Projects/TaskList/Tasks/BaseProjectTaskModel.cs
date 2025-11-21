@@ -106,7 +106,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
     }   
 
-    protected bool InvalidTaskRequestByProjectType()
+    public bool InvalidTaskRequestByProjectType()
     {
         if (Project.Type == ProjectType.Conversion && TaskIdentifierIsTransferTaskExclusive())
         {
