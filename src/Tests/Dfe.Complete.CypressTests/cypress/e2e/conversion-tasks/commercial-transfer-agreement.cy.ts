@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -83,15 +83,15 @@ describe("Conversion tasks - Commercial transfer agreement", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelperConversions.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Commercial transfer agreement");
 
-        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelperConversions.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Commercial transfer agreement");
 
-        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "completed");
+        TaskHelperConversions.updateCommercialTransferAgreement(taskId, ProjectType.Conversion, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Commercial transfer agreement");
     });

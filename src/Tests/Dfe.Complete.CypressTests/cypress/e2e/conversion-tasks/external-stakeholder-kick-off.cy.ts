@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import {
     getDisplayDateString,
     getMonthNumber,
@@ -99,11 +99,11 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateExternalStakeholderKickOff(projectId, "inProgress");
+        TaskHelperConversions.updateExternalStakeholderKickOff(projectId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("External stakeholder kick-off");
 
-        TaskHelper.updateExternalStakeholderKickOff(projectId, "completed");
+        TaskHelperConversions.updateExternalStakeholderKickOff(projectId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("External stakeholder kick-off");
     });

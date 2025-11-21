@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -81,15 +81,15 @@ describe("Conversion tasks - Supplemental funding agreement", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelperConversions.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelperConversions.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "completed");
+        TaskHelperConversions.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
     });

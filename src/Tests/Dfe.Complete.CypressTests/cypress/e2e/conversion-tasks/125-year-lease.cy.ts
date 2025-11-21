@@ -5,7 +5,7 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -82,19 +82,19 @@ describe("Conversion tasks - 125 year lease", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateOneHundredAndTwentyFiveYearLease(taskId, "notStarted");
+        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("125 year lease");
 
-        TaskHelper.updateOneHundredAndTwentyFiveYearLease(taskId, "notApplicable");
+        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("125 year lease");
 
-        TaskHelper.updateOneHundredAndTwentyFiveYearLease(taskId, "inProgress");
+        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("125 year lease");
 
-        TaskHelper.updateOneHundredAndTwentyFiveYearLease(taskId, "completed");
+        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("125 year lease");
     });

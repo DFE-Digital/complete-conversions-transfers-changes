@@ -2,11 +2,11 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import TaskHelper from "cypress/api/taskHelper";
 import { beforeEach } from "mocha";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { ProjectType } from "cypress/api/taskApi";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 
 const completableProject = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transfer.abbey,
@@ -33,15 +33,23 @@ describe("Complete transfer projects tests", () => {
             completableProjectId = response.value;
             projectApi.getProject(completableProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
-                TaskHelper.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
-                TaskHelper.updateConfirmTransferHasAuthorityToProceed(taskId, "completed");
-                TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Transfer, "completed");
-                TaskHelper.updateConfirmDateAcademyTransferred(taskId, "2025-09-01");
+                TaskHelperTransfers.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
+                TaskHelperTransfers.updateConfirmTransferHasAuthorityToProceed(taskId, "completed");
+                TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(
+                    taskId,
+                    ProjectType.Transfer,
+                    "completed",
+                );
+                TaskHelperTransfers.updateConfirmDateAcademyTransferred(taskId, "2025-09-01");
             });
         });
         projectApi.createAndUpdateMatTransferProject(someTasksCompletedProject).then((response) => {
             someTasksCompletedProjectId = response.value;
-            TaskHelper.updateExternalStakeholderKickOff(someTasksCompletedProjectId, "completed", "2025-10-01");
+            TaskHelperTransfers.updateExternalStakeholderKickOff(
+                someTasksCompletedProjectId,
+                "completed",
+                "2025-10-01",
+            );
         });
         projectApi
             .createAndUpdateMatTransferProject(noTasksCompletedProject)

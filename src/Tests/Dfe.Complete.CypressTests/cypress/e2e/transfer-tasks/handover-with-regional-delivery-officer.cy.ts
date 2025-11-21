@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
@@ -73,18 +73,18 @@ describe("Transfer - Handover with regional delivery officer", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notStarted");
         taskListPage.hasTaskStatusNotStarted("Handover with regional delivery officer");
 
-        TaskHelper.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Handover with regional delivery officer");
 
-        TaskHelper.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Handover with regional delivery officer");
 
-        TaskHelper.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Handover with regional delivery officer");
     });

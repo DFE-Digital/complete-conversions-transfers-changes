@@ -6,7 +6,7 @@ import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { getSignificantDateString } from "cypress/support/formatDate";
 import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/projects/tasks/receiveDeclarationOfExpenditureCertificateTaskPage";
 import { urnPool } from "cypress/constants/testUrns";
@@ -101,10 +101,10 @@ describe("Transfers tasks - Receive declaration of expenditure certificate", () 
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${project2Id}/tasks`);
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "notStarted");
         taskListPage.hasTaskStatusNotStarted("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(
+        TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(
             project2TaskId,
             ProjectType.Transfer,
             "notApplicable",
@@ -112,11 +112,11 @@ describe("Transfers tasks - Receive declaration of expenditure certificate", () 
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Receive declaration of expenditure certificate");
     });

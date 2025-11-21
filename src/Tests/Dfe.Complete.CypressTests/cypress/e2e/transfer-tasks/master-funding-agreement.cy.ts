@@ -6,7 +6,7 @@ import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -88,19 +88,19 @@ describe("Transfer tasks - Master funding agreement", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Master funding agreement");
 
-        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Master funding agreement");
 
-        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Master funding agreement");
 
-        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Master funding agreement");
     });

@@ -5,7 +5,7 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -92,15 +92,15 @@ describe("Transfer tasks - Confirm the incoming trust has completed all actions"
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateIncomingTrustHasCompletedAllActions(taskId, "notStarted");
+        TaskHelperTransfers.updateIncomingTrustHasCompletedAllActions(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Confirm the incoming trust has completed all actions");
 
-        TaskHelper.updateIncomingTrustHasCompletedAllActions(taskId, "inProgress");
+        TaskHelperTransfers.updateIncomingTrustHasCompletedAllActions(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Confirm the incoming trust has completed all actions");
 
-        TaskHelper.updateIncomingTrustHasCompletedAllActions(taskId, "completed");
+        TaskHelperTransfers.updateIncomingTrustHasCompletedAllActions(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Confirm the incoming trust has completed all actions");
     });

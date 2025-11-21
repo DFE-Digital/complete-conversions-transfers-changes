@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
@@ -67,19 +67,19 @@ describe("Transfer tasks - Church supplemental agreement", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Church supplemental agreement");
 
-        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Church supplemental agreement");
 
-        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Church supplemental agreement");
 
-        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Church supplemental agreement");
     });

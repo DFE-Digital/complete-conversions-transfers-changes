@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
@@ -68,19 +68,19 @@ describe("Transfers tasks - Deed of termination for the church supplemental agre
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "notStarted");
+        TaskHelperTransfers.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Deed of termination for the church supplemental agreement");
 
-        TaskHelper.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "notApplicable");
+        TaskHelperTransfers.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Deed of termination for the church supplemental agreement");
 
-        TaskHelper.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "inProgress");
+        TaskHelperTransfers.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Deed of termination for the church supplemental agreement");
 
-        TaskHelper.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "completed");
+        TaskHelperTransfers.updateDeedOfTerminationChurchSupplementalAgreement(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Deed of termination for the church supplemental agreement");
     });

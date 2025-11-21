@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -65,19 +65,19 @@ describe("Conversion tasks - Articles of association", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelperConversions.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelperConversions.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelperConversions.updateArticleOfAssociation(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "completed");
+        TaskHelperConversions.updateArticleOfAssociation(taskId, ProjectType.Conversion, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Articles of association");
     });

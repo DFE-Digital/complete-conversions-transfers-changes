@@ -7,7 +7,7 @@ import { Logger } from "cypress/common/logger";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { ProjectType } from "cypress/api/taskApi";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -69,11 +69,11 @@ describe("Conversion tasks - Confirm the academy's risk protection arrangements"
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateConfirmAcademyRiskProtectionArrangements(taskId, ProjectType.Conversion);
+        TaskHelperConversions.updateConfirmAcademyRiskProtectionArrangements(taskId, ProjectType.Conversion);
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Confirm the academy's risk protection arrangements");
 
-        TaskHelper.updateConfirmAcademyRiskProtectionArrangements(
+        TaskHelperConversions.updateConfirmAcademyRiskProtectionArrangements(
             taskId,
             ProjectType.Conversion,
             undefined,
@@ -82,7 +82,7 @@ describe("Conversion tasks - Confirm the academy's risk protection arrangements"
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Confirm the academy's risk protection arrangements");
 
-        TaskHelper.updateConfirmAcademyRiskProtectionArrangements(
+        TaskHelperConversions.updateConfirmAcademyRiskProtectionArrangements(
             taskId,
             ProjectType.Conversion,
             undefined,
@@ -91,7 +91,7 @@ describe("Conversion tasks - Confirm the academy's risk protection arrangements"
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Confirm the academy's risk protection arrangements");
 
-        TaskHelper.updateConfirmAcademyRiskProtectionArrangements(
+        TaskHelperConversions.updateConfirmAcademyRiskProtectionArrangements(
             taskId,
             ProjectType.Conversion,
             undefined,

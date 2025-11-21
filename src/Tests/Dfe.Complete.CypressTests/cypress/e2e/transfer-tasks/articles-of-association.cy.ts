@@ -6,7 +6,7 @@ import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -65,19 +65,19 @@ describe("Transfer tasks - Articles of association", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Articles of association");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Articles of association");
     });

@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -83,19 +83,19 @@ describe("Conversion tasks - Subleases", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateSubleases(taskId, "notStarted");
+        TaskHelperConversions.updateSubleases(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Subleases");
 
-        TaskHelper.updateSubleases(taskId, "notApplicable");
+        TaskHelperConversions.updateSubleases(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Subleases");
 
-        TaskHelper.updateSubleases(taskId, "inProgress");
+        TaskHelperConversions.updateSubleases(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Subleases");
 
-        TaskHelper.updateSubleases(taskId, "completed");
+        TaskHelperConversions.updateSubleases(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Subleases");
     });

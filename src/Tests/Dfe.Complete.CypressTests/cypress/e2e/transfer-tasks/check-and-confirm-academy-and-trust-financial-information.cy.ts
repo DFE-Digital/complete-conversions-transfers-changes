@@ -2,11 +2,10 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -59,23 +58,19 @@ describe("Transfers tasks - Check and confirm academy and trust financial inform
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(
-            taskId,
-            ProjectType.Transfer,
-            "notApplicable",
-        );
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Check and confirm academy and trust financial information");
     });

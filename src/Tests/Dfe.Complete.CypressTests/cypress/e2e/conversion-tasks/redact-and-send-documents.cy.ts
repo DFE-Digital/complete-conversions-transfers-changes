@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -62,15 +62,15 @@ describe("Conversion tasks - Redact and send documents", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelperConversions.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Redact and send documents");
 
-        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelperConversions.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Redact and send documents");
 
-        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "completed");
+        TaskHelperConversions.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Redact and send documents");
     });

@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
@@ -77,19 +77,19 @@ describe("Transfer tasks - Land consent letter", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateLandConsentLetter(taskId, "notStarted");
+        TaskHelperTransfers.updateLandConsentLetter(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Land consent letter");
 
-        TaskHelper.updateLandConsentLetter(taskId, "notApplicable");
+        TaskHelperTransfers.updateLandConsentLetter(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Land consent letter");
 
-        TaskHelper.updateLandConsentLetter(taskId, "inProgress");
+        TaskHelperTransfers.updateLandConsentLetter(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Land consent letter");
 
-        TaskHelper.updateLandConsentLetter(taskId, "completed");
+        TaskHelperTransfers.updateLandConsentLetter(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Land consent letter");
     });

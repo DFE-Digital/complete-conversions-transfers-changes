@@ -7,7 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { getSignificantDateString } from "cypress/support/formatDate";
 import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/projects/tasks/receiveDeclarationOfExpenditureCertificateTaskPage";
 import { urnPool } from "cypress/constants/testUrns";
@@ -81,15 +81,15 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
 
         taskListPage.hasTaskStatusNotStarted("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelperConversions.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelperConversions.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "completed");
+        TaskHelperConversions.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Conversion, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Receive declaration of expenditure certificate");
     });

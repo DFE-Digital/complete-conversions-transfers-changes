@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
@@ -82,15 +82,15 @@ describe("Transfers tasks - Deed of novation and variation", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "notStarted");
+        TaskHelperTransfers.updateDeedOfNovationAndVariation(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Deed of novation and variation");
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "inProgress");
+        TaskHelperTransfers.updateDeedOfNovationAndVariation(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Deed of novation and variation");
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "completed");
+        TaskHelperTransfers.updateDeedOfNovationAndVariation(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Deed of novation and variation");
     });

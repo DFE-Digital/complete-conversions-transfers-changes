@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -92,15 +92,15 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateCheckAccuracyOfHigherNeeds(taskId, "notStarted");
+        TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Check accuracy of high needs places information");
 
-        TaskHelper.updateCheckAccuracyOfHigherNeeds(taskId, "inProgress");
+        TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Check accuracy of high needs places information");
 
-        TaskHelper.updateCheckAccuracyOfHigherNeeds(taskId, "completed");
+        TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Check accuracy of high needs places information");
     });

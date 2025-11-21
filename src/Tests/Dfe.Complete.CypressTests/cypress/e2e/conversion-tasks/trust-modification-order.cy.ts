@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -76,19 +76,19 @@ describe("Conversion tasks - Trust modification order", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateTrustModificationOrder(taskId, "notStarted");
+        TaskHelperConversions.updateTrustModificationOrder(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Trust modification order");
 
-        TaskHelper.updateTrustModificationOrder(taskId, "notApplicable");
+        TaskHelperConversions.updateTrustModificationOrder(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Trust modification order");
 
-        TaskHelper.updateTrustModificationOrder(taskId, "inProgress");
+        TaskHelperConversions.updateTrustModificationOrder(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Trust modification order");
 
-        TaskHelper.updateTrustModificationOrder(taskId, "completed");
+        TaskHelperConversions.updateTrustModificationOrder(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Trust modification order");
     });

@@ -6,7 +6,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import TaskHelper from "cypress/api/taskHelper";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
@@ -86,19 +86,19 @@ describe("Conversion tasks - Complete a notification of changes to funded high n
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateCompleteNotificationOfChange(taskId, "notStarted");
+        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Complete a notification of changes to funded high needs places form");
 
-        TaskHelper.updateCompleteNotificationOfChange(taskId, "notApplicable");
+        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Complete a notification of changes to funded high needs places form");
 
-        TaskHelper.updateCompleteNotificationOfChange(taskId, "inProgress");
+        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Complete a notification of changes to funded high needs places form");
 
-        TaskHelper.updateCompleteNotificationOfChange(taskId, "completed");
+        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Complete a notification of changes to funded high needs places form");
     });
