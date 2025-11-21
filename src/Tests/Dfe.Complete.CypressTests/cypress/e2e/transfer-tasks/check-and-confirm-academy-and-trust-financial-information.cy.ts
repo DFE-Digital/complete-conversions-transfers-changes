@@ -1,43 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "check_and_confirm_financial_information";
 
-describe("Transfers tasks - Check and confirm academy and trust financial information", () => {
+describe("Transfer tasks - Check and confirm academy and trust financial information", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/check_and_confirm_financial_information`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should submit the form and persist selections", () => {
@@ -51,32 +30,32 @@ describe("Transfers tasks - Check and confirm academy and trust financial inform
         taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
         taskListPage
             .hasTaskStatusNotStarted("Check and confirm academy and trust financial information")
-            .selectTask("Check and confirm academy and trust financial information");
+            .selectTask("Check and confirm academy and trust financial_information");
         taskPage.hasCheckboxLabel("Not applicable").isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "notStarted");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Check and confirm academy and trust financial information");
 
-        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "notApplicable");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(setup.taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Check and confirm academy and trust financial information");
 
-        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "inProgress");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(setup.taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Check and confirm academy and trust financial information");
 
-        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, "completed");
+        TaskHelperTransfers.updateCheckAndConfirmAcademyAndTrustFinancialInformation(setup.taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Check and confirm academy and trust financial information");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/check_and_confirm_financial_information`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/check_and_confirm_financial_information`);
         taskPage.noSaveAndReturnExists();
     });
 

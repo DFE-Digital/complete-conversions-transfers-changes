@@ -1,44 +1,23 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
-import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "articles_of_association";
 
 describe("Transfer tasks - Articles of association", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/articles_of_association`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -63,27 +42,27 @@ describe("Transfer tasks - Articles of association", () => {
     });
 
     it("should show task status based on the checkboxes are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateArticleOfAssociation(setup.taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Articles of association");
 
-        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateArticleOfAssociation(setup.taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Articles of association");
 
-        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateArticleOfAssociation(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Articles of association");
 
-        TaskHelperTransfers.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateArticleOfAssociation(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Articles of association");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/articles_of_association`);
         taskPage.noSaveAndReturnExists();
     });
 

@@ -1,44 +1,23 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
-import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "master_funding_agreement";
 
 describe("Transfer tasks - Master funding agreement", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/master_funding_agreement`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -86,27 +65,31 @@ describe("Transfer tasks - Master funding agreement", () => {
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateMasterFundingAgreement(setup.taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Master funding agreement");
 
-        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateMasterFundingAgreement(setup.taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Master funding agreement");
 
-        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateMasterFundingAgreement(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Master funding agreement");
 
-        TaskHelperTransfers.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateMasterFundingAgreement(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Master funding agreement");
     });
 
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
+    });
+
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/master_funding_agreement`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/master_funding_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

@@ -1,44 +1,23 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "request_new_urn_and_record";
 
 describe("Transfer tasks - Request a new URN and record for the academy", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/request_new_urn_and_record`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -80,27 +59,27 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(setup.taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Request a new URN and record for the academy");
 
-        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(taskId, ProjectType.Transfer, "notApplicable");
-        cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Request a new URN and record for the academy");
-
-        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Request a new URN and record for the academy");
 
-        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateRequestNewURNAndRecordForAcademy(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Request a new URN and record for the academy");
     });
 
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
+    });
+
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/request_new_urn_and_record`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/request_new_urn_and_record`);
         taskPage.noSaveAndReturnExists();
     });
 

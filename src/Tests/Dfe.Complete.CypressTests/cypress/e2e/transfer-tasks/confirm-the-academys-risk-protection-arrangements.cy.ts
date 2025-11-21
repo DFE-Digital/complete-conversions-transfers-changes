@@ -1,42 +1,21 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { urnPool } from "cypress/constants/testUrns";
-import projectRemover from "cypress/api/projectRemover";
-import projectApi from "cypress/api/projectApi";
-import { Logger } from "cypress/common/logger";
-import taskPage from "cypress/pages/projects/tasks/taskPage";
-import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import taskListPage from "cypress/pages/projects/tasks/taskListPage";
+import taskPage from "cypress/pages/projects/tasks/taskPage";
+import { Logger } from "cypress/common/logger";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "rpa_policy";
 
 describe("Transfer tasks - Confirm the academy's risk protection arrangements", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/rpa_policy`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -68,7 +47,7 @@ describe("Transfer tasks - Confirm the academy's risk protection arrangements", 
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/rpa_policy`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/rpa_policy`);
         taskPage.noSaveAndReturnExists();
     });
 

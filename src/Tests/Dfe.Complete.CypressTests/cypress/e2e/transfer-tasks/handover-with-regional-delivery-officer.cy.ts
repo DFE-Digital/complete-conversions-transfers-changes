@@ -1,44 +1,23 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "handover";
 
 describe("Transfer - Handover with regional delivery officer", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/handover`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -71,26 +50,26 @@ describe("Transfer - Handover with regional delivery officer", () => {
     });
 
     it("should show task status based on the checkboxes are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(setup.taskId, ProjectType.Transfer, "notStarted");
         taskListPage.hasTaskStatusNotStarted("Handover with regional delivery officer");
 
-        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(setup.taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Handover with regional delivery officer");
 
-        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Handover with regional delivery officer");
 
-        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(taskId, ProjectType.Transfer, "completed");
+        TaskHelperTransfers.updateHandoverWithDeliveryOfficer(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Handover with regional delivery officer");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/handover`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/handover`);
         taskPage.noSaveAndReturnExists();
     });
 

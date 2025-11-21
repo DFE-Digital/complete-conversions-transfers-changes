@@ -1,43 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "land_consent_letter";
 
 describe("Transfer tasks - Land consent letter", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/land_consent_letter`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should submit the form and persist selections", () => {
@@ -75,27 +54,27 @@ describe("Transfer tasks - Land consent letter", () => {
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateLandConsentLetter(taskId, "notStarted");
+        TaskHelperTransfers.updateLandConsentLetter(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Land consent letter");
 
-        TaskHelperTransfers.updateLandConsentLetter(taskId, "notApplicable");
+        TaskHelperTransfers.updateLandConsentLetter(setup.taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Land consent letter");
 
-        TaskHelperTransfers.updateLandConsentLetter(taskId, "inProgress");
+        TaskHelperTransfers.updateLandConsentLetter(setup.taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Land consent letter");
 
-        TaskHelperTransfers.updateLandConsentLetter(taskId, "completed");
+        TaskHelperTransfers.updateLandConsentLetter(setup.taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Land consent letter");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/land_consent_letter`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/land_consent_letter`);
         taskPage.noSaveAndReturnExists();
     });
 

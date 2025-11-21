@@ -1,43 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { urnPool } from "cypress/constants/testUrns";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "deed_of_termination_for_the_master_funding_agreement";
 
 describe("Transfers tasks - Deed of termination for the master funding agreement", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjects();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/deed_of_termination_for_the_master_funding_agreement`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -67,27 +46,27 @@ describe("Transfers tasks - Deed of termination for the master funding agreement
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(taskId, "notStarted");
+        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Deed of termination for the master funding agreement");
 
-        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(taskId, "notApplicable");
+        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(setup.taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Deed of termination for the master funding agreement");
 
-        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(taskId, "inProgress");
+        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(setup.taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Deed of termination for the master funding agreement");
 
-        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(taskId, "completed");
+        TaskHelperTransfers.updateDeedOfTerminationMasterFundingAgreement(setup.taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Deed of termination for the master funding agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_termination_for_the_master_funding_agreement`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/deed_of_termination_for_the_master_funding_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

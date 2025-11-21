@@ -1,38 +1,21 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "confirm_date_academy_transferred";
 
 describe("Transfer tasks - Confirm the academy transfer date", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjectsWithoutTaskId();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/confirm_date_academy_transferred`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should submit the form and persist selections", () => {
@@ -54,7 +37,7 @@ describe("Transfer tasks - Confirm the academy transfer date", () => {
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/confirm_date_academy_transferred`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/confirm_date_academy_transferred`);
         taskPage.noSaveAndReturnExists();
     });
 

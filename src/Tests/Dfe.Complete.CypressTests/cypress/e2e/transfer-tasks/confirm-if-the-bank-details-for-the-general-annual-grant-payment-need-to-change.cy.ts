@@ -1,38 +1,21 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { urnPool } from "cypress/constants/testUrns";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
-import projectRemover from "cypress/api/projectRemover";
-import projectApi from "cypress/api/projectApi";
-import { Logger } from "cypress/common/logger";
-import taskPage from "cypress/pages/projects/tasks/taskPage";
-import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import taskListPage from "cypress/pages/projects/tasks/taskListPage";
+import taskPage from "cypress/pages/projects/tasks/taskPage";
+import { Logger } from "cypress/common/logger";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
-let projectId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
+const taskPath = "confirm_bank_details";
 
 describe("Transfer tasks - Confirm if the bank details for the general annual grant payment need to change", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        TransferTasksTestSetup.setupProjectsWithoutTaskId();
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/bank_details_changing`);
+        TransferTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("Should submit the form and persist selections", () => {
@@ -51,7 +34,7 @@ describe("Transfer tasks - Confirm if the bank details for the general annual gr
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/bank_details_changing`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/bank_details_changing`);
         taskPage.noSaveAndReturnExists();
     });
 

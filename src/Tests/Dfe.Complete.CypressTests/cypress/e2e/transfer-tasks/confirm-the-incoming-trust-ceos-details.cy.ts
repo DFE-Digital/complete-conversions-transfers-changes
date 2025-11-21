@@ -1,21 +1,14 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { urnPool } from "cypress/constants/testUrns";
-import projectRemover from "cypress/api/projectRemover";
-import projectApi from "cypress/api/projectApi";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToConfirmContact,
     shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
     shouldSeeAddContactButtonIfNoContactExists,
 } from "cypress/support/reusableTests";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import { ContactBuilder } from "cypress/api/contactBuilder";
 import { ContactCategory } from "cypress/api/apiDomain";
-import contactApi from "cypress/api/contactApi";
+import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
-});
+const taskPath = "confirm_incoming_trust_ceo_contact";
 const schoolName = "Coquet High School";
 const projectCEOContact = ContactBuilder.createContactRequest({
     fullName: "CEO McIncomingTrust",
@@ -23,39 +16,13 @@ const projectCEOContact = ContactBuilder.createContactRequest({
     organisationName: schoolName,
     category: ContactCategory.IncomingTrust,
 });
-let projectId: string;
-const projectWithoutCEOContact = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.whitley,
-});
-let projectWithoutCEOContactId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.marden,
-});
-let otherUserProjectId: string;
-const task = "confirm_incoming_trust_ceo_contact";
 
 describe("Transfer Tasks - Confirm the incoming trust CEO's details", () => {
+    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(projectWithoutCEOContact.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectCEOContact.projectId = { value: projectId };
-            contactApi.createContact(projectCEOContact);
-        });
-        projectApi.createAndUpdateTransferProject(projectWithoutCEOContact).then((createResponse) => {
-            projectWithoutCEOContactId = createResponse.value;
-        });
-        projectApi.createAndUpdateMatTransferProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-            contactApi.createContact(
-                ContactBuilder.createContactRequest({
-                    projectId: { value: otherUserProjectId },
-                    category: ContactCategory.IncomingTrust,
-                }),
-            );
-        });
+        TransferTasksTestSetup.setupConfirmContactProjects(projectCEOContact, ContactCategory.IncomingTrust);
+        setup = TransferTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
@@ -65,19 +32,19 @@ describe("Transfer Tasks - Confirm the incoming trust CEO's details", () => {
 
     it("Should be able to choose the incoming trust ceo contact", () => {
         shouldBeAbleToConfirmContact(
-            projectId,
+            setup.projectId,
             projectCEOContact.fullName!,
-            task,
+            taskPath,
             "Confirm the incoming trust CEO's details",
         );
     });
 
     it("Should see add contact button if no ceo exists", () => {
-        shouldSeeAddContactButtonIfNoContactExists(projectWithoutCEOContactId, task);
+        shouldSeeAddContactButtonIfNoContactExists(setup.projectWithoutContactId!, taskPath);
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, task);
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(setup.otherUserProjectId, taskPath);
     });
 
     it("Check accessibility across pages", () => {
