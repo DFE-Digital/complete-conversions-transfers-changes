@@ -23,7 +23,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
 });
 let otherUserProjectId: string;
-const task = "main_contact";
+const taskPath = "main_contact";
 
 describe("Conversion Tasks - Confirm the main contact", () => {
     before(() => {
@@ -46,11 +46,11 @@ describe("Conversion Tasks - Confirm the main contact", () => {
     });
 
     it("Should be able to choose contact and save the task", () => {
-        shouldBeAbleToConfirmContact(projectId, projectMainContact.fullName!, task, "Confirm the main contact");
+        shouldBeAbleToConfirmContact(projectId, projectMainContact.fullName!, taskPath, "Confirm the main contact");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, task);
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, taskPath);
     });
 
     it("Check accessibility across pages", () => {

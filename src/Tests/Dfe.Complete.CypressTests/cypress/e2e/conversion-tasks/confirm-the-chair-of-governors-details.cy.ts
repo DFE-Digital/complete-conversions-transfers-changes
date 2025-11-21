@@ -31,7 +31,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.grylls,
 });
 let otherUserProjectId: string;
-const task = "confirm_chair_of_governors_contact";
+const taskPath = "confirm_chair_of_governors_contact";
 
 describe("Conversion tasks - Confirm the chair of governors' details", () => {
     before(() => {
@@ -61,17 +61,17 @@ describe("Conversion tasks - Confirm the chair of governors' details", () => {
         shouldBeAbleToConfirmContact(
             projectId,
             chairOfGovernorsContact.fullName!,
-            task,
+            taskPath,
             "Confirm the chair of governors' details",
         );
     });
 
     it("Should see add contact button if no headteacher or chair of governors contact exists", () => {
-        shouldSeeAddContactButtonIfNoContactExists(projectWithoutContactId, task);
+        shouldSeeAddContactButtonIfNoContactExists(projectWithoutContactId, taskPath);
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, task);
+        shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(otherUserProjectId, taskPath);
     });
 
     it("Check accessibility across pages", () => {

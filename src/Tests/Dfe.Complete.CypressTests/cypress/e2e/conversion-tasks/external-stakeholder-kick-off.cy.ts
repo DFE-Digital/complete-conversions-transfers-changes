@@ -32,6 +32,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: urnPool.conversionTasks.huddersfield,
 });
 let otherUserProjectId: string;
+const taskPath = "stakeholder_kick_off";
 
 describe("Conversion tasks - External stakeholder kick off", () => {
     before(() => {
@@ -52,7 +53,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/stakeholder_kick_off`);
+        cy.visit(`projects/${projectId}/tasks/${taskPath}`);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -109,7 +110,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     });
 
     it("Should NOT be able to set a conversion date in the past", () => {
-        cy.visit(`projects/${project2Id}/tasks/stakeholder_kick_off`);
+        cy.visit(`projects/${project2Id}/tasks/${taskPath}`);
         stakeholderKickOffTaskPage.enterSignificantDate(1, 2020).saveAndReturn();
         validationComponent.hasLinkedValidationError("The Significant date must be in the future");
     });
@@ -142,7 +143,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/stakeholder_kick_off`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/${taskPath}`);
         taskPage.noSaveAndReturnExists();
     });
 

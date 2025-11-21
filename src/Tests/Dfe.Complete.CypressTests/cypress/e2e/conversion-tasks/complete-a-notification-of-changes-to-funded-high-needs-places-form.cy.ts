@@ -1,43 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
-import { urnPool } from "cypress/constants/testUrns";
+import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.grylls,
-});
-let otherUserProjectId: string;
+const taskPath = "complete_notification_of_change";
 
 describe("Conversion tasks - Complete a notification of changes to funded high needs places form", () => {
+    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        ConversionTasksTestSetup.setupProjects();
+        setup = ConversionTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/complete_notification_of_change`);
+        ConversionTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -84,27 +63,27 @@ describe("Conversion tasks - Complete a notification of changes to funded high n
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "notStarted");
+        TaskHelperConversions.updateCompleteNotificationOfChange(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Complete a notification of changes to funded high needs places form");
 
-        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "notApplicable");
+        TaskHelperConversions.updateCompleteNotificationOfChange(setup.taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Complete a notification of changes to funded high needs places form");
 
-        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "inProgress");
+        TaskHelperConversions.updateCompleteNotificationOfChange(setup.taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Complete a notification of changes to funded high needs places form");
 
-        TaskHelperConversions.updateCompleteNotificationOfChange(taskId, "completed");
+        TaskHelperConversions.updateCompleteNotificationOfChange(setup.taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Complete a notification of changes to funded high needs places form");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/complete_notification_of_change`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
         taskPage.noSaveAndReturnExists();
     });
 

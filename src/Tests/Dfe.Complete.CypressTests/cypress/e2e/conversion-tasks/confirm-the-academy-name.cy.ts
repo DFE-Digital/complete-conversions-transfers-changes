@@ -1,39 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import validationComponent from "cypress/pages/validationComponent";
-import { urnPool } from "cypress/constants/testUrns";
+import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
-const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.grylls,
-});
-let otherUserProjectId: string;
+const taskPath = "academy_details";
 
 describe("Conversion tasks - Confirm the academy name", () => {
+    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-        });
-        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        ConversionTasksTestSetup.setupProjectsWithoutTaskId();
+        setup = ConversionTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/academy_details`);
+        ConversionTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -53,7 +36,7 @@ describe("Conversion tasks - Confirm the academy name", () => {
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/academy_details`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
         taskPage.noSaveAndReturnExists();
     });
 

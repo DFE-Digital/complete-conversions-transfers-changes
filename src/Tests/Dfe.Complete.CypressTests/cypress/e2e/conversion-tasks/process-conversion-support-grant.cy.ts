@@ -1,43 +1,22 @@
-import { ProjectBuilder } from "cypress/api/projectBuilder";
-import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
-import { urnPool } from "cypress/constants/testUrns";
+import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
-let taskId: string;
-const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.grylls,
-});
-let otherUserProjectId: string;
+const taskPath = "conversion_grant";
 
 describe("Conversion tasks - Process conversion support grant", () => {
+    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
-        projectApi.createAndUpdateMatConversionProject(otherUserProject, rdoLondonUser).then((createResponse) => {
-            otherUserProjectId = createResponse.value;
-        });
+        ConversionTasksTestSetup.setupProjects();
+        setup = ConversionTasksTestSetup.getSetup();
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/conversion_grant`);
+        ConversionTasksTestSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -84,27 +63,27 @@ describe("Conversion tasks - Process conversion support grant", () => {
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperConversions.updateProcessConversionSupportGrant(taskId, "notStarted");
+        TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Process conversion support grant");
 
-        TaskHelperConversions.updateProcessConversionSupportGrant(taskId, "notApplicable");
+        TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Process conversion support grant");
 
-        TaskHelperConversions.updateProcessConversionSupportGrant(taskId, "inProgress");
+        TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Process conversion support grant");
 
-        TaskHelperConversions.updateProcessConversionSupportGrant(taskId, "completed");
+        TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Process conversion support grant");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/conversion_grant`);
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
         taskPage.noSaveAndReturnExists();
     });
 
