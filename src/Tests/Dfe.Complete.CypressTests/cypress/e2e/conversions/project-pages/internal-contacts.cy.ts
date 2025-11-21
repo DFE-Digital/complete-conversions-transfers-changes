@@ -2,11 +2,9 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import {
-    businessSupportUser,
     cypressUser,
     dataConsumerUser,
     rdoLondonUser,
-    rdoTeamLeaderUser,
     regionalCaseworkerTeamLeaderUser,
     regionalCaseworkerUser,
     serviceSupportUser,
@@ -22,8 +20,8 @@ const project = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
-const assignableUsers = [rdoLondonUser, rdoTeamLeaderUser, regionalCaseworkerUser];
-const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, businessSupportUser, serviceSupportUser];
+const assignableUsers = [rdoLondonUser, regionalCaseworkerUser, regionalCaseworkerTeamLeaderUser];
+const unassignableUsers = [dataConsumerUser, serviceSupportUser];
 
 describe("Internal contacts page: ", () => {
     before(() => {

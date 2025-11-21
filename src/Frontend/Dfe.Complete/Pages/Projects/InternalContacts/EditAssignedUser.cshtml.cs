@@ -61,7 +61,7 @@ public class EditAssignedUser(ISender sender, IErrorService errorService, ILogge
         var assignedToUserQuery = new GetUserByEmailQuery(Email);
         var assignedResult = await _sender.Send(assignedToUserQuery);
 
-        if (assignedResult is { IsSuccess: true, Value.AssignToProject: true })
+        if (assignedResult is { IsSuccess: true, Value.IsAssignableToProject: true })
         {
             try
             {
