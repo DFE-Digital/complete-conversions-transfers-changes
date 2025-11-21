@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Users.Interfaces;
+using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
         bool FilterToAssignableUsers = false) : PaginatedRequest<PaginatedResult<List<User>>>;
 
     public class SearchUsersQueryHandler(
-        ICompleteRepository<User> users)
+        IUserReadRepository userReadRepository)
         : IRequestHandler<SearchUsersQuery, PaginatedResult<List<User>>>
     {
         public async Task<PaginatedResult<List<User>>> Handle(SearchUsersQuery request,
@@ -19,18 +20,19 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
         {
             try
             {
-                var searchQuery = await users.FetchAsync(
-                    user =>
-                        (!request.FilterToAssignableUsers || user.IsAssignableToProject) &&
-                        EF.Functions.Like(
-                            (user.FirstName ?? "") + " " + (user.LastName ?? "") + " " + (user.Email ?? ""),
-                            "%" + request.Query + "%"
-                        ), cancellationToken);
+                var assignableUsersQuery = request.FilterToAssignableUsers
+                    ? new AssignableUserQuery().Apply(userReadRepository.Users)
+                    : userReadRepository.Users;
 
-                var itemCount = searchQuery.Count;
+                var searchQuery = assignableUsersQuery.Where(
+                    user => string.IsNullOrEmpty(request.Query) ||
+                            (user.FirstName + " " + user.LastName + " " + user.Email)
+                                .Contains(request.Query, StringComparison.CurrentCultureIgnoreCase));
 
-                var userList = searchQuery
-                    .Skip(request.Page * request.Count).Take(request.Count).ToList();
+                var itemCount = await searchQuery.CountAsync(cancellationToken);
+
+                var userList = await searchQuery
+                    .Skip(request.Page * request.Count).Take(request.Count).ToListAsync(cancellationToken);
 
                 return PaginatedResult<List<User>>.Success(userList, itemCount);
             }
