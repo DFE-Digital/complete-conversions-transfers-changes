@@ -19,16 +19,16 @@ import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: urnPool.transferTasks.coquet,
+    urn: urnPool.transferTaskGroupTwo.langley,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
     provisionalTransferDate: getSignificantDateString(12),
-    urn: urnPool.transferTasks.marden,
+    urn: urnPool.transferTaskGroupTwo.carville,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: urnPool.transferTasks.whitley,
+    urn: urnPool.transferTaskGroupTwo.western,
 });
 let otherUserProjectId: string;
 

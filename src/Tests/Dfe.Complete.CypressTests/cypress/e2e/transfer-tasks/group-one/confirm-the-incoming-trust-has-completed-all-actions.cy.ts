@@ -3,20 +3,20 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "confirm_incoming_trust_has_completed_all_actions";
 
 describe("Transfer tasks - Confirm the incoming trust has completed all actions", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjects();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupProjects();
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

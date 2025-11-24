@@ -3,20 +3,20 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "church_supplemental_agreement";
 
 describe("Transfer tasks - Church supplemental agreement", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjects();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupProjects();
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

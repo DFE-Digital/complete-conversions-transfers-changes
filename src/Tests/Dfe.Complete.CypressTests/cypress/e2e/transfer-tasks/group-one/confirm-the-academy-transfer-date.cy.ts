@@ -2,20 +2,20 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "confirm_date_academy_transferred";
 
 describe("Transfer tasks - Confirm the academy transfer date", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjectsWithoutTaskId();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupProjectsWithoutTaskId();
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should submit the form and persist selections", () => {

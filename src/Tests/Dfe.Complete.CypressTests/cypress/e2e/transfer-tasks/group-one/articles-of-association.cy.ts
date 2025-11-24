@@ -4,20 +4,20 @@ import { ProjectType } from "cypress/api/taskApi";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "articles_of_association";
 
 describe("Transfer tasks - Articles of association", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjects();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupProjects();
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

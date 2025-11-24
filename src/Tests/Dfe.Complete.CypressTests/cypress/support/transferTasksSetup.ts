@@ -20,29 +20,33 @@ export interface TransferTasksSetup {
     contact?: CreateContactRequest;
 }
 
-export class TransferTasksTestSetup {
-    private static instance: TransferTasksSetup;
+export abstract class TransferTasksTestSetup {
+    private static instances: Map<typeof TransferTasksTestSetup, TransferTasksSetup> = new Map();
 
     public static getSetup(): TransferTasksSetup {
-        if (!this.instance) {
-            this.instance = {
+        if (!this.instances.has(this)) {
+            const instance = new (this as unknown as new () => TransferTasksTestSetup)();
+            const urnRecord = instance.getUrns();
+            const urns = Object.values(urnRecord);
+
+            this.instances.set(this, {
                 project: ProjectBuilder.createTransferProjectRequest({
-                    urn: urnPool.transferTasks.coquet,
+                    urn: urns[0],
                 }),
                 projectId: "",
                 taskId: "",
                 otherUserProject: ProjectBuilder.createTransferProjectRequest({
-                    urn: urnPool.transferTasks.marden,
+                    urn: urns[1],
                 }),
                 otherUserProjectId: "",
                 projectType: ProjectType.Transfer,
                 projectWithoutContact: ProjectBuilder.createTransferProjectRequest({
-                    urn: urnPool.transferTasks.whitley,
+                    urn: urns[2],
                 }),
                 projectWithoutContactId: "",
-            };
+            });
         }
-        return this.instance;
+        return this.instances.get(this)!;
     }
 
     public static setupProjects(): void {
@@ -110,5 +114,19 @@ export class TransferTasksTestSetup {
         cy.login();
         cy.acceptCookies();
         cy.visit(`projects/${setup.projectId}/tasks/${taskPath}`);
+    }
+
+    protected abstract getUrns(): Record<string, number>;
+}
+
+export class TransferTasksGroupOneSetup extends TransferTasksTestSetup {
+    protected getUrns() {
+        return urnPool.transferTasks;
+    }
+}
+
+export class TransferTasksGroupTwoSetup extends TransferTasksTestSetup {
+    protected getUrns() {
+        return urnPool.transferTaskGroupTwo;
     }
 }

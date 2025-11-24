@@ -5,7 +5,7 @@ import {
     shouldSeeAddContactButtonIfNoContactExists,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 import { ContactCategory } from "cypress/api/apiDomain";
 
 const taskPath = "confirm_headteacher_contact";
@@ -17,11 +17,11 @@ const projectHeadteacherContact = ContactBuilder.createContactRequest({
 });
 
 describe("Transfer Tasks - Confirm the headteacher's details", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupConfirmContactProjects(projectHeadteacherContact, ContactCategory.SchoolOrAcademy);
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupConfirmContactProjects(projectHeadteacherContact, ContactCategory.SchoolOrAcademy);
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {

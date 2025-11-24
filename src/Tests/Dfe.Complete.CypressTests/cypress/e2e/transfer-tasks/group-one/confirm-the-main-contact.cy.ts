@@ -4,7 +4,7 @@ import {
     shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 import { ContactCategory } from "cypress/api/apiDomain";
 
 const taskPath = "main_contact";
@@ -14,11 +14,11 @@ const projectMainContact = ContactBuilder.createContactRequest({
 });
 
 describe("Transfer Tasks - Confirm the main contact", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupConfirmContactProjects(projectMainContact, ContactCategory.SchoolOrAcademy);
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupConfirmContactProjects(projectMainContact, ContactCategory.SchoolOrAcademy);
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {

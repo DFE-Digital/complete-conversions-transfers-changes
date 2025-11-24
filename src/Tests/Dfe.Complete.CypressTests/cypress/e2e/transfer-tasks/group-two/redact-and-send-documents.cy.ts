@@ -4,20 +4,20 @@ import { ProjectType } from "cypress/api/taskApi";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupTwoSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "redact_and_send_documents";
 
 describe("Transfer tasks - Redact and send documents", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupTwoSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjects();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupTwoSetup.setupProjects();
+        setup = TransferTasksGroupTwoSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

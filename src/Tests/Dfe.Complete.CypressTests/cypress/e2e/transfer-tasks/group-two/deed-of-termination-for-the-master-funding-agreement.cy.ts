@@ -3,20 +3,20 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperTransfers from "cypress/api/taskHelperTransfers";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupTwoSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "deed_of_termination_for_the_master_funding_agreement";
 
 describe("Transfers tasks - Deed of termination for the master funding agreement", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupTwoSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupProjects();
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupTwoSetup.setupProjects();
+        setup = TransferTasksGroupTwoSetup.getSetup();
     });
 
     beforeEach(() => {
-        TransferTasksTestSetup.setupBeforeEach(taskPath);
+        TransferTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

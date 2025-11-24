@@ -6,7 +6,7 @@ import {
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
 import { ContactCategory } from "cypress/api/apiDomain";
-import { TransferTasksTestSetup } from "cypress/support/transferTasksSetup";
+import { TransferTasksGroupOneSetup } from "cypress/support/transferTasksSetup";
 
 const taskPath = "confirm_outgoing_trust_ceo_contact";
 const schoolName = "Coquet Park First School";
@@ -18,11 +18,11 @@ const projectCEOContact = ContactBuilder.createContactRequest({
 });
 
 describe("Transfer Tasks - Confirm the outgoing trust CEO's details", () => {
-    let setup: ReturnType<typeof TransferTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof TransferTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        TransferTasksTestSetup.setupConfirmContactProjects(projectCEOContact, ContactCategory.OutgoingTrust);
-        setup = TransferTasksTestSetup.getSetup();
+        TransferTasksGroupOneSetup.setupConfirmContactProjects(projectCEOContact, ContactCategory.OutgoingTrust);
+        setup = TransferTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
