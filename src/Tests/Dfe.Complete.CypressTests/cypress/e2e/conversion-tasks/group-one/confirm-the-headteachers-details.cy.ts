@@ -5,7 +5,7 @@ import {
     shouldSeeAddContactButtonIfNoContactExists,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import { ContactCategory } from "cypress/api/apiDomain";
 
 const projectHeadteacherContact = ContactBuilder.createContactRequest({
@@ -17,18 +17,18 @@ const projectHeadteacherContact = ContactBuilder.createContactRequest({
 const taskPath = "confirm_headteacher_contact";
 
 describe("Conversion tasks - Confirm the headteacher's details", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupConfirmContactProjects(
+        ConversionTasksGroupOneSetup.setupConfirmContactProjects(
             projectHeadteacherContact,
             ContactCategory.SchoolOrAcademy,
         );
-        setup = ConversionTasksTestSetup.getSetup();
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose the headteacher", () => {

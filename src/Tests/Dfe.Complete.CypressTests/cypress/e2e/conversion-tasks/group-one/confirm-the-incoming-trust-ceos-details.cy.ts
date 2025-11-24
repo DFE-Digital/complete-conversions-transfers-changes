@@ -1,5 +1,5 @@
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToConfirmContact,
@@ -18,15 +18,15 @@ const projectCEOContact = ContactBuilder.createContactRequest({
 const taskPath = "confirm_incoming_trust_ceo_contact";
 
 describe("Conversion tasks - Confirm the incoming trust CEO's details", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupConfirmContactProjects(projectCEOContact, ContactCategory.IncomingTrust);
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupConfirmContactProjects(projectCEOContact, ContactCategory.IncomingTrust);
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose the incoming trust ceo contact", () => {

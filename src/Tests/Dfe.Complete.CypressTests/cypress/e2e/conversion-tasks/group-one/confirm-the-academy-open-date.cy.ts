@@ -2,20 +2,20 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 
 const taskPath = "confirm_date_academy_opened";
 
 describe("Conversion tasks - Confirm the academy open date", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupProjectsWithoutTaskId();
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupProjectsWithoutTaskId();
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should be able to input a valid past or future date", () => {

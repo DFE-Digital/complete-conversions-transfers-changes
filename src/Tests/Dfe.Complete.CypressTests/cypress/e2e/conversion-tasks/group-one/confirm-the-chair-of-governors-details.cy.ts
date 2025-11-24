@@ -5,7 +5,7 @@ import {
     shouldSeeAddContactButtonIfNoContactExists,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import { ContactCategory } from "cypress/api/apiDomain";
 
 const chairOfGovernorsContact = ContactBuilder.createContactRequest({
@@ -17,15 +17,15 @@ const chairOfGovernorsContact = ContactBuilder.createContactRequest({
 const taskPath = "confirm_chair_of_governors_contact";
 
 describe("Conversion tasks - Confirm the chair of governors' details", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupConfirmContactProjects(chairOfGovernorsContact, ContactCategory.SchoolOrAcademy);
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupConfirmContactProjects(chairOfGovernorsContact, ContactCategory.SchoolOrAcademy);
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose the chair of governors contact", () => {

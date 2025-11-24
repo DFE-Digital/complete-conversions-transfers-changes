@@ -25,29 +25,35 @@ export interface ConversionTasksSetup {
     contact?: CreateContactRequest;
 }
 
-export class ConversionTasksTestSetup {
-    private static instance: ConversionTasksSetup;
+export abstract class ConversionTasksTestSetup {
+    private static instances: Map<typeof ConversionTasksTestSetup, ConversionTasksSetup> = new Map();
+
+    protected abstract getUrns(): Record<string, number>;
 
     public static getSetup(): ConversionTasksSetup {
-        if (!this.instance) {
-            this.instance = {
+        if (!this.instances.has(this)) {
+            const instance = new (this as unknown as new () => ConversionTasksTestSetup)();
+            const urnRecord = instance.getUrns();
+            const urns = Object.values(urnRecord);
+
+            this.instances.set(this, {
                 project: ProjectBuilder.createConversionProjectRequest({
-                    urn: urnPool.conversionTasks.spen,
+                    urn: urns[0],
                 }),
                 projectId: "",
                 taskId: "",
                 otherUserProject: ProjectBuilder.createConversionFormAMatProjectRequest({
-                    urn: urnPool.conversionTasks.grylls,
+                    urn: urns[1],
                 }),
                 otherUserProjectId: "",
                 projectType: ProjectType.Conversion,
                 projectWithoutContact: ProjectBuilder.createConversionProjectRequest({
-                    urn: urnPool.conversionTasks.huddersfield,
+                    urn: urns[2],
                 }),
                 projectWithoutContactId: "",
-            };
+            });
         }
-        return this.instance;
+        return this.instances.get(this)!;
     }
 
     public static setupProjects(): void {
@@ -115,5 +121,17 @@ export class ConversionTasksTestSetup {
         cy.login();
         cy.acceptCookies();
         cy.visit(`projects/${setup.projectId}/tasks/${taskPath}`);
+    }
+}
+
+export class ConversionTasksGroupOneSetup extends ConversionTasksTestSetup {
+    protected getUrns() {
+        return urnPool.conversionTasksGroupOne;
+    }
+}
+
+export class ConversionTasksGroupTwoSetup extends ConversionTasksTestSetup {
+    protected getUrns() {
+        return urnPool.conversionTasksGroupTwo;
     }
 }

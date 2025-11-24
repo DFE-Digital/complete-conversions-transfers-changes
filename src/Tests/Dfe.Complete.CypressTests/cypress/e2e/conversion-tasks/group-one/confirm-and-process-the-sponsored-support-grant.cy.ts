@@ -2,21 +2,21 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import taskHelper from "cypress/api/taskHelper";
 
 const taskPath = "sponsored_support_grant";
 
 describe("Conversion tasks - Confirm and process the sponsored support grant", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupProjects();
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupProjects();
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

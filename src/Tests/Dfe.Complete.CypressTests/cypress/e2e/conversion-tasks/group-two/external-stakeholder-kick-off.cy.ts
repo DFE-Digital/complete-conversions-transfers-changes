@@ -17,31 +17,30 @@ import {
 import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholderKickOffTaskPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import validationComponent from "cypress/pages/validationComponent";
+import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
 import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversionTasks.spen,
-});
-let projectId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     provisionalConversionDate: getSignificantDateString(12),
-    urn: urnPool.conversionTasks.grylls,
+    urn: urnPool.conversionTasksGroupTwo.stAgnes,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: urnPool.conversionTasks.huddersfield,
+    urn: urnPool.conversionTasksGroupTwo.tresco,
 });
 let otherUserProjectId: string;
 const taskPath = "stakeholder_kick_off";
 
 describe("Conversion tasks - External stakeholder kick off", () => {
+    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
+
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
+        ConversionTasksGroupTwoSetup.setupProjects();
+        setup = ConversionTasksGroupTwoSetup.getSetup();
+
+        // Set up additional projects for this specific test
         projectRemover.removeProjectIfItExists(project2.urn);
         projectRemover.removeProjectIfItExists(otherUserProject.urn);
-        projectApi.createAndUpdateConversionProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-        });
         projectApi.createAndUpdateMatConversionProject(project2).then((createResponse) => {
             project2Id = createResponse.value;
         });
@@ -51,9 +50,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     });
 
     beforeEach(() => {
-        cy.login();
-        cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/${taskPath}`);
+        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
@@ -66,7 +63,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
             .hasGuidance("The person who prepared this project for advisory board")
             .hasCheckboxLabel(
                 `Check the local authority is able to convert the school by the provisional conversion date: ${significateDateToDisplayDate(
-                    project.provisionalConversionDate,
+                    setup.project.provisionalConversionDate,
                 )}`,
             )
             .clickDropdown("What to do if the local authority is not able to meet the provisional conversion date")
@@ -98,13 +95,13 @@ describe("Conversion tasks - External stakeholder kick off", () => {
     });
 
     it("should show task status based on the checkboxes are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${setup.projectId}/tasks`);
 
-        TaskHelperConversions.updateExternalStakeholderKickOff(projectId, "inProgress");
+        TaskHelperConversions.updateExternalStakeholderKickOff(setup.projectId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("External stakeholder kick-off");
 
-        TaskHelperConversions.updateExternalStakeholderKickOff(projectId, "completed");
+        TaskHelperConversions.updateExternalStakeholderKickOff(setup.projectId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("External stakeholder kick-off");
     });

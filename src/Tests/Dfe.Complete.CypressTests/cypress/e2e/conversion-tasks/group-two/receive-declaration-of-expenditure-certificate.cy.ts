@@ -4,20 +4,20 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { ProjectType } from "cypress/api/taskApi";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
 
 const taskPath = "receive_grant_payment_certificate";
 
 describe("Conversion tasks - Receive declaration of expenditure certificate", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupProjects();
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupTwoSetup.setupProjects();
+        setup = ConversionTasksGroupTwoSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

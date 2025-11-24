@@ -4,7 +4,7 @@ import {
     shouldNotSeeSaveAndReturnButtonForAnotherUsersProject,
 } from "cypress/support/reusableTests";
 import { ContactBuilder } from "cypress/api/contactBuilder";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import { ContactCategory } from "cypress/api/apiDomain";
 
 const projectMainContact = ContactBuilder.createContactRequest({
@@ -15,15 +15,15 @@ const projectMainContact = ContactBuilder.createContactRequest({
 const taskPath = "main_contact";
 
 describe("Conversion tasks - Confirm the main contact", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupConfirmContactProjects(projectMainContact, ContactCategory.SchoolOrAcademy);
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupConfirmContactProjects(projectMainContact, ContactCategory.SchoolOrAcademy);
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("Should be able to choose contact and save the task", () => {

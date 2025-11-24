@@ -3,20 +3,20 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
 
 const taskPath = "school_completed";
 
 describe("Conversion tasks - Confirm the school has completed all actions", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupProjects();
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupTwoSetup.setupProjects();
+        setup = ConversionTasksGroupTwoSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {

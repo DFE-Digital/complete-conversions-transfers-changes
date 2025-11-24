@@ -2,20 +2,20 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
-import { ConversionTasksTestSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
 
 const taskPath = "share_information";
 
 describe("Conversion tasks - Share the information about opening", () => {
-    let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
 
     before(() => {
-        ConversionTasksTestSetup.setupProjectsWithoutTaskId();
-        setup = ConversionTasksTestSetup.getSetup();
+        ConversionTasksGroupTwoSetup.setupProjectsWithoutTaskId();
+        setup = ConversionTasksGroupTwoSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksTestSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
     it("should expand and collapse guidance details", () => {
