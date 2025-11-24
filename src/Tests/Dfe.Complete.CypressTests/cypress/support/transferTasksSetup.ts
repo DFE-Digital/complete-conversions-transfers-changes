@@ -121,7 +121,7 @@ export abstract class TransferTasksTestSetup {
 
 export class TransferTasksGroupOneSetup extends TransferTasksTestSetup {
     protected getUrns() {
-        return urnPool.transferTasks;
+        return urnPool.transferTasksGroupOne;
     }
 }
 

@@ -38,7 +38,7 @@ export const urnPool = {
     },
 
     // transfer-tasks
-    transferTasks: {
+    transferTasksGroupOne: {
         coquet: 108590,
         marden: 108635,
         whitley: 108638,
