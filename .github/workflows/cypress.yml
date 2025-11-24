@@ -52,17 +52,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - group: conversion-tasks
+          - group: conversion-tasks-1
             spec: cypress/e2e/conversion-tasks/group-one/**/*.cy.ts
-          - group: conversion-tasks
+          - group: conversion-tasks-2
             spec: cypress/e2e/conversion-tasks/group-two/**/*.cy.ts
           - group: conversions
             spec: cypress/e2e/conversions/**/*.cy.ts
           - group: project-listings
             spec: cypress/e2e/project-listings/**/*.cy.ts
-          - group: transfer-tasks
+          - group: transfer-tasks-1
             spec: cypress/e2e/transfer-tasks/group-one/**/*.cy.ts
-          - group: transfer-tasks
+          - group: transfer-tasks-2
             spec: cypress/e2e/transfer-tasks/group-two/**/*.cy.ts
           - group: transfers
             spec: cypress/e2e/transfers/**/*.cy.ts
