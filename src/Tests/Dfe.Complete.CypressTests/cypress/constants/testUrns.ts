@@ -3,10 +3,15 @@ export const urnPool = {
     // see cypress.yml for the threads that run
 
     // conversion-tasks
-    conversionTasks: {
+    conversionTasksGroupOne: {
         spen: 107778,
         grylls: 107779,
         huddersfield: 107786,
+    },
+    conversionTasksGroupTwo: {
+        carn: 108887,
+        stAgnes: 108888,
+        tresco: 108889,
     },
 
     // conversions
@@ -37,6 +42,12 @@ export const urnPool = {
         coquet: 108590,
         marden: 108635,
         whitley: 108638,
+    },
+
+    transferTaskGroupTwo: {
+        langley: 108591,
+        carville: 108592,
+        western: 108593,
     },
 
     // transfers
