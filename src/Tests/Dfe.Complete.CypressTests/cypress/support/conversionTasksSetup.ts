@@ -28,8 +28,6 @@ export interface ConversionTasksSetup {
 export abstract class ConversionTasksTestSetup {
     private static instances: Map<typeof ConversionTasksTestSetup, ConversionTasksSetup> = new Map();
 
-    protected abstract getUrns(): Record<string, number>;
-
     public static getSetup(): ConversionTasksSetup {
         if (!this.instances.has(this)) {
             const instance = new (this as unknown as new () => ConversionTasksTestSetup)();
@@ -122,6 +120,8 @@ export abstract class ConversionTasksTestSetup {
         cy.acceptCookies();
         cy.visit(`projects/${setup.projectId}/tasks/${taskPath}`);
     }
+
+    protected abstract getUrns(): Record<string, number>;
 }
 
 export class ConversionTasksGroupOneSetup extends ConversionTasksTestSetup {
