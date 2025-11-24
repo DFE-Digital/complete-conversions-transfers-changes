@@ -20,7 +20,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.regionalWorker.morda,
+    urn: urnPool.userCapabilities.morda,
     provisionalConversionDate: "2029-04-01",
 });
 let projectId: string;

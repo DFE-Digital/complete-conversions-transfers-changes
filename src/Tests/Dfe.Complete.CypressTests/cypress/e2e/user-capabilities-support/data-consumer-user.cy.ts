@@ -21,7 +21,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.support.whitcliffe,
+    urn: urnPool.userCapabilities.longnor,
     provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;

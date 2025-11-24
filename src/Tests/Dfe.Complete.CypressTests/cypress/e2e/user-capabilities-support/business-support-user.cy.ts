@@ -26,11 +26,11 @@ import { urnPool } from "cypress/constants/testUrns";
 import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.support.whitcliffe,
+    urn: urnPool.userCapabilities.longnor,
     provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
-const schoolName = "Whitcliffe Mount School";
+const schoolName = "Longnor CofE Primary School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);

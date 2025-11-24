@@ -60,19 +60,12 @@ export const urnPool = {
         priory: 149460,
     },
 
-    // user-capabilities-regional-workers
-    regionalWorker: {
+    // user-capabilities
+    userCapabilities: {
         morda: 123484,
         mountjoy: 107789,
         longnor: 123482,
         ark: 135584,
-    },
-
-    // user-capabilities-support
-    support: {
-        whitcliffe: 107780,
-        kinnerley: 123481,
-        gomersal: 107781,
         halesowen: 103847, // academy, not project
     },
 };

@@ -13,12 +13,12 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 
 const project = ProjectBuilder.createConversionProjectRequest({
     provisionalConversionDate: "2028-04-01",
-    urn: urnPool.regionalWorker.morda,
+    urn: urnPool.userCapabilities.morda,
 });
 const schoolName = "Morda CofE Primary School";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
     provisionalConversionDate: "2028-04-01",
-    urn: urnPool.regionalWorker.mountjoy,
+    urn: urnPool.userCapabilities.mountjoy,
 });
 let teammatesProjectId: string;
 const teammatesSchoolName = "Mountjoy House School";

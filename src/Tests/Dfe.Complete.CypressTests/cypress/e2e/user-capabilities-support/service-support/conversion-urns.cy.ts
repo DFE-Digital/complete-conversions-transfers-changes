@@ -15,24 +15,24 @@ import { urnPool } from "cypress/constants/testUrns";
 import { getSignificantDateString } from "cypress/support/formatDate";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.support.kinnerley,
+    urn: urnPool.userCapabilities.mountjoy,
     provisionalConversionDate: getSignificantDateString(1),
 });
-const schoolName = "Kinnerley Church of England Controlled Primary School";
+const schoolName = "Mountjoy House School";
 const academy = {
-    urn: urnPool.support.halesowen,
+    urn: urnPool.userCapabilities.halesowen,
     name: "Halesowen CofE Primary School",
     address: "High Street",
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
-const project2 = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.whitcliffe });
-const schoolName2 = "Whitcliffe Mount School";
+const project2 = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.userCapabilities.longnor });
+const schoolName2 = "Longnor CofE Primary School";
 const projectWithAcademy = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.support.gomersal,
+    urn: urnPool.userCapabilities.ark,
     provisionalConversionDate: getSignificantDateString(1),
 });
-const schoolWithAcademyName = "Gomersal Church of England Voluntary Controlled Middle School";
+const schoolWithAcademyName = "Ark Globe Academy";
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {

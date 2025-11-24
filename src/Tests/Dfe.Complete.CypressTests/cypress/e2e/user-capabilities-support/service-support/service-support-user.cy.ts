@@ -16,11 +16,11 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 
-const project = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.whitcliffe });
+const project = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.userCapabilities.longnor });
 let projectId: string;
-const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.support.kinnerley });
+const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.userCapabilities.mountjoy });
 let projectToDeleteId: string;
-const schoolToDeleteName = "Kinnerley Church of England Controlled Primary School";
+const schoolToDeleteName = "Mountjoy House School";
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
