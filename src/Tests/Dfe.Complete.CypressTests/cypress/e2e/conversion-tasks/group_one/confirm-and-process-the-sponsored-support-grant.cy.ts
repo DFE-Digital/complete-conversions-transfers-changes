@@ -7,7 +7,7 @@ import taskHelper from "cypress/api/taskHelper";
 
 const taskPath = "sponsored_support_grant";
 
-describe("Conversion tasks - Confirm and process the sponsored support grant\n", () => {
+describe("Conversion tasks - Confirm and process the sponsored support grant", () => {
     let setup: ReturnType<typeof ConversionTasksTestSetup.getSetup>;
 
     before(() => {
