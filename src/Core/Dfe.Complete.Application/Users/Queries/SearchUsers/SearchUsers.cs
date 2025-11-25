@@ -26,8 +26,8 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
 
                 var searchQuery = assignableUsersQuery.Where(
                     user => string.IsNullOrEmpty(request.Query) ||
-                            (user.FirstName + " " + user.LastName + " " + user.Email)
-                                .Contains(request.Query, StringComparison.CurrentCultureIgnoreCase));
+                            EF.Functions.Like(user.FirstName + " " + user.LastName + " " + user.Email,
+                                $"%{request.Query}%"));
 
                 var itemCount = await searchQuery.CountAsync(cancellationToken);
 
