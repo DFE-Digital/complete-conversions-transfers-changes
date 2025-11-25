@@ -2,7 +2,10 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Caching.Helpers;
@@ -15,9 +18,24 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
 {
     [ExcludeFromCodeCoverage]
-    public abstract class DaoRevocationProjectLayoutModel(ISender sender, ILogger logger, ICacheService<IMemoryCacheType> cacheService) : ProjectLayoutModel(sender, logger, RecordDaoRevocationNavigation)
+    public abstract class DaoRevocationProjectLayoutModel(ISender sender, ILogger logger, ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, RecordDaoRevocationNavigation)
     {
+        protected readonly IProjectPermissionService ProjectPermissionService = projectPermissionService;
         protected string CacheKey => $"DaoRevocation_{CacheKeyHelper.GenerateHashedCacheKey(ProjectId)}";
+
+        protected virtual async Task<IActionResult?> CheckDaoRevocationPermissionAsync()
+        {
+            if (!ProjectPermissionService.UserCanDaoRevocation(Project, User))
+            {
+                TempData.SetNotification(
+                    NotificationType.Error,
+                    "Important",
+                    "You are not authorised to perform this action."
+                );
+                return Redirect(FormatRouteWithProjectId(RouteConstants.Project));
+            }
+            return null;
+        }
 
         protected IActionResult ReturnPage(RecordDaoRevocationDecisionCommand decision)
             => decision.ReasonNotes?.Count == 0 ? RedirectToDaoRevocationPage() : Page();

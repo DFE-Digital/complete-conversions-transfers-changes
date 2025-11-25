@@ -1,5 +1,6 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 {
     public class ChangeDaoRevocationReasonsModel(ISender sender, ILogger<DaoRevocationReasonsModel> logger, IErrorService errorService,
-        ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
+        ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
     {
         public Dictionary<string, string> FormValues { get; set; } = [];
 
@@ -19,6 +20,9 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 
         public override async Task<IActionResult> OnGetAsync()
         {
+            var permissionResult = await CheckDaoRevocationPermissionAsync();
+            if (permissionResult != null) return permissionResult;
+
             PoplateOptions(Reasons);
 
             var command = await GetCachedDecisionAsync();
