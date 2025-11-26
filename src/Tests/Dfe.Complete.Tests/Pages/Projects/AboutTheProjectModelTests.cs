@@ -10,6 +10,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -58,12 +59,12 @@ namespace Dfe.Complete.Tests.Pages.Projects
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task OnGet_When_AcademyUrn_IsNotSupplied_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+        public async Task OnGet_When_AcademyUrn_IsNotSupplied_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
         {
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
-            var model = new AboutTheProjectModel(mockSender.Object, _logger)
+            var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService)
             {
                 PageContext = GetPageContext(),
                 ProjectId = projectIdGuid.ToString()
@@ -111,12 +112,12 @@ namespace Dfe.Complete.Tests.Pages.Projects
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task OnGet_Loads_Correctly([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+        public async Task OnGet_Loads_Correctly([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
         {
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
-            var model = new AboutTheProjectModel(mockSender.Object, _logger)
+            var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService)
             {
                 PageContext = GetPageContext(),
                 ProjectId = projectIdGuid.ToString()

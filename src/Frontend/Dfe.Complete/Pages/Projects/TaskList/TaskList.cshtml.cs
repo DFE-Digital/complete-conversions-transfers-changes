@@ -1,11 +1,12 @@
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList
 {
-    public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger) : ProjectLayoutModel(sender, _logger, TaskListNavigation)
+    public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, _logger, projectPermissionService, TaskListNavigation)
     {
         public TransferTaskListViewModel TransferTaskList { get; set; } = null!;
         public ConversionTaskListViewModel ConversionTaskList { get; set; } = null!;

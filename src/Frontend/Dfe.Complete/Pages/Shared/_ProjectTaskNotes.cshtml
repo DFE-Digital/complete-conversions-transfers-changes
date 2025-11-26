@@ -10,7 +10,7 @@
 
 <aside>
     <h2 class="govuk-heading-m">Task notes</h2>
-    <form method="post" asp-page-handler="AddNote" class="govuk-!-margin-bottom-3">
+    <form method="post" asp-page-handler="AddNote" class="govuk-!-margin-bottom-3" asp-policy="@UserPolicyConstants.CanAddNotes">
         <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
         <input type="hidden" name="TaskIdentifier" value="@Model.TaskIdentifier" />
         <button 

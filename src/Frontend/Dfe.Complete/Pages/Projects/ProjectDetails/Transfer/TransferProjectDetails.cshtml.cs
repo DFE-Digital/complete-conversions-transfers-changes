@@ -5,6 +5,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Validators;
@@ -17,7 +18,8 @@ using System.Web;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 {
-    public class TransferProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<TransferProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
+    public class TransferProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<TransferProjectDetailsModel> _logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectDetailsPageModel(sender, errorService, _logger, projectPermissionService)
     {
         [BindProperty]
         [GovukRequired]
