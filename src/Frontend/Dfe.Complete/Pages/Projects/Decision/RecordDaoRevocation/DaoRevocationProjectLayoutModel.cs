@@ -18,7 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation;
 
 [ExcludeFromCodeCoverage]
-public abstract class DaoRevocationProjectLayoutModel(ISender sender, ILogger logger, ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, RecordDaoRevocationNavigation)
+public abstract class DaoRevocationProjectLayoutModel(ISender sender, ILogger logger, ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, RecordDaoRevocationNavigation)
 {
     protected readonly IProjectPermissionService ProjectPermissionService = projectPermissionService;
     protected readonly ICacheService<IMemoryCacheType> CacheService = cacheService;

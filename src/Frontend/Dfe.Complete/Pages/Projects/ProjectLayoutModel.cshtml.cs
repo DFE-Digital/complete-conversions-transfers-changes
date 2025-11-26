@@ -7,14 +7,14 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dfe.Complete.Pages.Projects.ProjectView;
 
 [ExcludeFromCodeCoverage]
-public abstract class ProjectLayoutModel(ISender sender, ILogger logger, string currentNavigation, IProjectPermissionService? projectPermissionService = null)
-    : BaseProjectPageModel(sender, logger, projectPermissionService)
+public abstract class ProjectLayoutModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService, string currentNavigation) : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
+    public string CurrentNavigationItem { get; } = currentNavigation;
+
+    public bool CanEditSignificantDate => Project != null && Project.SignificantDateProvisional is false && UserHasEditAccess();
 
     [BindProperty(SupportsGet = true, Name = "projectCompletionValidation")]
     public bool ShowProjectCompletionValidationNotification { get; set; }
-
-    public string CurrentNavigationItem { get; } = currentNavigation;
 
     public const string TaskListNavigation = "task-list";
     public const string AboutTheProjectNavigation = "about-the-project";

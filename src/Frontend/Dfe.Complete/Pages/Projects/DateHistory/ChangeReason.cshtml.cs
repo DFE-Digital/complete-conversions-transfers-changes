@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class ChangeReasonProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeReasonProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
+    public class ChangeReasonProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeReasonProjectModel> logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, ConversionDateHistoryNavigation)
     {
         [BindProperty]
         public string SignificantDateString { get; set; }
@@ -29,7 +30,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
         {
             await PopulatePage();
 
-            if (!SigDateHelper.CanEditSignificantDate(Project, User, CurrentUserTeam))
+            if (!CanEditSignificantDate)
             {
                 TempData.SetNotification(
                     NotificationType.Error,

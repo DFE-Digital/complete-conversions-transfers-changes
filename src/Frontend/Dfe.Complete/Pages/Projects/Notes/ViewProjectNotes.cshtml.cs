@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService authorizationService, ILogger<ViewProjectNotesModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class ViewProjectNotesModel(ISender sender, IAuthorizationService authorizationService, ILogger<ViewProjectNotesModel> logger, IProjectPermissionService projectPermissionService) : BaseProjectNotesModel(sender, logger, NotesNavigation, projectPermissionService)
 {
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
