@@ -66,7 +66,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
         protected RedirectResult RedirectToDaoRevocationRoute(string route)
             => Redirect(FormatRouteWithProjectId(route));
 
-        protected static void PoplateOptions(List<DaoRevokedReason> reasons)
+        protected static void PopulateOptions(List<DaoRevokedReason> reasons)
         {
             reasons.Add(DaoRevokedReason.SchoolRatedGoodOrOutstanding);
             reasons.Add(DaoRevokedReason.SafeguardingConcernsAddressed);

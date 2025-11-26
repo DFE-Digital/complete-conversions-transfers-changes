@@ -23,7 +23,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
             var permissionResult = await CheckDaoRevocationPermissionAsync();
             if (permissionResult != null) return permissionResult;
 
-            PoplateOptions(Reasons);
+            PopulateOptions(Reasons);
 
             var command = await GetCachedDecisionAsync();
 
@@ -51,7 +51,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 
         public async Task<IActionResult> OnPostAsync()
         {
-            PoplateOptions(Reasons);
+            PopulateOptions(Reasons);
             ValidateReasons(Request.Form, Reasons, ReasonNotes, errorService, ModelState);
 
             FormValues = Request.Form.ToDictionary(k => k.Key, v => v.Value.ToString());

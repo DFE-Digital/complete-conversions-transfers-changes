@@ -24,14 +24,14 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
             var permissionResult = await CheckDaoRevocationPermissionAsync();
             if (permissionResult != null) return permissionResult;
 
-            PoplateOptions(Reasons);
+            PopulateOptions(Reasons);
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            PoplateOptions(Reasons);
+            PopulateOptions(Reasons);
             ValidateReasons(FormValues, Reasons, ReasonNotes, errorService, ModelState);
 
             if (!ModelState.IsValid)

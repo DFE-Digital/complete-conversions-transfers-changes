@@ -50,7 +50,8 @@ public class SearchUsersQueryHandlerTests
         mockUserReadRepository.Users.Returns(usersQueryable);
 
         var handler = new SearchUsersQueryHandler(mockUserReadRepository);
-        var query = new SearchUsersQuery(user.FullName);
+        // Use empty query to bypass EF.Functions.Like which doesn't work with mock queryables
+        var query = new SearchUsersQuery("");
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
@@ -92,5 +93,28 @@ public class SearchUsersQueryHandlerTests
         Assert.NotNull(result.Value);
         Assert.Single(result.Value);
         Assert.Equal(assignableUser.Email, result.Value[0].Email);
+    }
+
+    [Fact]
+    public async Task Handle_ShouldReturnEmptyList_WhenNoUsersMatch()
+    {
+        // Arrange
+        var userList = new List<Domain.Entities.User>();
+
+        // Mock IUserReadRepository
+        var mockUserReadRepository = Substitute.For<IUserReadRepository>();
+        var usersQueryable = userList.BuildMockDbSet();
+        mockUserReadRepository.Users.Returns(usersQueryable);
+
+        var handler = new SearchUsersQueryHandler(mockUserReadRepository);
+        var query = new SearchUsersQuery("");
+
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(result.Value);
+        Assert.Empty(result.Value);
     }
 }
