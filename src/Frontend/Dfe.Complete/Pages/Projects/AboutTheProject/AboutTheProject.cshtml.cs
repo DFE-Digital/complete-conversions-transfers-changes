@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.AboutTheProject
 {
-    public class AboutTheProjectModel(ISender sender, ILogger<AboutTheProjectModel> logger) : ProjectLayoutModel(sender, logger, AboutTheProjectNavigation)
+    public class AboutTheProjectModel(ISender sender, ILogger<AboutTheProjectModel> logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, AboutTheProjectNavigation, projectPermissionService)
     {
         public GiasEstablishmentDto? Academy { get; set; }
         public ProjectGroupDto? ProjectGroup { get; set; }
-        public TransferTaskDataDto? TransferTaskData { get; set; }
+        public new TransferTaskDataDto? TransferTaskData { get; set; }
 
         private async Task SetAcademyAsync()
         {

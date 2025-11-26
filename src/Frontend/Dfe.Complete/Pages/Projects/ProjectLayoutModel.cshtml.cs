@@ -1,4 +1,5 @@
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dfe.Complete.Pages.Projects.ProjectView;
 
 [ExcludeFromCodeCoverage]
-public abstract class ProjectLayoutModel(ISender sender, ILogger logger, string currentNavigation) : BaseProjectPageModel(sender, logger)
+public abstract class ProjectLayoutModel(ISender sender, ILogger logger, string currentNavigation, IProjectPermissionService? projectPermissionService = null)
+    : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
 
     [BindProperty(SupportsGet = true, Name = "projectCompletionValidation")]
