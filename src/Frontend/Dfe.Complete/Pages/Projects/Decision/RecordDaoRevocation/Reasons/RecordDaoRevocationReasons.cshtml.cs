@@ -21,9 +21,6 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            var permissionResult = await CheckDaoRevocationPermissionAsync();
-            if (permissionResult != null) return permissionResult;
-
             PopulateOptions(Reasons);
 
             return Page();

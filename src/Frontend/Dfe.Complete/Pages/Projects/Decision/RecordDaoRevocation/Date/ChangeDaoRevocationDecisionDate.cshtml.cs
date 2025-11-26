@@ -18,9 +18,6 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            var permissionResult = await CheckDaoRevocationPermissionAsync();
-            if (permissionResult != null) return permissionResult;
-
             var decision = await GetCachedDecisionAsync();
 
             if (decision.ReasonNotes?.Count == 0)

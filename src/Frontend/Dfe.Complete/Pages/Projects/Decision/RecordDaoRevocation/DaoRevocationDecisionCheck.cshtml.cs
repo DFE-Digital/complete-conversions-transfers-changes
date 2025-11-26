@@ -16,9 +16,6 @@ public class DaoRevocationCheckModel(ISender sender, ILogger<AddDaoRevocationMin
     public RecordDaoRevocationDecisionCommand? Decision { get; set; }
     public override async Task<IActionResult> OnGetAsync()
     {
-        var authResult = await CheckDaoRevocationPermissionAsync();
-        if (authResult != null) return authResult;
-
         var decision = await GetCachedDecisionAsync();
 
         if (decision.ReasonNotes?.Count == 0)

@@ -10,17 +10,18 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
     {
         public override async Task<IActionResult> OnGetAsync()
         {
+            await UpdateCurrentProject();
+
             var permissionResult = await CheckDaoRevocationPermissionAsync();
             if (permissionResult != null) return permissionResult;
 
-            await UpdateCurrentProject();
             await SetEstablishmentAsync();
 
             return Page();
         }
 
         public IActionResult OnPost()
-        {
+        {           
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectDaoRevocationConfirm));
         }
     }
