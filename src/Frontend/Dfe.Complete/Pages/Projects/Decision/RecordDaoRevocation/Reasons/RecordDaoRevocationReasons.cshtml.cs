@@ -2,6 +2,7 @@ using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 {
     public class DaoRevocationReasonsModel(ISender sender, ILogger<DaoRevocationReasonsModel> logger, IErrorService errorService,
-        ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
+        ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
     {
         public IFormCollection FormValues { get; set; } = default!;
 
@@ -20,14 +21,17 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            PoplateOptions(Reasons);
+            var permissionResult = await CheckDaoRevocationPermissionAsync();
+            if (permissionResult != null) return permissionResult;
+
+            PopulateOptions(Reasons);
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            PoplateOptions(Reasons);
+            PopulateOptions(Reasons);
             ValidateReasons(FormValues, Reasons, ReasonNotes, errorService, ModelState);
 
             if (!ModelState.IsValid)

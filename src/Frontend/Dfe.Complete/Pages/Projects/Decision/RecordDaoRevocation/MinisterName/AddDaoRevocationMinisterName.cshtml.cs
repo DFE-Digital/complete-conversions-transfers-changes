@@ -1,4 +1,5 @@
 using Dfe.Complete.Constants;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
@@ -8,13 +9,16 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName
 {
     public class AddDaoRevocationMinisterNameModel(ISender sender, ILogger<AddDaoRevocationMinisterNameModel> logger, IErrorService errorService,
-        ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
+        ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
     {
         [BindProperty]
         [Required(ErrorMessage = ValidationConstants.MinisterNameRequired)]
         public required string Name { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
+            var permissionResult = await CheckDaoRevocationPermissionAsync();
+            if (permissionResult != null) return permissionResult;
+
             var decision = await GetCachedDecisionAsync();
             return ReturnPage(decision);
         }

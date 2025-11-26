@@ -4,6 +4,7 @@ using Dfe.Complete.Configuration;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
+using Dfe.Complete.Middleware;
 using Dfe.Complete.Security;
 using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
@@ -126,7 +127,7 @@ public class Startup
 
         services.AddHttpContextAccessor();
 
-        services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
+        services.AddApplicationAuthorization(Configuration);
 
         var authenticationBuilder = services
             .AddAuthentication(options =>
@@ -168,6 +169,7 @@ public class Startup
 
         services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
         services.Configure<MaintenanceBannerOptions>(Configuration.GetSection(MaintenanceBannerOptions.Section));
+        services.Configure<AzureAdOptions>(Configuration.GetSection(AzureAdOptions.SectionName));
         
         // Register services
         services.AddScoped<IMaintenanceBannerService, MaintenanceBannerService>();
@@ -185,7 +187,7 @@ public class Startup
             app.UseHsts();
         }
 
-        app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId.CorrelationIdMiddleware>();
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
@@ -213,6 +215,7 @@ public class Startup
         app.UseRouting();
         app.UseSession();
         app.UseAuthentication();
+        app.UseMiddleware<RoleAuthorizationMiddleware>();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>

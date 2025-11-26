@@ -2132,11 +2132,11 @@ public partial class ProjectsControllerTests
         await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
 
         var originalAssignedUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
-        originalAssignedUser.AssignToProject = true;
+        originalAssignedUser.Team = "london";
 
         var assignableUser = fixture.Customize(new UserCustomization())
             .Create<User>();
-        assignableUser.AssignToProject = true;
+        assignableUser.Team = "regional_casework_services";
 
         await dbContext.Users.AddAsync(assignableUser);
 
@@ -2246,12 +2246,11 @@ public partial class ProjectsControllerTests
         await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
 
         var currentRegionalDeliveryOfficer = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
-        currentRegionalDeliveryOfficer.AssignToProject = true;
+        currentRegionalDeliveryOfficer.Team = "london";
 
         var newRegionalDeliveryOfficer = fixture.Customize(new UserCustomization())
             .Create<User>();
-        newRegionalDeliveryOfficer.AssignToProject = true;
-
+        newRegionalDeliveryOfficer.Team = "london";
         await dbContext.Users.AddAsync(newRegionalDeliveryOfficer);
 
         var project = fixture.Customize(new ProjectCustomization
