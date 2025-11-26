@@ -24,32 +24,40 @@ import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import taskHelper from "cypress/api/taskHelper";
+import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
+import taskPage from "cypress/pages/projects/tasks/taskPage";
+import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
+import contactApi from "cypress/api/contactApi";
+import { ContactBuilder } from "cypress/api/contactBuilder";
+import externalContactsPage from "cypress/pages/projects/projectDetails/externalContactsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.userCapabilities.longnor,
     provisionalConversionDate: "2027-04-01",
 });
 let projectId: string;
-const schoolName = "Whitcliffe Mount School";
-describe("Capabilities and permissions of the data consumer user", () => {
-    before(() => {
-        projectRemover.removeProjectIfItExists(project.urn);
-        projectApi.createAndUpdateConversionProject(project).then((response) => {
-            projectId = response.value;
-            taskHelper.updateExternalStakeholderKickOff(projectId, "completed", "2027-04-01");
-        });
-    });
-    beforeEach(() => {
-        cy.login(dataConsumerUser);
-        cy.acceptCookies();
-        cy.visit("/");
-    });
+const schoolName = "Longnor CofE Primary School";
 
+before(() => {
+    projectRemover.removeProjectIfItExists(project.urn);
+    projectApi.createAndUpdateConversionProject(project).then((response) => {
+        projectId = response.value;
+        taskHelper.updateExternalStakeholderKickOff(projectId, "completed", "2027-04-01");
+        contactApi.createContact(ContactBuilder.createContactRequest({ projectId: { value: projectId } }));
+    });
+});
+beforeEach(() => {
+    cy.login(dataConsumerUser);
+    cy.acceptCookies();
+    cy.visit("/");
+});
+
+describe("Capabilities and permissions of the data consumer user - listing pages", () => {
     it("Should direct user to all projects in progress after login", () => {
         cy.url().should("include", "/projects/all/in-progress/all");
     });
 
-    it("Should only be able to view All projects section, with all the expected filters", () => {
+    it("Should be able to view All projects section, with all the expected filters", () => {
         navBar.unableToViewTheNavBar();
         allProjects.ableToViewFilters([
             "In progress",
@@ -96,8 +104,8 @@ describe("Capabilities and permissions of the data consumer user", () => {
                 "Confirmed date (Original date)",
             ])
             .withSchool(`${schoolName} ${project.urn}`)
-            .columnHasValue("Region", "Yorkshire and the Humber")
-            .columnHasValue("Local authority", "Kirklees")
+            .columnHasValue("Region", "West Midlands")
+            .columnHasValue("Local authority", "Shropshire")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027 (Apr 2027)")
@@ -119,24 +127,50 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldBeAbleToViewReportsLandingPage();
     });
 
-    it("Should NOT be able to add a note to a project", () => {
-        shouldNotBeAbleToAddAProjectNote(projectId);
-    });
-
-    it("Should NOT be able to add a task note to a project", () => {
-        shouldNotBeAbleToAddAProjectTaskNote(projectId);
-    });
-
-    it("Should NOT be able to soft delete projects", () => {
-        shouldNotBeAbleToSoftDeleteAProject(projectId);
-    });
-
     it("Should NOT be able to view and edit local authorities", () => {
         shouldNotHaveAccessToViewLocalAuthorities();
     });
 
     it("Should NOT be able to view conversion URNs", () => {
         shouldNotHaveAccessToViewConversionURNsPage(projectId);
+    });
+});
+describe("Capabilities and permissions of the data consumer user - project pages", () => {
+    it("Should NOT be able to soft delete projects", () => {
+        shouldNotBeAbleToSoftDeleteAProject(projectId);
+    });
+
+    it("Should NOT be able to update a project task", () => {
+        cy.visit(`projects/${projectId}/tasks/subleases`);
+        taskPage.noSaveAndReturnExists();
+    });
+
+    it("Should NOT be able to add a task note to a project", () => {
+        shouldNotBeAbleToAddAProjectTaskNote(projectId);
+    });
+
+    it("Should NOT be able to update project details", () => {
+        cy.visit(`/projects/${projectId}/information`);
+        aboutTheProjectPage.linkDoesNotExist("Change");
+    });
+
+    it("Should NOT be able to add a note to a project", () => {
+        shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
+    it("Should NOT be able to add external contacts", () => {
+        cy.visit(`/projects/${projectId}/external-contacts`);
+        externalContactsPage.doesntContainButton(/Add contact/i);
+    });
+
+    it("Should NOT be able to edit external contacts", () => {
+        cy.visit(`/projects/${projectId}/external-contacts`);
+        externalContactsPage.linkDoesNotExist("Change");
+    });
+
+    it("Should NOT be able to update internal contacts", () => {
+        cy.visit(`/projects/${projectId}/internal-contacts`);
+        internalContactsPage.linkDoesNotExist("Change");
     });
 
     it("Check accessibility across pages", () => {

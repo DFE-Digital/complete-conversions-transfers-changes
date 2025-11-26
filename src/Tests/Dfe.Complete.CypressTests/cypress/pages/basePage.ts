@@ -22,6 +22,12 @@ class BasePage {
         return this;
     }
 
+    doesntContainButton(buttonText: string | RegExp) {
+        cy.contains("button", buttonText).should("not.exist");
+        cy.contains("a", buttonText).should("not.exist");
+        return this;
+    }
+
     containsImportantBannerWithMessage(title: string, message?: string) {
         return this.containsBannerWithMessage("Important", title, message);
     }
@@ -64,7 +70,7 @@ class BasePage {
     }
 
     linkDoesNotExist(linkText: string) {
-        cy.getByClass(this.linkClass).contains(linkText).should("not.exist");
+        cy.contains("a", linkText).should("not.exist");
         return this;
     }
 

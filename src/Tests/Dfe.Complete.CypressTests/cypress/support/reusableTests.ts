@@ -56,7 +56,7 @@ export function shouldNotBeAbleToSoftDeleteAProject(projectId: string) {
 
 export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
     cy.visit(`/projects/${projectId}/notes`);
-    notePage.doesntContain("Add note");
+    notePage.doesntContainButton("Add note");
     cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
 }
 
