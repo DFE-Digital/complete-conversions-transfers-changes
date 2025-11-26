@@ -22,6 +22,7 @@ import internalContactsPage from "cypress/pages/projects/projectDetails/internal
 import externalContactsPage from "cypress/pages/projects/projectDetails/externalContactsPage";
 import { ContactBuilder } from "cypress/api/contactBuilder";
 import contactApi from "cypress/api/contactApi";
+import taskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.userCapabilities.longnor });
 let projectId: string;
@@ -37,6 +38,7 @@ before(() => {
         projectId = response.value;
         contact.projectId = { value: projectId };
         contactApi.createContact(contact);
+        taskHelper.updateExternalStakeholderKickOff(projectId, "completed", project.provisionalConversionDate);
     });
     projectApi
         .createAndUpdateConversionProject(projectToDelete)
@@ -103,6 +105,11 @@ describe("Capabilities and permissions of the service support user - project pag
             .clickButton("Delete project")
             .containsSuccessBannerWithMessage("The project was deleted.");
         cy.url().should("include", "/projects/all/in-progress/all");
+    });
+
+    it("Should be able to update the significant date of the project", () => {
+        cy.visit(`/projects/${projectId}/information`);
+        aboutTheProjectPage.hasButton("Change conversion date");
     });
 
     it("Should be able to update a task for another user's project", () => {

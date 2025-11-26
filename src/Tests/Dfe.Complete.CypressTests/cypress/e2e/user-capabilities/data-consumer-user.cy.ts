@@ -140,6 +140,11 @@ describe("Capabilities and permissions of the data consumer user - project pages
         shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
+    it("Should NOT be able to update the significant date of the project", () => {
+        cy.visit(`/projects/${projectId}/information`);
+        aboutTheProjectPage.doesntContainButton("Change conversion date");
+    });
+
     it("Should NOT be able to update a project task", () => {
         cy.visit(`projects/${projectId}/tasks/subleases`);
         taskPage.noSaveAndReturnExists();
