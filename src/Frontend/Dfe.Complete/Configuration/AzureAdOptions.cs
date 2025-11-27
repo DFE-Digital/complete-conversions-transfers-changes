@@ -3,7 +3,7 @@ namespace Dfe.Complete.Configuration;
 public class AzureAdOptions
 {
     public const string SectionName = "AzureAd";
-    
+
     public string Instance { get; set; } = string.Empty;
     public string Domain { get; set; } = string.Empty;
     public string CallbackPath { get; set; } = string.Empty;

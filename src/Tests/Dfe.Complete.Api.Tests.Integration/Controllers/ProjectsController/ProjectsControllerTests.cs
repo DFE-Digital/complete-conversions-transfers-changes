@@ -17,6 +17,8 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using ClientProjectTeam = Dfe.Complete.Client.Contracts.ProjectTeam;
+using DomainProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
 using Project = Dfe.Complete.Domain.Entities.Project;
@@ -27,8 +29,6 @@ using Region = Dfe.Complete.Domain.Enums.Region;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using User = Dfe.Complete.Domain.Entities.User;
 using UserId = Dfe.Complete.Client.Contracts.UserId;
-using DomainProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
-using ClientProjectTeam = Dfe.Complete.Client.Contracts.ProjectTeam;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -2107,7 +2107,7 @@ public partial class ProjectsControllerTests
         Assert.NotNull(existingProject);
         Assert.Equal(ProjectState.Active, existingProject.State);
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(CustomWebApplicationDbContextFactoryCustomization),

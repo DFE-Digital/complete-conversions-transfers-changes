@@ -18,7 +18,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
     {
         [BindProperty(SupportsGet = true, Name = nameof(Id))]
         public required string Id { get; set; }
-       
+
         [BindProperty(Name = nameof(ContactId))]
         public Guid? ContactId { get; set; }
 

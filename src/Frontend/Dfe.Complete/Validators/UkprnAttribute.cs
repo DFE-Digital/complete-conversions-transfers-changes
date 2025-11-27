@@ -53,7 +53,7 @@ namespace Dfe.Complete.Validators
                 var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
                 var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
             }
-            catch (AggregateException ex)
+            catch (AggregateException)
             {
                 var errorMessage = $"There's no trust with that UKPRN. Check the number you entered is correct";
 

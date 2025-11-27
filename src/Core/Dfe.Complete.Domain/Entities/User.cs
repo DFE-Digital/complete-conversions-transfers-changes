@@ -61,7 +61,7 @@ public class User : BaseAggregateRoot, IEntity<UserId>
         {
             if (string.IsNullOrEmpty(Team))
                 return false;
-                
+
             try
             {
                 var userTeam = EnumExtensions.FromDescription<ProjectTeam>(Team);

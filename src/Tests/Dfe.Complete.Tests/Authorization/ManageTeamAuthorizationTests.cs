@@ -13,7 +13,7 @@ public class ManageTeamAuthorizationTests
     {
         // Get the private static method using reflection
         _shouldUserManageTeamMethod = typeof(AuthorizationExtensions)
-            .GetMethod("ShouldUserManageTeam", BindingFlags.NonPublic | BindingFlags.Static) 
+            .GetMethod("ShouldUserManageTeam", BindingFlags.NonPublic | BindingFlags.Static)
             ?? throw new InvalidOperationException("ShouldUserManageTeam method not found");
     }
 

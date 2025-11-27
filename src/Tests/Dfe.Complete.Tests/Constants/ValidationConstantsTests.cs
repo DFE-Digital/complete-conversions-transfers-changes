@@ -38,7 +38,7 @@ namespace Dfe.Complete.Tests.Constants
         public void LinkMaxLength_ShouldReturnExpectedValue()
         {
             Assert.Equal(500, ValidationConstants.LinkMaxLength);
-        }        
+        }
 
         [Fact]
         public void NotRecognisedUKPostcode_ShouldReturnExpectedMessage()
@@ -193,7 +193,7 @@ namespace Dfe.Complete.Tests.Constants
         {
             var dateField = "Opened academy date";
             Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
-        }      
+        }
 
         [Fact]
         public void LocalAuthorityCodeRequired_ShouldReturnExpectedMessage()

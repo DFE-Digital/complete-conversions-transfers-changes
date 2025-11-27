@@ -11,7 +11,7 @@ using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
     public class CreateNewLocalAuthorityModel(ISender sender, IErrorService errorService) : LocalAuthorityAddEditBaseModel()
-    {  
+    {
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

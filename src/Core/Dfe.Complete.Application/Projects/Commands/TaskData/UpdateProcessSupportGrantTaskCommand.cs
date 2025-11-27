@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ConversionGrantCheckVendorAccount = request.NotApplicable == true ? null : request.ConversionGrantCheckVendorAccount;
             tasksData.ConversionGrantPaymentForm = request.NotApplicable == true ? null : request.ConversionGrantPaymentForm;
             tasksData.ConversionGrantSendInformation = request.NotApplicable == true ? null : request.ConversionGrantSendInformation;
-            tasksData.ConversionGrantSharePaymentDate = request.NotApplicable == true ? null : request.ConversionGrantSharePaymentDate;          
+            tasksData.ConversionGrantSharePaymentDate = request.NotApplicable == true ? null : request.ConversionGrantSharePaymentDate;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
