@@ -53,12 +53,12 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
                     new ExternalContactModel(contact,
                         canEditContact,
                         contact.Id == Project.MainContactId,
-                        contact.Id == Project.EstablishmentMainContactId                        
+                        contact.Id == Project.EstablishmentMainContactId
                     )));
             IncomingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.IncomingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,                       
+                        new ExternalContactModel(contact,
                             canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.IncomingTrustMainContactId
@@ -66,7 +66,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             OutgoingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.OutgoingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,                           
+                        new ExternalContactModel(contact,
                             canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.OutgoingTrustMainContactId
@@ -89,7 +89,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact,
-                        canEditContact, 
+                        canEditContact,
                         contact.Id == Project.MainContactId,
                         ShowOrganisation: true)));
         }

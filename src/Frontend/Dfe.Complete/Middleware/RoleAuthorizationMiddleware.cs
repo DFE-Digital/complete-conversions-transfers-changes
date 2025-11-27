@@ -1,5 +1,5 @@
-using Microsoft.Extensions.Options;
 using Dfe.Complete.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Dfe.Complete.Middleware;
 

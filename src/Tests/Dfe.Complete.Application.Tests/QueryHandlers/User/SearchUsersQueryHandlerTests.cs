@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Domain.Entities;
@@ -74,7 +73,7 @@ public class SearchUsersQueryHandlerTests
         // Arrange
         assignableUser.Team = "london"; // RDO team
         nonAssignableUser.Team = "data_consumers"; // Non-assignable team
-        
+
         var userList = new List<Domain.Entities.User> { assignableUser, nonAssignableUser };
 
         // Mock IUserReadRepository
