@@ -26,7 +26,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
-       
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();

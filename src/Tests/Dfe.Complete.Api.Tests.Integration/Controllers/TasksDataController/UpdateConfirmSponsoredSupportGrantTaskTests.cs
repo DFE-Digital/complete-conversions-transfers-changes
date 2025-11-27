@@ -50,7 +50,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.SponsoredSupportGrantSendInformation);
             Assert.False(existingTaskData.SponsoredSupportGrantInformTrust);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(TransferTaskDataCustomization))]
         public async Task UpdateConfirmSponsoredSupportGrantTaskAsync_ShouldUpdate_TransferTaskData(
@@ -83,6 +83,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData.SponsoredSupportGrantNotApplicable);
             Assert.Null(existingTaskData.SponsoredSupportGrantType);
         }
-        
+
     }
 }

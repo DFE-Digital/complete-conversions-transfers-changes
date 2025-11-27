@@ -8,7 +8,7 @@ using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims; 
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateConfirmSchoolHasCompletedAllActionsTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value }, 
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 Emailed = true,
                 Saved = true,
             };
@@ -50,7 +50,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SchoolCompletedSaved);
         }
 
-        
+
 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]

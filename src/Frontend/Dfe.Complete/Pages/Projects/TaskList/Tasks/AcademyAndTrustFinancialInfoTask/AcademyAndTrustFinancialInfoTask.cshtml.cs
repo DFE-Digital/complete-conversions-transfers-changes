@@ -24,7 +24,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
 
         public IEnumerable<AcademyAndTrustFinancialStatus> FinancialStatuses { get; set; } =
             new List<AcademyAndTrustFinancialStatus>();
-        
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
                 return Redirect(RouteConstants.ErrorPage);         
             
             FinancialStatuses = EnumExtensions.ToList<AcademyAndTrustFinancialStatus>();
-            
+
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = TransferTaskData.CheckAndConfirmFinancialInformationNotApplicable;
             AcademySurplusOrDeficit = TransferTaskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit;
@@ -43,7 +43,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
 
         public async Task<IActionResult> OnPost()
         {
-            
+
             var academySurplusOrDeficit = AcademySurplusOrDeficit == null ? null : EnumExtensions.FromDescriptionValue<AcademyAndTrustFinancialStatus>(AcademySurplusOrDeficit);
             var trustSurplusOrDeficit = TrustSurplusOrDeficit == null ? null : EnumExtensions.FromDescriptionValue<AcademyAndTrustFinancialStatus>(TrustSurplusOrDeficit);
 

@@ -14,11 +14,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolHasCompletedAl
         public Guid? TasksDataId { get; set; }
 
         [BindProperty(Name = "emailed")]
-        public bool? Emailed { get; set; } 
-        
+        public bool? Emailed { get; set; }
+
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
-        
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
@@ -33,10 +33,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolHasCompletedAl
 
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPost()
-        {            
-            await Sender.Send(new UpdateConfirmSchoolHasCompletedAllActionsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Emailed, Saved ));
+        {
+            await Sender.Send(new UpdateConfirmSchoolHasCompletedAllActionsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Emailed, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

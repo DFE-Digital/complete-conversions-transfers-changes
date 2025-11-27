@@ -10,6 +10,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
+using Dfe.Complete.Services;
 using Dfe.Complete.Tests.Common.Assertions;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils.Exceptions;
@@ -27,9 +28,9 @@ public class BaseProjectsPageModelTests
 {
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_ProjectId_NotValidGuid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+    public async Task OnGet_When_ProjectId_NotValidGuid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
-        var model = new AboutTheProjectModel(mockSender.Object, _logger);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = "an-invalid-guid";
 
         // Act
@@ -42,9 +43,9 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Project_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+    public async Task OnGet_When_Project_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
-        var model = new AboutTheProjectModel(mockSender.Object, _logger);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = Guid.NewGuid().ToString();
 
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
@@ -60,12 +61,12 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Establishment_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+    public async Task OnGet_When_Establishment_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object, _logger);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto
@@ -93,12 +94,12 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_IncomingTrustUkprn_IsSupplied_But_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+    public async Task OnGet_When_IncomingTrustUkprn_IsSupplied_But_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object, _logger);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto
@@ -145,12 +146,12 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Transfer_And_OutgoingTrustUkprn_Not_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
+    public async Task OnGet_When_Transfer_And_OutgoingTrustUkprn_Not_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object, _logger);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto
