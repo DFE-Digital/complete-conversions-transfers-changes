@@ -21,7 +21,7 @@ export interface TransferTasksSetup {
 }
 
 export abstract class TransferTasksTestSetup {
-    private static instances: Map<typeof TransferTasksTestSetup, TransferTasksSetup> = new Map();
+    private static readonly instances: Map<typeof TransferTasksTestSetup, TransferTasksSetup> = new Map();
 
     public static getSetup(): TransferTasksSetup {
         if (!this.instances.has(this)) {

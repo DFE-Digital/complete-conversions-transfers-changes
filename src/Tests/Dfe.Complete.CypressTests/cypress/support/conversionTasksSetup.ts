@@ -26,7 +26,7 @@ export interface ConversionTasksSetup {
 }
 
 export abstract class ConversionTasksTestSetup {
-    private static instances: Map<typeof ConversionTasksTestSetup, ConversionTasksSetup> = new Map();
+    private static readonly instances: Map<typeof ConversionTasksTestSetup, ConversionTasksSetup> = new Map();
 
     public static getSetup(): ConversionTasksSetup {
         if (!this.instances.has(this)) {
