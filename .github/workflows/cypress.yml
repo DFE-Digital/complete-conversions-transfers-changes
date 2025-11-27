@@ -57,7 +57,7 @@ jobs:
           - group: conversion-tasks-2
             spec: cypress/e2e/conversion-tasks/group-two/**/*.cy.ts
           - group: conversions
-            spec: cypress/e2e/conversions/revoke-a-directive-academy-order.cy.ts #debug
+            spec: cypress/e2e/conversions/**/*.cy.ts
           - group: project-listings
             spec: cypress/e2e/project-listings/**/*.cy.ts
           - group: transfer-tasks-1
