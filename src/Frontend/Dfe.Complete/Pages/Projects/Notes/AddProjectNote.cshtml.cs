@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -17,7 +18,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Pages.Projects.Notes;
 
 [Authorize(policy: UserPolicyConstants.CanAddNotes)]
-public class AddProjectNoteModel(ISender sender, IErrorService errorService, ILogger<AddProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class AddProjectNoteModel(ISender sender, IErrorService errorService, ILogger<AddProjectNoteModel> logger, IProjectPermissionService projectPermissionService) : BaseProjectNotesModel(sender, logger, NotesNavigation, projectPermissionService)
 {
     [BindProperty(Name = "note-text")]
     [Required]

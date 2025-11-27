@@ -8,19 +8,17 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Models.LocalAuthority;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
-    [Authorize(policy: UserPolicyConstants.ManageLocalAuthorities)]
     public class EditLocalAuthorityDetailsModel(ISender sender, IErrorService errorService) : LocalAuthorityAddEditBaseModel()
     {
         [BindProperty(SupportsGet = true, Name = nameof(Id))]
         public required string Id { get; set; }
-       
+
         [BindProperty(Name = nameof(ContactId))]
         public Guid? ContactId { get; set; }
 

@@ -2,12 +2,13 @@
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) : ProjectLayoutModel(sender, logger, InternalContactsNavigation)
+public class InternalContacts(ISender sender, ILogger<InternalContacts> logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, InternalContactsNavigation)
 {
     private readonly ISender _sender = sender;
     public UserDto? UserAssignedTo { get; set; }

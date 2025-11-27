@@ -55,7 +55,7 @@ public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger
         var addedByUserQuery = new GetUserByEmailQuery(Email);
         var addedBySearchResult = await _sender.Send(addedByUserQuery);
 
-        if (addedBySearchResult is { IsSuccess: true, Value.AssignToProject: true })
+        if (addedBySearchResult is { IsSuccess: true, Value.IsAssignableToProject: true })
         {
             var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Id, addedBySearchResult.Value.Id);
             var result = await _sender.Send(updateRequest);

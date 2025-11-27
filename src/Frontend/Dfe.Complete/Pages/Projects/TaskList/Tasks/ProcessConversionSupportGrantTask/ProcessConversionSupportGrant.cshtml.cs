@@ -1,10 +1,10 @@
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
-using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ProcessConversionSupportGrant
 {
@@ -38,7 +38,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ProcessConversionSupportGra
             NotApplicable = ConversionTaskData.ConversionGrantNotApplicable;
             ConversionGrantCheckVendorAccount = ConversionTaskData.ConversionGrantCheckVendorAccount;
             ConversionGrantPaymentForm = ConversionTaskData.ConversionGrantPaymentForm;
-            ConversionGrantSendInformation = ConversionTaskData.ConversionGrantSendInformation; 
+            ConversionGrantSendInformation = ConversionTaskData.ConversionGrantSendInformation;
             ConversionGrantSharePaymentDate = ConversionTaskData.ConversionGrantSharePaymentDate;
             return Page();
         }

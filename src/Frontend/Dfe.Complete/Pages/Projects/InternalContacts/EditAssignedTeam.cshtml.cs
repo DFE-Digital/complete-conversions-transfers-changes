@@ -1,14 +1,14 @@
 ﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Domain.Constants;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 

@@ -16,21 +16,21 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
 
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
-        
+
         public IEnumerable<SponsoredSupportGrantType> SponsoredSupportGrantTypes { get; set; } = new List<SponsoredSupportGrantType>();
 
         [BindProperty(Name = "sponsored_support_grant_type")]
-        public string? SponsoredSupportGrantType { get; set; } 
-        
+        public string? SponsoredSupportGrantType { get; set; }
+
         [BindProperty(Name = "paymentAmount")]
         public bool? PaymentAmount { get; set; }
-        
+
         [BindProperty(Name = "paymentForm")]
         public bool? PaymentForm { get; set; }
 
         [BindProperty(Name = "sendInformation")]
         public bool? SendInformation { get; set; }
-        
+
         [BindProperty(Name = "informTrust")]
         public bool? InformTrust { get; set; }
 
@@ -39,15 +39,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
 
         [BindProperty]
         public ProjectType? Type { get; set; }
- 
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
             Type = Project.Type;
-            
+
             SponsoredSupportGrantTypes = EnumExtensions.ToList<SponsoredSupportGrantType>();
-            
+
             if (Type == ProjectType.Transfer)
             {
                 NotApplicable = TransferTaskData.SponsoredSupportGrantNotApplicable;
@@ -61,13 +61,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
 
                 NotApplicable = ConversionTaskData.SponsoredSupportGrantNotApplicable;
                 SponsoredSupportGrantType = ConversionTaskData.SponsoredSupportGrantType;
-                
+
                 PaymentAmount = ConversionTaskData.SponsoredSupportGrantPaymentAmount;
                 PaymentForm = ConversionTaskData.SponsoredSupportGrantPaymentForm;
                 SendInformation = ConversionTaskData.SponsoredSupportGrantSendInformation;
                 InformTrust = ConversionTaskData.SponsoredSupportGrantInformTrust;
             }
-            
+
             return Page();
         }
         public async Task<IActionResult> OnPost()

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 
 using OidcContext = Microsoft.AspNetCore.Authentication.OpenIdConnect.TokenValidatedContext;
 
@@ -114,7 +115,15 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 return true;
             }
 
-            // 4. If the email does match, allow the user into the system. Hooray!
+            // 4. If the email does match, update ManageTeam if needed and allow the user into the system
+            var shouldManageTeam = ShouldUserManageTeam(context.Principal);
+            if (userByOid.ManageTeam != shouldManageTeam)
+            {
+                userByOid.ManageTeam = shouldManageTeam;
+                userByOid.UpdatedAt = DateTime.UtcNow;
+                await dbContext.SaveChangesAsync();
+            }
+
             logger.LogInformation("User {UserId} authenticated successfully", userId);
             return true;
         }
@@ -142,11 +151,27 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 return;
             }
 
-            // 8. If the OID is empty, update it
+            // 8. If the OID is empty, update it, and also update ManageTeam based on roles
+            var shouldManageTeam = ShouldUserManageTeam(context.Principal);
+            var needsUpdate = false;
+
             if (string.IsNullOrEmpty(userByEmail.EntraUserObjectId) && !string.IsNullOrEmpty(userId))
             {
                 logger.LogInformation("Updating user {Email} with Entra Object ID {OID} for first login", email, userId);
                 userByEmail.EntraUserObjectId = userId;
+                needsUpdate = true;
+            }
+
+            if (userByEmail.ManageTeam != shouldManageTeam)
+            {
+                logger.LogInformation("Updating ManageTeam for user {Email} from {OldValue} to {NewValue}",
+                    email, userByEmail.ManageTeam, shouldManageTeam);
+                userByEmail.ManageTeam = shouldManageTeam;
+                needsUpdate = true;
+            }
+
+            if (needsUpdate)
+            {
                 userByEmail.UpdatedAt = DateTime.UtcNow;
                 await dbContext.SaveChangesAsync();
             }
@@ -160,5 +185,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
             context.HttpContext.Response.Redirect($"/sign-in?error={validationFailure.ToDescription()}");
             context.HandleResponse();
         }
+
+        private static bool ShouldUserManageTeam(ClaimsPrincipal? principal) => principal?.IsInRole(UserRolesConstants.RegionalCaseworkServicesTeamLead) == true;
     }
 }

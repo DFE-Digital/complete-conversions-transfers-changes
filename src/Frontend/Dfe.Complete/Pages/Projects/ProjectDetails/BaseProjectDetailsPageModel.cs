@@ -2,6 +2,7 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
@@ -13,7 +14,7 @@ using System.Web;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails
 {
-    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger _logger) : BaseProjectPageModel(sender, _logger)
+    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger _logger, IProjectPermissionService? projectPermissionService = null) : BaseProjectPageModel(sender, _logger, projectPermissionService)
     {
         public IErrorService ErrorService
         {

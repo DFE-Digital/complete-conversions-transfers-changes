@@ -258,7 +258,7 @@ public class ContactsControllerTests
         IContactsClient contactsClient,
         IFixture fixture)
     {
-        factory.TestClaims = new[] { ApiRoles.ReadRole}
+        factory.TestClaims = new[] { ApiRoles.ReadRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -273,10 +273,10 @@ public class ContactsControllerTests
 
         Assert.Equivalent(expected.Id, actual.Id);
         Assert.Equivalent(expected.ProjectId, actual.ProjectId);
-        Assert.Equivalent(expected.Name, actual.Name);        
+        Assert.Equivalent(expected.Name, actual.Name);
         Assert.Equivalent(expected.Title, actual.Title);
-        Assert.Equivalent(expected.Email, actual.Email);        
-        Assert.Equivalent(expected.Phone, actual.Phone);       
+        Assert.Equivalent(expected.Email, actual.Email);
+        Assert.Equivalent(expected.Phone, actual.Phone);
         Assert.Equivalent(expected.OrganisationName, actual.OrganisationName);
         Assert.Equal(expected.LocalAuthorityId?.Value, actual.LocalAuthorityId?.Value);
         Assert.Equal(ContactCategory.Other, actual.Category);
@@ -322,7 +322,7 @@ public class ContactsControllerTests
         dbContext.Contacts.Add(existingContact);
         await dbContext.SaveChangesAsync();
 
-        updateExternalContactCommand.ContactDto!.Id = new Complete.Client.Contracts.ContactId() { Value = existingContact.Id.Value }; 
+        updateExternalContactCommand.ContactDto!.Id = new Complete.Client.Contracts.ContactId() { Value = existingContact.Id.Value };
 
         await contactsClient.UpdateExternaContactAsync(updateExternalContactCommand, CancellationToken.None);
 
@@ -336,7 +336,7 @@ public class ContactsControllerTests
         Assert.Equal(updateContactDto?.Title, updatedContact.Title);
         Assert.Equal(updateContactDto?.Email, updatedContact.Email);
         Assert.Equal(updateContactDto?.OrganisationName, updatedContact.OrganisationName);
-        Assert.Equal(updateContactDto?.Phone, updatedContact.Phone);        
+        Assert.Equal(updateContactDto?.Phone, updatedContact.Phone);
     }
 
     [Theory]
@@ -363,11 +363,11 @@ public class ContactsControllerTests
         await dbContext.SaveChangesAsync();
 
         var nonExistendContactId = new Complete.Client.Contracts.ContactId() { Value = Guid.NewGuid() };
-        updateExternalContactCommand.ContactDto!.Id = nonExistendContactId;        
+        updateExternalContactCommand.ContactDto!.Id = nonExistendContactId;
 
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await contactsClient.UpdateExternaContactAsync(updateExternalContactCommand, CancellationToken.None));
-        
+
         Assert.Contains($"External contact with Id {nonExistendContactId.Value} not found", exception.Response);
     }
 
@@ -378,7 +378,7 @@ public class ContactsControllerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(LocalAuthorityCustomization))]
     public async Task DeleteExternalContactAsync_ShouldDeleteContact(
-        CustomWebApplicationDbContextFactory<Program> factory,        
+        CustomWebApplicationDbContextFactory<Program> factory,
         IContactsClient contactsClient,
         IFixture fixture)
     {
@@ -409,7 +409,7 @@ public class ContactsControllerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(LocalAuthorityCustomization))]
     public async Task DeleteExternalContactAsync_ContactNotFound_ShouldThrowException(
-        CustomWebApplicationDbContextFactory<Program> factory,        
+        CustomWebApplicationDbContextFactory<Program> factory,
         IContactsClient contactsClient,
         IFixture fixture)
     {

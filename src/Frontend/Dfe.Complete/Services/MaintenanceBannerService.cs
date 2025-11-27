@@ -38,7 +38,7 @@ namespace Dfe.Complete.Services
 
                 var now = DateTime.UtcNow;
                 var notifyFrom = _options.NotifyFrom.Value;
-                
+
                 // Validate maintenance end is not in the past (if provided)
                 if (_options.MaintenanceEnd.HasValue && _options.MaintenanceEnd.Value < now)
                 {
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Services
                         _options.MaintenanceEnd.Value, _options.MaintenanceStart.Value);
                     return false;
                 }
-                
+
                 // Set NotifyTo to MaintenanceEnd if not specified, or to far future if no MaintenanceEnd
                 var notifyTo = _options.NotifyTo ?? _options.MaintenanceEnd ?? DateTime.MaxValue;
 
@@ -109,7 +109,7 @@ namespace Dfe.Complete.Services
                 var date = startDateTime.ToDateString(); // Just the date part
                 var startTime = startDateTime.ToString("h:mm tt").ToLower(); // Time part in AM/PM format
                 var endTime = endDateTime.ToString("h:mm tt").ToLower();
-                
+
                 return $"The Complete conversions, transfers and changes service will be unavailable from {startTime} to {endTime} on {date} due to scheduled maintenance work.";
             }
 
