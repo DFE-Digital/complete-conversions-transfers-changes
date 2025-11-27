@@ -1,5 +1,6 @@
 @page "/access-denied"
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@addTagHelper Dfe.Complete.TagHelpers.ExternalLinkTagHelper, Dfe.Complete
 @model Microsoft.Identity.Web.UI.Areas.MicrosoftIdentity.Pages.Account.AccessDeniedModel
 @{
     Layout = "_Layout";
@@ -7,4 +8,4 @@
 }
 
 <h1 class="govuk-heading-l">You do not have access to this service</h1>
-<p class="govuk-body">If you think you need access, <a href="@_configuration["AccessRequest"]" class="govuk-link">request access to this service</a>.</p>
+<p class="govuk-body">If you think you need access, <a href="@_configuration["ExternalLinks:SignUpForAccess"]" class="govuk-link" data-cy="sign-up-link" target="_blank" rel="noopener noreferrer">request access to this service (opens in new tab)</a>.</p>
