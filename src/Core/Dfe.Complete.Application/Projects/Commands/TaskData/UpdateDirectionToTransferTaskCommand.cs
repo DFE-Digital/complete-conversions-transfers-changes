@@ -27,18 +27,18 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
-             
+
             tasksData.DirectionToTransferNotApplicable = request.NotApplicable;
 
             tasksData.DirectionToTransferReceived = request.NotApplicable == true ? null : request.Received;
             tasksData.DirectionToTransferCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.DirectionToTransferSigned = request.NotApplicable == true ? null : request.Signed;
             tasksData.DirectionToTransferSaved = request.NotApplicable == true ? null : request.Saved;
-            
+
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
         }
-      
+
     }
 }

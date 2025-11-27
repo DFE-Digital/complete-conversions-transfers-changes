@@ -21,7 +21,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
         }
 
         public IActionResult OnPost()
-        {           
+        {
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectDaoRevocationConfirm));
         }
     }

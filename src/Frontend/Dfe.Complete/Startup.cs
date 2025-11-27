@@ -170,7 +170,7 @@ public class Startup
         services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
         services.Configure<MaintenanceBannerOptions>(Configuration.GetSection(MaintenanceBannerOptions.Section));
         services.Configure<AzureAdOptions>(Configuration.GetSection(AzureAdOptions.SectionName));
-        
+
         // Register services
         services.AddScoped<IMaintenanceBannerService, MaintenanceBannerService>();
     }

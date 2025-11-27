@@ -61,7 +61,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new (sender, projectService, logger, projectPermissionService)
+        CompleteProjectModel testClass = new(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,

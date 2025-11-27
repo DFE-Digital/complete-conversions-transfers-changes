@@ -33,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            
+
             TasksDataId = Project.TasksDataId?.Value;
             Redact = TransferTaskData.RedactAndSendDocumentsRedact;
             Saved = TransferTaskData.RedactAndSendDocumentsSaved;

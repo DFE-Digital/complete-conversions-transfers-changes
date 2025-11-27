@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using System.Security.Claims;
-using Xunit;
 
 namespace Dfe.Complete.Tests.Middleware;
 
@@ -83,8 +82,8 @@ public class RoleAuthorizationMiddlewareTests
         _mockOptions.Setup(x => x.Value).Returns(new AzureAdOptions { AllowedRoles = allowedRoles });
 
         // Create endpoint with AllowAnonymous metadata
-        var endpoint = new Endpoint(_ => Task.CompletedTask, 
-            new EndpointMetadataCollection(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute()), 
+        var endpoint = new Endpoint(_ => Task.CompletedTask,
+            new EndpointMetadataCollection(new Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute()),
             "test");
         _httpContext.SetEndpoint(endpoint);
 

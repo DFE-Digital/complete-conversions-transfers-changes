@@ -309,7 +309,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
-        [SwaggerResponse(204, "Project Group returned successfully.")]        
+        [SwaggerResponse(204, "Project Group returned successfully.")]
         [IgnoreApiInProductionAttribute]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
@@ -676,7 +676,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updates assigned user.
         /// </summary>
@@ -691,7 +691,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updates assigned team.
         /// </summary>
@@ -707,7 +707,7 @@ namespace Dfe.Complete.Api.Controllers
 
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updates added by.
         /// </summary>
