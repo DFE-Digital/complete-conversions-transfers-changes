@@ -7,36 +7,32 @@ using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
+namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation;
+
+public class DaoRevocationCheckModel(ISender sender, ILogger<AddDaoRevocationMinisterNameModel> logger,
+    ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
 {
-    public class DaoRevocationCheckModel(ISender sender, ILogger<AddDaoRevocationMinisterNameModel> logger,
-        ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
+    [BindProperty]
+    public RecordDaoRevocationDecisionCommand? Decision { get; set; }
+    public override async Task<IActionResult> OnGetAsync()
     {
-        [BindProperty]
-        public RecordDaoRevocationDecisionCommand? Decision { get; set; }
-        public override async Task<IActionResult> OnGetAsync()
-        {
-            var authResult = await CheckDaoRevocationPermissionAsync();
-            if (authResult != null) return authResult;
-            
-            var decision = await GetCachedDecisionAsync();
+        var decision = await GetCachedDecisionAsync();
 
-            if (decision.ReasonNotes?.Count == 0)
-                return RedirectToDaoRevocationPage();
+        if (decision.ReasonNotes?.Count == 0)
+            return RedirectToDaoRevocationPage();
 
-            Decision = decision;
-            return Page();
-        }
+        Decision = decision;
+        return Page();
+    }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var decision = await GetCachedDecisionAsync();
-            decision.UserId = User.GetUserId();
-            await sender.Send(decision);
+    public async Task<IActionResult> OnPostAsync()
+    {
+        var decision = await GetCachedDecisionAsync();
+        decision.UserId = User.GetUserId();
+        await Sender.Send(decision);
 
-            cacheService.Remove(CacheKey);
-            TempData["RecordedDaoRevocation"] = true;
-            return Redirect(FormatRouteWithProjectId(RouteConstants.Project));
-        }
+        CacheService.Remove(CacheKey);
+        TempData["RecordedDaoRevocation"] = true;
+        return Redirect(FormatRouteWithProjectId(RouteConstants.Project));
     }
 }

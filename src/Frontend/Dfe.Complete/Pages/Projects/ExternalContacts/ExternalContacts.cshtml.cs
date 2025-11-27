@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,8 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization)
-    : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
+public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization, IProjectPermissionService projectPermissionService)
+    : ProjectLayoutModel(sender, logger, projectPermissionService, ExternalContactsNavigation)
 {
     private readonly IDistributedCache _cache = cache;
 

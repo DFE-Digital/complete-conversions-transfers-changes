@@ -14,13 +14,17 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
             if (permissionResult != null) return permissionResult;
 
             await UpdateCurrentProject();
+
+            var permissionResult = await CheckDaoRevocationPermissionAsync();
+            if (permissionResult != null) return permissionResult;
+
             await SetEstablishmentAsync();
 
             return Page();
         }
 
         public IActionResult OnPost()
-        {
+        {           
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectDaoRevocationConfirm));
         }
     }

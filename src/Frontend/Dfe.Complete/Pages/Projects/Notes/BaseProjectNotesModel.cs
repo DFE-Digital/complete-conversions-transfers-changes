@@ -5,12 +5,13 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class BaseProjectNotesModel(ISender sender, ILogger logger, string notesNavigation) : ProjectLayoutModel(sender, logger, notesNavigation)
+public class BaseProjectNotesModel(ISender sender, ILogger logger, string notesNavigation, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, notesNavigation)
 {
     public async Task<NoteDto?> GetNoteById(Guid noteId)
     {

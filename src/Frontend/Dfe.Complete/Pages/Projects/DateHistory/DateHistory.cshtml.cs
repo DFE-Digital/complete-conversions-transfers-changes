@@ -2,20 +2,21 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class DateHistoryProjectModel(ISender sender, ILogger<DateHistoryProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
+    public class DateHistoryProjectModel(ISender sender, ILogger<DateHistoryProjectModel> logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, ConversionDateHistoryNavigation)
     {
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
 
             var projectWithHistories = new GetProjectHistoryByProjectIdQuery(ProjectId);
-            var result = await sender.Send(projectWithHistories);
+            var result = await Sender.Send(projectWithHistories);
 
             Project = result.Value!;
 
