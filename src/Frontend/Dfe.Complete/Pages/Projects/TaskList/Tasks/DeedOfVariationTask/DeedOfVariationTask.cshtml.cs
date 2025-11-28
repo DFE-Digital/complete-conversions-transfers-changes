@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
 {
-    public class DeedOfVariationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfVariationTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfVariation)
+    public class DeedOfVariationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfVariationTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfVariation, projectPermissionService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -68,9 +69,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable));
+            await Sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
 }
+

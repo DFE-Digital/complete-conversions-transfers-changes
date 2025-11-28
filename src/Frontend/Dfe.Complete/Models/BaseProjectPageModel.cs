@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProjectPermissionService? projectPermissionService = null) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService) : PageModel
 {
     protected readonly ISender Sender = sender;
     protected ILogger Logger = logger;
@@ -43,8 +43,11 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
     public KeyContactDto KeyContacts { get; private set; } = null!;
 
+    public bool UserHasViewAccess() =>
+        projectPermissionService.UserCanView(Project, User);
+
     public bool UserHasEditAccess() =>
-        projectPermissionService?.UserCanEdit(Project, User) ?? false;
+        projectPermissionService.UserCanEdit(Project, User);
 
     public async Task UpdateCurrentProject()
     {
@@ -135,6 +138,12 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
+
+        if (!UserHasViewAccess())
+        {
+            TempData.SetNotification(NotificationType.Error, "Forbidden", "You do not have permission to view this project.");
+            return Forbid();
+        }
 
         if (Project == null)
             return NotFound();

@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,7 +15,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class BaseProjectTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender, logger)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier taskIdentifier, IProjectPermissionService projectPermissionService)
+    : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
     public required NoteTaskIdentifier TaskIdentifier { get; set; } = taskIdentifier;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];

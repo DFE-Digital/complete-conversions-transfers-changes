@@ -5,14 +5,15 @@ using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
 {
-    public class IncomingTrustCeoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<IncomingTrustCeoTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCeoContact)
+    public class IncomingTrustCeoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<IncomingTrustCeoTaskModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCeoContact, projectPermissionService)
     {
         [BindProperty]
         public Guid? IncomingTrustCeoContactId { get; set; }
@@ -47,3 +48,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         }
     }
 }
+

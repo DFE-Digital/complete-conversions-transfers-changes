@@ -5,6 +5,7 @@ using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
@@ -17,7 +18,8 @@ public class InternalContacts(ISender sender, ILogger<InternalContacts> logger, 
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult) return baseResult;
         if (Project.AssignedToId is not null)
         {
             var assignedToUserQuery = new GetUserByIdQuery(Project.AssignedToId);

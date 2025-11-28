@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
+using NSubstitute;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.Pages.Projects
@@ -63,6 +64,8 @@ namespace Dfe.Complete.Tests.Pages.Projects
         {
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
+
+            projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>()).Returns(true);
 
             var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService)
             {
@@ -117,6 +120,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
+            projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>()).Returns(true);
             var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService)
             {
                 PageContext = GetPageContext(),

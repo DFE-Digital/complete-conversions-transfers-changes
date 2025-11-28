@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask
 {
-    public class ConfirmAcademyOpenedDateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAcademyOpenedDateTaskModel> logger, IErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAcademyOpenedDate)
+    public class ConfirmAcademyOpenedDateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAcademyOpenedDateTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAcademyOpenedDate, projectPermissionService)
     {
         [BindProperty(Name = "opened-date")]
         [DisplayName("Opened academy date")]
@@ -45,3 +46,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
         }
     }
 }
+

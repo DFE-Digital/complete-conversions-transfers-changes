@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask
 {
-    public class ConfirmAllConditionsMetTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAllConditionsMetTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAllConditionsMet)
+    public class ConfirmAllConditionsMetTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAllConditionsMetTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAllConditionsMet, projectPermissionService)
     {
         public bool? Sent { get; set; }
         [BindProperty(Name = "any-information-changed")]

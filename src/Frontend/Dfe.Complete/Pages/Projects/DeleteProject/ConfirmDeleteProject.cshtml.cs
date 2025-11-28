@@ -3,6 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.DeleteProject
 {
     [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
-    public class ConfirmDeleteProjectModel(ISender sender, ILogger<ConfirmDeleteProjectModel> logger) : BaseProjectPageModel(sender, logger)
+    public class ConfirmDeleteProjectModel(ISender sender, ILogger<ConfirmDeleteProjectModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectPageModel(sender, logger, projectPermissionService)
     {
         public override async Task<IActionResult> OnGetAsync()
         {

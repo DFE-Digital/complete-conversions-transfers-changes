@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ClosureOrTransferDeclarationTask
 {
-    public class ClosureOrTransferDeclarationModel(ISender sender, IAuthorizationService authorizationService, ILogger<ClosureOrTransferDeclarationModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ClosureOrTransferDeclaration)
+    public class ClosureOrTransferDeclarationModel(ISender sender, IAuthorizationService authorizationService, ILogger<ClosureOrTransferDeclarationModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ClosureOrTransferDeclaration, projectPermissionService)
     {
         [BindProperty]
         public Guid? TasksDataId { get; set; }

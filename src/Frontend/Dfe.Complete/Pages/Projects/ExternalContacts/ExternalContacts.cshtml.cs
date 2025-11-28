@@ -11,6 +11,7 @@ using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
@@ -38,8 +39,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
-
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult) return baseResult;
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
         var projectContacts = await Sender.Send(projectQuery);

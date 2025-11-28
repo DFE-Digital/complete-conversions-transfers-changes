@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInfoTask
 {
-    public class AcademyAndTrustFinancialInfoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<AcademyAndTrustFinancialInfoTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation)
+    public class AcademyAndTrustFinancialInfoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<AcademyAndTrustFinancialInfoTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation, projectPermissionService)
     {
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
