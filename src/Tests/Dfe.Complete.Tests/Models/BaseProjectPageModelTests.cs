@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Tests.Common.Assertions;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -19,10 +20,11 @@ public class BaseProjectPageModelTests
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
     public async Task UpdateCurrentProject_LogsWarning_WhenProjectIdIsInvalid(
         [Frozen] ISender sender,
-        [Frozen] ILogger logger)
+        [Frozen] ILogger logger,
+        [Frozen] IProjectPermissionService projectPermissionService)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, logger)
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
         {
             ProjectId = "not-a-guid"
         };
@@ -40,10 +42,11 @@ public class BaseProjectPageModelTests
     public async Task UpdateCurrentProject_LogsWarning_WhenResultIsFailure(
         [Frozen] ISender sender,
         [Frozen] ILogger logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         Guid guid)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, logger)
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
         {
             ProjectId = guid.ToString()
         };
@@ -66,10 +69,11 @@ public class BaseProjectPageModelTests
     public async Task UpdateCurrentProject_LogsWarning_WhenResultValueIsNull(
         [Frozen] ISender sender,
         [Frozen] ILogger logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         Guid guid)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, logger)
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
         {
             ProjectId = guid.ToString()
         };
@@ -92,11 +96,12 @@ public class BaseProjectPageModelTests
     public async Task UpdateCurrentProject_SetsProject_WhenResultIsSuccessful(
         [Frozen] ISender sender,
         [Frozen] ILogger logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         Guid guid,
         ProjectDto projectDto)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, logger)
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
         {
             ProjectId = guid.ToString()
         };
@@ -114,6 +119,6 @@ public class BaseProjectPageModelTests
     }
 }
 
-public class TestBaseProjectPageModel(ISender sender, ILogger logger) : BaseProjectPageModel(sender, logger)
+public class TestBaseProjectPageModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService) : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
 }

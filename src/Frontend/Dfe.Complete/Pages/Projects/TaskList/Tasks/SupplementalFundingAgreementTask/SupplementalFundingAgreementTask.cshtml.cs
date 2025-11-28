@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask
 {
-    public class SupplementalFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<SupplementalFundingAgreementTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.SupplementalFundingAgreement)
+    public class SupplementalFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<SupplementalFundingAgreementTaskModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.SupplementalFundingAgreement, projectPermissionService)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }
@@ -61,7 +62,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
+            await Sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
