@@ -2,7 +2,7 @@ class Cookies {
     private readonly consentCookie = "ACCEPT_OPTIONAL_COOKIES";
     private readonly acceptCookiesTestId = "cookie-banner-accept";
     private readonly rejectCookiesTestId = "cookie-banner-reject";
-    private readonly viewCookiesLinkTestId = "cookie-banner-link-2";
+    private readonly viewCookiesLinkTestId = "cookie-banner-link";
     private readonly cookieBannerId = "appCookieBanner";
 
     public consentCookieIsSetToTrue() {
