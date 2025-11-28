@@ -1,5 +1,4 @@
-﻿@using Dfe.Complete.Utils
-@using Dfe.Complete.Domain.Extensions;
+﻿@using Dfe.Complete.Utils;
 
 @model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
 
@@ -62,7 +61,7 @@
                 <govuk-summary-list-row-value>
                     @Model.Project.NewTrustReferenceNumber
                 </govuk-summary-list-row-value>
-                @if(Model.CurrentUserTeam.TeamIsServiceSupport() && !string.IsNullOrWhiteSpace(@Model.Project.NewTrustReferenceNumber)) {
+                @if(Model.UserHasAdminAccess() && !string.IsNullOrWhiteSpace(@Model.Project.NewTrustReferenceNumber)) {
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("new_trust_reference_number")" visually-hidden-text="New trust reference number (TRN)">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
