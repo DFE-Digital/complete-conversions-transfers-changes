@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Common.Interfaces;
-using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Validators;
@@ -27,7 +26,6 @@ public record CreateConversionProjectCommand(
 public class CreateConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    IKeyContactWriteRepository keyContactWriteRepository,
     ILogger<CreateConversionProjectCommandHandler> logger)
     : IRequestHandler<CreateConversionProjectCommand, ProjectId>
 {
@@ -78,15 +76,6 @@ public class CreateConversionProjectCommandHandler(
             project.PrepareId = request.PrepareId!.Value;
 
             await handoverProjectService.SaveProjectAndTaskAsync(project, conversionTask, cancellationToken);
-            // Create key contact record
-            var dateTime = DateTime.UtcNow;
-            await keyContactWriteRepository.AddKeyContactAsync(new KeyContact
-            {
-                Id = new KeyContactId(Guid.NewGuid()),
-                ProjectId = project.Id,
-                UpdatedAt = dateTime,
-                CreatedAt = dateTime,
-            }, cancellationToken);
 
             await unitOfWork.CommitAsync();
 

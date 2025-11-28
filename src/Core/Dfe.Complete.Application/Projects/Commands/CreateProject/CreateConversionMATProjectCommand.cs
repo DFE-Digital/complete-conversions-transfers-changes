@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Common.Interfaces;
-using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Validators;
@@ -28,7 +27,6 @@ public record CreateConversionMatProjectCommand(
 public class CreateConversionMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    IKeyContactWriteRepository keyContactWriteRepository,
     ILogger<CreateConversionMatProjectCommandHandler> logger)
     : IRequestHandler<CreateConversionMatProjectCommand, ProjectId>
 {
@@ -75,15 +73,6 @@ public class CreateConversionMatProjectCommandHandler(
 
             await handoverProjectService.SaveProjectAndTaskAsync(project, conversionTask, cancellationToken);
 
-            // Create key contact record
-            var dateTime = DateTime.UtcNow;
-            await keyContactWriteRepository.AddKeyContactAsync(new KeyContact
-            {
-                Id = new KeyContactId(Guid.NewGuid()),
-                ProjectId = project.Id,
-                UpdatedAt = dateTime,
-                CreatedAt = dateTime,
-            }, cancellationToken);
             await unitOfWork.CommitAsync();
 
             return project.Id;
