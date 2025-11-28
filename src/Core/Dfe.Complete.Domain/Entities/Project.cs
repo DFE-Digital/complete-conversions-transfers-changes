@@ -428,4 +428,48 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             RevisedDate = significantDateHistory.RevisedDate,
         });
     }
+
+    /// <summary>
+    /// Raises a domain event when the project is assigned to the regional caseworker team.
+    /// </summary>
+    public void RaiseProjectAssignedToRegionalTeamEvent(string projectReference, string schoolName)
+    {
+        if (Type == null)
+        {
+            throw new InvalidOperationException("Cannot raise ProjectAssignedToRegionalTeamEvent: Project Type is null");
+        }
+
+        AddDomainEvent(new Events.ProjectAssignedToRegionalTeamEvent(
+            Id,
+            projectReference,
+            Type.Value,
+            Urn.Value,
+            schoolName));
+    }
+
+    /// <summary>
+    /// Raises a domain event when the project is assigned to a specific user.
+    /// </summary>
+    public void RaiseProjectAssignedToUserEvent(
+        string projectReference,
+        UserId assignedToUserId,
+        string assignedToEmail,
+        string assignedToFirstName,
+        string schoolName)
+    {
+        if (Type == null)
+        {
+            throw new InvalidOperationException("Cannot raise ProjectAssignedToUserEvent: Project Type is null");
+        }
+
+        AddDomainEvent(new Events.ProjectAssignedToUserEvent(
+            Id,
+            projectReference,
+            Type.Value,
+            assignedToUserId,
+            assignedToEmail,
+            assignedToFirstName,
+            Urn.Value,
+            schoolName));
+    }
 }
