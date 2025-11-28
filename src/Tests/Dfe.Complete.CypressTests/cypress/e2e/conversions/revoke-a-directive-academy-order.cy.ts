@@ -8,7 +8,7 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const directiveAcademyOrderProject = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversion.stChads,
+    urn: urnPool.conversion.batmans,
     directiveAcademyOrder: true,
 });
 let directiveAcademyOrderId: string;
