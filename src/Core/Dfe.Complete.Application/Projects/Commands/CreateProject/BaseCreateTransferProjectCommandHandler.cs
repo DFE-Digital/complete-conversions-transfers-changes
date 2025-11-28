@@ -1,5 +1,6 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
@@ -15,15 +16,18 @@ public abstract class BaseCreateTransferProjectCommandHandler<TRequest>
 {
     protected readonly IUnitOfWork _unitOfWork;
     protected readonly IHandoverProjectService _handoverProjectService;
+    protected readonly IKeyContactWriteRepository _keyContactWriteRepository;
     protected readonly ILogger _logger;
 
     protected BaseCreateTransferProjectCommandHandler(
         IUnitOfWork unitOfWork,
         IHandoverProjectService handoverProjectService,
+        IKeyContactWriteRepository keyContactWriteRepository,
         ILogger logger)
     {
         _unitOfWork = unitOfWork;
         _handoverProjectService = handoverProjectService;
+        _keyContactWriteRepository = keyContactWriteRepository;
         _logger = logger;
     }
 
@@ -67,6 +71,16 @@ public abstract class BaseCreateTransferProjectCommandHandler<TRequest>
             project.PrepareId = request.PrepareId!.Value;
 
             await _handoverProjectService.SaveProjectAndTaskAsync(project, transferTask, cancellationToken);
+
+            // Create key contact record
+            var dateTime = DateTime.UtcNow;
+            await _keyContactWriteRepository.AddKeyContactAsync(new KeyContact
+            {
+                Id = new KeyContactId(Guid.NewGuid()),
+                ProjectId = project.Id,
+                UpdatedAt = dateTime,
+                CreatedAt = dateTime,
+            }, cancellationToken);
 
             await _unitOfWork.CommitAsync();
 

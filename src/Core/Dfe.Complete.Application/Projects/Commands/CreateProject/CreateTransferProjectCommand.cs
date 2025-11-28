@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Validators;
@@ -28,8 +29,9 @@ public record CreateTransferProjectCommand(
 public class CreateTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
+    IKeyContactWriteRepository keyContactWriteRepository,
     ILogger<CreateTransferProjectCommandHandler> logger)
-    : BaseCreateTransferProjectCommandHandler<CreateTransferProjectCommand>(unitOfWork, handoverProjectService, logger),
+    : BaseCreateTransferProjectCommandHandler<CreateTransferProjectCommand>(unitOfWork, handoverProjectService, keyContactWriteRepository, logger),
       IRequestHandler<CreateTransferProjectCommand, ProjectId>
 {
     public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
