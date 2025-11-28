@@ -18,5 +18,4 @@ public static class ProjectTeamExtensions
 
     public static bool TeamIsRegionalDeliveryOfficer(this ProjectTeam team) => RdoTeams.ToList().Contains(team);
     public static bool TeamIsRegionalCaseworkServices(this ProjectTeam team) => team is ProjectTeam.RegionalCaseWorkerServices;
-    public static bool TeamIsServiceSupport(this ProjectTeam team) => team is ProjectTeam.ServiceSupport;
 }

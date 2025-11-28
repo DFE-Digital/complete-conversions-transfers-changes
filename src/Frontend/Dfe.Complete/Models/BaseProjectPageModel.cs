@@ -43,6 +43,9 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
     public KeyContactDto KeyContacts { get; private set; } = null!;
 
+    public bool UserHasAdminAccess() =>
+        projectPermissionService?.UserIsAdmin(Project, User) ?? false;
+
     public bool UserHasEditAccess() =>
         projectPermissionService?.UserCanEdit(Project, User) ?? false;
 

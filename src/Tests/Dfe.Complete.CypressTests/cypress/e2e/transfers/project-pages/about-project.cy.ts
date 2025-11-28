@@ -33,6 +33,7 @@ const projectFormAMat = ProjectBuilder.createTransferFormAMatProjectRequest({
     newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
     outgoingTrustUkprn: dimensionsTrust.ukprn,
 });
+const newGRP = "GRP_68898810";
 let projectFormAMatId: string;
 let formAMATChangeLinkPath: string;
 let projectFormAMATDetails: UpdateProjectHandoverAssignRequest;
@@ -61,9 +62,7 @@ describe("About the project page - transfer projects: ", () => {
             projectApi.updateProjectHandoverAssign(projectFormAMATDetails);
             formAMATChangeLinkPath = `/projects/transfers/${projectFormAMatId}/edit#`;
         });
-        groupApi
-            .getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber)
-            .then((groups) => (groupId = groups[0].groupId));
+        groupApi.getGroupBy("groupIdentifier", newGRP).then((groups) => (groupId = groups[0].groupId));
     });
 
     beforeEach(() => {
@@ -168,7 +167,6 @@ describe("About the project page - transfer projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(incomingTrust.ukprn)
-            .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -178,7 +176,6 @@ describe("About the project page - transfer projects: ", () => {
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
-            .hasChangeLink(`${changeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue(incomingTrust.address)
             .summaryShows("SharePoint folder")
@@ -314,7 +311,6 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink("")
             .summaryShows("New trust reference number (TRN)")
-            .hasChangeLink(`${formAMATChangeLinkPath}new_trust_reference_number`)
             .hasValue(projectFormAMat.newTrustReferenceNumber)
             .summaryShows("Address")
             .hasValue("")
@@ -378,8 +374,6 @@ describe("About the project page - transfer projects: ", () => {
     });
 
     it("Should be able to make changes to your project's details", () => {
-        const newIncomingTrust = dimensionsTrust;
-        const newOutgoingTrust = macclesfieldTrust;
         cy.visit(`projects/${projectId}/information`);
 
         Logger.log("Go to change form");
@@ -387,10 +381,10 @@ describe("About the project page - transfer projects: ", () => {
 
         Logger.log("Update project details");
         editTransferProjectPage
-            .withOutgoingTrustUKPRN(newOutgoingTrust.ukprn)
-            .withIncomingTrustUKPRN(newIncomingTrust.ukprn)
-            .withTrustReferenceNumber("")
-            .withGroupReferenceNumber(newIncomingTrust.groupReferenceNumber)
+            .doesntContain("Outgoing trust UKPRN") // field should not be editable
+            .doesntContain("Incoming trust UKPRN") // field should not be editable
+            .doesntContain("Trust reference number (TRN)") // only SS can edit TRN
+            .withGroupReferenceNumber(newGRP)
             .withAdvisoryBoardDate("10", "01", "2024")
             .withAdvisoryBoardConditions("Updated advisory board conditions")
             .withSchoolOrAcademySharePointLink("https://educationgovuk.sharepoint.com/11")
@@ -406,7 +400,7 @@ describe("About the project page - transfer projects: ", () => {
         aboutTheProjectPage
             .containsSuccessBannerWithMessage("Project has been updated successfully")
             .subSection("Project details")
-            .keyHasValueWithLink("Group reference number", newIncomingTrust.groupReferenceNumber, `/groups/${groupId}`)
+            .keyHasValueWithLink("Group reference number", newGRP, `/groups/${groupId}`)
             .subSection("Project assignment")
             .keyHasValue("Are you handing this project over to RCS (Regional Casework Services)?", "Yes")
             .subSection("Reasons for the transfer")
@@ -425,18 +419,18 @@ describe("About the project page - transfer projects: ", () => {
             .subSection("Incoming trust details")
             .keyHasValueWithLink(
                 "Name",
-                `${newIncomingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
-                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${newIncomingTrust.ukprn}`,
+                `${incomingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${incomingTrust.ukprn}`,
             )
-            .keyHasValue("UKPRN (UK provider reference number)", newIncomingTrust.ukprn)
-            .keyHasValue("Group ID (identifier)", newIncomingTrust.referenceNumber)
+            .keyHasValue("UKPRN (UK provider reference number)", incomingTrust.ukprn)
+            .keyHasValue("Group ID (identifier)", incomingTrust.referenceNumber)
             .keyHasValueWithLink(
                 "Companies House number",
-                `${newIncomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `${companiesHouseUrl}${newIncomingTrust.companiesHouseNumber}`,
+                `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `${companiesHouseUrl}${incomingTrust.companiesHouseNumber}`,
             )
             .keyHasValue("New trust reference number (TRN)", "")
-            .keyHasValue("Address", newIncomingTrust.address)
+            .keyHasValue("Address", incomingTrust.address)
             .keyHasValueWithLink(
                 "SharePoint folder",
                 "View the trust SharePoint folder (opens in new tab)",
@@ -445,17 +439,17 @@ describe("About the project page - transfer projects: ", () => {
             .subSection("Outgoing trust details")
             .keyHasValueWithLink(
                 "Name",
-                `${newOutgoingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
-                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${newOutgoingTrust.ukprn}`,
+                `${outgoingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${outgoingTrust.ukprn}`,
             )
-            .keyHasValue("UKPRN (UK provider reference number)", newOutgoingTrust.ukprn)
-            .keyHasValue("Group ID (identifier)", newOutgoingTrust.referenceNumber)
+            .keyHasValue("UKPRN (UK provider reference number)", outgoingTrust.ukprn)
+            .keyHasValue("Group ID (identifier)", outgoingTrust.referenceNumber)
             .keyHasValueWithLink(
                 "Companies House number",
-                `${newOutgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `${companiesHouseUrl}${newOutgoingTrust.companiesHouseNumber}`,
+                `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `${companiesHouseUrl}${outgoingTrust.companiesHouseNumber}`,
             )
-            .keyHasValue("Address", newOutgoingTrust.address)
+            .keyHasValue("Address", outgoingTrust.address)
             .keyHasValueWithLink(
                 "SharePoint folder",
                 "View the trust SharePoint folder (opens in new tab)",
