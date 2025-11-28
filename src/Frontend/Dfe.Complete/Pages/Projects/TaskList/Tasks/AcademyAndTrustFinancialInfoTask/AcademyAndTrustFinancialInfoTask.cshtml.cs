@@ -29,6 +29,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
         {
             await base.OnGetAsync();
 
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);         
+            
             FinancialStatuses = EnumExtensions.ToList<AcademyAndTrustFinancialStatus>();
 
             TasksDataId = Project.TasksDataId?.Value;
