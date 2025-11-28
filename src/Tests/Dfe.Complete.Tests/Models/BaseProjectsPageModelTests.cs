@@ -20,6 +20,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using NSubstitute;
 using System.Reflection;
 
 namespace Dfe.Complete.Tests.Models;
@@ -30,6 +31,7 @@ public class BaseProjectsPageModelTests
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task OnGet_When_ProjectId_NotValidGuid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), null!).Returns(true);
         var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = "an-invalid-guid";
 
@@ -45,6 +47,8 @@ public class BaseProjectsPageModelTests
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task OnGet_When_Project_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger, [Frozen] IProjectPermissionService projectPermissionService)
     {
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), null!).Returns(true);
+
         var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = Guid.NewGuid().ToString();
 
@@ -66,6 +70,7 @@ public class BaseProjectsPageModelTests
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), null!).Returns(true);
         var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
 
@@ -98,6 +103,8 @@ public class BaseProjectsPageModelTests
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
+
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), null!).Returns(true);
 
         var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
@@ -151,6 +158,7 @@ public class BaseProjectsPageModelTests
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), null!).Returns(true);
         var model = new AboutTheProjectModel(mockSender.Object, _logger, projectPermissionService);
         model.ProjectId = projectIdGuid.ToString();
 

@@ -126,6 +126,40 @@ public class ProjectPermissionServiceTests
     }
 
     [Theory]
+    [InlineData(ProjectState.Active, UserRolesConstants.ServiceSupport, true)]
+    [InlineData(ProjectState.Completed, UserRolesConstants.ServiceSupport, true)]
+    [InlineData(ProjectState.DaoRevoked, UserRolesConstants.ServiceSupport, true)]
+    [InlineData(ProjectState.Deleted, UserRolesConstants.ServiceSupport, true)]
+    [InlineData(ProjectState.Inactive, UserRolesConstants.ServiceSupport, true)]
+    [InlineData(ProjectState.Active, UserRolesConstants.RegionalDeliveryOfficer, true)]
+    [InlineData(ProjectState.Completed, UserRolesConstants.RegionalDeliveryOfficer, true)]
+    [InlineData(ProjectState.DaoRevoked, UserRolesConstants.RegionalDeliveryOfficer, false)]
+    [InlineData(ProjectState.Deleted, UserRolesConstants.RegionalDeliveryOfficer, false)]
+    [InlineData(ProjectState.Inactive, UserRolesConstants.RegionalDeliveryOfficer, true)]
+    [InlineData(ProjectState.Active, UserRolesConstants.RegionalCaseworkServices, true)]
+    [InlineData(ProjectState.Completed, UserRolesConstants.RegionalCaseworkServices, true)]
+    [InlineData(ProjectState.DaoRevoked, UserRolesConstants.RegionalCaseworkServices, false)]
+    [InlineData(ProjectState.Deleted, UserRolesConstants.RegionalCaseworkServices, false)]
+    [InlineData(ProjectState.Inactive, UserRolesConstants.RegionalCaseworkServices, true)]
+    public void UserCanView_WhenMatchesCondition_ShouldReturnCorrectResult(ProjectState projectState, string projectTeam, bool expectedResult)
+    {
+        // Arrange
+        var userId = new UserId(Guid.NewGuid());
+        var userClaimPrincipal = CreateUserClaimPrincipal(userId, projectTeam);
+        var project = new ProjectDto
+        {
+            State = projectState,
+            AssignedToId = null
+        };
+
+        // Act
+        var result = _service.UserCanView(project, userClaimPrincipal);
+
+        // Assert
+        Assert.Equal(expectedResult, result);
+    }
+
+    [Theory]
     [InlineData(ProjectState.Active, true, UserRolesConstants.ServiceSupport, true)]
     [InlineData(ProjectState.Completed, true, UserRolesConstants.ServiceSupport, false)]
     [InlineData(ProjectState.DaoRevoked, true, UserRolesConstants.ServiceSupport, false)]
