@@ -26,10 +26,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
         [BindProperty(Name = "save")]
         public bool? Save { get; set; }
 
-
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
 

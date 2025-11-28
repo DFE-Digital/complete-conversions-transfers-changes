@@ -34,6 +34,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ClosureOrTransferDeclaratio
         {
             await base.OnGetAsync();
 
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
 
             NotApplicable = TransferTaskData.ClosureOrTransferDeclarationNotApplicable;
