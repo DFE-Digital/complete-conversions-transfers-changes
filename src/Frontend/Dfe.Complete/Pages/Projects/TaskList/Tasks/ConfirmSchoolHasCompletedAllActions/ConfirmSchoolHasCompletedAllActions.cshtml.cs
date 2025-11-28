@@ -23,6 +23,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolHasCompletedAl
         {
             await base.OnGetAsync();
 
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+            
             TasksDataId = Project.TasksDataId?.Value;
 
             Emailed = ConversionTaskData.SchoolCompletedEmailed;

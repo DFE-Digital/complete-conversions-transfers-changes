@@ -45,15 +45,14 @@ describe("About the project page - transfer projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(projectFormAMat.urn);
-        // bug 248050
-        // projectApi.createTransferProject(project).then((response) => {
-        //     projectId = response.value;
-        //     projectDetails = ProjectBuilder.updateTransferProjectHandoverAssignRequest({
-        //         projectId: { value: projectId },
-        //     });
-        //     projectApi.updateProjectHandoverAssign(projectDetails);
-        //     changeLinkPath = `/projects/transfers/${projectId}/edit#`;
-        // });
+        projectApi.createTransferProject(project).then((response) => {
+            projectId = response.value;
+            projectDetails = ProjectBuilder.updateTransferProjectHandoverAssignRequest({
+                projectId: { value: projectId },
+            });
+            projectApi.updateProjectHandoverAssign(projectDetails);
+            changeLinkPath = `/projects/transfers/${projectId}/edit#`;
+        });
         projectApi.createMatTransferProject(projectFormAMat).then((response) => {
             projectFormAMatId = response.value;
             projectFormAMATDetails = ProjectBuilder.updateTransferProjectHandoverAssignRequest({
@@ -72,8 +71,7 @@ describe("About the project page - transfer projects: ", () => {
         cy.acceptCookies();
     });
 
-    // bug 248050
-    it.skip("Should display the project details on the about project section for a transfer project", () => {
+    it("Should display the project details on the about project section for a transfer project", () => {
         Logger.log("Go to project");
         cy.visit(`projects/${projectId}/tasks`);
 
@@ -357,8 +355,7 @@ describe("About the project page - transfer projects: ", () => {
             .hasChangeLink(`${formAMATChangeLinkPath}outgoing-trust-to-close`);
     });
 
-    // bug 248050
-    it.skip("Should display page links that navigate to different sections of the about project page", () => {
+    it("Should display page links that navigate to different sections of the about project page", () => {
         Logger.log("Go to the about project section");
         cy.visit(`projects/${projectId}/information`);
 
@@ -380,8 +377,7 @@ describe("About the project page - transfer projects: ", () => {
             .pageHasMovedToSection("Outgoing trust details");
     });
 
-    // bug 248050
-    it.skip("Should be able to make changes to your project's details", () => {
+    it("Should be able to make changes to your project's details", () => {
         const newIncomingTrust = dimensionsTrust;
         const newOutgoingTrust = macclesfieldTrust;
         cy.visit(`projects/${projectId}/information`);

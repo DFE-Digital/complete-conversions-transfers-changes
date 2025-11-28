@@ -26,6 +26,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         {
             await base.OnGetAsync();
 
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.IncomingTrust));
             var incomingTrustCeoKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 

@@ -207,12 +207,20 @@ describe("View all projects", () => {
             .goTo(dimensionsTrust.name);
         allProjects.containsHeading(dimensionsTrust.name);
         projectTable
-            .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Conversion or transfer date",
+                "Project type",
+                "Assigned to",
+                "State",
+            ])
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn}`)
             .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Assigned to", cypressUser.username)
+            .columnHasValue("State", "Active")
             .goTo(transferFormAMatSchoolName);
         projectDetailsPage.containsHeading(transferFormAMatSchoolName);
     });
