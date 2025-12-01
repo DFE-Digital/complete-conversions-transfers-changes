@@ -18,9 +18,12 @@ Security in case of vulnerabilities.
 
 ### Changed
 - Identify user by entra_user_object_id instead of active_directory_user_id
+- Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
 
 ### Fixed
 - fix access denied request form link
+- update incorrect wording on "Confirm and process the sponsored support grant" task
+- projects by month is showing incorrect data in december
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
 

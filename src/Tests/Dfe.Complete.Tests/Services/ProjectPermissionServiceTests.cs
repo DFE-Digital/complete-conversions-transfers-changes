@@ -212,5 +212,76 @@ public class ProjectPermissionServiceTests
         // Assert
         Assert.Equal(expectedResult, result);
     }
+
+    [Theory]
+    [InlineData(UserRolesConstants.ServiceSupport, true)]
+    [InlineData(UserRolesConstants.RegionalDeliveryOfficer, false)]
+    [InlineData(UserRolesConstants.RegionalCaseworkServices, false)]
+    [InlineData("SomeOtherRole", false)]
+    public void UserIsAdmin_WhenUserHasRole_ShouldReturnCorrectResult(string userRole, bool expectedResult)
+    {
+        // Arrange
+        var userId = new UserId(Guid.NewGuid());
+        var userClaimPrincipal = CreateUserClaimPrincipal(userId, userRole);
+        var project = new ProjectDto
+        {
+            State = ProjectState.Active,
+            AssignedToId = userId
+        };
+
+        // Act
+        var result = _service.UserIsAdmin(project, userClaimPrincipal);
+
+        // Assert
+        Assert.Equal(expectedResult, result);
+    }
+
+    [Theory]
+    [InlineData(ProjectState.Active)]
+    [InlineData(ProjectState.Completed)]
+    [InlineData(ProjectState.DaoRevoked)]
+    [InlineData(ProjectState.Deleted)]
+    [InlineData(ProjectState.Inactive)]
+    public void UserIsAdmin_WhenServiceSupportUser_ShouldReturnTrueRegardlessOfProjectState(ProjectState projectState)
+    {
+        // Arrange
+        var userId = new UserId(Guid.NewGuid());
+        var userClaimPrincipal = CreateUserClaimPrincipal(userId, UserRolesConstants.ServiceSupport);
+        var project = new ProjectDto
+        {
+            State = projectState,
+            AssignedToId = new UserId(Guid.NewGuid()) // Different user assigned
+        };
+
+        // Act
+        var result = _service.UserIsAdmin(project, userClaimPrincipal);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData(ProjectState.Active)]
+    [InlineData(ProjectState.Completed)]
+    [InlineData(ProjectState.DaoRevoked)]
+    [InlineData(ProjectState.Deleted)]
+    [InlineData(ProjectState.Inactive)]
+    public void UserIsAdmin_WhenNonServiceSupportUser_ShouldReturnFalseRegardlessOfProjectState(ProjectState projectState)
+    {
+        // Arrange
+        var userId = new UserId(Guid.NewGuid());
+        var userClaimPrincipal = CreateUserClaimPrincipal(userId, UserRolesConstants.RegionalDeliveryOfficer);
+        var project = new ProjectDto
+        {
+            State = projectState,
+            AssignedToId = userId // User is assigned to project
+        };
+
+        // Act
+        var result = _service.UserIsAdmin(project, userClaimPrincipal);
+
+        // Assert
+        Assert.False(result);
+    }
 }
 
