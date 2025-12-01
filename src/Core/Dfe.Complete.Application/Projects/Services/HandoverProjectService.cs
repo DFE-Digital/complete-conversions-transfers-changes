@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.ProjectGroups.Commands;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
@@ -31,7 +32,8 @@ public class HandoverProjectService(
     ISender sender,
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-    ICompleteRepository<TransferTasksData> transferTaskRepository) : IHandoverProjectService
+    ICompleteRepository<TransferTasksData> transferTaskRepository,
+    IKeyContactWriteRepository keyContactWriteRepository) : IHandoverProjectService
 {
     public async Task<UserId> GetOrCreateUserAsync(UserDto userDto, CancellationToken cancellationToken)
     {
@@ -95,6 +97,15 @@ public class HandoverProjectService(
             await transferTaskRepository.AddAsync(transferTask, cancellationToken);
         else
             throw new ArgumentException($"Unsupported task data type: {typeof(TTaskData).Name}", nameof(taskData));
+
+        var now = DateTime.UtcNow;
+        await keyContactWriteRepository.AddKeyContactAsync(new KeyContact
+        {
+            Id = new KeyContactId(Guid.NewGuid()),
+            ProjectId = project.Id,
+            UpdatedAt = now,
+            CreatedAt = now,
+        }, cancellationToken);
 
         await projectRepository.AddAsync(project, cancellationToken);
     }
