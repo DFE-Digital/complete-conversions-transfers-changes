@@ -36,7 +36,8 @@ public class BaseProjectDetailsPageModelTests
         return new BaseProjectDetailsPageModel(
             _fixture.Create<ISender>(),
             _fixture.Create<IErrorService>(),
-            _fixture.Create<ILogger>()
+            _fixture.Create<ILogger>(),
+            _fixture.Create<IProjectPermissionService>()
         );
     }
 
