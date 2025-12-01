@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,8 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGrantTask
 {
-    public class ConfirmTransferGrantFundingLevelTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmTransferGrantFundingLevelTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmTransferGrantFundingLevel)
+    public class ConfirmTransferGrantFundingLevelTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmTransferGrantFundingLevelTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmTransferGrantFundingLevel, projectPermissionService)
     {
         private readonly ISender _sender = sender;
 
@@ -79,3 +80,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
         }
     }
 }
+

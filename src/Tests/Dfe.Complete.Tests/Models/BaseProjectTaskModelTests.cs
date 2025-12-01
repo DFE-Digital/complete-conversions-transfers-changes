@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,16 +25,21 @@ public class BaseProjectTaskModelTests
     private readonly Mock<ISender> _mockSender;
     private readonly Mock<IAuthorizationService> _mockAuthService = new();
     private readonly Mock<ILogger<BaseProjectTaskModel>> _mockLogger = new();
+    private readonly Mock<IProjectPermissionService> _mockProjectPermissionService = new();
     private readonly BaseProjectTaskModel _model;
     private readonly string ValidProjectId = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
     public BaseProjectTaskModelTests()
     {
         _mockSender = new Mock<ISender>();
+        _mockProjectPermissionService.Setup(
+            m => m.UserCanView(It.IsAny<ProjectDto>(), It.IsAny<ClaimsPrincipal?>()!)
+        ).Returns(true);
         _model = new BaseProjectTaskModel(
             _mockSender.Object,
             _mockAuthService.Object,
             _mockLogger.Object,
-            NoteTaskIdentifier.Handover
+            NoteTaskIdentifier.Handover,
+            _mockProjectPermissionService.Object
         )
         {
             ProjectId = ValidProjectId,
@@ -126,7 +132,7 @@ public class BaseProjectTaskModelTests
     public void CanAddNotes_ReturnsExpectedResult(ProjectState projectState, bool expected)
     {
         // Arrange
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             TaskIdentifier = NoteTaskIdentifier.Handover
@@ -155,7 +161,7 @@ public class BaseProjectTaskModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -182,7 +188,8 @@ public class BaseProjectTaskModelTests
             _mockSender.Object,
             _mockAuthService.Object,
             _mockLogger.Object,
-            NoteTaskIdentifier.Handover
+            NoteTaskIdentifier.Handover,
+            _mockProjectPermissionService.Object
         )
         {
             TaskIdentifier = NoteTaskIdentifier.Handover
@@ -227,7 +234,7 @@ public class BaseProjectTaskModelTests
     NoteTaskIdentifier taskIdentifier)
     {
         // Act
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { Type = ProjectType.Conversion },
             TaskIdentifier = taskIdentifier
@@ -261,7 +268,7 @@ public class BaseProjectTaskModelTests
         NoteTaskIdentifier taskIdentifier)
     {       
         // Act
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { Type = ProjectType.Transfer },
             TaskIdentifier = taskIdentifier

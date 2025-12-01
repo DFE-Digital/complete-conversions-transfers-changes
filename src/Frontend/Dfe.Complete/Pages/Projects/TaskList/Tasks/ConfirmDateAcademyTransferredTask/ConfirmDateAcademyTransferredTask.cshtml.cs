@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +13,8 @@ using System.ComponentModel;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferredTask
 {
     public class ConfirmDateAcademyTransferredTaskModel(ISender sender, IErrorService errorService,
-      IAuthorizationService authorizationService, ILogger<ConfirmDateAcademyTransferredTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmDateAcademyTransferred)
+      IAuthorizationService authorizationService, ILogger<ConfirmDateAcademyTransferredTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmDateAcademyTransferred, projectPermissionService)
     {
 
         [BindProperty(Name = "date-academy-transferred")]
@@ -53,3 +54,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
         }
     }
 }
+

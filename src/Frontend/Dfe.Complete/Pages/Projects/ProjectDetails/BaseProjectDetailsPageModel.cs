@@ -14,7 +14,7 @@ using System.Web;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails
 {
-    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger _logger, IProjectPermissionService? projectPermissionService = null) : BaseProjectPageModel(sender, _logger, projectPermissionService)
+    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger _logger, IProjectPermissionService projectPermissionService) : BaseProjectPageModel(sender, _logger, projectPermissionService)
     {
         public IErrorService ErrorService
         {

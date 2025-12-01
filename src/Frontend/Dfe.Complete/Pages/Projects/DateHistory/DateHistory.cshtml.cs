@@ -6,6 +6,7 @@ using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
@@ -13,8 +14,8 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
     {
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync();
-
+            var baseResult = await base.OnGetAsync();
+            if (baseResult is not PageResult) return baseResult;
             var projectWithHistories = new GetProjectHistoryByProjectIdQuery(ProjectId);
             var result = await Sender.Send(projectWithHistories);
 
