@@ -18,22 +18,17 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Utils;
     using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
-    using Microsoft.Extensions.Logging;
     using Moq;
     using System.Threading.Tasks;
     using Xunit;
 
     public class ExternalContactAddEditPageModelTests
     {
-        private class TestExternalContactAddEditPageModel : ExternalContactAddEditPageModel
+        private class TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender) : ExternalContactAddEditPageModel(trustCacheService, sender)
         {
-            public TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender, ILogger logger) : base(trustCacheService, sender)
-            {
-            }
-
             public async Task<string?> PublicGetOrganisationName(ExternalContactType contactType)
             {
-                return await base.GetOrganisationNameAsync(contactType);
+                return await GetOrganisationNameAsync(contactType);
             }
         }
 
@@ -62,7 +57,6 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             // Arrange
 
             ProjectId projectId = fixture.Create<ProjectId>();
-            ContactId contactId = fixture.Create<ContactId>();
             string urn = "123";
             string localAuthorityCode = fixture.Create<string>();
 

@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
@@ -16,7 +17,8 @@ using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 {
     [Authorize(policy: UserPolicyConstants.CanViewAllProjectsHandover)]
-    public class NewHandoverProjectModel(ISender sender, IErrorService errorService, ILogger<NewHandoverProjectModel> logger) : BaseProjectPageModel(sender, logger)
+    public class NewHandoverProjectModel(ISender sender, IErrorService errorService, ILogger<NewHandoverProjectModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectPageModel(sender, logger, projectPermissionService)
     {
         [BindProperty]
         public ProjectType? Type { get; set; }
