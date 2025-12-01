@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.FormM
 {
-    public class FormMModel(ISender sender, IAuthorizationService authorizationService, ILogger<FormMModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.FormM)
+    public class FormMModel(ISender sender, IAuthorizationService authorizationService, ILogger<FormMModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.FormM, projectPermissionService)
     {
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -35,6 +36,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.FormM
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
 

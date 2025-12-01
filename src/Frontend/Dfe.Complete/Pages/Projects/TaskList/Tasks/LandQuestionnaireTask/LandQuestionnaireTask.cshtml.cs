@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
 {
-    public class LandQuestionnaireTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LandQuestionnaireTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.LandQuestionnaire)
+    public class LandQuestionnaireTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LandQuestionnaireTaskModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.LandQuestionnaire, projectPermissionService)
     {
         [BindProperty]
         public bool? Cleared { get; set; }
@@ -28,6 +29,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
             Received = ConversionTaskData.LandQuestionnaireReceived;
             Cleared = ConversionTaskData.LandQuestionnaireCleared;

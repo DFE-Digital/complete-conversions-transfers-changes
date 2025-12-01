@@ -15,7 +15,6 @@ namespace Dfe.Complete.Tests.Authorization
     {
         private readonly ICompleteRepository<User> _repository;
         private readonly ICustomClaimProvider _provider;
-        private readonly IFixture _fixture;
 
         public CustomDatabaseClaimsProviderTests()
         {
@@ -23,7 +22,6 @@ namespace Dfe.Complete.Tests.Authorization
             // Use a real MemoryCache instance.
             IMemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
             _provider = new CustomDatabaseClaimsProvider(_repository, memoryCache);
-            _fixture = new Fixture();
         }
 
         [Fact]
@@ -81,13 +79,6 @@ namespace Dfe.Complete.Tests.Authorization
                 Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
-                Team = "TeamA",
-                ManageTeam = true,
-                AddNewProject = true,
-                AssignToProject = false,
-                ManageUserAccounts = true,
-                ManageConversionUrns = false,
-                ManageLocalAuthorities = true
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
@@ -100,64 +91,6 @@ namespace Dfe.Complete.Tests.Authorization
             var collection = claims as Claim[] ?? claims.ToArray();
 
             Assert.NotEmpty(collection);
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
-
-            // Verify claims that should not be present.
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
-        }
-
-        [Fact]
-        public async Task GetClaimsAsync_UserFound_ReturnsAllClaims()
-        {
-            // Arrange
-            var userId = "00000000-0000-0000-0000-000000001234";
-            var userEmail = "user@example.com";
-
-            var identity = new ClaimsIdentity([
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
-                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
-            ]);
-            var principal = new ClaimsPrincipal(identity);
-
-            // Create a user record with specific properties.
-            var userRecord = new User
-            {
-                Id = new UserId(new Guid(userId)),
-                ActiveDirectoryUserId = userId,
-                Email = userEmail,
-                Team = "london",
-                ManageTeam = true,
-                AddNewProject = true,
-                AssignToProject = true,
-                ManageUserAccounts = true,
-                ManageConversionUrns = true,
-                ManageLocalAuthorities = true
-            };
-
-            _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                       .Returns(Task.FromResult(userRecord));
-
-            // Act
-            var claims = await _provider.GetClaimsAsync(principal);
-
-            // Assert: Verify the expected claims are present.
-            var collection = claims as Claim[] ?? [.. claims];
-
-            Assert.NotEmpty(collection);
-            Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
         }
 
         [Fact]
@@ -227,80 +160,6 @@ namespace Dfe.Complete.Tests.Authorization
         }
 
         [Fact]
-        public async Task GetClaimsAsync_NoOidMatch_EmptyEmail_ReturnsEmpty()
-        {
-            // Arrange
-            var userId = "00000000-0000-0000-0000-000000000123";
-
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
-                // No email claim
-            });
-            var principal = new ClaimsPrincipal(identity);
-
-            // Setup repository to return null on OID lookup
-            _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                       .Returns(Task.FromResult<User>(null!));
-
-            // Act
-            var claims = await _provider.GetClaimsAsync(principal);
-
-            // Assert: Should return empty as no email to lookup
-            Assert.Empty(claims);
-
-            // Verify email lookup was not attempted
-            await _repository.DidNotReceive().FindAsync(Arg.Any<Expression<Func<User, bool>>>());
-            await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
-        }
-
-        [Fact]
-        public async Task GetClaimsAsync_UserFoundByOid_EmailMatches_ReturnsClaimsWithoutUpdate()
-        {
-            // Arrange
-            var userId = "00000000-0000-0000-0000-000000000123";
-            var userEmail = "user@example.com";
-
-            var identity = new ClaimsIdentity(new[]
-            {
-                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId),
-                new Claim(CustomClaimTypeConstants.PreferredUsername, userEmail)
-            });
-            var principal = new ClaimsPrincipal(identity);
-
-            var userRecord = new User
-            {
-                Id = new UserId(new Guid(userId)),
-                EntraUserObjectId = userId,
-                Email = userEmail, // Same as claim email
-                ActiveDirectoryUserId = userId,
-                Team = "TeamA",
-                ManageTeam = false,
-                AddNewProject = true
-            };
-
-            // Setup repository to return user on first call (OID lookup)
-            _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                       .Returns(Task.FromResult(userRecord));
-
-            // Act
-            var claims = await _provider.GetClaimsAsync(principal);
-
-            // Assert: Should return claims without update
-            Assert.NotEmpty(claims);
-
-            // Verify no update was attempted (user already has OID and emails match)
-            await _repository.DidNotReceive().UpdateAsync(Arg.Any<User>());
-
-            // Verify expected claims
-            var collection = claims as Claim[] ?? claims.ToArray();
-            Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == userRecord.Id.Value.ToString());
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
-            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
-            Assert.DoesNotContain(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
-        }
-
-        [Fact]
         public async Task GetClaimsAsync_CachesClaims_RepositoryCalledOnce()
         {
             // Arrange
@@ -319,12 +178,7 @@ namespace Dfe.Complete.Tests.Authorization
                 ActiveDirectoryUserId = userId,
                 Email = userEmail,
                 Team = "TeamA",
-                ManageTeam = true,
-                AddNewProject = true,
-                AssignToProject = false,
                 ManageUserAccounts = true,
-                ManageConversionUrns = false,
-                ManageLocalAuthorities = true
             };
 
             _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())

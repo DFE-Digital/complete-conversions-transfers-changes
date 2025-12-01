@@ -7,9 +7,9 @@ using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {

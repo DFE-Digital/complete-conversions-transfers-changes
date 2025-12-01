@@ -32,7 +32,7 @@ can override this be passing in the TestUser user.
 beforeEach(() => {
     cy.login();
     // OR
-    cy.login(businessSupportUser);
+    cy.login(dataConsumerUser);
 });
 ```
 
@@ -47,9 +47,7 @@ Users to add:
 - Cypress test user (default)
 - Regional delivery officer London
 - Regional Casework Services
-- Regional Delivery Officer Team Leader
 - Regional Casework Services Team Leader
-- Business Support
 - Data Consumer
 - Service Support
 
@@ -126,30 +124,6 @@ IF NOT EXISTS (SELECT *
                , 0
                , null)
     END
--- Regional Delivery Officer Team Leader
-IF NOT EXISTS (SELECT *
-               FROM [complete].[users]
-               WHERE 'TEST-AD-ID-RDO-TL' = active_directory_user_id)
-    BEGIN
-        INSERT INTO [complete].[users]
-        VALUES ( 'B0DFB912-F806-4FC2-837F-FBE2F1779789'
-               , 'cypress.rdo-team-leader@education.gov.uk'
-               , GETDATE()
-               , GETDATE()
-               , 1
-               , 1
-               , 'cypress'
-               , 'rdo-team-leader'
-               , 'TEST-AD-ID-RDO-TL'
-               , 1
-               , 0
-               , null
-               , 'london'
-               , null
-               , 0
-               , 0
-               , null)
-    END
 -- Regional Casework Services Team Leader
 IF NOT EXISTS (SELECT *
                FROM [complete].[users]
@@ -169,30 +143,6 @@ IF NOT EXISTS (SELECT *
                , 0
                , null
                , 'regional_casework_services'
-               , null
-               , 0
-               , 0
-               , null)
-    END
--- Business Support
-IF NOT EXISTS (SELECT *
-               FROM [complete].[users]
-               WHERE 'TEST-AD-ID-BS' = active_directory_user_id)
-    BEGIN
-        INSERT INTO [complete].[users]
-        VALUES ( 'B62A3AC5-2C54-4E85-8A83-DE9199D0BCCE'
-               , 'cypress.business-support@education.gov.uk'
-               , GETDATE()
-               , GETDATE()
-               , 0
-               , 0
-               , 'cypress'
-               , 'business-support'
-               , 'TEST-AD-ID-BS'
-               , 0
-               , 0
-               , null
-               , 'business_support'
                , null
                , 0
                , 0

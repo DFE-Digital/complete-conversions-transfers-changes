@@ -41,6 +41,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
             Assert.Equal(user.ActiveDirectoryUserId, userDto.ActiveDirectoryUserId);
             Assert.Equal(user.EntraUserObjectId, userDto.EntraUserObjectId);
             Assert.Equal(user.AssignToProject, userDto.AssignToProject);
+            Assert.Equal(user.IsAssignableToProject, userDto.IsAssignableToProject);
             Assert.Equal(user.ManageUserAccounts, userDto.ManageUserAccounts);
             Assert.Equal(user.ActiveDirectoryUserGroupIds, userDto.ActiveDirectoryUserGroupIds);
             Assert.Equal(user.Team, userDto.Team);

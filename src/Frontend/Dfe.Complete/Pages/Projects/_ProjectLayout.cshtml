@@ -3,7 +3,6 @@
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Domain.Extensions
-@using Dfe.Complete.Pages.Projects.DateHistory
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Dfe.Complete.Pages.Projects.ProjectView
 @using Dfe.Complete.TagHelpers
@@ -94,7 +93,7 @@ else if (!@Model.UserHasEditAccess())
                 <govuk-notification-banner-title>
                     Important
                 </govuk-notification-banner-title>
-                <p>This project&lsquo;s Directive Academy Order was revoked on @Model.DaoRevocation.DateOfDecision.ToDateString().</p>
+                <p>This project's Directive Academy Order was revoked on @Model.DaoRevocation.DateOfDecision.ToDateString().</p>
                 <p>Only Service Support team members can make changes to this project.</p>
             </govuk-notification-banner>
         </div>
@@ -154,7 +153,7 @@ else if (!@Model.UserHasEditAccess())
 
 <div class="govuk-button-group">
   @{
-    if (SigDateHelper.CanEditSignificantDate(Model.Project, User, Model.CurrentUserTeam))
+    if (Model.CanEditSignificantDate)
     {
       <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
     }

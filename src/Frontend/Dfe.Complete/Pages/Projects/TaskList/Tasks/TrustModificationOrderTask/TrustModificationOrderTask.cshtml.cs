@@ -1,14 +1,15 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask
 {
-    public class TrustModificationOrderTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<TrustModificationOrderTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.TrustModificationOrder)
+    public class TrustModificationOrderTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<TrustModificationOrderTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.TrustModificationOrder, projectPermissionService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -32,10 +33,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask
         {
             await base.OnGetAsync();
 
-            if (Project.TasksDataType != TaskType.Conversion)
-            {
+            if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
-            }
 
             TasksDataId = Project.TasksDataId?.Value;
 

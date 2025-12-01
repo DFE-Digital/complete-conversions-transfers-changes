@@ -40,17 +40,11 @@ public class SignInModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string? returnUrl = "/")
     {
-        // If user is already authenticated, just return the page
-        if (User.Identity?.IsAuthenticated ?? false)
-        {
-            return Page();
-        }
-
-        // User is not authenticated, trigger the Azure AD / Entra challenge
         if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl) || returnUrl == "/")
-        {
             returnUrl = "/";
-        }
+
+        if (User.Identity?.IsAuthenticated == true)
+            return LocalRedirect(returnUrl);
 
         var props = new AuthenticationProperties
         {

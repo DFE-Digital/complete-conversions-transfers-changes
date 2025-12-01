@@ -9,9 +9,9 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
+using Dfe.Complete.Services;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService) : PageModel
 {
     protected readonly ISender Sender = sender;
     protected ILogger Logger = logger;
@@ -43,8 +43,11 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
     public KeyContactDto KeyContacts { get; private set; } = null!;
 
+    public bool UserHasViewAccess() =>
+        projectPermissionService.UserCanView(Project, User);
+
     public bool UserHasEditAccess() =>
-        User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
+        projectPermissionService.UserCanEdit(Project, User);
 
     public async Task UpdateCurrentProject()
     {
@@ -135,6 +138,12 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
+
+        if (!UserHasViewAccess())
+        {
+            TempData.SetNotification(NotificationType.Error, "Forbidden", "You do not have permission to view this project.");
+            return Forbid();
+        }
 
         if (Project == null)
             return NotFound();

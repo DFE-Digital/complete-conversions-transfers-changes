@@ -73,7 +73,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         _mockUserRepository
             .GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.RegionalDeliveryOfficer.Value.ToString()),
                 Arg.Any<CancellationToken>()).Returns(new User
-                { Id = command.RegionalDeliveryOfficer, AssignToProject = true });
+                { Id = command.RegionalDeliveryOfficer, Team = "london" });
 
         // Act & Assert
         await _handler.Handle(command, CancellationToken.None);
@@ -111,7 +111,7 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         _mockUserRepository
             .GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.RegionalDeliveryOfficer.Value.ToString()),
                 Arg.Any<CancellationToken>()).Returns(new User
-                { Id = command.RegionalDeliveryOfficer, AssignToProject = false });
+                { Id = command.RegionalDeliveryOfficer, Team = "data_consumers" });
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(async () => await _handler.Handle(command, CancellationToken.None));

@@ -3,13 +3,14 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> logger, IProjectPermissionService projectPermissionService) : BaseProjectNotesModel(sender, logger, NotesNavigation, projectPermissionService)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }

@@ -30,12 +30,12 @@ namespace Dfe.Complete.Infrastructure.Repositories
         }
 
         /// <inheritdoc />
-        public virtual IQueryable<TAggregate> Query() => (IQueryable<TAggregate>)this.DbSet();
+        public virtual IQueryable<TAggregate> Query() => this.DbSet();
 
         /// <inheritdoc />
         public virtual ICollection<TAggregate> Fetch(Expression<Func<TAggregate, bool>> predicate)
         {
-            return (ICollection<TAggregate>)((IQueryable<TAggregate>)this.DbSet()).Where<TAggregate>(predicate).ToList<TAggregate>();
+            return this.DbSet().Where<TAggregate>(predicate).ToList<TAggregate>();
         }
 
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
           Expression<Func<TAggregate, bool>> predicate,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            return (ICollection<TAggregate>)await EntityFrameworkQueryableExtensions.ToListAsync<TAggregate>(((IQueryable<TAggregate>)this.DbSet()).Where<TAggregate>(predicate), cancellationToken);
+            return await EntityFrameworkQueryableExtensions.ToListAsync<TAggregate>(this.DbSet().Where<TAggregate>(predicate), cancellationToken);
         }
 
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
         /// <inheritdoc />
         public virtual TAggregate Find(Expression<Func<TAggregate, bool>> predicate)
         {
-            return ((IQueryable<TAggregate>)this.DbSet()).FirstOrDefault<TAggregate>(predicate);
+            return this.DbSet().FirstOrDefault<TAggregate>(predicate);
         }
 
         /// <inheritdoc />
@@ -66,33 +66,33 @@ namespace Dfe.Complete.Infrastructure.Repositories
           Expression<Func<TAggregate, bool>> predicate,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>((IQueryable<TAggregate>)this.DbSet(), predicate, cancellationToken);
+            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>(this.DbSet(), predicate, cancellationToken);
         }
 
         /// <inheritdoc />
         public virtual TAggregate Get(Expression<Func<TAggregate, bool>> predicate)
         {
-            return ((IQueryable<TAggregate>)this.DbSet()).Single<TAggregate>(predicate);
+            return this.DbSet().Single<TAggregate>(predicate);
         }
 
         /// <inheritdoc />
         public virtual TAggregate Get(params object[] keyValues)
         {
             return this.Find(keyValues) ?? throw new InvalidOperationException(
-                $"Entity type {(object)typeof(TAggregate)} is null for primary key {(object)keyValues}");
+                $"Entity type {typeof(TAggregate)} is null for primary key {keyValues}");
         }
 
         /// <inheritdoc />
         public virtual async Task<TAggregate> GetAsync(Expression<Func<TAggregate, bool>> predicate)
         {
-            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>((IQueryable<TAggregate>)this.DbSet(), predicate, new CancellationToken());
+            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>(this.DbSet(), predicate, new CancellationToken());
         }
 
         /// <inheritdoc />
         public virtual async Task<TAggregate> GetAsync(params object[] keyValues)
         {
             return await this.FindAsync(keyValues) ?? throw new InvalidOperationException(
-                $"Entity type {(object)typeof(TAggregate)} is null for primary key {(object)keyValues}");
+                $"Entity type {typeof(TAggregate)} is null for primary key {keyValues}");
         }
 
         /// <inheritdoc />
@@ -114,9 +114,9 @@ namespace Dfe.Complete.Infrastructure.Repositories
         /// <inheritdoc />
         public virtual IEnumerable<TAggregate> AddRange(ICollection<TAggregate> entities)
         {
-            this.DbContext.AddRange((IEnumerable<object>)entities);
+            this.DbContext.AddRange(entities);
             this.DbContext.SaveChanges();
-            return (IEnumerable<TAggregate>)entities;
+            return entities;
         }
 
         /// <inheritdoc />
@@ -124,9 +124,9 @@ namespace Dfe.Complete.Infrastructure.Repositories
           ICollection<TAggregate> entities,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            await this.DbContext.AddRangeAsync((IEnumerable<object>)entities, cancellationToken);
+            await this.DbContext.AddRangeAsync(entities, cancellationToken);
             await this.DbContext.SaveChangesAsync(cancellationToken);
-            return (IEnumerable<TAggregate>)entities;
+            return entities;
         }
 
         /// <inheritdoc />
@@ -156,9 +156,9 @@ namespace Dfe.Complete.Infrastructure.Repositories
         /// <inheritdoc />
         public virtual IEnumerable<TAggregate> RemoveRange(ICollection<TAggregate> entities)
         {
-            this.DbSet().RemoveRange((IEnumerable<TAggregate>)entities);
+            this.DbSet().RemoveRange(entities);
             this.DbContext.SaveChanges();
-            return (IEnumerable<TAggregate>)entities;
+            return entities;
         }
 
         /// <inheritdoc />
@@ -166,9 +166,9 @@ namespace Dfe.Complete.Infrastructure.Repositories
           ICollection<TAggregate> entities,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            this.DbSet().RemoveRange((IEnumerable<TAggregate>)entities);
+            this.DbSet().RemoveRange(entities);
             await this.DbContext.SaveChangesAsync(cancellationToken);
-            return (IEnumerable<TAggregate>)entities;
+            return entities;
         }
 
         /// <inheritdoc />

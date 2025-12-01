@@ -5470,6 +5470,8 @@
               },
               "assignToProject": {
                 "type": "boolean",
+                "deprecated": true,
+                "x-deprecatedMessage": "Use IsAssignableToProject property instead",
                 "nullable": true
               },
               "manageUserAccounts": {
@@ -5531,6 +5533,9 @@
                 "items": {
                   "$ref": "#/components/schemas/Project"
                 }
+              },
+              "isAssignableToProject": {
+                "type": "boolean"
               }
             }
           }
@@ -6107,6 +6112,10 @@
           "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -6234,6 +6243,10 @@
             "nullable": true
           },
           "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
             "type": "string",
             "nullable": true
           }

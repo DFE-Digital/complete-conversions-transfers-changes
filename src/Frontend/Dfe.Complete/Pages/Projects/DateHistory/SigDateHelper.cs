@@ -1,18 +1,16 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Extensions;
-using Dfe.Complete.Extensions;
+using Dfe.Complete.Services;
 using System.Security.Claims;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory;
 
 public static class SigDateHelper
 {
-    public static bool CanEditSignificantDate(ProjectDto project, ClaimsPrincipal user, ProjectTeam currentUserTeam)
+    public static bool CanEditSignificantDate(ProjectDto project, ClaimsPrincipal user, ProjectTeam currentUserTeam, IProjectPermissionService projectPermissionService)
     {
-        var projectIsAssignedToUser = project.AssignedToId == user.GetUserId();
         var significantDateIsConfirmed = project.SignificantDateProvisional is false;
 
-        return significantDateIsConfirmed && (projectIsAssignedToUser || currentUserTeam.TeamIsServiceSupport());
+        return significantDateIsConfirmed && projectPermissionService.UserCanEdit(project, user);
     }
 }

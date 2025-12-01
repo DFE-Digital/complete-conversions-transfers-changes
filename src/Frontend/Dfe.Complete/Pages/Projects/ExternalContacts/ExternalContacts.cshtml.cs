@@ -7,15 +7,17 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization)
-    : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
+public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache, IAuthorizationService authorization, IProjectPermissionService projectPermissionService)
+    : ProjectLayoutModel(sender, logger, projectPermissionService, ExternalContactsNavigation)
 {
     private readonly IDistributedCache _cache = cache;
 
@@ -37,8 +39,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
-
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult) return baseResult;
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
         var projectContacts = await Sender.Send(projectQuery);
@@ -52,12 +54,12 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
                     new ExternalContactModel(contact,
                         canEditContact,
                         contact.Id == Project.MainContactId,
-                        contact.Id == Project.EstablishmentMainContactId                        
+                        contact.Id == Project.EstablishmentMainContactId
                     )));
             IncomingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.IncomingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,                       
+                        new ExternalContactModel(contact,
                             canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.IncomingTrustMainContactId
@@ -65,7 +67,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             OutgoingTrustContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.OutgoingTrust).Select(
                     contact =>
-                        new ExternalContactModel(contact,                           
+                        new ExternalContactModel(contact,
                             canEditContact,
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.OutgoingTrustMainContactId
@@ -88,7 +90,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact,
-                        canEditContact, 
+                        canEditContact,
                         contact.Id == Project.MainContactId,
                         ShowOrganisation: true)));
         }

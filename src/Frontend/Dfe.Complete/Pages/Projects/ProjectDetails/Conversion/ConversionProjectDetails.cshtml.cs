@@ -4,6 +4,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
@@ -13,7 +14,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 {
-    public class ConversionProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversionProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
+    public class ConversionProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversionProjectDetailsModel> _logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectDetailsPageModel(sender, errorService, _logger, projectPermissionService)
     {
         [BindProperty]
         [Required(ErrorMessage =

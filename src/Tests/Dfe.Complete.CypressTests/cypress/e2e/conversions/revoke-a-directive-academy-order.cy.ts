@@ -8,7 +8,7 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const directiveAcademyOrderProject = ProjectBuilder.createConversionProjectRequest({
-    urn: urnPool.conversion.stChads,
+    urn: urnPool.conversion.batmans,
     directiveAcademyOrder: true,
 });
 let directiveAcademyOrderId: string;
@@ -40,7 +40,7 @@ describe("Complete conversion projects tests", () => {
     });
 
     // flaky test - needs investigation whether this is the test or application issue
-    it.skip("should be able to revoke a directive academy order project assigned to me", () => {
+    it("should be able to revoke a directive academy order project assigned to me", () => {
         cy.visit(`projects/${directiveAcademyOrderId}/tasks`);
         taskListPage.clickButton("Record DAO revocation");
         daoRevocation

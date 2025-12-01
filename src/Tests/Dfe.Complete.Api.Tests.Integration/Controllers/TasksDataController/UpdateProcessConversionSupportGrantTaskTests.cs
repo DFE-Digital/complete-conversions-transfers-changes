@@ -34,7 +34,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             var command = new UpdateProcessSupportGrantTaskCommand
             {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },              
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ConversionGrantCheckVendorAccount = true,
                 ConversionGrantPaymentForm = true,
                 ConversionGrantSendInformation = false,
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.ConversionGrantCheckVendorAccount);
             Assert.True(existingTaskData.ConversionGrantPaymentForm);
             Assert.False(existingTaskData.ConversionGrantSendInformation);
-            Assert.False(existingTaskData.ConversionGrantSharePaymentDate);           
+            Assert.False(existingTaskData.ConversionGrantSharePaymentDate);
         }
 
         [Theory]
@@ -81,7 +81,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ConversionGrantPaymentForm = true,
                 ConversionGrantSendInformation = true,
                 ConversionGrantSharePaymentDate = true
-            };            
+            };
 
             // Act
             await tasksDataClient.UpdateProcessConversionSupportGrantTaskAsync(command, default);
