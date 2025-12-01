@@ -63,11 +63,8 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
 
     public bool TryParseInputDates(out DateTime fromDate, out DateTime toDate)
     {
-        fromDate = default;
-        toDate = default;
-
-        bool fromSuccess = DateTime.TryParse(FromDate, out fromDate);
-        bool toSuccess = DateTime.TryParse(ToDate, out toDate);
+        bool fromSuccess = DateTime.TryParse(FromDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out fromDate);
+        bool toSuccess = DateTime.TryParse(ToDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out toDate);
 
         return fromSuccess && toSuccess;
     }
@@ -111,9 +108,11 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
             path = isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth;
         }
 
+        var nextMonth = fromMonth == 12 ? 1 : fromMonth + 1;
+        var nextYear = fromMonth == 12 ? fromYear + 1 : fromYear;
         return canViewDataConsumerView
             ? string.Format(path, fromMonth, fromYear, toMonth, toYear)
-            : string.Format(path, fromMonth + 1, fromYear);
+            : string.Format(path, nextMonth, nextYear);
     }
 
     private static bool CanViewDataConsumerView(UserDto user)

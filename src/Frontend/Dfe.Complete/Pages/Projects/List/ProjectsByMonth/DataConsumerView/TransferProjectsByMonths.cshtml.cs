@@ -14,6 +14,9 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 
         public async Task<IActionResult> OnGet()
         {
+            if (FromMonth < 1 || FromMonth > 12 || ToMonth < 1 || ToMonth > 12)
+                return NotFound();
+
             var fromDate = ParseDate(FromMonth, FromYear);
             var toDate = ParseDate(ToMonth, ToYear);
 
