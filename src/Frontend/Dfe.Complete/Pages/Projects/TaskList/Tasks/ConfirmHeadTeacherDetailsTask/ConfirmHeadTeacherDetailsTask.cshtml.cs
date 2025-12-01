@@ -5,14 +5,15 @@ using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTask
 {
-    public class ConfirmHeadTeachersDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmHeadTeachersDetailsTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmHeadTeacherDetails)
+    public class ConfirmHeadTeachersDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmHeadTeachersDetailsTaskModel> logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmHeadTeacherDetails, projectPermissionService)
     {
         [BindProperty]
         public Guid? HeadTeacherContactId { get; set; }
@@ -47,3 +48,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTa
         }
     }
 }
+

@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.ProjectDetails;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -100,11 +101,12 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         project.GroupId = null;
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -123,6 +125,7 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project,
         ProjectGroupDto projectGroup)
     {
@@ -131,7 +134,7 @@ public class BaseProjectDetailsPageModelTests
         project.GroupId = groupId;
         projectGroup.GroupIdentifier = "GR123456";
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -145,9 +148,6 @@ public class BaseProjectDetailsPageModelTests
 
         // Assert
         Assert.Equal("GR123456", model.GroupReferenceNumber);
-        // await mockSender.Received(1).Send(
-        //     Arg.Is<GetProjectGroupByIdQuery>(q => q.ProjectGroupId == groupId), 
-        //     Arg.Any<CancellationToken>());
     }
 
     [Theory]
@@ -156,13 +156,14 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         var groupId = new ProjectGroupId(Guid.NewGuid());
         project.GroupId = groupId;
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -184,13 +185,14 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         var groupId = new ProjectGroupId(Guid.NewGuid());
         project.GroupId = groupId;
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -211,10 +213,11 @@ public class BaseProjectDetailsPageModelTests
     public async Task OnGetAsync_WhenBaseOnGetReturnsNonPageResult_ReturnsBaseResult(
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
-        [Frozen] ILogger mockLogger)
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
     {
         // Arrange
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger);
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService);
         var redirectResult = new RedirectResult("/error");
         model.SetBaseOnGetResult(redirectResult);
 
@@ -231,6 +234,7 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project,
         EstablishmentDto establishment,
         ProjectGroupDto projectGroup)
@@ -252,7 +256,7 @@ public class BaseProjectDetailsPageModelTests
         establishment.Name = "Test School";
         projectGroup.GroupIdentifier = "GR789012";
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             ProjectId = projectId.ToString(),
             Project = project,
@@ -287,8 +291,8 @@ public class BaseProjectDetailsPageModelTests
     }
 }
 
-public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger)
-    : BaseProjectDetailsPageModel(sender, errorService, logger)
+public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectDetailsPageModel(sender, errorService, logger, projectPermissionService)
 {
     private IActionResult? _baseOnGetResult;   
 

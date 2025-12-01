@@ -1,14 +1,15 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterFundingAgreement
 {
-    public class DeedOfTerminationForMasterFundingAgreementModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfTerminationForMasterFundingAgreementModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement)
+    public class DeedOfTerminationForMasterFundingAgreementModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfTerminationForMasterFundingAgreementModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement, projectPermissionService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -66,3 +67,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterF
         }
     }
 }
+
