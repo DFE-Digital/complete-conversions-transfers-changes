@@ -71,6 +71,9 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
 
     public static DateOnly? ParseDate(int month, int year)
     {
+        if (month < 1 || month > 12)
+            throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12.");
+
         if (DateOnly.TryParse($"{month}/1/{year}", CultureInfo.InvariantCulture, out var date))
         {
             return date;

@@ -49,17 +49,19 @@ public class ProjectsByMonthModelTests_Additional
         }
     }
 
-    [Theory]
-    [InlineData(1, 2025, true)]
-    [InlineData(13, 2025, false)]
-    public void ParseDate_ShouldReturnValidDateOnlyOrNull(int month, int year, bool shouldBeValid)
+    [Fact]
+    public void ParseDate_ShouldReturnValidDateOnlyOrNull()
     {
-        var result = ProjectsByMonthModel.ParseDate(month, year);
+        var result = ProjectsByMonthModel.ParseDate(1, 2024);
+        Assert.NotNull(result);
+    }
 
-        if (shouldBeValid)
-            Assert.NotNull(result);
-        else
-            Assert.Null(result);
+    [Theory]
+    [InlineData(0)]
+    [InlineData(13)]
+    public void ParseDate_ShouldThrowException_WhenOutOfRange(int month)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => ProjectsByMonthModel.ParseDate(month, 2024));
     }
 
     [Fact]
