@@ -100,7 +100,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     }
     protected async Task SetIncomingTrustAsync()
     {
-        if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
+        if (Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
             var incomingTrustResult = await Sender.Send(incomingTrustQuery);
