@@ -30,10 +30,13 @@ const contact = ContactBuilder.createContactRequest();
 const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: urnPool.userCapabilities.mountjoy });
 let projectToDeleteId: string;
 const schoolToDeleteName = "Mountjoy House School";
+const projectMat = ProjectBuilder.createConversionFormAMatProjectRequest({ urn: urnPool.userCapabilities.morda });
+let projectMatId: string;
 
 before(() => {
     projectRemover.removeProjectIfItExists(project.urn);
     projectRemover.removeProjectIfItExists(projectToDelete.urn);
+    projectRemover.removeProjectIfItExists(projectMat.urn);
     projectApi.createAndUpdateConversionProject(project).then((response) => {
         projectId = response.value;
         contact.projectId = { value: projectId };
@@ -43,6 +46,7 @@ before(() => {
     projectApi
         .createAndUpdateConversionProject(projectToDelete)
         .then((response) => (projectToDeleteId = response.value));
+    projectApi.createAndUpdateMatConversionProject(projectMat).then((response) => (projectMatId = response.value));
 });
 beforeEach(() => {
     cy.login(serviceSupportUser);
@@ -129,6 +133,13 @@ describe("Capabilities and permissions of the service support user - project pag
         cy.visit(`/projects/${projectId}/information`);
         aboutTheProjectPage.change("Group reference number");
         editTransferProjectPage.with2RI("Yes").continue();
+        aboutTheProjectPage.containsSuccessBannerWithMessage("Project has been updated successfully");
+    });
+
+    it("Should be able to update MAT project TRN", () => {
+        cy.visit(`/projects/${projectMatId}/information`);
+        aboutTheProjectPage.change("New trust reference number (TRN)");
+        editTransferProjectPage.withTrustReferenceNumber("TR01881").continue();
         aboutTheProjectPage.containsSuccessBannerWithMessage("Project has been updated successfully");
     });
 

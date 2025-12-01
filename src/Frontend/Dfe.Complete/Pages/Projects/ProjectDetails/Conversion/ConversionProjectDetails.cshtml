@@ -1,5 +1,8 @@
 ﻿@page "/projects/conversions/{projectId}/edit"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService Authorization
 @model Dfe.Complete.Pages.Projects.ProjectDetails.Conversion.ConversionProjectDetailsModel
 
 @{
@@ -11,32 +14,49 @@
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharepointLink);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
     const string isDueTo2RIField = nameof(Model.TwoRequiresImprovement);
+
+    var matProject = !string.IsNullOrWhiteSpace(Model.OriginalTrustReferenceNumber);
+    var canViewServiceSupport = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanViewServiceSupport);
 }
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post" novalidate>
-            <div class="govuk-form-group" id="incoming-trust-ukprn">
-                <govuk-input name="@incomingUkprnField" input-class="govuk-input--width-10" asp-for="@Model.IncomingTrustUkprn">
-                    <govuk-input-label class="govuk-label--m">Incoming trust UKPRN (UK Provider Reference Number)</govuk-input-label>
-                    <govuk-input-hint>
-                        <p>
-                            A UKPRN is an 8-digit number that always starts with a 1.
-                        </p>
-                        <p>
-                            <external-link href="https://www.get-information-schools.service.gov.uk/Search?SelectedTab=Groups">
-                                Search GIAS to find the incoming trust's UKPRN (opens in a new tab).
-                            </external-link>
-                        </p>
-                    </govuk-input-hint>
-                    @if (Model.ErrorService.HasErrorForKey(@incomingUkprnField))
-                    {
-                        <govuk-input-error-message>@(Model.ErrorService.GetErrorMessage(incomingUkprnField))</govuk-input-error-message>
-                    }
-                </govuk-input>
-            </div>
+            @if (matProject)
+            {
+                <div class="govuk-form-group" id="incoming-trust-ukprn">
+                    <govuk-input name="@incomingUkprnField" input-class="govuk-input--width-10" asp-for="@Model.IncomingTrustUkprn">
+                        <govuk-input-label class="govuk-label--m">Incoming trust UKPRN (UK Provider Reference Number)</govuk-input-label>
+                        <govuk-input-hint>
+                            <p>
+                                A UKPRN is an 8-digit number that always starts with a 1.
+                            </p>
+                            <p>
+                                <external-link href="https://www.get-information-schools.service.gov.uk/Search?SelectedTab=Groups">
+                                    Search GIAS to find the incoming trust's UKPRN (opens in a new tab).
+                                </external-link>
+                            </p>
+                        </govuk-input-hint>
+                        @if (Model.ErrorService.HasErrorForKey(@incomingUkprnField))
+                        {
+                            <govuk-input-error-message>@(Model.ErrorService.GetErrorMessage(incomingUkprnField))</govuk-input-error-message>
+                        }
+                    </govuk-input>
+                </div>                
+            }
+            else
+            {
+                <input type="hidden" asp-for="@Model.IncomingTrustUkprn" />               
+            }  
 
-            @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)
+            @if (matProject && canViewServiceSupport.Succeeded)
+            {
+                @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)                
+            }
+            else
+            {
+                <input type="hidden" asp-for="@Model.NewTrustReferenceNumber" />
+            }
 
             <div class="govuk-form-group" id="group-reference-number">
                 <govuk-input input-class="govuk-input--width-10" asp-for="@Model.GroupReferenceNumber">

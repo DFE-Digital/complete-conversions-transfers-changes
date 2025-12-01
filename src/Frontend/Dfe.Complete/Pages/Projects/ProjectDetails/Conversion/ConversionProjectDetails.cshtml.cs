@@ -49,8 +49,10 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
+            ValidateTrustReferenceNumber();
+
             if (!ModelState.IsValid)
-            {
+            {   
                 ErrorService.AddErrors(ModelState);
                 return Page();
             }
@@ -63,7 +65,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 
             var updateProjectCommand = new UpdateConversionProjectCommand(
                 ProjectId: new ProjectId(Guid.Parse(ProjectId)),
-                IncomingTrustUkprn: new Ukprn(IncomingTrustUkprn!.ToInt()),
+                IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue

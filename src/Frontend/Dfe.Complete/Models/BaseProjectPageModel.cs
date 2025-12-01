@@ -43,6 +43,9 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
     public KeyContactDto KeyContacts { get; private set; } = null!;
 
+    public bool UserHasAdminAccess() =>
+        projectPermissionService?.UserIsAdmin(Project, User) ?? false;
+
     public bool UserHasViewAccess() =>
         projectPermissionService.UserCanView(Project, User);
 
@@ -100,7 +103,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     }
     protected async Task SetIncomingTrustAsync()
     {
-        if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
+        if (Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
             var incomingTrustResult = await Sender.Send(incomingTrustQuery);

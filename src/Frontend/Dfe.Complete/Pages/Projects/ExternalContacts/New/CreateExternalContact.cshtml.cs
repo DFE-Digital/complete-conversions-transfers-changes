@@ -108,7 +108,7 @@ public class CreateExternalContact(
             ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors
                 => Project?.EstablishmentName?.ToTitleCase(),
 
-            ExternalContactType.IncomingTrust when Project?.FormAMat == false && Project.IncomingTrustUkprn != null
+            ExternalContactType.IncomingTrust when Project?.IncomingTrustUkprn != null
                 => (await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn))?.Name?.ToTitleCase(),
 
             ExternalContactType.OutgoingTrust when Project?.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null
