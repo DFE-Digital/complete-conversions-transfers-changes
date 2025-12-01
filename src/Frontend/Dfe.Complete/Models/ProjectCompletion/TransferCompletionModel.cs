@@ -28,7 +28,9 @@ public class TransferCompletionModel : CompletionModel
         if (!AcademyTransferDateTaskCompleted)
             validationErrors.Add(ValidationConstants.AcademyTransferDateComplete);
 
+        if (!IncomingTrustUkprnEntered)
+            validationErrors.Add(ValidationConstants.IncomingTrustUkprnMissing);
+
         return validationErrors;
     }
-
 }

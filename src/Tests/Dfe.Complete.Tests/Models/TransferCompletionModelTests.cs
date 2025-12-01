@@ -15,18 +15,20 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
-        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted, true)]
-        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.NotApplicable, false)]
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.Completed, false)]
-        public void Is_InValid_When_TasksConditionNotMet(TaskListStatus confirmThisTransferHasAuthorityToProceed, TaskListStatus confirmDateAcademyTransferred, TaskListStatus declarationOfExpenditureCertificate, bool expected)
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress, "12121212", true)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted, "12121212", true)]
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, "12121212", true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.NotApplicable, null, true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.NotApplicable, "12121212", false)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.Completed, "12121212", false)]
+        public void Is_InValid_When_TasksConditionNotMet(TaskListStatus confirmThisTransferHasAuthorityToProceed, TaskListStatus confirmDateAcademyTransferred, TaskListStatus declarationOfExpenditureCertificate, string incomingTrustUkprn, bool expected)
         {
             // Arrange            
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmThisTransferHasAuthorityToProceed = confirmThisTransferHasAuthorityToProceed;
             _testClass.ConfirmDateAcademyTransferred = confirmDateAcademyTransferred;
             _testClass.DeclarationOfExpenditureCertificate = declarationOfExpenditureCertificate;
+            _testClass.IncomingTrustUkprn = incomingTrustUkprn;
 
             // Act
             var result = _testClass.Validate();
@@ -67,6 +69,7 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConfirmThisTransferHasAuthorityToProceed = statusCompleted;
             _testClass.ConfirmDateAcademyTransferred = statusCompleted;
             _testClass.DeclarationOfExpenditureCertificate = statusCompleted;
+            _testClass.IncomingTrustUkprn = "12121212";
 
             // Act
             var result = _testClass.Validate();

@@ -97,8 +97,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new List<string>());
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>())
+            .Returns([]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
             .Returns(true);
@@ -137,7 +137,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger, projectPermissionService)
+        CompleteProjectModel testClass = new(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,
@@ -173,8 +173,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
-            .Returns(new List<string>());
+            projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>())
+            .Returns([]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
             .Returns(true);
@@ -214,7 +214,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger, projectPermissionService)
+        CompleteProjectModel testClass = new(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             TempData = tempData,
@@ -249,8 +249,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new List<string> { "validation message" });
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>())
+            .Returns(["validation message"]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
             .Returns(true);
@@ -328,8 +328,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
-            .Returns(new List<string> { "validation message" });
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>())
+            .Returns(["validation message"]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
             .Returns(true);

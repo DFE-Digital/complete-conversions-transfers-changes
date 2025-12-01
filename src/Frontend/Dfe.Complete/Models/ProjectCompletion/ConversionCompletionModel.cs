@@ -23,6 +23,9 @@ public class ConversionCompletionModel : CompletionModel
         if (!AllConditionsMetTaskCompleted)
             validationErrors.Add(ValidationConstants.AllConditionsMetComplete);
 
+        if (!IncomingTrustUkprnEntered)
+            validationErrors.Add(ValidationConstants.IncomingTrustUkprnMissing);
+
         return validationErrors;
     }
 }
