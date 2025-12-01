@@ -413,13 +413,13 @@ describe("About the project page - conversion projects: ", () => {
                 `${giasUrl}/Groups/Search?GroupSearchModel.Text=${newIncomingTrust.ukprn}`,
             )
             .keyHasValue("UKPRN (UK provider reference number)", newIncomingTrust.ukprn)
-            .keyHasValue("Group ID (identifier)", "")
+            .keyHasValue("Group ID (identifier)", newIncomingTrust.referenceNumber)
             .keyHasValueWithLink(
                 "Companies House number",
                 `${newIncomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
                 `${companiesHouseUrl}${newIncomingTrust.companiesHouseNumber}`,
             )
-            .keyHasValue("New trust reference number (TRN)", "")
+            .keyHasValue("New trust reference number (TRN)", newIncomingTrust.referenceNumber)
             .keyHasValue("Address", newIncomingTrust.address)
             .keyHasValueWithLink(
                 "SharePoint folder",
