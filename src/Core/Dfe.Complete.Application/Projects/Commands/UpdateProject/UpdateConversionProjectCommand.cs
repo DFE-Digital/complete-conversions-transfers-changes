@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
     public record UpdateConversionProjectCommand(
         ProjectId ProjectId,
-        Ukprn IncomingTrustUkprn,
+        Ukprn? IncomingTrustUkprn,
         string? NewTrustReferenceNumber,
         string? GroupReferenceNumber,
         DateOnly AdvisoryBoardDate,

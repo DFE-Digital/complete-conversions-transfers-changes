@@ -51,7 +51,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
 
     private async Task<string?> GetIncomingTrustNameAsync()
     {
-        if (Project is null || Project.FormAMat || Project.IncomingTrustUkprn is null)
+        if (Project is null || Project.IncomingTrustUkprn is null)
             return null;
 
         var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
