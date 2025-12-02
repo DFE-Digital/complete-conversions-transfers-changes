@@ -13,7 +13,7 @@ export class EditUserPage extends ProjectDetailsPage {
     assignTo(user: string) {
         cy.getById(this.userInputId).clear().type(user);
         cy.getById(this.userOptionsId).within(() => {
-            cy.get('li').should('have.length', 1);
+            cy.get("li").should("have.length", 1);
         });
         cy.getById(this.firstOptionId).click();
         return this;
