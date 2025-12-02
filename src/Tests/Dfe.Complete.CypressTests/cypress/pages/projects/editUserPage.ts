@@ -1,9 +1,9 @@
 import { ProjectDetailsPage } from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 export class EditUserPage extends ProjectDetailsPage {
-    private readonly userInputId = "assigned-user";
-    private readonly userOptionsId = "assigned-user__listbox";
-    private readonly firstOptionId = "assigned-user__option--0";
+    private readonly userInputId = "user-autocomplete";
+    private readonly userOptionsId = "user-autocomplete__listbox";
+    private readonly firstOptionId = "user-autocomplete__option--0";
 
     hasLabel(label: string) {
         cy.get(`label[for="${this.userInputId}"]`).should("contain.text", label);
