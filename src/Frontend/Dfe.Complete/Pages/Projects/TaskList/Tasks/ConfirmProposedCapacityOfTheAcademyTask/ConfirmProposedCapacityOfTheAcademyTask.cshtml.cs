@@ -3,6 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
@@ -12,8 +13,8 @@ using System.Reflection;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademyTask
 {
-    public class ConfirmProposedCapacityOfTheAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, IErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)
+    public class ConfirmProposedCapacityOfTheAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, projectPermissionService)
     {
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
@@ -35,6 +36,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
 
             NotApplicable = ConversionTaskData.ProposedCapacityOfTheAcademyNotApplicable;

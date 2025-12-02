@@ -4,14 +4,15 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Project;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Completion;
 
-public class CompleteProjectModel(ISender sender, IProjectService projectService, ILogger<CompleteProjectModel> logger)
-: BaseProjectPageModel(sender, logger)
+public class CompleteProjectModel(ISender sender, IProjectService projectService, ILogger<CompleteProjectModel> logger, IProjectPermissionService projectPermissionService)
+: BaseProjectPageModel(sender, logger, projectPermissionService)
 {
     private readonly IProjectService projectService = projectService;
 

@@ -2,6 +2,6 @@
 {
     public static class IgnoreApiInProductionConfig
     {
-        public static bool IsProduction { get; set; }        
+        public static bool IsProduction { get; set; }
     }
 }

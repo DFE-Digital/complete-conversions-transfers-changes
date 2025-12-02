@@ -4,15 +4,19 @@ import projectApi from "cypress/api/projectApi";
 import { beforeEach } from "mocha";
 import navBar from "cypress/pages/navBar";
 import groupTable from "cypress/pages/groups/groupTable";
-import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust } from "cypress/constants/stringTestConstants";
 import detailsPage from "cypress/pages/detailsPage";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const groupReferenceNumber = "GRP_00000099";
-const incomingTrust = macclesfieldTrust;
-const outgoingTrust = dimensionsTrust;
+const incomingTrust = {
+    name: "Chancery Education Trust",
+    ukprn: 10058901,
+    referenceNumber: "TR01647",
+};
+const outgoingTrustUkprn = dimensionsTrust.ukprn;
 const conversionSchoolWithGroup = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.listings.islamia,
     groupId: groupReferenceNumber,
@@ -25,7 +29,7 @@ const transferAcademyWithGroup = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.listings.madni,
     groupId: groupReferenceNumber,
     incomingTrustUkprn: incomingTrust.ukprn,
-    outgoingTrustUkprn: outgoingTrust.ukprn,
+    outgoingTrustUkprn: outgoingTrustUkprn,
 });
 const transferAcademyName = "Madni Academy";
 
@@ -53,6 +57,7 @@ describe("Groups tests: ", () => {
 
         Logger.log("Verify groups table data");
         groupTable
+            .goToNextPageUntilFieldIsVisible(incomingTrust.name.toUpperCase())
             .hasTableHeaders(["Group", "Group reference number", "Trust UKPRN", "Schools or academies included"])
             .withGroup(incomingTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Group reference number", groupReferenceNumber)

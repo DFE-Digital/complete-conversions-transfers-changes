@@ -65,7 +65,7 @@ public class UpdateExternalContactCommandTests
 
         var contact = fixture.Build<Entities.Contact>()
            .With(q => q.Id, command.contactDto.Id)
-           .Create();       
+           .Create();
 
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
         mockContactReadRepository.Contacts.Returns(queryableContacts);
@@ -99,8 +99,8 @@ public class UpdateExternalContactCommandTests
         var queryableContacts = new List<Entities.Contact>().AsQueryable().BuildMock();
         mockContactReadRepository.Contacts.Returns(queryableContacts);
 
-        var expectedMessage = $"External contact with Id {command.contactDto.Id.Value} not found.";        
-        
+        var expectedMessage = $"External contact with Id {command.contactDto.Id.Value} not found.";
+
         // Act
         var result = await sut.Handle(command, CancellationToken.None);
 

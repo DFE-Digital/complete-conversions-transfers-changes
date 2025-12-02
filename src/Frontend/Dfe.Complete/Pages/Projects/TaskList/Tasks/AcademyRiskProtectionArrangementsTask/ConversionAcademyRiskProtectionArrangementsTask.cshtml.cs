@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrangementsTask
 {
-    public class ConversionAcademyRiskProtectionArrangementsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionAcademyRiskProtectionArrangementsTaskModel> logger, IErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements)
+    public class ConversionAcademyRiskProtectionArrangementsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionAcademyRiskProtectionArrangementsTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements, projectPermissionService)
     {
         [BindProperty]
         [Required(ErrorMessage = ValidationConstants.RiskProtectionArrangementOptionRequired)]
@@ -25,6 +26,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
             RpaOption = ConversionTaskData.RiskProtectionArrangementOption;
@@ -49,3 +54,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
         }
     }
 }
+

@@ -3,10 +3,10 @@ import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import taskHelper from "cypress/api/taskHelper";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { getSignificantDateString } from "cypress/support/formatDate";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import taskHelperConversions from "cypress/api/taskHelperConversions";
 
 const completableProject = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.conversion.stChads,
@@ -33,9 +33,9 @@ describe("Complete conversion projects tests", () => {
             completableProjectId = response.value;
             projectApi.getProject(completableProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
-                taskHelper.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
-                taskHelper.updateConfirmAllConditionsMet(completableProjectId, "completed");
-                taskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
+                taskHelperConversions.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
+                taskHelperConversions.updateConfirmAllConditionsMet(completableProjectId, "completed");
+                taskHelperConversions.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });
         projectApi.createAndUpdateMatConversionProject(someTasksCompletedProject).then((response) => {
@@ -43,13 +43,13 @@ describe("Complete conversion projects tests", () => {
             projectApi.getProject(someTasksCompletedProject.urn).then((response) => {
                 const taskId = response.body.tasksDataId.value;
                 // set significate date in the future, so project cannot be completed
-                taskHelper.updateExternalStakeholderKickOff(
+                taskHelperConversions.updateExternalStakeholderKickOff(
                     someTasksCompletedProjectId,
                     "completed",
                     getSignificantDateString(1),
                 );
-                taskHelper.updateConfirmAllConditionsMet(someTasksCompletedProjectId, "completed");
-                taskHelper.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
+                taskHelperConversions.updateConfirmAllConditionsMet(someTasksCompletedProjectId, "completed");
+                taskHelperConversions.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });
         projectApi

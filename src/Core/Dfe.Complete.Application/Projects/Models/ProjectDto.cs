@@ -92,7 +92,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public User RegionalDeliveryOfficer { get; set; } = default!;
 
-        public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+        // Updated, if both NewTrustReferenceNumber and NewTrustName are set, we can consider the project to have formed a MAT, removed incoming trust ukprn as null condition as that is not relevant here
+        public bool FormAMat => !string.IsNullOrWhiteSpace(NewTrustReferenceNumber) && !string.IsNullOrWhiteSpace(NewTrustName);
 
         public string? EstablishmentName { get; set; }
 

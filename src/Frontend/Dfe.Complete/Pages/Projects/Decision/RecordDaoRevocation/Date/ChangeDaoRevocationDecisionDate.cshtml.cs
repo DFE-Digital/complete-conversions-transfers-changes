@@ -1,5 +1,6 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
@@ -9,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
 {
     public class ChangeDaoRevocationDecisionDateModel(ISender sender, ILogger<AddDaoRevocationMinisterNameModel> logger, IErrorService errorService,
-        ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
+        ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
     {
         [BindProperty]
         [Required(ErrorMessage = ValidationConstants.DecisionDateRequired)]

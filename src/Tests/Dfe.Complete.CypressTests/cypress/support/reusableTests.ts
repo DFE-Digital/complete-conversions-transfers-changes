@@ -9,6 +9,8 @@ import { TestUser } from "cypress/constants/TestUser";
 import notePage from "cypress/pages/projects/projectDetails/notePage";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { userToEdit } from "cypress/constants/cypressConstants";
+import taskPage from "cypress/pages/projects/tasks/taskPage";
+import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -54,13 +56,13 @@ export function shouldNotBeAbleToSoftDeleteAProject(projectId: string) {
 
 export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
     cy.visit(`/projects/${projectId}/notes`);
-    notePage.clickButton("Add note").notAuthorisedToPerformThisActionBanner();
+    notePage.doesntContainButton("Add note");
     cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToAddAProjectTaskNote(projectId: string) {
     cy.visit(`/projects/${projectId}/tasks/handover`);
-    notePage.clickButton("Add a new task note").notAuthorisedToPerformThisActionBanner();
+    notePage.doesntContain("Add a new task note");
     cy.visit(`/projects/${projectId}/notes/new?task_identifier=handover`).notAuthorisedToPerformAction();
 }
 
@@ -135,4 +137,24 @@ export function shouldBeAbleToChangeTheAddedByUserOfAProject(
         .summaryShows("Added by")
         .hasValue(newAssignee.username)
         .hasEmailLink(newAssignee.email);
+}
+
+// confirm the contacts tasks
+export function shouldBeAbleToConfirmContact(projectId: string, contactName: string, task: string, taskName: string) {
+    cy.visit(`projects/${projectId}/tasks/${task}`);
+    Logger.log("Selecting the contact and saving");
+    taskPage.hasCheckboxLabel(contactName).tick().saveAndReturn();
+
+    Logger.log("Verifying that the selection was saved correctly");
+    taskListPage.hasTaskStatusCompleted(taskName);
+}
+
+export function shouldSeeAddContactButtonIfNoContactExists(projectId: string, task: string) {
+    cy.visit(`projects/${projectId}/tasks/${task}`);
+    taskPage.hasButton("Add a contact");
+}
+
+export function shouldNotSeeSaveAndReturnButtonForAnotherUsersProject(projectId: string, task: string) {
+    cy.visit(`projects/${projectId}/tasks/${task}`);
+    taskPage.noSaveAndReturnExists().doesntContain("Add a contact");
 }

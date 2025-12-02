@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
@@ -17,7 +18,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 {
     [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
     public class CreateAcademyUrnModel(ISender sender,
-        IErrorService errorService, ILogger<CreateAcademyUrnModel> logger) : BaseProjectPageModel(sender, logger)
+        IErrorService errorService, ILogger<CreateAcademyUrnModel> logger, IProjectPermissionService projectPermissionService) : BaseProjectPageModel(sender, logger, projectPermissionService)
     {
         [BindProperty]
         [AcademyUrn]

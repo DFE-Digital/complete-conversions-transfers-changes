@@ -4,14 +4,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
 {
-    public class MainContactTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<MainContactTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.MainContact)
+    public class MainContactTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<MainContactTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.MainContact, projectPermissionService)
     {
         [BindProperty]
         public Guid? MainContactId { get; set; }
@@ -20,6 +21,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             var contacts = await Sender.Send(new GetContactsForProjectAndLocalAuthorityQuery(Project.Id,
                 Project.LocalAuthorityId));
 

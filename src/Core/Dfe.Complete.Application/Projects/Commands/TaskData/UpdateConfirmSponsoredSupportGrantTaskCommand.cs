@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -9,12 +8,13 @@ using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateConfirmSponsoredSupportGrantTaskCommand(
         [Required] TaskDataId TaskDataId,
-        [Required] [ProjectType] ProjectType? ProjectType,
+        [Required][ProjectType] ProjectType? ProjectType,
         bool? NotApplicable,
         SponsoredSupportGrantType? SponsoredSupportGrantType,
         bool? PaymentAmount,
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
-            
+
             tasksData.SponsoredSupportGrantNotApplicable = request.NotApplicable;
             tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType.ToDescription();
 
@@ -65,7 +65,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             tasksData.SponsoredSupportGrantNotApplicable = request.NotApplicable;
             tasksData.SponsoredSupportGrantType = request.NotApplicable == true ? null : request.SponsoredSupportGrantType.ToDescription();
-            
+
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
     }

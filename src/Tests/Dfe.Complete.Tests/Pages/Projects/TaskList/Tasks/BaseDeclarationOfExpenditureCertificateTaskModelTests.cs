@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,8 +20,9 @@ namespace Dfe.Complete.Tests.Pages.Projects.TaskList.Tasks
         {
             var auth = new Mock<IAuthorizationService>();
             var logger = new Mock<ILogger<DeclarationOfExpenditureCertificateTaskModel>>();
+            var projectPermissionService = new Mock<IProjectPermissionService>();
             var model = new DeclarationOfExpenditureCertificateTaskModel(
-            sender.Object, auth.Object, logger.Object, errorService.Object)
+            sender.Object, auth.Object, logger.Object, errorService.Object, projectPermissionService.Object)
             {
                 TaskIdentifier = NoteTaskIdentifier.DeclarationOfExpenditureCertificate,
                 ReceivedDate = DateOnly.FromDateTime(DateTime.Today.AddDays(days)),

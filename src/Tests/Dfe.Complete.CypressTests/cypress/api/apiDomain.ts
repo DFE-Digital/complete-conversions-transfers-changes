@@ -153,3 +153,33 @@ export type CreateLocalAuthorityRequest = {
     email: string;
     phone: string;
 };
+
+export enum ContactCategory {
+    SchoolOrAcademy = "SchoolOrAcademy",
+    IncomingTrust = "IncomingTrust",
+    OutgoingTrust = "OutgoingTrust",
+    LocalAuthority = "LocalAuthority",
+    Diocese = "Diocese",
+    Solicitor = "Solicitor",
+    Other = "Other",
+}
+
+export enum ContactType {
+    Project = "Project",
+    Establishment = "Establishment",
+    DirectorOfChildServices = "DirectorOfChildServices",
+}
+
+export type CreateContactRequest = {
+    fullName?: string;
+    role?: string;
+    email?: string;
+    phoneNumber?: string;
+    category: ContactCategory;
+    isPrimaryContact: boolean;
+    projectId?: { value: string };
+    establishmentUrn?: number | null;
+    organisationName?: string | null;
+    localAuthorityId?: { value: string } | null;
+    type: ContactType;
+};

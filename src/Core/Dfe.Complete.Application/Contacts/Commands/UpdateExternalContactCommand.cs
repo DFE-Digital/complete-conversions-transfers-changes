@@ -27,8 +27,8 @@ public class UpdateExternalContactCommandHandler(
             var contactEntity = new ContactIdQuery(updateDto.Id)
                 .Apply(contactReadRepository.Contacts)
                 .FirstOrDefault();
-            
-            if (contactEntity is null) return Result<bool>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", updateDto.Id.Value.ToString()), ErrorType.NotFound);           
+
+            if (contactEntity is null) return Result<bool>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", updateDto.Id.Value.ToString()), ErrorType.NotFound);
 
             contactEntity.Name = updateDto.Name;
             contactEntity.Title = updateDto.Title;
