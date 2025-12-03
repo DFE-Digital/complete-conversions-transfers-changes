@@ -40,6 +40,7 @@
 
         // project completion validation messages
         // For transfer
+        public const string IncomingTrustUkprnMissing = "The incoming trust UKPRN is entered";
         public const string TransferDateInPast = "The transfer date has been confirmed and is in the past";
         public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";
         public const string ExpenditureCertificateComplete = "The receive declaration of expenditure certificate task is completed";
