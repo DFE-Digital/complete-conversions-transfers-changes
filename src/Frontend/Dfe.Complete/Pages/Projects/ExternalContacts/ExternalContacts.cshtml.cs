@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
 
     [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
     public string? ConversionContactType { get; set; }
+
+    public string IncomingTrustName => IncomingTrust?.Name?.ToTitleCase() ?? Project?.NewTrustName?.ToTitleCase() ?? string.Empty;
 
     public override async Task<IActionResult> OnGetAsync()
     {
