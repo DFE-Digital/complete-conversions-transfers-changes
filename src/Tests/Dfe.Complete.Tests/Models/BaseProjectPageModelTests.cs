@@ -6,6 +6,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using Dfe.Complete.Tests.Common.Assertions;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
@@ -117,8 +118,58 @@ public class BaseProjectPageModelTests
         // Assert
         Assert.Equal(projectDto, model.Project);
     }
+
+    [Fact]
+    public async Task GetKeyContactForProjectsAsync_ReturnsAKeyContacts_WhenFound()
+    {
+        // Arrange
+        var sender = Substitute.For<ISender>();
+        var logger = Substitute.For<ILogger>();
+        var projectPermissionService = Substitute.For<IProjectPermissionService>();
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
+        {
+            ProjectId = Guid.NewGuid().ToString(),
+        };
+
+        var expectedKeyContacts = new Application.KeyContacts.Models.KeyContactDto();
+        var result = Result<Application.KeyContacts.Models.KeyContactDto?>.Success(expectedKeyContacts);
+
+        sender.Send(Arg.Any<Application.KeyContacts.Queries.GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
+            .Returns(result);
+
+        // Act
+        await model.GetKeyContactForProjectsAsync();
+
+        // Assert
+        Assert.Equal(expectedKeyContacts, model.KeyContacts);
+    }
+
+    [Fact]
+    public async Task GetKeyContactForProjectsAsync_ThrowsNotFoundException_WhenNotFound()
+    {
+        // Arrange
+        var sender = Substitute.For<ISender>();
+        var logger = Substitute.For<ILogger>();
+        var projectPermissionService = Substitute.For<IProjectPermissionService>();
+        var model = new TestBaseProjectPageModel(sender, logger, projectPermissionService)
+        {
+            ProjectId = Guid.NewGuid().ToString(),
+        };
+
+        var getKeyContactsResult = Result<Application.KeyContacts.Models.KeyContactDto?>.Success(null);
+
+        sender.Send(Arg.Any<Application.KeyContacts.Queries.GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
+            .Returns(getKeyContactsResult);
+
+        // Act
+        await model.GetKeyContactForProjectsAsync();
+
+        // Assert
+        Assert.Null(model.KeyContacts);
+    }
 }
 
 public class TestBaseProjectPageModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService) : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
+    public new async Task GetKeyContactForProjectsAsync() => await base.GetKeyContactForProjectsAsync();
 }
