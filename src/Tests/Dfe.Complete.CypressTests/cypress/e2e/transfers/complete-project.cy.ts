@@ -14,10 +14,10 @@ const completableProject = ProjectBuilder.createTransferProjectRequest({
 let completableProjectId: string;
 const completableSchoolName = "Abbey College Manchester";
 
-const someTasksCompletedProject = ProjectBuilder.createTransferFormAMatProjectRequest({
+const allTasksCompleteNoUKPRNProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transfer.priory,
 });
-let someTasksCompletedProjectId: string;
+let allTasksCompleteNoUKPRNProjectId: string;
 
 const noTasksCompletedProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transfer.prees,
@@ -27,7 +27,7 @@ let noTasksCompletedProjectId: string;
 describe("Complete transfer projects tests", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(completableProject.urn);
-        projectRemover.removeProjectIfItExists(someTasksCompletedProject.urn);
+        projectRemover.removeProjectIfItExists(allTasksCompleteNoUKPRNProject.urn);
         projectRemover.removeProjectIfItExists(noTasksCompletedProject.urn);
         projectApi.createAndUpdateTransferProject(completableProject).then((response) => {
             completableProjectId = response.value;
@@ -43,13 +43,23 @@ describe("Complete transfer projects tests", () => {
                 TaskHelperTransfers.updateConfirmDateAcademyTransferred(taskId, "2025-09-01");
             });
         });
-        projectApi.createAndUpdateMatTransferProject(someTasksCompletedProject).then((response) => {
-            someTasksCompletedProjectId = response.value;
-            TaskHelperTransfers.updateExternalStakeholderKickOff(
-                someTasksCompletedProjectId,
-                "completed",
-                "2025-10-01",
-            );
+        projectApi.createAndUpdateMatTransferProject(allTasksCompleteNoUKPRNProject).then((response) => {
+            allTasksCompleteNoUKPRNProjectId = response.value;
+            projectApi.getProject(allTasksCompleteNoUKPRNProject.urn).then((response) => {
+                const taskId = response.body.tasksDataId.value;
+                TaskHelperTransfers.updateExternalStakeholderKickOff(
+                    allTasksCompleteNoUKPRNProjectId,
+                    "completed",
+                    "2025-10-01",
+                );
+                TaskHelperTransfers.updateConfirmTransferHasAuthorityToProceed(taskId, "completed");
+                TaskHelperTransfers.updateReceiveDeclarationOfExpenditureCertificate(
+                    taskId,
+                    ProjectType.Transfer,
+                    "completed",
+                );
+                TaskHelperTransfers.updateConfirmDateAcademyTransferred(taskId, "2025-09-01");
+            });
         });
         projectApi
             .createAndUpdateMatTransferProject(noTasksCompletedProject)
@@ -70,14 +80,12 @@ describe("Complete transfer projects tests", () => {
         yourProjects.goToNextPageUntilFieldIsVisible(completableSchoolName);
     });
 
-    it("should not be able to complete a project with some tasks completed", () => {
-        cy.visit(`projects/${someTasksCompletedProjectId}/tasks`);
+    it("should not be able to complete a MAT project with all tasks completed but no incoming trust UKPRN", () => {
+        cy.visit(`projects/${allTasksCompleteNoUKPRNProjectId}/tasks`);
         taskListPage
             .clickButton("Complete project")
             .hasImportantCompletedBannerWith("This project cannot be completed until:", [
-                "The confirm this transfer has authority to proceed task is completed",
-                "The receive declaration of expenditure certificate task is completed",
-                "The confirm the date the academy transferred task is completed",
+                "The incoming trust UKPRN is entered",
             ]);
     });
 
@@ -90,6 +98,7 @@ describe("Complete transfer projects tests", () => {
                 "The confirm this transfer has authority to proceed task is completed",
                 "The receive declaration of expenditure certificate task is completed",
                 "The confirm the date the academy transferred task is completed",
+                "The incoming trust UKPRN is entered",
             ]);
     });
 });

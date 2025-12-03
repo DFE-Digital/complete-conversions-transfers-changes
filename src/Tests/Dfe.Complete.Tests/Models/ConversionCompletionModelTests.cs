@@ -15,16 +15,18 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
-        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, true)]
-        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, false)]
-        public void Is_InValid_When_TasksConditionNotMet(TaskListStatus academyOpenedDateTaskStatus, TaskListStatus allConditionsMetTaskStatus, bool expected)
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, "12121212", true)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, "12121212", true)]
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, "12121212", true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, null, true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, "12121212", false)]
+        public void Is_InValid_When_TasksConditionNotMet(TaskListStatus academyOpenedDateTaskStatus, TaskListStatus allConditionsMetTaskStatus, string incomingTrustUkprn, bool expected)
         {
             // Arrange            
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmDateAcademyOpened = academyOpenedDateTaskStatus;
             _testClass.ConfirmAllConditionsHaveBeenMet = allConditionsMetTaskStatus;
+            _testClass.IncomingTrustUkprn = incomingTrustUkprn;
 
             // Act
             var result = _testClass.Validate();
@@ -58,6 +60,7 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmDateAcademyOpened = statusCompleted;
             _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
+            _testClass.IncomingTrustUkprn = "12121212";
 
             // Act
             var result = _testClass.Validate();
@@ -78,6 +81,7 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmDateAcademyOpened = statusCompleted;
             _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
+            _testClass.IncomingTrustUkprn = "12121212";
 
             // Act
             var result = _testClass.Validate();

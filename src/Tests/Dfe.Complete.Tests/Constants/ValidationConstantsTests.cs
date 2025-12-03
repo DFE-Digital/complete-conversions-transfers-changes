@@ -154,6 +154,12 @@ namespace Dfe.Complete.Tests.Constants
         }
 
         [Fact]
+        public void IncomingTrustUkprnMissing_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The incoming trust UKPRN is entered", ValidationConstants.IncomingTrustUkprnMissing);
+        }
+
+        [Fact]
         public void ExpenditureCertificateComplete_ShouldReturnExpectedMessage()
         {
             Assert.Equal("The receive declaration of expenditure certificate task is completed", ValidationConstants.ExpenditureCertificateComplete);

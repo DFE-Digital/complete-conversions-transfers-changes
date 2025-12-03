@@ -46,9 +46,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
 
         await UpdateCurrentProject();
         await GetProjectTaskDataAsync();
-        await GetKeyContactForProjectsAsyc();
-
-        var validationErrorUrl = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
+        await GetKeyContactForProjectsAsync();
 
         if (Project.Type == ProjectType.Transfer)
             return await CompleteTransferProjectAsync();
@@ -65,21 +63,21 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
             return RedirectToProjectTaskList();
         }
 
-        var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList);
+        var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList, Project.IncomingTrustUkprn?.Value.ToString());
         return await HandleProjectCompletionAsync(validationResult);
     }
 
     private async Task<IActionResult> CompleteConversionProjectAsync()
     {
         var taskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
-        var validationResult = projectService.GetConversionProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList);
+        var validationResult = projectService.GetConversionProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList, Project.IncomingTrustUkprn?.Value.ToString());
 
         return await HandleProjectCompletionAsync(validationResult);
     }
 
     private async Task<IActionResult> HandleProjectCompletionAsync(List<string> validationErrors)
     {
-        if (validationErrors.Any())
+        if (validationErrors.Count != 0)
         {
             StoreValidationErrors(validationErrors);
             return RedirectToProjectTaskListWithValidation();
@@ -103,7 +101,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         TempData.Put("CompleteProjectValidationMessages", validationErrors);
     }
 
-    private IActionResult RedirectToProjectTaskList()
+    private RedirectResult RedirectToProjectTaskList()
     {
         var url = string.Format(RouteConstants.ProjectTaskList, ProjectId);
         return Redirect(url);
@@ -114,7 +112,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         var url = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
         return Redirect(url);
     }
-    private IActionResult RedirectToProjectCompletePage()
+    private RedirectResult RedirectToProjectCompletePage()
     {
         var url = string.Format(RouteConstants.ProjectComplete, ProjectId);
         TempData.Add("ShowProjectCompleteConfirmation", true);
