@@ -11,19 +11,7 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 	  <NoWarn>0436</NoWarn>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <Content Remove="ViewComponents\**" />
-	  <EmbeddedResource Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />	  
-	  <EmbeddedResource Remove="ViewComponents\**" />	  
-	  <None Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
-	  <None Remove="ViewComponents\**" />
-	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
-	</ItemGroup>
+	</PropertyGroup>	
 
 	<ItemGroup>
 	  <None Remove="Resources\htb-template.docx" />
@@ -58,7 +46,7 @@
 	  <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.4.0" />
 	  <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.11" />
 	  <PackageReference Include="GovUK.Dfe.CoreLibs.Http" Version="1.0.10" />
-	  <PackageReference Include="GovUK.Dfe.CoreLibs.Security" Version="1.1.18" />
+	  <PackageReference Include="GovUK.Dfe.CoreLibs.Security" Version="1.1.20" />
 	  <PackageReference Include="GovUK.Dfe.CoreLibs.Utilities" Version="1.0.16" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />

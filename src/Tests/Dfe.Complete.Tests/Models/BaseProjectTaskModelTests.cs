@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,16 +25,21 @@ public class BaseProjectTaskModelTests
     private readonly Mock<ISender> _mockSender;
     private readonly Mock<IAuthorizationService> _mockAuthService = new();
     private readonly Mock<ILogger<BaseProjectTaskModel>> _mockLogger = new();
+    private readonly Mock<IProjectPermissionService> _mockProjectPermissionService = new();
     private readonly BaseProjectTaskModel _model;
     private readonly string ValidProjectId = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
     public BaseProjectTaskModelTests()
     {
         _mockSender = new Mock<ISender>();
+        _mockProjectPermissionService.Setup(
+            m => m.UserCanView(It.IsAny<ProjectDto>(), It.IsAny<ClaimsPrincipal?>()!)
+        ).Returns(true);
         _model = new BaseProjectTaskModel(
             _mockSender.Object,
             _mockAuthService.Object,
             _mockLogger.Object,
-            NoteTaskIdentifier.Handover
+            NoteTaskIdentifier.Handover,
+            _mockProjectPermissionService.Object
         )
         {
             ProjectId = ValidProjectId,
@@ -68,7 +74,7 @@ public class BaseProjectTaskModelTests
         var mockPageContext = new PageContext { HttpContext = new DefaultHttpContext { User = mockUser.Object } };
 
         _mockSender
-            .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+            .Setup(s => s.Send(It.IsAny<GetUserByOidQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(new UserDto
             {
                 ActiveDirectoryUserId = "MockObjectIdentifier",
@@ -126,7 +132,7 @@ public class BaseProjectTaskModelTests
     public void CanAddNotes_ReturnsExpectedResult(ProjectState projectState, bool expected)
     {
         // Arrange
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             TaskIdentifier = NoteTaskIdentifier.Handover
@@ -155,7 +161,7 @@ public class BaseProjectTaskModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover)
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -182,7 +188,8 @@ public class BaseProjectTaskModelTests
             _mockSender.Object,
             _mockAuthService.Object,
             _mockLogger.Object,
-            NoteTaskIdentifier.Handover
+            NoteTaskIdentifier.Handover,
+            _mockProjectPermissionService.Object
         )
         {
             TaskIdentifier = NoteTaskIdentifier.Handover
@@ -206,5 +213,70 @@ public class BaseProjectTaskModelTests
 
         var redirect = Assert.IsType<RedirectResult>(result);
         Assert.Equal($"/projects/{ValidProjectId}/notes/new?task_identifier=handover", redirect.Url);
+    }
+
+    // transfer-exclusive list
+    [Theory]
+    [InlineData(NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails)]
+    [InlineData(NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy)]
+    [InlineData(NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation)]
+    [InlineData(NoteTaskIdentifier.FormM)]
+    [InlineData(NoteTaskIdentifier.LandConsentLetter)]
+    [InlineData(NoteTaskIdentifier.DeedOfNovationAndVariation)]
+    [InlineData(NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement)]
+    [InlineData(NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement)]
+    [InlineData(NoteTaskIdentifier.ClosureOrTransferDeclaration)]
+    [InlineData(NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange)]
+    [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions)]
+    [InlineData(NoteTaskIdentifier.ConfirmDateAcademyTransferred)]
+    [InlineData(NoteTaskIdentifier.RedactAndSendDocuments)]
+    public void InvalidTaskRequestByProjectType_ReturnsTrue_ForConversionProjectAndTransferExclusiveTask(
+    NoteTaskIdentifier taskIdentifier)
+    {
+        // Act
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
+        {
+            Project = new ProjectDto { Type = ProjectType.Conversion },
+            TaskIdentifier = taskIdentifier
+        };
+
+        var result = model.InvalidTaskRequestByProjectType();
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Theory]
+    [InlineData(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds)]
+    [InlineData(NoteTaskIdentifier.CompleteNotificationOfChange)]
+    [InlineData(NoteTaskIdentifier.ProcessConversionSupportGrant)]
+    [InlineData(NoteTaskIdentifier.AcademyDetails)]
+    [InlineData(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails)]
+    [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)]
+    [InlineData(NoteTaskIdentifier.LandQuestionnaire)]
+    [InlineData(NoteTaskIdentifier.LandRegistryTitlePlans)]
+    [InlineData(NoteTaskIdentifier.TrustModificationOrder)]
+    [InlineData(NoteTaskIdentifier.DirectionToTransfer)]
+    [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease)]
+    [InlineData(NoteTaskIdentifier.Subleases)]
+    [InlineData(NoteTaskIdentifier.TenancyAtWill)]
+    [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions)]
+    [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening)]
+    [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate)]
+    [InlineData(NoteTaskIdentifier.RedactAndSend)]
+    public void InvalidTaskRequestByProjectType_ReturnsTrue_ForTransferProjectAndConversionExclusiveTask(
+        NoteTaskIdentifier taskIdentifier)
+    {       
+        // Act
+        var model = new BaseProjectTaskModel(_mockSender.Object, _mockAuthService.Object, _mockLogger.Object, NoteTaskIdentifier.Handover, _mockProjectPermissionService.Object)
+        {
+            Project = new ProjectDto { Type = ProjectType.Transfer },
+            TaskIdentifier = taskIdentifier
+        };
+
+        var result = model.InvalidTaskRequestByProjectType();
+
+        // Assert
+        Assert.True(result);
     }
 }

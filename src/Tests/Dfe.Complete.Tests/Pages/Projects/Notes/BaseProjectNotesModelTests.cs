@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.Notes;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,12 +19,13 @@ public class BaseProjectNotesModelTests
 {
     private readonly Mock<ISender> _mockSender = new();
     private readonly Mock<ILogger<BaseProjectNotesModel>> _mockLogger = new();
+    private readonly Mock<IProjectPermissionService> _mockProjectPermissionService = new();
 
     [Fact]
     public async Task GetNoteById_NoNoteId_ReturnsNull()
     {
         // Arrange
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object);
 
         // Act
         var result = await model.GetNoteById(Guid.Empty);
@@ -40,7 +42,7 @@ public class BaseProjectNotesModelTests
 
         _mockSender.Setup(x => x.Send(It.Is<GetNoteByIdQuery>(q => q.NoteId == new NoteId(noteId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<NoteDto>.Failure(""));
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object);
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -67,7 +69,7 @@ public class BaseProjectNotesModelTests
             .ReturnsAsync(Result<NoteDto>.Success(expectedNote));
 
 
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object);
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -85,7 +87,7 @@ public class BaseProjectNotesModelTests
     public void CanAddNotes_ReturnsExpectedResult(ProjectState projectState, bool expected)
     {
         // Arrange
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState }
         };
@@ -113,7 +115,7 @@ public class BaseProjectNotesModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -149,7 +151,7 @@ public class BaseProjectNotesModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object)
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -174,7 +176,7 @@ public class BaseProjectNotesModelTests
     public void GetReturnUrl_ReturnsExpectedUrl(string? taskIdentifier, string expectedUrl)
     {
         // Arrange
-        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, _mockLogger.Object, "", _mockProjectPermissionService.Object)
         {
             ProjectId = "00000000-0000-0000-0000-000000000010"
         };

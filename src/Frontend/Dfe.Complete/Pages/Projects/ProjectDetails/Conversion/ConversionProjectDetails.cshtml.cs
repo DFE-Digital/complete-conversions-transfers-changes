@@ -4,6 +4,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
@@ -13,7 +14,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 {
-    public class ConversionProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversionProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
+    public class ConversionProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversionProjectDetailsModel> _logger, IProjectPermissionService projectPermissionService)
+        : BaseProjectDetailsPageModel(sender, errorService, _logger, projectPermissionService)
     {
         [BindProperty]
         [Required(ErrorMessage =
@@ -47,13 +49,15 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
+            ValidateTrustReferenceNumber();
+
             if (!ModelState.IsValid)
-            {
+            {   
                 ErrorService.AddErrors(ModelState);
                 return Page();
             }
 
-            var user = await Sender.Send(new GetUserByAdIdQuery(User.GetUserAdId()), cancellationToken);
+            var user = await Sender.Send(new GetUserByOidQuery(User.GetUserOid()), cancellationToken);
 
             if (user is not { IsSuccess: true })
                 throw new NotFoundException("No user found.", innerException: new Exception(user?.Error));
@@ -61,7 +65,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 
             var updateProjectCommand = new UpdateConversionProjectCommand(
                 ProjectId: new ProjectId(Guid.Parse(ProjectId)),
-                IncomingTrustUkprn: new Ukprn(IncomingTrustUkprn!.ToInt()),
+                IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue

@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -14,8 +15,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
 [Authorize(Policy = UserPolicyConstants.CanEditAddedByUser)]
-public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger)
-    : BaseProjectPageModel(sender, logger)
+public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
     private readonly ISender _sender = sender;
 
@@ -55,7 +56,7 @@ public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger
         var addedByUserQuery = new GetUserByEmailQuery(Email);
         var addedBySearchResult = await _sender.Send(addedByUserQuery);
 
-        if (addedBySearchResult is { IsSuccess: true, Value.AssignToProject: true })
+        if (addedBySearchResult is { IsSuccess: true, Value.IsAssignableToProject: true })
         {
             var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Id, addedBySearchResult.Value.Id);
             var result = await _sender.Send(updateRequest);

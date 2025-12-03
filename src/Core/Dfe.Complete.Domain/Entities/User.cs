@@ -1,5 +1,8 @@
 ﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -23,6 +26,9 @@ public class User : BaseAggregateRoot, IEntity<UserId>
 
     public string? ActiveDirectoryUserId { get; set; }
 
+    public string? EntraUserObjectId { get; set; }
+
+    [Obsolete("Use IsAssignableToProject property instead")]
     public bool? AssignToProject { get; set; }
 
     public bool? ManageUserAccounts { get; set; }
@@ -49,6 +55,25 @@ public class User : BaseAggregateRoot, IEntity<UserId>
 
     public virtual ICollection<Project> ProjectRegionalDeliveryOfficers { get; set; } = new List<Project>();
 
+    public bool IsAssignableToProject
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(Team))
+                return false;
+
+            try
+            {
+                var userTeam = EnumExtensions.FromDescription<ProjectTeam>(Team);
+                return userTeam.TeamIsRegionalDeliveryOfficer() || userTeam.TeamIsRegionalCaseworkServices();
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
     public static User Create(
         UserId id,
         string email,
@@ -67,6 +92,7 @@ public class User : BaseAggregateRoot, IEntity<UserId>
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
             ActiveDirectoryUserId = null,
+            EntraUserObjectId = null,
             ActiveDirectoryUserGroupIds = null,
             ManageUserAccounts = null,
             ManageConversionUrns = false,

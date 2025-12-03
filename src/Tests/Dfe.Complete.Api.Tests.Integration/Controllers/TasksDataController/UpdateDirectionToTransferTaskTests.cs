@@ -4,11 +4,11 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -99,8 +99,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.DirectionToTransferSaved);
             Assert.True(existingTaskData.DirectionToTransferNotApplicable);
         }
-        
-        
+
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateDirectionToTransferTaskAsync_ShouldFail_WhenTaskDataIdNotMatched(
@@ -117,15 +117,15 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.TransferTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
-            
+
             var command = new UpdateDirectionToTransferTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = Guid.NewGuid() }
             };
-            
+
             // Act + Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateDirectionToTransferTaskAsync(command, default));
-            
+
             Assert.Contains($"Conversion task data TaskDataId {{ Value = {command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }

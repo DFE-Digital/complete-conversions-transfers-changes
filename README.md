@@ -31,7 +31,6 @@ Policies themselves are defined in one of two places:
 - for simple policies, pop them in [appsettings.json](https://github.com/DFE-Digital/complete-conversions-transfers-changes/blob/main/src/Frontend/Dfe.Complete/appsettings.json#L63-L65) - the two available operators are 
   - `And` - every role must be present on the user
   - `Or` - at least one of the roles must be present on the user
-- for more complex logic, please add the policy into the [CustomPolicies](https://github.com/DFE-Digital/complete-conversions-transfers-changes/blob/main/src/Frontend/Dfe.Complete/Security/CustomPolicies.cs#L10)
 
 Currently the policies are used in two different ways:
 - directly on a [model](https://github.com/DFE-Digital/complete-conversions-transfers-changes/blob/main/src/Frontend/Dfe.Complete/Pages/Projects/Team/YourTeamProjectsModel.cs#L9) - the permissions are inherited so now that everything extending `YourTeamProjectsModel` will also have `CanViewTeamProjects` auth policy check

@@ -1,10 +1,8 @@
-import BasePage from "cypress/pages/basePage";
-import { yesNoOption } from "cypress/constants/stringTestConstants";
+import { ExternalContactsEditPage } from "cypress/pages/projects/projectDetails/externalContactsEditPage";
 
-class ExternalContactsAddPage extends BasePage {
+class ExternalContactsAddPage extends ExternalContactsEditPage {
     private readonly inputId = "SelectedExternalContactType";
 
-    // contact type
     selectHeadteacher() {
         cy.getById(this.inputId).check();
         return this;
@@ -22,38 +20,6 @@ class ExternalContactsAddPage extends BasePage {
 
     selectSomeoneElse() {
         cy.getById(this.inputId + "-4").check();
-        return this;
-    }
-
-    // contact details
-
-    withName(name: string) {
-        cy.getById("FullName").clear().type(name);
-        return this;
-    }
-
-    withRole(role: string) {
-        cy.getById("Role").clear().type(role);
-        return this;
-    }
-
-    withEmail(email: string) {
-        cy.getById("Email").clear().type(email);
-        return this;
-    }
-
-    withPhone(phone: string) {
-        cy.getById("Phone").clear().type(phone);
-        return this;
-    }
-
-    withOrganisation(organisationType: string) {
-        cy.contains("label", organisationType).prev().check();
-        return this;
-    }
-
-    withPersonIsPrimaryContact(option: yesNoOption) {
-        cy.enterYesNo("IsPrimaryProjectContact", option);
         return this;
     }
 

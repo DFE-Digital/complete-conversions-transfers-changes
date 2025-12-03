@@ -113,7 +113,6 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     it("Should be able to view my team projects that are new", () => {
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsTable
-            // .schoolIsFirstInTable(teammatesLondonSchoolName) // race condition issue
             .hasTableHeaders([
                 "School or academy",
                 "URN",
@@ -173,7 +172,6 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectApi.completeProject(teammatesLondonRegionProjectId);
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsTable
-            // .schoolIsFirstInTable(teammatesLondonSchoolName)
             .hasTableHeaders([
                 "School or academy",
                 "URN",

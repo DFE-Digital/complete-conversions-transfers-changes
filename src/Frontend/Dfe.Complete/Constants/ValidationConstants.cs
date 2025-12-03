@@ -6,7 +6,7 @@
         public const string NumberValidationMessage = "{0} must be between {1} and {2}";
         public const string LinkValidationMessage = "The {0} must be a valid url";
         public const int LinkMaxLength = 500;
-        public const string CannotBeBlank = "Can't be blank";
+
         public const string NotRecognisedUKPostcode = "Not recognised as a UK postcode";
         public const string NotRecognisedUKPhone = "Not recognised as a UK phone number";
         public const string InvalidEmailFormat = "Email address must be in correct format";
@@ -50,6 +50,12 @@
         public const string AllConditionsMetComplete = "The confirm all conditions have been met task is completed";
         public const string AcademyOpenedDateComplete = "The confirm the date the academy opened task is completed";
         public const string RequiredSummary = "Enter the summary";
-        public const string NotInTheList = "is not included in the list";
+        public const string RiskProtectionArrangementOptionRequired = "Please select an option to confirm the academy's risk protection arrangements";
+
+        // Local Authority authority validation messages       
+        public const string LocalAuthorityCodeRequired = "Enter a code";
+        public const string LocalAuthorityAddressLine1Required = "Enter 1st line of address";
+        public const string LocalAuthorityPostcodeRequired = "Enter a postcode";
+
     }
 }

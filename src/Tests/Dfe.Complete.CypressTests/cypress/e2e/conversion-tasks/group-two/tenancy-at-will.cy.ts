@@ -1,0 +1,96 @@
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import taskListPage from "cypress/pages/projects/tasks/taskListPage";
+import taskPage from "cypress/pages/projects/tasks/taskPage";
+import { Logger } from "cypress/common/logger";
+import TaskHelperConversions from "cypress/api/taskHelperConversions";
+import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
+
+const taskPath = "tenancy_at_will";
+
+describe("Conversion tasks - Tenancy at will", () => {
+    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
+
+    before(() => {
+        ConversionTasksGroupTwoSetup.setupProjects();
+        setup = ConversionTasksGroupTwoSetup.getSetup();
+    });
+
+    beforeEach(() => {
+        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
+    });
+
+    it("should submit the form and persist selections", () => {
+        Logger.log("Select all and save");
+        taskPage
+            .hasCheckboxLabel(
+                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
+            )
+            .tick()
+            .hasCheckboxLabel(
+                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
+            )
+            .tick()
+            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .tick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusCompleted("Tenancy at will").selectTask("Tenancy at will");
+
+        Logger.log("Unselect same checkboxes and save");
+        taskPage
+            .hasCheckboxLabel(
+                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
+            )
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel(
+                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
+            )
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusNotStarted("Tenancy at will").selectTask("Tenancy at will");
+        taskPage
+            .hasCheckboxLabel(
+                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
+            )
+            .isUnticked()
+            .hasCheckboxLabel(
+                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
+            )
+            .isUnticked()
+            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .isUnticked();
+    });
+
+    it("should show task status based on the checkboxes that are checked", () => {
+        cy.visit(`projects/${setup.projectId}/tasks`);
+
+        TaskHelperConversions.updateTenancyAtWill(setup.taskId, "notStarted");
+        cy.reload();
+        taskListPage.hasTaskStatusNotStarted("Tenancy at will");
+
+        TaskHelperConversions.updateTenancyAtWill(setup.taskId, "notApplicable");
+        cy.reload();
+        taskListPage.hasTaskStatusNotApplicable("Tenancy at will");
+
+        TaskHelperConversions.updateTenancyAtWill(setup.taskId, "inProgress");
+        cy.reload();
+        taskListPage.hasTaskStatusInProgress("Tenancy at will");
+
+        TaskHelperConversions.updateTenancyAtWill(setup.taskId, "completed");
+        cy.reload();
+        taskListPage.hasTaskStatusCompleted("Tenancy at will");
+    });
+
+    it("Should NOT see the 'save and return' button for another user's project", () => {
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
+        taskPage.noSaveAndReturnExists();
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
+    });
+});

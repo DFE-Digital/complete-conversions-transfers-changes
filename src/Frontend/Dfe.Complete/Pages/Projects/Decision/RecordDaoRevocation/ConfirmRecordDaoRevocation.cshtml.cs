@@ -1,11 +1,12 @@
 using Dfe.Complete.Constants;
+using Dfe.Complete.Services;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
 {
-    public class ConfirmDaoRevocationModel(ISender sender, ILogger<ConfirmDaoRevocationModel> logger, ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
+    public class ConfirmDaoRevocationModel(ISender sender, ILogger<ConfirmDaoRevocationModel> logger, ICacheService<IMemoryCacheType> cacheService, IProjectPermissionService projectPermissionService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService, projectPermissionService)
     {
         [BindProperty]
         public bool? Approval { get; set; }
