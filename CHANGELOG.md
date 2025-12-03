@@ -17,16 +17,36 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Changed
+- Throw exception when key_contacts record is missing on contact update tasks
+- Require incoming trust UKPRN on project completion
+
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-01.1229...main) for everything awaiting release
+
+## [1.31.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-01.1229) - 2025-12-01
+
+### Added
+- add sign in page to control login flow
+- sync entra user to DB user
+
+### Changed
 - Identify user by entra_user_object_id instead of active_directory_user_id
 - Trns only editable by service support user, outgoing UKPRN non-editable, no-editable incoming trust UKPRN for non-MAT projects, editable incoming trust UKPRN for MAT projects, TRN has value and should be mandatory on edit, should not be able to edit if TRN is null or empty
-- Require incoming trust UKPRN on project completion
+- Only allow service support to view deleted projects
+- Only allow service support to edit completed/dao-revoked projects
+- Update policies to use roles based on users claims
 
 ### Fixed
 - fix access denied request form link
 - update incorrect wording on "Confirm and process the sponsored support grant" task
 - projects by month is showing incorrect data in december
+- project creation end point now create critical key_contacts record
+- prevent users from seeing tasks that don't relate to the project type
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...main) for everything awaiting release
+### Removed
+- remove database based roles
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-19.1160...production-2025-12-01.1229) for everything in the release
 
 ## [1.30.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-19.1160) - 2025-11-19
 
