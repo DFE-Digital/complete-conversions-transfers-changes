@@ -5,7 +5,7 @@ namespace Dfe.Complete.Services.Project;
 
 public class ProjectService : IProjectService
 {
-    public List<string> GetTransferProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, TransferTaskListViewModel taskList)
+    public List<string> GetTransferProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, TransferTaskListViewModel taskList, string? IncomingTrustUkprn)
     {
         TransferCompletionModel transferCompletionModel = new()
         {
@@ -13,20 +13,22 @@ public class ProjectService : IProjectService
             IsConversionOrTransferDateProvisional = SignificantDateProvisional,
             ConfirmThisTransferHasAuthorityToProceed = taskList.ConfirmThisTransferHasAuthorityToProceed,
             ConfirmDateAcademyTransferred = taskList.ConfirmDateAcademyTransferred,
-            DeclarationOfExpenditureCertificate = taskList.DeclarationOfExpenditureCertificate
+            DeclarationOfExpenditureCertificate = taskList.DeclarationOfExpenditureCertificate,
+            IncomingTrustUkprn = IncomingTrustUkprn
         };
 
         return transferCompletionModel.Validate();
     }
 
-    public List<string> GetConversionProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, ConversionTaskListViewModel taskList)
+    public List<string> GetConversionProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, ConversionTaskListViewModel taskList, string? IncomingTrustUkprn)
     {
         ConversionCompletionModel conversionCompletionModel = new()
         {
             ConversionOrTransferDate = SignificantDate,
             IsConversionOrTransferDateProvisional = SignificantDateProvisional,
             ConfirmAllConditionsHaveBeenMet = taskList.ConfirmAllConditionsHaveBeenMet,
-            ConfirmDateAcademyOpened = taskList.ConfirmDateAcademyOpened
+            ConfirmDateAcademyOpened = taskList.ConfirmDateAcademyOpened,
+            IncomingTrustUkprn = IncomingTrustUkprn
         };
 
         return conversionCompletionModel.Validate();

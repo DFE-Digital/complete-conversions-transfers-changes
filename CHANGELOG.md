@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Changed
 - Throw exception when key_contacts record is missing on contact update tasks
+- Require incoming trust UKPRN on project completion
 
 ### Fixed
 - external contacts list, show new trust name if incoming trust ukprn is null
