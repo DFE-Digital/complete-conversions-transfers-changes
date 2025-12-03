@@ -48,9 +48,10 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts
         public async Task GetIncomingTrustNameAsync_WhenUkprnIsNull_ReturnsNewTrustNameTitleCase()
         {
             var newTrustName = _fixture.Create<string>();
+            Domain.ValueObjects.Ukprn? incomingTrustUkprn = null;
 
             var project = _fixture.Build<ProjectDto>()
-                .With(x => x.IncomingTrustUkprn, (string?)null)
+                .With(x => x.IncomingTrustUkprn, incomingTrustUkprn)
                 .With(x => x.NewTrustName, "academy trust")
                 .Create();
 
