@@ -1,8 +1,10 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +12,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models.ExternalContact;
 
-public abstract class ExternalContactBasePageModel(ISender sender) : PageModel
+public abstract class ExternalContactBasePageModel(ISender sender, ITrustCache trustCacheService) : PageModel
 {
+    protected ITrustCache trustCacheService = trustCacheService;
+
     [BindProperty(SupportsGet = true, Name = "projectId")]
     public string? ProjectId { get; set; }
 
@@ -49,5 +53,17 @@ public abstract class ExternalContactBasePageModel(ISender sender) : PageModel
         {
             ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
+    }
+
+    protected async Task<string?> GetIncomingTrustNameAsync()
+    {
+        if (Project is null)
+            return null;
+
+        if (Project.IncomingTrustUkprn is null)
+            return Project.NewTrustName?.ToTitleCase();
+
+        var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
+        return trust?.Name?.ToTitleCase();
     }
 }
