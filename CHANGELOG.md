@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Fixed
+- Fixed view notes page allowing text to flow off page
+
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-01.1229...main) for everything awaiting release
 
