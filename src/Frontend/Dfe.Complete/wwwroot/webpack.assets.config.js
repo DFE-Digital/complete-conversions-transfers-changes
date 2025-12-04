@@ -14,6 +14,9 @@ module.exports = {
 				// Copy custom DfE images
 				{ from: path.join(__dirname, 'govuk/assets'), to: path.join(__dirname, 'assets') },
 				{ from: path.join(__dirname, 'govuk/assets'), to: path.join(__dirname, 'dist/assets') },
+				// Copy rebrand favicon files to override govuk-frontend favicons (must be after govuk-frontend copy)
+				{ from: path.join(__dirname, 'assets/rebrand/images/favicon.ico'), to: path.join(__dirname, 'dist/assets/images/favicon.ico') },
+				{ from: path.join(__dirname, 'assets/rebrand/images/favicon.svg'), to: path.join(__dirname, 'dist/assets/images/favicon.svg') },
 			],
 		})
 	],
