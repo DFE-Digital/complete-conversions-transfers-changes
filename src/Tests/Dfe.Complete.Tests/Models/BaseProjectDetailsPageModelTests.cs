@@ -1,3 +1,4 @@
+using AutoFixture.AutoNSubstitute;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
@@ -6,6 +7,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.ProjectDetails;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -21,17 +23,91 @@ namespace Dfe.Complete.Tests.Models;
 
 public class BaseProjectDetailsPageModelTests
 {
+    private readonly IFixture _fixture;
+
+    public BaseProjectDetailsPageModelTests()
+    {
+        _fixture = new Fixture()
+            .Customize(new AutoNSubstituteCustomization());
+    }
+
+    private BaseProjectDetailsPageModel CreateModel()
+    {
+        return new BaseProjectDetailsPageModel(
+            _fixture.Create<ISender>(),
+            _fixture.Create<IErrorService>(),
+            _fixture.Create<ILogger>(),
+            _fixture.Create<IProjectPermissionService>()
+        );
+    }
+
+    [Fact]
+    public void ValidateTrustReferenceNumber_AddsError_WhenOriginalExistsAndNewIsMissing()
+    {
+        // Arrange
+        var model = CreateModel();
+
+        model.OriginalTrustReferenceNumber = _fixture.Create<string>(); // non-empty
+        model.NewTrustReferenceNumber = ""; // missing
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.False(model.ModelState.IsValid);
+        Assert.True(model.ModelState.ContainsKey("NewTrustReferenceNumber"));
+
+        var entry = model.ModelState["NewTrustReferenceNumber"];
+        Assert.NotNull(entry);
+
+        var error = Assert.Single(entry.Errors);
+        Assert.Equal("Enter a trust reference number (TRN)", error.ErrorMessage);
+    }
+
+    [Fact]
+    public void ValidateTrustReferenceNumber_DoesNotAddError_WhenOriginalIsEmpty()
+    {
+        // Arrange
+        var model = CreateModel();
+
+        model.OriginalTrustReferenceNumber = "";
+        model.NewTrustReferenceNumber = null;
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
+    }
+
+    [Fact]
+    public void ValidateTrustReferenceNumber_DoesNotAddError_WhenNewTrustReferenceProvided()
+    {
+        // Arrange
+        var model = CreateModel();
+
+        model.OriginalTrustReferenceNumber = _fixture.Create<string>();
+        model.NewTrustReferenceNumber = _fixture.Create<string>();
+
+        // Act
+        model.ValidateTrustReferenceNumber();
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
+    }
+
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
     public async Task SetGroupReferenceNumberAsync_WhenGroupIdIsNull_DoesNotSetGroupReferenceNumber(
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         project.GroupId = null;
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -50,6 +126,7 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project,
         ProjectGroupDto projectGroup)
     {
@@ -58,7 +135,7 @@ public class BaseProjectDetailsPageModelTests
         project.GroupId = groupId;
         projectGroup.GroupIdentifier = "GR123456";
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -72,9 +149,6 @@ public class BaseProjectDetailsPageModelTests
 
         // Assert
         Assert.Equal("GR123456", model.GroupReferenceNumber);
-        // await mockSender.Received(1).Send(
-        //     Arg.Is<GetProjectGroupByIdQuery>(q => q.ProjectGroupId == groupId), 
-        //     Arg.Any<CancellationToken>());
     }
 
     [Theory]
@@ -83,13 +157,14 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         var groupId = new ProjectGroupId(Guid.NewGuid());
         project.GroupId = groupId;
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -111,13 +186,14 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project)
     {
         // Arrange
         var groupId = new ProjectGroupId(Guid.NewGuid());
         project.GroupId = groupId;
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             Project = project
         };
@@ -138,10 +214,11 @@ public class BaseProjectDetailsPageModelTests
     public async Task OnGetAsync_WhenBaseOnGetReturnsNonPageResult_ReturnsBaseResult(
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
-        [Frozen] ILogger mockLogger)
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
     {
         // Arrange
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger);
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService);
         var redirectResult = new RedirectResult("/error");
         model.SetBaseOnGetResult(redirectResult);
 
@@ -158,6 +235,7 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
         [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         ProjectDto project,
         EstablishmentDto establishment,
         ProjectGroupDto projectGroup)
@@ -179,7 +257,7 @@ public class BaseProjectDetailsPageModelTests
         establishment.Name = "Test School";
         projectGroup.GroupIdentifier = "GR789012";
 
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
         {
             ProjectId = projectId.ToString(),
             Project = project,
@@ -214,10 +292,10 @@ public class BaseProjectDetailsPageModelTests
     }
 }
 
-public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger)
-    : BaseProjectDetailsPageModel(sender, errorService, logger)
+public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectDetailsPageModel(sender, errorService, logger, projectPermissionService)
 {
-    private IActionResult? _baseOnGetResult;
+    private IActionResult? _baseOnGetResult;   
 
     public void SetBaseOnGetResult(IActionResult result)
     {
@@ -256,5 +334,5 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
     public async Task TestSetGroupReferenceNumberAsync()
     {
         await SetGroupReferenceNumberAsync();
-    }
+    }    
 }

@@ -8,8 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
+[Obsolete("Use GetUserByOidQuery instead")]
 public record GetUserByAdIdQuery(string UserAdId) : IRequest<Result<UserDto?>>;
 
+[Obsolete("Use GetUserByOidQuery instead")]
 public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository, IMapper mapper, ILogger<GetUserByAdIdQueryHandler> logger) : IRequestHandler<GetUserByAdIdQuery, Result<UserDto?>>
 {
     public async Task<Result<UserDto?>> Handle(GetUserByAdIdQuery request, CancellationToken cancellationToken)

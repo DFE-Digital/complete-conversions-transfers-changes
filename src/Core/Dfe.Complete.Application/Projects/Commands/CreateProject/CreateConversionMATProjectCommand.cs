@@ -21,7 +21,8 @@ public record CreateConversionMatProjectCommand(
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
     [Required] bool? DirectiveAcademyOrder,
-    string? AdvisoryBoardConditions) : IRequest<ProjectId>;
+    string? AdvisoryBoardConditions,
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateConversionMatProjectCommandHandler(
     IUnitOfWork unitOfWork,

@@ -3,7 +3,7 @@
 @inject IProjectPermissionService ProjectPermissionService
 
 @{
-    var userCanComplete = ProjectPermissionService.UserCanComplete(Model.Project, Model.CurrentUserTeam, User);
+    var userCanComplete = ProjectPermissionService.UserCanComplete(Model.Project, User);
 }
 
 @if (userCanComplete)

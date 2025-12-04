@@ -2,6 +2,7 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask
 {
-    public class BaseDeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier noteTaskIdentifier, IErrorService errorService)
-        : BaseProjectTaskModel(sender, authorizationService, logger, noteTaskIdentifier)
+    public class BaseDeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier noteTaskIdentifier, IErrorService errorService, IProjectPermissionService projectPermissionService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, noteTaskIdentifier, projectPermissionService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }

@@ -3,14 +3,15 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
 {
-    public class ArticlesOfAssociationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ArticleOfAssociation)
+    public class ArticlesOfAssociationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ArticleOfAssociation, projectPermissionService)
     {
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
@@ -35,6 +36,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
             if (Project.Type == ProjectType.Transfer)

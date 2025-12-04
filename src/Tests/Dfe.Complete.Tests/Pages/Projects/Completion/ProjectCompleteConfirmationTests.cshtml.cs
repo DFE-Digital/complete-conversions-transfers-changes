@@ -14,6 +14,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.Completion;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Project;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -41,6 +42,7 @@ public class CompleteProjectModelTests
         [Frozen] IProjectService projectService,
         [Frozen] ISender sender,
         [Frozen] ILogger<CompleteProjectModel> logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         IFixture fixture
     )
     {
@@ -50,7 +52,8 @@ public class CompleteProjectModelTests
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
            [
                new Claim("objectidentifier", userId),
-               new Claim(CustomClaimTypeConstants.UserId, userId)
+               new Claim(CustomClaimTypeConstants.UserId, userId),
+               new Claim(ClaimTypes.Role, UserRolesConstants.ServiceSupport)
            ]));
 
         var projectId = new ProjectId(Guid.NewGuid());
@@ -58,7 +61,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
+        CompleteProjectModel testClass = new(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,
@@ -85,7 +88,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
             .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -96,6 +99,9 @@ public class CompleteProjectModelTests
 
         projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
             .Returns(new List<string>());
+
+        projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
+            .Returns(true);
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -113,6 +119,7 @@ public class CompleteProjectModelTests
         [Frozen] IProjectService projectService,
         [Frozen] ISender sender,
         [Frozen] ILogger<CompleteProjectModel> logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         IFixture fixture
     )
     {
@@ -123,13 +130,14 @@ public class CompleteProjectModelTests
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
            [
                new Claim("objectidentifier", userId),
-               new Claim(CustomClaimTypeConstants.UserId, userId)
+               new Claim(CustomClaimTypeConstants.UserId, userId),
+               new Claim(ClaimTypes.Role, UserRolesConstants.ServiceSupport)
            ]));
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
+        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,
@@ -156,7 +164,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
           .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -167,6 +175,9 @@ public class CompleteProjectModelTests
 
         projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
             .Returns(new List<string>());
+
+        projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
+            .Returns(true);
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -184,6 +195,7 @@ public class CompleteProjectModelTests
         [Frozen] IProjectService projectService,
         [Frozen] ISender sender,
         [Frozen] ILogger<CompleteProjectModel> logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         IFixture fixture
     )
     {
@@ -193,7 +205,8 @@ public class CompleteProjectModelTests
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
            [
                new Claim("objectidentifier", userId),
-               new Claim(CustomClaimTypeConstants.UserId, userId)
+               new Claim(CustomClaimTypeConstants.UserId, userId),
+               new Claim(ClaimTypes.Role, UserRolesConstants.ServiceSupport)
            ]));
 
         var projectId = new ProjectId(Guid.NewGuid());
@@ -201,7 +214,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
+        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             TempData = tempData,
@@ -227,7 +240,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
           .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -238,6 +251,9 @@ public class CompleteProjectModelTests
 
         projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
             .Returns(new List<string> { "validation message" });
+
+        projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
+            .Returns(true);
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -258,6 +274,7 @@ public class CompleteProjectModelTests
         [Frozen] IProjectService projectService,
         [Frozen] ISender sender,
         [Frozen] ILogger<CompleteProjectModel> logger,
+        [Frozen] IProjectPermissionService projectPermissionService,
         IFixture fixture
     )
     {
@@ -267,7 +284,8 @@ public class CompleteProjectModelTests
         var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
            [
                new Claim("objectidentifier", userId),
-               new Claim(CustomClaimTypeConstants.UserId, userId)
+               new Claim(CustomClaimTypeConstants.UserId, userId),
+               new Claim(ClaimTypes.Role, UserRolesConstants.ServiceSupport)
            ]));
 
         var projectId = new ProjectId(Guid.NewGuid());
@@ -275,7 +293,7 @@ public class CompleteProjectModelTests
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
-        CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
+        CompleteProjectModel testClass = new(sender, projectService, logger, projectPermissionService)
         {
             ProjectId = projectId.Value.ToString(),
             TempData = tempData,
@@ -301,7 +319,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
-        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+        sender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
          .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
@@ -312,6 +330,9 @@ public class CompleteProjectModelTests
 
         projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
             .Returns(new List<string> { "validation message" });
+
+        projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
+            .Returns(true);
 
         // Act
         var result = await testClass.OnPostAsync();

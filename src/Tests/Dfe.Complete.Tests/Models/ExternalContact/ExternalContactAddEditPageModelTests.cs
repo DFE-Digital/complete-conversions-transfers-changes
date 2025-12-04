@@ -18,22 +18,18 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Utils;
     using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
-    using Microsoft.Extensions.Logging;
     using Moq;
+    using System;
     using System.Threading.Tasks;
     using Xunit;
 
     public class ExternalContactAddEditPageModelTests
     {
-        private class TestExternalContactAddEditPageModel : ExternalContactAddEditPageModel
+        private class TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender) : ExternalContactAddEditPageModel(trustCacheService, sender)
         {
-            public TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender, ILogger logger) : base(trustCacheService, sender)
-            {
-            }
-
             public async Task<string?> PublicGetOrganisationName(ExternalContactType contactType)
             {
-                return await base.GetOrganisationNameAsync(contactType);
+                return await GetOrganisationNameAsync(contactType);
             }
         }
 
@@ -62,8 +58,8 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             // Arrange
 
             ProjectId projectId = fixture.Create<ProjectId>();
-            ContactId contactId = fixture.Create<ContactId>();
             string urn = "123";
+            string incomingTrustUkprn = "101483";
             string localAuthorityCode = fixture.Create<string>();
 
             var mockTrustDto = fixture.Build<TrustDto>().With(x => x.Name, input).Create();
@@ -82,7 +78,10 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
                   .With(t => t.Id, projectId)
                   .With(t => t.Type, ProjectType.Transfer)
                   .With(t => t.EstablishmentName, input)
-                  .With(t => t.Urn, new Urn(Convert.ToInt32(urn)))
+                  .With(t => t.Urn, new Urn(Convert.ToInt32(urn)))                         
+                  .With(t => t.IncomingTrustUkprn, new Ukprn(Convert.ToInt32(incomingTrustUkprn)))
+                  .With(t => t.NewTrustReferenceNumber, string.Empty)
+                  .With(t => t.NewTrustName, string.Empty)
                   .Create())
 
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()

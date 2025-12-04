@@ -5,15 +5,15 @@ using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDetailsTask
 {
-    public class ConfirmChairOfGovernorsDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmChairOfGovernorsDetailsTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmChairOfGovernorsDetails)
+    public class ConfirmChairOfGovernorsDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmChairOfGovernorsDetailsTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmChairOfGovernorsDetails, projectPermissionService)
     {
         [BindProperty]
         public Guid? ChairOfGovernorserContactId { get; set; }
@@ -26,6 +26,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDeta
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
 
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.SchoolOrAcademy));
             var chairOfGovernorsKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));

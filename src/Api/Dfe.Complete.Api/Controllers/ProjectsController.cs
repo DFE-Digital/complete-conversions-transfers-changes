@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Dfe.Complete.Application.ApiAttributes;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Application.KeyContacts.Models;
@@ -309,6 +310,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [SwaggerResponse(204, "Project Group returned successfully.")]
+        [IgnoreApiInProductionAttribute]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
             if (urn == null)
@@ -670,6 +672,52 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> UpdateDeleteProjectStatusAsync(
             [FromBody] UpdateDeleteProjectCommand request,
             CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updates assigned user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut("project/AssignedUser")]
+        [SwaggerResponse(204, "Assigned user updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> UpdateAssignedUserAsync([FromBody] UpdateAssignedUserCommand request, CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updates assigned team.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut("project/AssignedTeam")]
+        [SwaggerResponse(204, "Assigned team updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> UpdateAssignedTeamAsync([FromBody] UpdateAssignedTeamCommand request, CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updates added by.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut("project/AddedBy")]
+        [SwaggerResponse(204, "Added by updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> UpdateAddedByAsync([FromBody] UpdateRegionalDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
             return NoContent();

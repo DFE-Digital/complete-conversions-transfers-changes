@@ -1,16 +1,21 @@
 ﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
+[Authorize(Policy = UserPolicyConstants.CanManageInternalContacts)]
+public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
     [BindProperty]
     [Required]

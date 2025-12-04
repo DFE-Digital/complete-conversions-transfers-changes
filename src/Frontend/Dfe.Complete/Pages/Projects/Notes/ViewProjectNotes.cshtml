@@ -24,7 +24,7 @@
         }
 
         <div class="govuk-!-margin-bottom-5">
-            <form method="post" asp-page-handler="AddNote">
+            <form method="post" asp-page-handler="AddNote" asp-policy="@UserPolicyConstants.CanAddNotes">
                 <button data-module="govuk-button" class="govuk-button" type="submit">
                     Add note
                 </button>

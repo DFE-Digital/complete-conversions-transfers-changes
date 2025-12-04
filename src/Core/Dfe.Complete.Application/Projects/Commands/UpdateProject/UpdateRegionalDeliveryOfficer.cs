@@ -22,7 +22,7 @@ public class UpdateRegionalDeliveryOfficer(
     {
         var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken);
         var user = await userRepository.GetAsync(request.RegionalDeliveryOfficer, cancellationToken);
-        if (user is null || user.AssignToProject is false)
+        if (user is null || !user.IsAssignableToProject)
         {
             throw new NotFoundException("Email is not assignable", "email");
         }

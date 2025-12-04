@@ -34,6 +34,16 @@ class ExternalContactsPage extends DetailsPage {
         });
         return this;
     }
+
+    editContact() {
+        cy.get("@sectionCounter").then((index) => {
+            cy.getByClass(this.sectionItemClass)
+                .eq(Number(index))
+                .within(() => {
+                    cy.contains("a", "Edit contact").click();
+                });
+        });
+    }
 }
 
 const externalContactsPage = new ExternalContactsPage();

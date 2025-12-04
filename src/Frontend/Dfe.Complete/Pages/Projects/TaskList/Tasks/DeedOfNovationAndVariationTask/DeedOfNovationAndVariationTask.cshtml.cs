@@ -3,14 +3,15 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationTask
 {
-    public class DeedOfNovationAndVariationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfNovationAndVariation)
+    public class DeedOfNovationAndVariationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfNovationAndVariation, projectPermissionService)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }
@@ -38,6 +39,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationT
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
             SaveAfterSign = TransferTaskData.DeedOfNovationAndVariationSaveAfterSign;
             Received = TransferTaskData.DeedOfNovationAndVariationReceived;
@@ -50,10 +55,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationT
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateDeedOfNovationAndVariationTaskCommand(
+            await Sender.Send(new UpdateDeedOfNovationAndVariationTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, SignedOutgoingTrust, SignedIncomingTrust, Saved, SignedSecretaryState, SaveAfterSign));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
 }
+

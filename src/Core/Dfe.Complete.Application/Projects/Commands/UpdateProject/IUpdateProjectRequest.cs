@@ -9,7 +9,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     public interface IUpdateProjectRequest
     {
         ProjectId ProjectId { get; }
-        Ukprn IncomingTrustUkprn { get; }
+        Ukprn? IncomingTrustUkprn { get; }
         string? NewTrustReferenceNumber { get; }
         string? GroupReferenceNumber { get; }
         DateOnly AdvisoryBoardDate { get; }

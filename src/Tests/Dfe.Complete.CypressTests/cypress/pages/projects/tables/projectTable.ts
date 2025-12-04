@@ -41,11 +41,14 @@ class ProjectTable extends BasePage {
 
     hasTableHeaders(headers: string[]) {
         headers.forEach((header, index) => {
-            cy.getByClass(this.tableClass)
-                .getByClass(this.tableHeadClass)
-                .getByClass(this.tableHeadersClass)
-                .eq(index)
-                .contains(header);
+            cy.getByClass(this.tableClass).within(() => {
+                cy.getByClass(this.tableHeadClass).within(() => {
+                    cy.getByClass(this.tableHeadersClass)
+                        .should("have.length", headers.length)
+                        .eq(index)
+                        .contains(header);
+                });
+            });
         });
         return this;
     }

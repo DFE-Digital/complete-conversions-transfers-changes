@@ -15,10 +15,6 @@ export const dimensionsTrust = {
     address: "The Hazeley Academy Emperor Drive Milton Keynes MK8 0PT",
     groupReferenceNumber: "GRP_12345670",
 };
-export const testTrust = {
-    name: "Test Trust",
-    referenceNumber: "TR99999",
-};
 export const today = new Date();
 export const todayFormatted = today.toLocaleDateString("en-GB", {
     day: "numeric",

@@ -41,12 +41,6 @@ namespace Dfe.Complete.Tests.Constants
         }
 
         [Fact]
-        public void CannotBeBlank_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Can't be blank", ValidationConstants.CannotBeBlank);
-        }
-
-        [Fact]
         public void NotRecognisedUKPostcode_ShouldReturnExpectedMessage()
         {
             Assert.Equal("Not recognised as a UK postcode", ValidationConstants.NotRecognisedUKPostcode);
@@ -199,6 +193,24 @@ namespace Dfe.Complete.Tests.Constants
         {
             var dateField = "Opened academy date";
             Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
+        }
+
+        [Fact]
+        public void LocalAuthorityCodeRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter a code", ValidationConstants.LocalAuthorityCodeRequired);
+        }
+
+        [Fact]
+        public void LocalAuthorityAddressLine1Required_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter 1st line of address", ValidationConstants.LocalAuthorityAddressLine1Required);
+        }
+
+        [Fact]
+        public void LocalAuthorityPostcodeRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter a postcode", ValidationConstants.LocalAuthorityPostcodeRequired);
         }
 
     }

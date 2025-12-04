@@ -2,14 +2,15 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchSupplementalAgreement
 {
-    public class DeedOfTerminationForChurchSupplementalAgreementModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfTerminationForChurchSupplementalAgreementModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement)
+    public class DeedOfTerminationForChurchSupplementalAgreementModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfTerminationForChurchSupplementalAgreementModel> logger, IProjectPermissionService projectPermissionService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement, projectPermissionService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -40,6 +41,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = TransferTaskData.DeedTerminationChurchAgreementNotApplicable;
             Received = TransferTaskData.DeedTerminationChurchAgreementReceived;
@@ -61,3 +66,4 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         }
     }
 }
+

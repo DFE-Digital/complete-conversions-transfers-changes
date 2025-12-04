@@ -1,25 +1,23 @@
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.TaskList
 {
-    public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger) : ProjectLayoutModel(sender, _logger, TaskListNavigation)
+    public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, _logger, projectPermissionService, TaskListNavigation)
     {
         public TransferTaskListViewModel TransferTaskList { get; set; } = null!;
         public ConversionTaskListViewModel ConversionTaskList { get; set; } = null!;
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            await UpdateCurrentProject();
-            await SetEstablishmentAsync();
+            var baseResult = await base.OnGetAsync();
+            if (baseResult is not PageResult) return baseResult;
             await GetProjectTaskDataAsync();
-            await SetIncomingTrustAsync();
-            await SetOutgoingTrustAsync();
             await GetKeyContactForProjectsAsyc();
-            await SetCurrentUserTeamAsync();
-            await SetDaoRevocationIfProjectIsDaoRevoked();
 
             TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
             ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);

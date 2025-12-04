@@ -104,7 +104,7 @@ public class EditExternalContact(
             OrganisationName = organisationName
         };
 
-        return new UpdateExternalContactCommand(            
+        return new UpdateExternalContactCommand(
             contactDto
         );
     }
