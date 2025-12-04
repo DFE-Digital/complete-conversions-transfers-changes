@@ -6,7 +6,7 @@ namespace Dfe.Complete.Tests.Services
 {
     public class ProjectServiceTests
     {
-        private readonly ProjectService projectServiceMock = new();
+        private readonly ProjectService projectService = new();
         private DateOnly NextMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: 1));
         private DateOnly LastMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: -1));
 
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList);
+            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList, null);
 
             // Assert            
             Assert.Contains(ValidationConstants.TransferDateInPast, result);
@@ -54,7 +54,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList);
+            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList, null);
 
             // Assert            
             Assert.Contains(ValidationConstants.TransferDateInPast, result);
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(LastMonthDate, false, taskList);
+            var result = projectService.GetTransferProjectCompletionValidationResult(LastMonthDate, false, taskList, null);
 
             // Assert                    
             Assert.DoesNotContain(ValidationConstants.TransferDateInPast, result);
@@ -97,7 +97,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(NextMonthDate, false, taskList);
+            var result = projectService.GetConversionProjectCompletionValidationResult(NextMonthDate, false, taskList, null);
 
             // Assert           
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);
@@ -117,7 +117,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, false, taskList);
+            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, false, taskList, null);
 
             // Assert            
             Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, result);
@@ -136,7 +136,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, true, taskList);
+            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, true, taskList, null);
 
             // Assert            
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);
