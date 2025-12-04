@@ -52,7 +52,8 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
             ValidateTrustReferenceNumber();
 
             if (!ModelState.IsValid)
-            {   
+            {
+                await base.OnGetAsync();
                 ErrorService.AddErrors(ModelState);
                 return Page();
             }

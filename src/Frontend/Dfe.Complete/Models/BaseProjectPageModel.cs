@@ -41,7 +41,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
 
     public TransferTaskDataDto TransferTaskData { get; private set; } = null!;
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
-    public KeyContactDto KeyContacts { get; private set; } = null!;
+    public KeyContactDto? KeyContacts { get; private set; } = null!;
 
     public bool UserHasAdminAccess() =>
         projectPermissionService?.UserIsAdmin(Project, User) ?? false;
@@ -188,13 +188,13 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
             }
         }
     }
-    protected async Task GetKeyContactForProjectsAsyc()
+    protected async Task GetKeyContactForProjectsAsync()
     {
         var contactsResult = await Sender.Send(new GetKeyContactsForProjectQuery(new ProjectId(Guid.Parse(ProjectId))));
         if (!contactsResult.IsSuccess)
         {
             throw new NotFoundException($"Could not find key contacts for project {ProjectId}");
         }
-        KeyContacts = contactsResult.Value ?? new();
+        KeyContacts = contactsResult.Value;
     }
 }
