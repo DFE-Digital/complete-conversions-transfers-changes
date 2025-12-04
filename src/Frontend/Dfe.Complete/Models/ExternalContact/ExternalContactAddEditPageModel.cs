@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Models.ExternalContact;
 
-public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender) : ExternalContactBasePageModel(sender)
+public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender) : ExternalContactBasePageModel(sender, trustCacheService)
 {
     private readonly ISender sender = sender;
 
@@ -47,16 +47,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
 
             _ => ExternalContactInput.OrganisationOther
         };
-    }
-
-    private async Task<string?> GetIncomingTrustNameAsync()
-    {
-        if (Project is null || Project.IncomingTrustUkprn is null)
-            return null;
-
-        var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
-        return trust?.Name?.ToTitleCase();
-    }
+    }    
 
     private async Task<string?> GetOutgoingTrustNameAsync()
     {
