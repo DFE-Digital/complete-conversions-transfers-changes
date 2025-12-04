@@ -77,6 +77,7 @@ describe("Complete conversion projects tests", () => {
             .clickButton("Complete project")
             .hasImportantCompletedBannerWith("This project cannot be completed until:", [
                 "The conversion date has been confirmed and is in the past",
+                "The incoming trust UKPRN is entered",
             ]);
     });
 
@@ -88,6 +89,7 @@ describe("Complete conversion projects tests", () => {
                 "The conversion date has been confirmed and is in the past",
                 "The confirm all conditions have been met task is completed",
                 "The confirm the date the academy opened task is completed",
+                "The incoming trust UKPRN is entered",
             ]);
     });
 

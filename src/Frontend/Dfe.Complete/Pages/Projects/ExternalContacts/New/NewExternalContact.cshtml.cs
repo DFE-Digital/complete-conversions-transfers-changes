@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Constants;
+﻿using Dfe.Complete.Application.Services.TrustCache;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
@@ -10,8 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
 [Authorize(Policy = UserPolicyConstants.CanAddContact)]
-public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logger)
-    : ExternalContactBasePageModel(sender)
+public class NewExternalContact(ISender sender, ITrustCache trustCacheService, ILogger<NewExternalContact> logger)
+    : ExternalContactBasePageModel(sender, trustCacheService)
 {
     public ExternalContactType[] ContactTypeRadioOptions { get; set; }
 
