@@ -24,7 +24,7 @@ public class CreateExternalContact(
     IErrorService errorService,
     ISender sender,
     ILogger<CreateExternalContact> logger)
-    : ExternalContactBasePageModel(sender)
+    : ExternalContactBasePageModel(sender, trustCacheService)
 {
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
     private readonly IErrorService errorService = errorService;
@@ -108,8 +108,8 @@ public class CreateExternalContact(
             ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors
                 => Project?.EstablishmentName?.ToTitleCase(),
 
-            ExternalContactType.IncomingTrust when Project?.IncomingTrustUkprn != null
-                => (await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn))?.Name?.ToTitleCase(),
+            ExternalContactType.IncomingTrust 
+                => await GetIncomingTrustNameAsync(),
 
             ExternalContactType.OutgoingTrust when Project?.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null
                 => (await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn))?.Name?.ToTitleCase(),

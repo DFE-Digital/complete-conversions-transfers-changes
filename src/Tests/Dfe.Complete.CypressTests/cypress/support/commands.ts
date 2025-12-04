@@ -104,7 +104,7 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
         {
             runOnly: {
                 type: "tag",
-                values: ["wcag2aa"],
+                values: ["wcag22aa"],
             },
             rules: ruleConfiguration,
         },

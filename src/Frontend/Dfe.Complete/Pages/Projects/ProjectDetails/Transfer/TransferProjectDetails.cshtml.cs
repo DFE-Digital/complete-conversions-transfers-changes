@@ -106,8 +106,9 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
             ValidateTrustReferenceNumber();
 
             if (!ModelState.IsValid)
-            {  
-                ErrorService.AddErrors(ModelState);
+            {
+                await base.OnGetAsync();
+                ErrorService.AddErrors(ModelState);                
                 return Page();
             }
 
