@@ -9,6 +9,7 @@ using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.Notify;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,9 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();
             services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
             services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();
+
+            // Email notifications (GOV.UK Notify)
+            services.AddNotifyEmailServices(config);
 
             // Authentication
 
