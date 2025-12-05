@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 - external contacts list, show new trust name if incoming trust ukprn is null
+- Fix View notes flowing off page
 
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-01.1229...main) for everything awaiting release
