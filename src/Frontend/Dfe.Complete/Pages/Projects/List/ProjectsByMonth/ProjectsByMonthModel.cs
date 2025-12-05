@@ -96,41 +96,14 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
 
     public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
     {
-        var isConversion = projectType == ProjectType.Conversion;
-        var canViewDataConsumerView = CanViewDataConsumerView(user);
+        var isConversion = projectType == ProjectType.Conversion; 
 
-        string path;
-        if (canViewDataConsumerView)
-        {
-            path = isConversion
-                ? RouteConstants.ConversionProjectsByMonths
-                : RouteConstants.TransfersProjectsByMonths;
-        }
-        else
-        {
-            path = isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth;
-        }
-
+        var path = isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth;
+         
         var nextMonth = fromMonth == 12 ? 1 : fromMonth + 1;
         var nextYear = fromMonth == 12 ? fromYear + 1 : fromYear;
-        return canViewDataConsumerView
-            ? string.Format(path, fromMonth, fromYear, toMonth, toYear)
-            : string.Format(path, nextMonth, nextYear);
-    }
-
-    private static bool CanViewDataConsumerView(UserDto user)
-    {
-        var allowedTeams = new List<ProjectTeam>() { ProjectTeam.DataConsumers, ProjectTeam.BusinessSupport, ProjectTeam.ServiceSupport };
-
-        var managesTeam = user.ManageTeam.Value;
-        var projectTeam = user.Team.FromDescriptionValue<ProjectTeam>().Value;
-
-        var isInTeam = allowedTeams.Contains(projectTeam);
-
-        var result = isInTeam || managesTeam;
-
-        return result;
-    }
+        return string.Format(path, nextMonth, nextYear);
+    } 
 
     public static string GetProjectByMonthUrl(ProjectType projectType)
     {

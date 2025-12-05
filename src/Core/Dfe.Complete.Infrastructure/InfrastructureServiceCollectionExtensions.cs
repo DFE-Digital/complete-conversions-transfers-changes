@@ -5,13 +5,11 @@ using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.QueryServices;
-using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +38,6 @@ namespace Dfe.Complete.Infrastructure
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
-            services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<IProjectGroupReadRepository, ProjectGroupReadRepository>();

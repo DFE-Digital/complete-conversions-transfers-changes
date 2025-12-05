@@ -16,6 +16,8 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+- Replaced downloading CSV link to Power BI link.
+
 ### Changed
 - Throw exception when key_contacts record is missing on contact update tasks
 - Require incoming trust UKPRN on project completion
