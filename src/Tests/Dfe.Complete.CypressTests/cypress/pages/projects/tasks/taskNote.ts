@@ -2,7 +2,7 @@ import { NotePage } from "cypress/pages/projects/projectDetails/notePage";
 
 class TaskNote extends NotePage {
     protected getNoteDiv() {
-        return cy.contains("pre", this.noteText).should("exist").parent("li");
+        return cy.contains(`li[id*="${this.noteId}"]`, this.noteText).should("exist");
     }
 }
 

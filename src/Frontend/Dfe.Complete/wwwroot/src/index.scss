@@ -217,3 +217,9 @@ nav {
 		}
 	}
 }
+}
+
+//Stop the projects notes text from overflowing off screen
+.notes-body{
+	white-space: pre-line;
+}

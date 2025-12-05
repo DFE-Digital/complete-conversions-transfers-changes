@@ -17,6 +17,7 @@ public class NoteBodyTagHelper : TagHelper
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         output.TagName = "pre";
+        output.TagMode = TagMode.StartTagAndEndTag;
         output.Attributes.SetAttribute("class", CssClass);
         output.Attributes.SetAttribute("style", "white-space: pre-line;");
     }
