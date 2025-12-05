@@ -100,8 +100,8 @@ public class ProjectsByMonthModelTests_Additional
     }
 
     [Theory]
-    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, "/projects/all/by-month/conversions/from/3/2024/to/3/2024")]
-    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, "/projects/all/by-month/conversions/from/3/2024/to/3/2024")]
+    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, "/projects/all/by-month/conversions/4/2024")]
+    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, "/projects/all/by-month/conversions/4/2024")]
     [InlineData(ProjectType.Transfer, ProjectTeam.NorthWest, false, "/projects/all/by-month/transfers/4/2024")]
     public void GetProjectByMonthsUrl_ShouldReturnCorrectUrl(ProjectType projectType, ProjectTeam team, bool managesTeam, string expectedUrl)
     {

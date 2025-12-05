@@ -20,6 +20,8 @@ Security in case of vulnerabilities.
 
 ### Changed
 
+- Replaced downloading CSV link to Power BI link.
+
 ### Fixed
 
 
