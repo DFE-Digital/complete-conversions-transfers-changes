@@ -1,4 +1,5 @@
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
@@ -172,6 +173,48 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
 
             // Assert
             Assert.Empty(user.Notes);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(UserCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public void Create_ShouldRaiseUserCreatedEvent(
+            UserId id,
+            string email,
+            string firstName,
+            string lastName,
+            string team)
+        {
+            // Act
+            var user = User.Create(id, email, firstName, lastName, team);
+
+            // Assert
+            Assert.Single(user.DomainEvents);
+            var domainEvent = user.DomainEvents.First();
+            Assert.IsType<UserCreatedEvent>(domainEvent);
+            
+            var userCreatedEvent = (UserCreatedEvent)domainEvent;
+            Assert.Equal(id, userCreatedEvent.UserId);
+            Assert.Equal(email, userCreatedEvent.Email);
+            Assert.Equal(firstName, userCreatedEvent.FirstName);
+            Assert.Equal(lastName, userCreatedEvent.LastName);
+            Assert.Equal(team, userCreatedEvent.Team);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(UserCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public void Create_WithNullTeam_ShouldRaiseUserCreatedEventWithEmptyTeam(
+            UserId id,
+            string email,
+            string firstName,
+            string lastName)
+        {
+            // Act
+            var user = User.Create(id, email, firstName, lastName, null);
+
+            // Assert
+            Assert.Single(user.DomainEvents);
+            var userCreatedEvent = (UserCreatedEvent)user.DomainEvents.First();
+            Assert.Equal(string.Empty, userCreatedEvent.Team);
         }
     }
 }
