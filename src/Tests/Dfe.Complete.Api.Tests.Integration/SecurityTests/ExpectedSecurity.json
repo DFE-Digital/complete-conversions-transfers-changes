@@ -126,16 +126,6 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
     },
     {
-      "Controller": "CsvExportController",
-      "Action": "GetConversionCsvByMonthAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanRead"
-    },
-    {
-      "Controller": "CsvExportController",
-      "Action": "GetConversionCsvByMonthContentsAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanRead"
-    },
-    {
       "Controller": "UsersController",
       "Action": "CreateUserAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
