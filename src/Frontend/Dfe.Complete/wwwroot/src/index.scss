@@ -179,3 +179,8 @@ p.govuk-phase-banner__content {
 a.dfe-header__link--service, a.dfe-header__navigation-link {
 	color: #ffffff;
 }
+
+//Stop the projects notes text from overflowing off screen
+.notes-body{
+	white-space: pre-line;
+}
