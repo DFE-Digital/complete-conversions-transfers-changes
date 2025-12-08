@@ -55,7 +55,7 @@ namespace Dfe.Complete.Security
                     builder.AddFormAction().Self();
                     builder.AddFormAction().OverHttps();
                     builder.AddFontSrc().Self();
-                    builder.AddStyleSrc().Self();
+                    builder.AddStyleSrc().Self().WithNonce();
                     builder.AddBaseUri().Self();
                     builder.AddFrameAncestors().None();
                 })
