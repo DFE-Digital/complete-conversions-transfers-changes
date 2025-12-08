@@ -26,7 +26,7 @@
 	<link rel="apple-touch-icon" href="/dist/assets/images/govuk-apple-touch-icon.png">
 
 	<title>@ViewData["Title"] - Manage an academy conversion</title>
-	<link rel="stylesheet" href="~/dist/site.css"/>
+	<link rel="stylesheet" href="~/dist/site.css" asp-append-version="true"/>
 	@if (showAnalytics)
 	{
 		<!-- Google Tag Manager -->
@@ -58,7 +58,7 @@
 		@RenderBody()
 	</main>
 </div>
-<script src="~/dist/site.js" asp-add-nonce></script>
+<script src="~/dist/site.js" asp-add-nonce asp-append-version="true"></script>
 <script asp-add-nonce>
   document.addEventListener('DOMContentLoaded', function () {
     if (window.GOVUKFrontend && window.GOVUKFrontend.initAll) {
