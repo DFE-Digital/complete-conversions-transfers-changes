@@ -1,5 +1,4 @@
-﻿﻿@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnv
-@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 
 @{
 	var analyticsConsent = Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES")
