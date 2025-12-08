@@ -6,22 +6,22 @@ class TaskListPage extends basePage {
         return this;
     }
     public hasTaskStatusNotStarted(taskName: string) {
-        this.hasTaskStatus(taskName, "NOT STARTED");
+        this.hasTaskStatus(taskName, "Not started");
         return this;
     }
 
     public hasTaskStatusNotApplicable(taskName: string) {
-        this.hasTaskStatus(taskName, "NOT APPLICABLE");
+        this.hasTaskStatus(taskName, "Not applicable");
         return this;
     }
 
     public hasTaskStatusCompleted(taskName: string) {
-        this.hasTaskStatus(taskName, "COMPLETED");
+        this.hasTaskStatus(taskName, "Completed");
         return this;
     }
 
     public hasTaskStatusInProgress(taskName: string) {
-        this.hasTaskStatus(taskName, "IN PROGRESS");
+        this.hasTaskStatus(taskName, "In progress");
         return this;
     }
 
