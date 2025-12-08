@@ -24,8 +24,14 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-08.1272...main) for everything awaiting release
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-05.1266...main) for everything awaiting release
+## [1.33.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-08.1272) - 2025-12-08
+
+### Changed
+- implement new gov.uk frontend 5.10.0
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-05.1266...production-2025-12-08.1272) for everything in the release
 
 ## [1.32.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-05.1266) - 2025-12-05
 
