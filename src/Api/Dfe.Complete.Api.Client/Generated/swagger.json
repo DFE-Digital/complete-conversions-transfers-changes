@@ -4158,6 +4158,224 @@
         }
       }
     },
+    "/v1/TestEmail/welcome": {
+      "get": {
+        "tags": [
+          "TestEmail"
+        ],
+        "summary": "Send a test welcome email.",
+        "operationId": "TestEmail_SendWelcomeEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The recipient email address.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "The recipient's first name.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailTestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "500": {
+            "description": "Failed to send email."
+          }
+        }
+      }
+    },
+    "/v1/TestEmail/assignment": {
+      "get": {
+        "tags": [
+          "TestEmail"
+        ],
+        "summary": "Send a test project assignment email.",
+        "operationId": "TestEmail_SendAssignmentEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The recipient email address.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "The recipient's first name.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "projectRef",
+            "in": "query",
+            "description": "The project reference (default: TEST-PROJECT-001).",
+            "schema": {
+              "type": "string",
+              "default": "TEST-PROJECT-001"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailTestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "500": {
+            "description": "Failed to send email."
+          }
+        }
+      }
+    },
+    "/v1/TestEmail/team-leader-conversion": {
+      "get": {
+        "tags": [
+          "TestEmail"
+        ],
+        "summary": "Send a test team leader conversion project email.",
+        "operationId": "TestEmail_SendTeamLeaderConversionEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The recipient email address.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "The recipient's first name.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "projectRef",
+            "in": "query",
+            "description": "The project reference (default: TEST-CONV-001).",
+            "schema": {
+              "type": "string",
+              "default": "TEST-CONV-001"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailTestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "500": {
+            "description": "Failed to send email."
+          }
+        }
+      }
+    },
+    "/v1/TestEmail/team-leader-transfer": {
+      "get": {
+        "tags": [
+          "TestEmail"
+        ],
+        "summary": "Send a test team leader transfer project email.",
+        "operationId": "TestEmail_SendTeamLeaderTransferEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The recipient email address.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "The recipient's first name.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "projectRef",
+            "in": "query",
+            "description": "The project reference (default: TEST-TRANS-001).",
+            "schema": {
+              "type": "string",
+              "default": "TEST-TRANS-001"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Email sent successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmailTestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "500": {
+            "description": "Failed to send email."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -5288,6 +5506,9 @@
               },
               "fullName": {
                 "type": "string"
+              },
+              "isActive": {
+                "type": "boolean"
               },
               "notes": {
                 "type": "array",
@@ -9854,6 +10075,48 @@
           },
           "conversionGrantSharePaymentDate": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "EmailTestResponse": {
+        "type": "object",
+        "description": "Response model for email test endpoints.",
+        "additionalProperties": false,
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates whether the email was sent successfully."
+          },
+          "messageId": {
+            "type": "string",
+            "description": "The provider's message ID.",
+            "nullable": true
+          },
+          "reference": {
+            "type": "string",
+            "description": "The reference used for this email.",
+            "nullable": true
+          },
+          "sentAt": {
+            "type": "string",
+            "description": "The timestamp when the email was sent.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A descriptive message about the operation result.",
+            "nullable": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error details if the operation failed.",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "The type of error that occurred.",
             "nullable": true
           }
         }

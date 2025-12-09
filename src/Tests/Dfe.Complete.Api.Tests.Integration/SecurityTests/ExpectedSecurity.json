@@ -511,6 +511,26 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "TestEmailController",
+      "Action": "SendWelcomeEmailAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TestEmailController",
+      "Action": "SendAssignmentEmailAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TestEmailController",
+      "Action": "SendTeamLeaderConversionEmailAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TestEmailController",
+      "Action": "SendTeamLeaderTransferEmailAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
       "Controller": "TasksDataController",
       "Action": "UpdateFormMTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"

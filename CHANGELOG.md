@@ -16,15 +16,31 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-08.1272...main) for everything awaiting release
+
+## [1.33.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-08.1272) - 2025-12-08
+
+### Changed
+- implement new gov.uk frontend 5.10.0
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-05.1266...production-2025-12-08.1272) for everything in the release
+
+## [1.32.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-05.1266) - 2025-12-05
+
+### Added
+- Added GOV.UK Notify email notifications for project creation and assignment events
+
 ### Changed
 - Throw exception when key_contacts record is missing on contact update tasks
 - Require incoming trust UKPRN on project completion
 
 ### Fixed
 - external contacts list, show new trust name if incoming trust ukprn is null
+- Fix invalid ukprn not throwing error if TRN is non-editable
+- Fix View notes flowing off page
 
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-01.1229...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-01.1229...production-2025-12-05.1266) for everything in the release
 
 ## [1.31.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-01.1229) - 2025-12-01
 
