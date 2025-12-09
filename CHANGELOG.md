@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Fixed
+- Fix validation for internal contacts
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-08.1272...main) for everything awaiting release
 
 ## [1.33.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-08.1272) - 2025-12-08

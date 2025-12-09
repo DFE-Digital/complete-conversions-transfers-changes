@@ -62,6 +62,9 @@ export class UserAutocomplete {
     updateSubmittingValue = (option) => {
         if (option) {
             document.querySelector('#new-email-value').value = option[2]
+
+            const rawInput = document.querySelector('#rawEmail')
+            rawInput.value = option[2]
         }
     }
 
@@ -92,6 +95,9 @@ export class UserAutocomplete {
             const response = await fetch('/search/user?type=assignable&query=' + query)
             const results = await response.json()
             populateResults(results)
+
+            const rawInput = document.querySelector('#rawEmail');
+            rawInput.value = query;
         }
     }
 
