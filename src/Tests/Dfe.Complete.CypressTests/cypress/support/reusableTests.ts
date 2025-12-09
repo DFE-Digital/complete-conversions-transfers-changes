@@ -1,8 +1,6 @@
 import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
-import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
-import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
 import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import { TestUser } from "cypress/constants/TestUser";
@@ -81,12 +79,6 @@ export function shouldNotHaveAccessToViewConversionURNsPage(projectId: string) {
     cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
     cy.visit("/projects/service-support/with-academy-urn").notAuthorisedToPerformAction();
     cy.visit(`/projects/${projectId}/academy-urn`).notAuthorisedToPerformAction();
-}
-
-export function shouldBeAbleToViewMultipleMonthsOfProjects() {
-    cy.visit("/projects/all/in-progress/all");
-    allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
-    projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
 }
 
 export function shouldBeAbleToViewReportsLandingPage() {

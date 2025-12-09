@@ -15,12 +15,14 @@
     <li class="moj-sub-navigation__item">
       <a class="moj-sub-navigation__link"
          aria-current="@IsCurrentNav(ProjectsByMonthModel.ConversionsSubNavigation)"
+         data-cy="conversions-tab"
          href="@ProjectsByMonthModel.GetProjectByMonthUrl(ProjectType.Conversion)">Conversions</a>
     </li>
 
     <li class="moj-sub-navigation__item">
       <a class="moj-sub-navigation__link"
          aria-current="@IsCurrentNav(ProjectsByMonthModel.TransfersSubNavigation)"
+         data-cy="transfers-tab"
          href="@ProjectsByMonthModel.GetProjectByMonthUrl(ProjectType.Transfer)">Transfers</a>
     </li>
   </ul>

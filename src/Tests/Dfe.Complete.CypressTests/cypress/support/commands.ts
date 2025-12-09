@@ -14,6 +14,10 @@ Cypress.Commands.add("containsByTestId", (id) => {
     cy.get(`[data-testid*="${id}"]`);
 });
 
+Cypress.Commands.add("getByDataCy", (id) => {
+    cy.get(`[data-cy="${id}"]`);
+});
+
 Cypress.Commands.add("getById", (id) => {
     cy.get(`[id="${id}"]`);
 });

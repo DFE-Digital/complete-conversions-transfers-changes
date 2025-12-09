@@ -24,12 +24,12 @@ class ProjectsByMonthPage extends BasePage {
     }
 
     viewConversionProjects() {
-        cy.contains("Conversions").click(); // add id to button
+        cy.getByDataCy("conversions-tab").click();
         return this;
     }
 
     viewTransferProjects() {
-        cy.contains("Transfers").click(); // add id to button
+        cy.getByDataCy("transfers-tab").click();
         return this;
     }
 }

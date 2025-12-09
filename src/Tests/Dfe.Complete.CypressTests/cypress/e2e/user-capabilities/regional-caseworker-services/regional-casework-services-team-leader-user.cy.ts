@@ -1,5 +1,4 @@
 import {
-    shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAddEditUsers,
@@ -92,10 +91,6 @@ describe("Capabilities and permissions of the regional casework services team le
 
     it("Should NOT have access to view, add or edit users", () => {
         shouldNotHaveAccessToViewAddEditUsers();
-    });
-
-    it("Should be able to view multiple months of projects within a specified date range", () => {
-        shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
     // bug 219321

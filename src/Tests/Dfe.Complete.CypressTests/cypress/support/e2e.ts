@@ -36,6 +36,8 @@ declare global {
 
             containsByTestId(id: string): Chainable<Element>;
 
+            getByDataCy(dataCy: string): Chainable<Element>;
+
             getById(id: string): Chainable<Element>;
 
             containsById(id: string): Chainable<Element>;
