@@ -24,7 +24,7 @@
             <img src="/assets/images/department-for-education_white.png" alt="Department for Education" class="govuk-header__logotype">
         </a>
         </div>
-        <div class="govuk-header__search" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
+        <div class="govuk-header__search">
             <button id="search-toggle-button" class="govuk-header__search-toggle-button" aria-controls="search-overlay-panel" aria-expanded="false" aria-label="Show search menu" type="button">
                 <span class="govuk-visually-hidden">Search projects</span>
                 <svg class="govuk-header__search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
@@ -36,7 +36,7 @@
         </div>
     </div>
 </header>
-<div id="search-overlay-panel" class="search-overlay-panel" hidden asp-policy="@UserPolicyConstants.HasGlobalNavigation">
+<div id="search-overlay-panel" class="search-overlay-panel" hidden>
     <div class="govuk-width-container search-overlay-container">
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
