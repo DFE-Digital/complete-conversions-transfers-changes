@@ -34,11 +34,9 @@ declare global {
         interface Chainable {
             getByTestId(id: string): Chainable<Element>;
 
-            containsByTestId(id: string): Chainable<Element>;
+            getByDataCy(dataCy: string): Chainable<Element>;
 
             getById(id: string): Chainable<Element>;
-
-            containsById(id: string): Chainable<Element>;
 
             getByClass(className: string): Chainable<Element>;
 

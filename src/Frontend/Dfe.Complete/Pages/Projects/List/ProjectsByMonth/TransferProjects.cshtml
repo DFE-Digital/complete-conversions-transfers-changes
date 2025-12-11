@@ -1,10 +1,9 @@
 @page "/projects/all/by-month/transfers/{month}/{year}" 
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.TransferProjectsByMonthModel
 @{
     Layout = "List/ProjectsByMonth/_ProjectsByMonthLayout";
     ViewData["Title"] = "Academies opening or transferring";
-    
-    var exportLink = $"/projects/all/export/by-significant-date/transfers/all-data/{Model.Month}/{Model.Year}/csv";
 }
 
 @section PageHeading
@@ -15,7 +14,16 @@
     </h1>
     <p>Schools that will become academies, and academies that will move to a different trust.</p>
 
-    <p>You can also <a href="@exportLink">download a more detailed version of the data as a CSV file.</a></p>
+    <p>You can now view and download the Next Month's Academy Conversions and Transfers Reports on Power BI.</p>
+    <p>Use the Explore All Data report to view historic data for Academies that have already converted or transferred, as well as those scheduled to do so after next month.</p>
+    <a href="@Configuration["ExternalLinks:PowerBiReports"]"
+       draggable="false"
+       class="govuk-button govuk-button--success"
+       data-module="govuk-button"
+       target="_blank"
+       rel="noopener noreferrer">
+        View reports in Power BI
+    </a>
 }
 
 <div class="govuk-grid-column-full">

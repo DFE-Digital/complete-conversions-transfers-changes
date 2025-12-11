@@ -1,6 +1,5 @@
 import { beforeEach } from "mocha";
 import {
-    shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
@@ -85,10 +84,6 @@ describe("Capabilities and permissions of the service support user - project lis
 
     it("Should NOT have access to view Your team projects sections", () => {
         shouldNotHaveAccessToViewYourTeamProjectsSections();
-    });
-
-    it("Should be able to view multiple months of projects within a specified date range", () => {
-        shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
     it("Should be able to view the reports landing page", () => {

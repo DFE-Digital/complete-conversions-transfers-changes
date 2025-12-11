@@ -51,28 +51,6 @@ namespace Dfe.Complete.Tests.Constants
         }
 
         [Fact]
-        public void ConversionProjectsByMonths_ShouldFormatCorrectly()
-        {
-            var fromYear = "2024";
-            var fromMonth = "01";
-            var toYear = "2025";
-            var toMonth = "12";
-            var expected = $"/projects/all/by-month/conversions/from/{fromYear}/{fromMonth}/to/{toYear}/{toMonth}";
-            Assert.Equal(expected, string.Format(RouteConstants.ConversionProjectsByMonths, fromYear, fromMonth, toYear, toMonth));
-        }
-
-        [Fact]
-        public void TransfersProjectsByMonths_ShouldFormatCorrectly()
-        {
-            var fromYear = "2024";
-            var fromMonth = "01";
-            var toYear = "2025";
-            var toMonth = "12";
-            var expected = $"/projects/all/by-month/transfers/from/{fromYear}/{fromMonth}/to/{toYear}/{toMonth}";
-            Assert.Equal(expected, string.Format(RouteConstants.TransfersProjectsByMonths, fromYear, fromMonth, toYear, toMonth));
-        }
-
-        [Fact]
         public void ProjectsByRegion_ShouldFormatCorrectly()
         {
             var expected = $"/projects/all/regions";
