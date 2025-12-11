@@ -16,10 +16,14 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-11.1293...main) for everything awaiting release
+
+## [1.34.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-11.1293) - 2025-12-11
+
 ### Changed
 - Replaced downloading CSV link to Power BI link.
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-10.1290...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-10.1290...production-2025-12-11.1293) for everything in the release
 
 ## [1.33.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-10.1290) - 2025-12-10
 
