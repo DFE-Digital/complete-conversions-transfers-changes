@@ -8,5 +8,10 @@
 <div class="govuk-form-group" id="new_trust_reference_number">
     <govuk-input name="@trustRefNumber" input-class="govuk-input--width-10" asp-for="@Model.NewTrustReferenceNumber">
         <govuk-input-label class="govuk-label--m">Trust reference number (TRN)</govuk-input-label>
+        @if (Model.ErrorService.HasErrorForKey(@trustRefNumber))
+        {
+            <govuk-input-error-message>@(Model.ErrorService.GetErrorMessage(trustRefNumber))</govuk-input-error-message>
+        }
     </govuk-input>
+    <input type="hidden" asp-for="@Model.OriginalTrustReferenceNumber" />
 </div>

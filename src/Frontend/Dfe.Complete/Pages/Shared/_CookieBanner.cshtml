@@ -5,9 +5,10 @@
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
+@* GOV.UK Cookie Banner (rebrand) - Following official pattern *@
 @if (showBanner)
 {
-  <div class="govuk-cookie-banner" data-nosnippet role="region" id="appCookieBanner" aria-label="cookie banner" role="complementary">
+  <section class="govuk-cookie-banner" id="appCookieBanner" data-nosnippet aria-label="Cookie consent">
     <div class="govuk-cookie-banner__message govuk-width-container">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -21,21 +22,19 @@
         </div>
       </div>
       <div class="govuk-button-group">
-        <a role="button" draggable="false" data-testid="cookie-banner-accept"
-           class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-                   asp-route-consent="true" asp-route-returnUrl="@returnUrl">
-          Accept optional cookies
-        </a>
-        <a role="button" draggable="false" data-testid="cookie-banner-reject"
-           class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-                   asp-route-consent="false" asp-route-returnUrl="@returnUrl">
-          Reject optional cookies
-        </a>
-        <a class="govuk-link" data-testid="cookie-banner-link-2"
-                   asp-page="@Links.Public.CookiePreferences.Page" asp-route-returnUrl="@returnUrl">
+        <button type="button" class="govuk-button" data-module="govuk-button" data-testid="cookie-banner-accept"
+                data-accept-url="@Url.Page(Links.Public.CookiePreferences.Page, new { consent = true, returnUrl = returnUrl })">
+          Accept analytics cookies
+        </button>
+        <button type="button" class="govuk-button" data-module="govuk-button" data-testid="cookie-banner-reject"
+                data-reject-url="@Url.Page(Links.Public.CookiePreferences.Page, new { consent = false, returnUrl = returnUrl })">
+          Reject analytics cookies
+        </button>
+        <a class="govuk-link" data-testid="cookie-banner-link"
+           asp-page="@Links.Public.CookiePreferences.Page" asp-route-returnUrl="@returnUrl">
           View cookies
         </a>
       </div>
     </div>
-  </div>
+  </section>
 }

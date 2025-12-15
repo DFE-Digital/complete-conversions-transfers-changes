@@ -15,9 +15,7 @@
         public const string TrustProjects = AllProjectsPrefix + "/trusts/ukprn/{0}";
         public const string TrustMATProjects = AllProjectsPrefix + "/trusts/reference/{0}";
         public const string ConversionProjectsByMonth = AllProjectsPrefix + "/by-month/conversions/{0}/{1}";
-        public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}";
-        public const string ConversionProjectsByMonths = AllProjectsPrefix + "/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
-        public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
+        public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}"; 
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
         public const string ProjectsHandoverCheck = ProjectsHandover + "/{0}/check";
         public const string ProjectsHandoverNew = ProjectsHandover + "/{0}/new";

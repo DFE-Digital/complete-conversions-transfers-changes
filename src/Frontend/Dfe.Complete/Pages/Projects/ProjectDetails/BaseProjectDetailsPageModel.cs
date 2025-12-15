@@ -28,15 +28,17 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
         [BindProperty] public ProjectType? ProjectType { get; set; } // Common
 
-        [BindProperty]
-        [GovukRequired]
-        [Ukprn]
-        [Required(ErrorMessage = "Enter an incoming trust UKPRN")]
+        [BindProperty]        
+        [Ukprn]        
         [DisplayName("incoming trust UKPRN")]
         public string? IncomingTrustUkprn { get; set; }  // Common
 
         [BindProperty]
+      
         public string? NewTrustReferenceNumber { get; set; }  // Common
+
+        [BindProperty]        
+        public string? OriginalTrustReferenceNumber { get; set; }  // Common
 
         [BindProperty]
         [GroupReferenceNumber(ShouldMatchWithTrustUkprn: true, nameof(IncomingTrustUkprn))]
@@ -98,6 +100,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
             IncomingTrustUkprn = Project.IncomingTrustUkprn?.ToString();
             NewTrustReferenceNumber = Project.NewTrustReferenceNumber;
+            OriginalTrustReferenceNumber = Project.NewTrustReferenceNumber;
 
             await SetGroupReferenceNumberAsync();
 
@@ -109,6 +112,14 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             TwoRequiresImprovement = Project.TwoRequiresImprovement ?? false;
 
             return Page();
+        }
+
+        public void ValidateTrustReferenceNumber()
+        {
+            if (!string.IsNullOrWhiteSpace(OriginalTrustReferenceNumber) && string.IsNullOrWhiteSpace(NewTrustReferenceNumber))
+            {
+                ModelState.AddModelError("NewTrustReferenceNumber", "Enter a trust reference number (TRN)");
+            }
         }
     }
 }

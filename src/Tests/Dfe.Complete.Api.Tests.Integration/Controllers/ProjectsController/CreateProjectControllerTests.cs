@@ -113,6 +113,7 @@ public partial class ProjectsControllerTests
         var userCountBefore = await dbContext.Users.CountAsync();
         var conversionTaskDataCountBefore = await dbContext.ConversionTasksData.CountAsync();
         var projectGroupCountBefore = await dbContext.ProjectGroups.CountAsync();
+        var keyContactsCountBefore = await dbContext.KeyContacts.CountAsync();
 
         var result = await projectsClient.CreateConversionProjectAsync(createConversionProjectCommand);
 
@@ -122,6 +123,12 @@ public partial class ProjectsControllerTests
         Assert.Equal(userCountBefore + 1, await dbContext.Users.CountAsync());
         Assert.Equal(conversionTaskDataCountBefore + 1, await dbContext.ConversionTasksData.CountAsync());
         Assert.Equal(projectGroupCountBefore + 1, await dbContext.ProjectGroups.CountAsync());
+        Assert.Equal(keyContactsCountBefore + 1, await dbContext.KeyContacts.CountAsync());
+
+        var keyContactRecord = await dbContext.KeyContacts
+            .FirstOrDefaultAsync(kc => kc.ProjectId == new Domain.ValueObjects.ProjectId(result.Value!.Value));
+
+        Assert.NotNull(keyContactRecord);
     }
 
     [Theory]
@@ -421,7 +428,7 @@ public partial class ProjectsControllerTests
         var projectCountBefore = await dbContext.Projects.CountAsync();
         var userCountBefore = await dbContext.Users.CountAsync();
         var conversionTaskDataCountBefore = await dbContext.ConversionTasksData.CountAsync();
-
+        var keyContactsCountBefore = await dbContext.KeyContacts.CountAsync();
         var result = await projectsClient.CreateConversionMatProjectAsync(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -429,6 +436,12 @@ public partial class ProjectsControllerTests
         Assert.Equal(projectCountBefore + 1, await dbContext.Projects.CountAsync());
         Assert.Equal(userCountBefore + 1, await dbContext.Users.CountAsync());
         Assert.Equal(conversionTaskDataCountBefore + 1, await dbContext.ConversionTasksData.CountAsync());
+        Assert.Equal(keyContactsCountBefore + 1, await dbContext.KeyContacts.CountAsync());
+
+        var keyContactRecord = await dbContext.KeyContacts
+            .FirstOrDefaultAsync(kc => kc.ProjectId == new Domain.ValueObjects.ProjectId(result.Value!.Value));
+
+        Assert.NotNull(keyContactRecord);
     }
 
     [Theory]
@@ -612,6 +625,7 @@ public partial class ProjectsControllerTests
         var userCountBefore = await dbContext.Users.CountAsync();
         var transferTaskDataCountBefore = await dbContext.TransferTasksData.CountAsync();
         var projectGroupCountBefore = await dbContext.ProjectGroups.CountAsync();
+        var keyContactsCountBefore = await dbContext.KeyContacts.CountAsync();
 
         var result = await projectsClient.CreateTransferProjectAsync(createTransferProjectCommand);
 
@@ -621,6 +635,12 @@ public partial class ProjectsControllerTests
         Assert.Equal(userCountBefore + 1, await dbContext.Users.CountAsync());
         Assert.Equal(transferTaskDataCountBefore + 1, await dbContext.TransferTasksData.CountAsync());
         Assert.Equal(projectGroupCountBefore + 1, await dbContext.ProjectGroups.CountAsync());
+        Assert.Equal(keyContactsCountBefore + 1, await dbContext.KeyContacts.CountAsync());
+
+        var keyContactRecord = await dbContext.KeyContacts
+            .FirstOrDefaultAsync(kc => kc.ProjectId == new Domain.ValueObjects.ProjectId(result.Value!.Value));
+
+        Assert.NotNull(keyContactRecord);
     }
 
     [Theory]
@@ -773,6 +793,7 @@ public partial class ProjectsControllerTests
         var projectCountBefore = await dbContext.Projects.CountAsync();
         var userCountBefore = await dbContext.Users.CountAsync();
         var transferTaskDataCountBefore = await dbContext.TransferTasksData.CountAsync();
+        var keyContactsCountBefore = await dbContext.KeyContacts.CountAsync();
 
         var result = await projectsClient.CreateTransferMatProjectAsync(createTransferMatProjectCommand);
 
@@ -781,6 +802,12 @@ public partial class ProjectsControllerTests
         Assert.Equal(projectCountBefore + 1, await dbContext.Projects.CountAsync());
         Assert.Equal(userCountBefore + 1, await dbContext.Users.CountAsync());
         Assert.Equal(transferTaskDataCountBefore + 1, await dbContext.TransferTasksData.CountAsync());
+        Assert.Equal(keyContactsCountBefore + 1, await dbContext.KeyContacts.CountAsync());
+
+        var keyContactRecord = await dbContext.KeyContacts
+            .FirstOrDefaultAsync(kc => kc.ProjectId == new Domain.ValueObjects.ProjectId(result.Value!.Value));
+
+        Assert.NotNull(keyContactRecord);
     }
 
     [Theory]

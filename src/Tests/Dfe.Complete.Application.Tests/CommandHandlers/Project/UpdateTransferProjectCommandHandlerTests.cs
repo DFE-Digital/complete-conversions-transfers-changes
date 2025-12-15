@@ -71,8 +71,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var command = new UpdateTransferProjectCommand(
                projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               OutgoingTrustUkprn: new Ukprn(22),
+               IncomingTrustUkprn: new Ukprn(21),               
                NewTrustReferenceNumber: "TR123",
                GroupReferenceNumber: groupIdentifier,
                AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
@@ -98,8 +97,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
                     x => x.Id == projectId
-                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn
-                        && x.OutgoingTrustUkprn == command.OutgoingTrustUkprn
+                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn                        
                         && x.NewTrustReferenceNumber == command.NewTrustReferenceNumber
                         && x.GroupId == group.Id
                         && x.AdvisoryBoardDate == command.AdvisoryBoardDate
@@ -164,8 +162,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var command = new UpdateTransferProjectCommand(
                projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               OutgoingTrustUkprn: new Ukprn(22),
+               IncomingTrustUkprn: new Ukprn(21),               
                NewTrustReferenceNumber: "TR123",
                GroupReferenceNumber: null, // No group, so project will be detached
                AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
@@ -191,8 +188,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
                     x => x.Id == projectId
-                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn
-                        && x.OutgoingTrustUkprn == command.OutgoingTrustUkprn
+                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn                        
                         && x.NewTrustReferenceNumber == command.NewTrustReferenceNumber
                         && x.GroupId == null // Group should be null
                         && x.AdvisoryBoardDate == command.AdvisoryBoardDate
@@ -260,8 +256,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var command = new UpdateTransferProjectCommand(
                projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               OutgoingTrustUkprn: new Ukprn(22),
+               IncomingTrustUkprn: new Ukprn(21),               
                NewTrustReferenceNumber: "TR123",
                GroupReferenceNumber: groupIdentifier,
                AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
@@ -287,8 +282,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
                     x => x.Id == projectId
-                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn
-                        && x.OutgoingTrustUkprn == command.OutgoingTrustUkprn
+                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn                        
                         && x.NewTrustReferenceNumber == command.NewTrustReferenceNumber
                         && x.GroupId == group.Id
                         && x.AdvisoryBoardDate == command.AdvisoryBoardDate
@@ -337,8 +331,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var command = new UpdateTransferProjectCommand(
                projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               OutgoingTrustUkprn: new Ukprn(22),
+               IncomingTrustUkprn: new Ukprn(21),               
                NewTrustReferenceNumber: "TR123",
                GroupReferenceNumber: null,
                AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),

@@ -262,14 +262,14 @@ describe("View all projects", () => {
                 "Authority to proceed",
                 "Confirmed date (Original date)",
             ])
-            .contains(`${transferSchoolName} ${transferProject.urn}`)
-            .withSchool(`${transferSchoolName} ${transferProject.urn}`)
+            .contains(`${transferSchoolName}`)
+            .withSchool(`${transferSchoolName}`)
             .columnHasValue("Region", transferRegion)
             .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
             .columnHasValue("Confirmed date (Original date)", `${nextMonthShortUS} (${nextMonthShortUS})`) // bug 228624
-            .goTo(`${transferSchoolName} ${transferProject.urn}`);
+            .goTo(`${transferSchoolName}`);
         projectDetailsPage.containsHeading(transferSchoolName);
     });
 

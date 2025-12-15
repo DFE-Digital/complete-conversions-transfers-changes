@@ -36,7 +36,7 @@
     {
       <partial
         name="_ExternalContactsSection"
-        model="@(new ExternalContactsSectionModel(Model.IncomingTrustContacts, Model.IncomingTrust?.Name?.ToTitleCase()))"/>
+        model="@(new ExternalContactsSectionModel(Model.IncomingTrustContacts, Model.IncomingTrustName))" />
     }
     @if (Model.OutgoingTrustContacts.Any())
     {

@@ -178,7 +178,10 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Phase")
             .hasValue("Primary")
             .summaryShows("SharePoint folder")
-            .hasValueWithLink("View the academy SharePoint folder (opens in new tab)", projectDetails.schoolSharepointLink)
+            .hasValueWithLink(
+                "View the academy SharePoint folder (opens in new tab)",
+                projectDetails.schoolSharepointLink,
+            )
             .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Incoming trust details")
@@ -190,7 +193,6 @@ describe("About the project page - conversion projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(dimensionsTrust.ukprn)
-            .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(dimensionsTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -200,7 +202,6 @@ describe("About the project page - conversion projects: ", () => {
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
-            .hasChangeLink(`${changeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue(dimensionsTrust.address)
             .summaryShows("SharePoint folder")
@@ -315,7 +316,6 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue("")
             .summaryShows("New trust reference number (TRN)")
             .hasValue(projectFormAMAT.newTrustReferenceNumber)
-            .hasChangeLink(`${formAMATChangeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue("")
             .summaryShows("SharePoint folder")
@@ -368,7 +368,8 @@ describe("About the project page - conversion projects: ", () => {
             .should("include", `/projects/${teammatesProjectId}/information`);
     });
 
-    it("Should be able to make changes to your project's details", () => {
+    it("Should be able to make changes to your project's (MAT) details", () => {
+        cy.visit(`projects/${projectFormAMATId}/information`);
         const newIncomingTrust = macclesfieldTrust;
         Logger.log("Go to change form");
         aboutTheProjectPage.change("Group reference number");
@@ -376,7 +377,7 @@ describe("About the project page - conversion projects: ", () => {
         Logger.log("Update project details");
         editConversionProjectPage
             .withIncomingTrustUKPRN(newIncomingTrust.ukprn)
-            .withTrustReferenceNumber(newIncomingTrust.referenceNumber)
+            .doesntContain("Trust reference number (TRN)") // only SS can edit TRN
             .withGroupReferenceNumber("")
             .withAdvisoryBoardDate("28", "02", "2023")
             .withAdvisoryBoardConditions("New advisory board conditions")
@@ -403,12 +404,6 @@ describe("About the project page - conversion projects: ", () => {
             .keyHasValueWithLink(
                 "SharePoint folder",
                 "View the school SharePoint folder (opens in new tab)",
-                "https://educationgovuk.sharepoint.com/11",
-            )
-            .subSection("Academy details")
-            .keyHasValueWithLink(
-                "SharePoint folder",
-                "View the academy SharePoint folder (opens in new tab)",
                 "https://educationgovuk.sharepoint.com/11",
             )
             .subSection("Incoming trust details")

@@ -156,29 +156,6 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface ICsvExportClient
-    {
-        /// <returns>File</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> GetConversionCsvByMonthAsync(int? month, int? year);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>File</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> GetConversionCsvByMonthAsync(int? month, int? year, System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>File contents</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> GetConversionCsvByMonthContentsAsync(int? month, int? year);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>File contents</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> GetConversionCsvByMonthContentsAsync(int? month, int? year, System.Threading.CancellationToken cancellationToken);
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IProjectGroupClient
     {
         /// <summary>
@@ -1761,6 +1738,93 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial interface ITestEmailClient
+    {
+        /// <summary>
+        /// Send a test welcome email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendWelcomeEmailAsync(string? email, string? firstName);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Send a test welcome email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendWelcomeEmailAsync(string? email, string? firstName, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Send a test project assignment email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-PROJECT-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendAssignmentEmailAsync(string? email, string? firstName, string? projectRef);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Send a test project assignment email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-PROJECT-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendAssignmentEmailAsync(string? email, string? firstName, string? projectRef, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Send a test team leader conversion project email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-CONV-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendTeamLeaderConversionEmailAsync(string? email, string? firstName, string? projectRef);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Send a test team leader conversion project email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-CONV-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendTeamLeaderConversionEmailAsync(string? email, string? firstName, string? projectRef, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Send a test team leader transfer project email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-TRANS-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendTeamLeaderTransferEmailAsync(string? email, string? firstName, string? projectRef);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Send a test team leader transfer project email.
+        /// </summary>
+        /// <param name="email">The recipient email address.</param>
+        /// <param name="firstName">The recipient's first name.</param>
+        /// <param name="projectRef">The project reference (default: TEST-TRANS-001).</param>
+        /// <returns>Email sent successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<EmailTestResponse> SendTeamLeaderTransferEmailAsync(string? email, string? firstName, string? projectRef, System.Threading.CancellationToken cancellationToken);
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface ITrustClient
     {
         /// <summary>
@@ -2642,6 +2706,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("fullName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? FullName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("isActive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsActive { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("notes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<Note>? Notes { get; set; } = default!;
@@ -7571,6 +7638,69 @@ namespace Dfe.Complete.Client.Contracts
 
     }
 
+    /// <summary>
+    /// Response model for email test endpoints.
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class EmailTestResponse
+    {
+        /// <summary>
+        /// Indicates whether the email was sent successfully.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("success", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Success { get; set; } = default!;
+
+        /// <summary>
+        /// The provider's message ID.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("messageId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? MessageId { get; set; } = default!;
+
+        /// <summary>
+        /// The reference used for this email.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("reference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Reference { get; set; } = default!;
+
+        /// <summary>
+        /// The timestamp when the email was sent.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("sentAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? SentAt { get; set; } = default!;
+
+        /// <summary>
+        /// A descriptive message about the operation result.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("message", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Message { get; set; } = default!;
+
+        /// <summary>
+        /// Error details if the operation failed.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Error { get; set; } = default!;
+
+        /// <summary>
+        /// The type of error that occurred.
+        /// </summary>
+        [Newtonsoft.Json.JsonProperty("errorType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ErrorType { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static EmailTestResponse FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<EmailTestResponse>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListTrustsWithProjectsResultModel
     {
@@ -7770,41 +7900,6 @@ namespace Dfe.Complete.Client.Contracts
         }
     }
 
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FileResponse : System.IDisposable
-    {
-        private System.IDisposable? _client;
-        private System.IDisposable? _response;
-
-        public int StatusCode { get; private set; }
-
-        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
-
-        public System.IO.Stream Stream { get; private set; }
-
-        public bool IsPartial
-        {
-            get { return StatusCode == 206; }
-        }
-
-        public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable? client, System.IDisposable? response)
-        {
-            StatusCode = statusCode;
-            Headers = headers;
-            Stream = stream;
-            _client = client;
-            _response = response;
-        }
-
-        public void Dispose()
-        {
-            Stream.Dispose();
-            if (_response != null)
-                _response.Dispose();
-            if (_client != null)
-                _client.Dispose();
-        }
-    }
 
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]

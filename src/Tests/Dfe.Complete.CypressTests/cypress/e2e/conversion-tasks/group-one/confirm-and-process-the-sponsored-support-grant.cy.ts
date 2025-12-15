@@ -19,8 +19,7 @@ describe("Conversion tasks - Confirm and process the sponsored support grant", (
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    // skip 249948
-    it.skip("should expand and collapse guidance details", () => {
+    it("should expand and collapse guidance details", () => {
         taskPage
             .clickDropdown("How to check grant eligibility")
             .hasDropdownContent("The fast track grant amounts are")

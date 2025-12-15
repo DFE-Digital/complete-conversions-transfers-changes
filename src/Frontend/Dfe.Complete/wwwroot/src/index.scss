@@ -11,16 +11,17 @@ $moj-page-width: $govuk-page-width;
 // Use the DfE font 'Inter', do not user GDS Transport
 $govuk-font-family: "Inter", blinkmacsystemfont, "Segoe UI", roboto,
 oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
-$govuk-assets-path: "/node_modules/govuk-frontend/govuk/assets/";
+$govuk-assets-path: "/assets/";
 
-@import "node_modules/dfe-frontend/packages/dfefrontend";
-@import "node_modules/govuk-frontend/govuk/all";
+@import "node_modules/govuk-frontend/dist/govuk/all";
 @import "node_modules/@ministryofjustice/frontend/moj/all.scss";
 @import "./css/attachment.scss";
 @import "./css/related-items.scss";
 @import "./css/summary-card.scss";
 @import "./css/task-list.scss";
 @import "./css/cookie-banner.scss";
+@import "./css/header.scss";
+@import "./css/footer.scss";
 @import "./css/date-range.scss";
 @import "./css/risk.scss";
 @import "./css/project-overview.scss";
@@ -178,4 +179,46 @@ p.govuk-phase-banner__content {
 // force header and DfE navigation links to always be white
 a.dfe-header__link--service, a.dfe-header__navigation-link {
 	color: #ffffff;
+}
+
+// WCAG 2.2 AA: Ensure touch targets in "Jump to section" navigation have sufficient size and spacing
+// Touch targets must be at least 24x24 CSS pixels with at least 8px spacing between adjacent targets
+nav {
+	// Target list items in navigation areas with "Jump to section" heading
+	ul.list-style-none {
+		li {
+			// Ensure minimum spacing between items (8px minimum per WCAG 2.2 AA)
+			// Add margin-bottom to create spacing between touch targets
+			margin-bottom: 8px;
+			
+			// Make links block-level to ensure proper touch target sizing
+			a.govuk-link {
+				display: block !important;
+				// Ensure minimum touch target size of 24x24px
+				// Use generous padding to guarantee touch target area
+				// If text is ~20px, padding of 8px top + 8px bottom = 36px total height (well above 24px minimum)
+				box-sizing: border-box !important;
+				padding: 8px 0 !important;
+				// Set explicit min-height to ensure touch target is at least 24px tall
+				// This ensures even if padding calculation fails, we still meet 24px minimum
+				min-height: 24px !important;
+				// Ensure line-height doesn't compress the element - use a value that ensures adequate height
+				line-height: 1.5 !important;
+				// Ensure minimum width for touch target
+				min-width: 24px !important;
+				// Ensure the link takes full width of container for better touch target
+				width: 100% !important;
+			}
+		}
+		
+		// Remove bottom margin from last item to avoid extra spacing
+		li:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+//Stop the projects notes text from overflowing off screen
+.notes-body{
+	white-space: pre-line;
 }

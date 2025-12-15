@@ -54,7 +54,7 @@ describe("Search bar tests", () => {
 
     for (const { description, searchTerm } of searchCases) {
         it(description, () => {
-            search.searchFor(searchTerm);
+            search.clickSearch().searchFor(searchTerm);
             searchResultsPage.hasSearchResultsTitle(searchTerm).goToNextPageUntilFieldIsVisible(schoolName);
             projectTable
                 .hasTableHeaders([

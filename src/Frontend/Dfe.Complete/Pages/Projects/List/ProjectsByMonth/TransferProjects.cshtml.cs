@@ -25,7 +25,6 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             DateOnly.TryParse(string.Format("{0}/{1}", Month, Year), out DateOnly date);
 
             var datetime = (DateTime?)date.ToDateTime(default);
-
             DateString = datetime.ToFullDateMonthYearString();
 
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;

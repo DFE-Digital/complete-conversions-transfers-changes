@@ -10,16 +10,12 @@ Cypress.Commands.add("getByTestId", (id) => {
     cy.get(`[data-testid="${id}"]`);
 });
 
-Cypress.Commands.add("containsByTestId", (id) => {
-    cy.get(`[data-testid*="${id}"]`);
+Cypress.Commands.add("getByDataCy", (id) => {
+    cy.get(`[data-cy="${id}"]`);
 });
 
 Cypress.Commands.add("getById", (id) => {
     cy.get(`[id="${id}"]`);
-});
-
-Cypress.Commands.add("containsById", (id) => {
-    cy.get(`[id*="${id}"]`);
 });
 
 Cypress.Commands.add("getByClass", (className) => {
@@ -104,7 +100,7 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
         {
             runOnly: {
                 type: "tag",
-                values: ["wcag2aa"],
+                values: ["wcag22aa"],
             },
             rules: ruleConfiguration,
         },

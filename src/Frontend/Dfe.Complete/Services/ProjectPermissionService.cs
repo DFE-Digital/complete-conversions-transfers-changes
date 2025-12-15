@@ -12,6 +12,7 @@ namespace Dfe.Complete.Services
         bool UserCanComplete(ProjectDto project, ClaimsPrincipal user);
         bool UserCanEdit(ProjectDto project, ClaimsPrincipal user);
         bool UserCanDaoRevocation(ProjectDto project, ClaimsPrincipal user);
+        bool UserIsAdmin(ProjectDto project, ClaimsPrincipal user);
     }
 
     public class ProjectPermissionService : IProjectPermissionService
@@ -26,6 +27,9 @@ namespace Dfe.Complete.Services
             UserIsServiceSupport(user) || (ProjectIsActive(project) && UserIsAssignee(project, user));
         public bool UserCanDaoRevocation(ProjectDto project, ClaimsPrincipal user) =>
             ProjectIsActive(project) && (UserIsServiceSupport(user) || UserIsAssignee(project, user)) && project.DirectiveAcademyOrder == true;
+
+        public bool UserIsAdmin(ProjectDto project, ClaimsPrincipal user) =>
+            UserIsServiceSupport(user);
 
         private static bool ProjectIsActive(ProjectDto project) => project.State == ProjectState.Active;
         private static bool ProjectIsInViewState(ProjectDto project) => new List<ProjectState> { ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked, ProjectState.Inactive }.Contains(project.State);

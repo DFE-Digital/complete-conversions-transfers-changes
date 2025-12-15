@@ -43,7 +43,7 @@ public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger
         return Page();
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(string rawEmail)
     {
         await UpdateCurrentProject();
 
@@ -53,7 +53,7 @@ public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger
             return await OnGetAsync();
         }
 
-        var addedByUserQuery = new GetUserByEmailQuery(Email);
+        var addedByUserQuery = new GetUserByEmailQuery(rawEmail);
         var addedBySearchResult = await _sender.Send(addedByUserQuery);
 
         if (addedBySearchResult is { IsSuccess: true, Value.IsAssignableToProject: true })
@@ -72,6 +72,8 @@ public class EditAddedByUser(ISender sender, IErrorService errorService, ILogger
 
         logger.LogInformation("Email not found or not assignable - {Email}", addedByUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
-        return await OnGetAsync();
+
+        await base.OnGetAsync();
+        return Page();
     }
 }

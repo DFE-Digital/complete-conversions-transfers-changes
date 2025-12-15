@@ -2,6 +2,7 @@ import { ProjectDetailsPage } from "cypress/pages/projects/projectDetails/projec
 
 export class NotePage extends ProjectDetailsPage {
     protected noteText = "";
+    protected readonly noteId = "note-entry-NoteId";
     private readonly noteTextId = "note-text";
 
     enterNote(noteText: string) {
@@ -44,7 +45,7 @@ export class NotePage extends ProjectDetailsPage {
     }
 
     protected getNoteDiv() {
-        return cy.contains('div[id*="note-entry-NoteId"]', this.noteText).should("exist");
+        return cy.contains(`div[id*="${this.noteId}"]`, this.noteText).should("exist");
     }
 }
 
