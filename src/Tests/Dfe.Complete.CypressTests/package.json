@@ -6,8 +6,6 @@
   "scripts": {
     "cy:open": "cypress open --browser edge",
     "cy:run": "npm run clean:reports && cypress run --browser edge",
-    "cy:zap": "npm run clean:reports && cypress run --browser electron",
-    "cy:notify": "cypress-slack-reporter",
     "clean:reports": "rm -rf cypress/reports/mocha/*.json",
     "combine:reports": "mochawesome-merge  cypress/reports/mocha/*.json> mochareports/report.json",
     "create:html:report": "marge  mochareports/report.json -f report -o mochareports",
@@ -27,24 +25,21 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "20.17.58",
-    "@types/uuid": "9.0.8",
     "@typescript-eslint/eslint-plugin": "6.8.0",
-    "axe-core": "4.10.3",
-    "csv-stringify": "6.4.6",
+    "axe-core": "^4.11.0",
     "cypress": "14.4.1",
-    "cypress-axe": "1.6.0",
+    "cypress-axe": "^1.7.0",
     "cypress-localstorage-commands": "2.2.8",
-    "cypress-multi-reporters": "1.6.4",
+    "cypress-multi-reporters": "^2.0.5",
     "cypress-slack-reporter": "1.5.4",
     "eslint": "8.48.0",
     "eslint-plugin-cypress": "2.14.0",
     "mocha": "10.8.2",
     "mochawesome": "7.1.4",
-    "mochawesome-merge": "4.4.1",
-    "mochawesome-report-generator": "6.2.0",
-    "prettier": "3.0.3",
-    "typescript": "5.2.2",
-    "zaproxy": "2.0.0-rc.6"
+    "mochawesome-merge": "^5.1.0",
+    "mochawesome-report-generator": "^6.3.2",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "zaproxy": "^2.0.0-rc.7"
   }
 }
