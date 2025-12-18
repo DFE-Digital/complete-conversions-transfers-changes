@@ -40,8 +40,10 @@ public class CreateTransferMatProjectCommandHandler(
 
     protected override Task PerformSpecificValidationsAsync(CreateTransferMatProjectCommand request, CancellationToken cancellationToken)
     {
-        // MAT version doesn't need additional validations beyond the base ones
-        return Task.CompletedTask;
+        return _handoverProjectService.ValidateTrnAndTrustNameAsync(
+            request.NewTrustReferenceNumber!,
+            request.NewTrustName!,
+            cancellationToken);
     }
 
     protected override Task<SpecificProjectData> GetSpecificProjectDataAsync(CreateTransferMatProjectCommand request, CancellationToken cancellationToken)

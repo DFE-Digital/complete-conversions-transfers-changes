@@ -1,10 +1,4 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Validators;
-using MediatR;
-using Moq;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Tests.Validators
@@ -38,40 +32,15 @@ namespace Dfe.Complete.Tests.Validators
         }
 
         [Theory]
-        [InlineData("GRP_12345678", "", "Incoming trust ukprn cannot be empty")]
-        [InlineData("GRP_12345678", "87654321", "The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN")]
-        [InlineData("GRP_12345678", "12345678", "")]
-        public void IsValid_ShouldReturnExpectedResults(
-            string groupReferenceNumber,
-            string ukprnPropertyValue,
-            string expectedErrorMessage)
+        [InlineData("GRP_12345678")]
+        public void IsValid_ShouldReturnSuccess_WhenValidFormat(string groupReferenceNumber)
         {
-            // Arrange
-            var mockSender = new Mock<ISender>();
-
-            mockSender.Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto() { TrustUkprn = new Ukprn(12345678) })!);
-
-            var objectInstance = new { _UkprnField = ukprnPropertyValue };
-            var attribute = new GroupReferenceNumberAttribute(true, nameof(objectInstance._UkprnField));
-            var validationContext = new ValidationContext(objectInstance, null, null) { };
-
-            validationContext.InitializeServiceProvider(type =>
-                type == typeof(ISender) ? mockSender.Object : null);
-
             // Act
-            var result = attribute.GetValidationResult(groupReferenceNumber, validationContext);
+            var attribute = new GroupReferenceNumberAttribute(true, "_UkprnField");
+            var result = attribute.GetValidationResult(groupReferenceNumber, new ValidationContext(new()));
 
-            if (string.IsNullOrEmpty(expectedErrorMessage))
-            {
-                Assert.Null(result);
-            }
-            else
-            {
-                Assert.NotNull(result);
-                Assert.IsType<ValidationResult>(result);
-                Assert.Equal(expectedErrorMessage, result.ErrorMessage);
-            }
+            // Assert
+            Assert.Null(result);
         }
     }
 }

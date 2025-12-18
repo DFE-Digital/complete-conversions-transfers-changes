@@ -9,6 +9,7 @@ using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
@@ -50,6 +51,12 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             ValidateTrustReferenceNumber();
+
+            if (ModelState.GetFieldValidationState(nameof(IncomingTrustUkprn)) == ModelValidationState.Valid)
+                await ValidateIncomingTrustUkprnExistsAsync(cancellationToken);
+
+            if (ModelState.GetFieldValidationState(nameof(GroupReferenceNumber)) == ModelValidationState.Valid)
+                await ValidateGroupReferenceMatchesIncomingTrustAsync(cancellationToken);
 
             if (!ModelState.IsValid)
             {
