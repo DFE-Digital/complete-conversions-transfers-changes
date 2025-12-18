@@ -8,6 +8,7 @@ using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -42,7 +43,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         public string? OriginalTrustReferenceNumber { get; set; }  // Common
 
         [BindProperty]
-        [GroupReferenceNumber(ShouldMatchWithTrustUkprn: true, nameof(IncomingTrustUkprn))]
+        [GroupReferenceNumber]
         [Display(Name = "Group Reference Number")]
         public string? GroupReferenceNumber { get; set; } // Common
 
@@ -163,6 +164,15 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             ModelState.AddModelError(
                 nameof(GroupReferenceNumber),
                 "The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN");
+        }
+
+        protected async Task ValidateIncomingTrustAndGroupReferenceBusinessRulesAsync(CancellationToken cancellationToken)
+        {
+            if (ModelState.GetFieldValidationState(nameof(IncomingTrustUkprn)) == ModelValidationState.Valid)
+                await ValidateIncomingTrustUkprnExistsAsync(cancellationToken);
+
+            if (ModelState.GetFieldValidationState(nameof(GroupReferenceNumber)) == ModelValidationState.Valid)
+                await ValidateGroupReferenceMatchesIncomingTrustAsync(cancellationToken);
         }
     }
 }

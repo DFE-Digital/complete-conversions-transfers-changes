@@ -315,9 +315,11 @@ public class BaseProjectDetailsPageModelTests
         // Assert
         Assert.False(model.ModelState.IsValid);
         Assert.True(model.ModelState.ContainsKey(nameof(model.IncomingTrustUkprn)));
-        Assert.Equal(
-            "There's no trust with that UKPRN. Check the number you entered is correct",
-            Assert.Single(model.ModelState[nameof(model.IncomingTrustUkprn)].Errors).ErrorMessage);
+
+        var incomingUkprnEntry = model.ModelState[nameof(model.IncomingTrustUkprn)];
+        Assert.NotNull(incomingUkprnEntry);
+        var incomingUkprnError = Assert.Single(incomingUkprnEntry.Errors);
+        Assert.Equal("There's no trust with that UKPRN. Check the number you entered is correct", incomingUkprnError.ErrorMessage);
     }
 
     [Theory]
@@ -365,9 +367,11 @@ public class BaseProjectDetailsPageModelTests
         // Assert
         Assert.False(model.ModelState.IsValid);
         Assert.True(model.ModelState.ContainsKey(nameof(model.GroupReferenceNumber)));
-        Assert.Equal(
-            "Incoming trust ukprn cannot be empty",
-            Assert.Single(model.ModelState[nameof(model.GroupReferenceNumber)].Errors).ErrorMessage);
+
+        var groupEntry = model.ModelState[nameof(model.GroupReferenceNumber)];
+        Assert.NotNull(groupEntry);
+        var groupError = Assert.Single(groupEntry.Errors);
+        Assert.Equal("Incoming trust ukprn cannot be empty", groupError.ErrorMessage);
     }
 
     [Theory]
@@ -394,9 +398,13 @@ public class BaseProjectDetailsPageModelTests
         // Assert
         Assert.False(model.ModelState.IsValid);
         Assert.True(model.ModelState.ContainsKey(nameof(model.GroupReferenceNumber)));
+
+        var groupEntry = model.ModelState[nameof(model.GroupReferenceNumber)];
+        Assert.NotNull(groupEntry);
+        var groupError = Assert.Single(groupEntry.Errors);
         Assert.Equal(
             "The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN",
-            Assert.Single(model.ModelState[nameof(model.GroupReferenceNumber)].Errors).ErrorMessage);
+            groupError.ErrorMessage);
     }
 
     [Theory]

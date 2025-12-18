@@ -105,12 +105,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
             ValidateTrustReferenceNumber();
-
-            if (ModelState.GetFieldValidationState(nameof(IncomingTrustUkprn)) == ModelValidationState.Valid)
-                await ValidateIncomingTrustUkprnExistsAsync(cancellationToken);
-
-            if (ModelState.GetFieldValidationState(nameof(GroupReferenceNumber)) == ModelValidationState.Valid)
-                await ValidateGroupReferenceMatchesIncomingTrustAsync(cancellationToken);
+            await ValidateIncomingTrustAndGroupReferenceBusinessRulesAsync(cancellationToken);
 
             if (!ModelState.IsValid)
             {

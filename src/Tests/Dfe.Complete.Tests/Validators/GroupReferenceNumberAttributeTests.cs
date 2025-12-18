@@ -36,7 +36,7 @@ namespace Dfe.Complete.Tests.Validators
         public void IsValid_ShouldReturnSuccess_WhenValidFormat(string groupReferenceNumber)
         {
             // Act
-            var attribute = new GroupReferenceNumberAttribute(true, "_UkprnField");
+            var attribute = new GroupReferenceNumberAttribute();
             var result = attribute.GetValidationResult(groupReferenceNumber, new ValidationContext(new()));
 
             // Assert

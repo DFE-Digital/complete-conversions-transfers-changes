@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Dfe.Complete.Validators
 {
-    public class GroupReferenceNumberAttribute(bool ShouldMatchWithTrustUkprn = false, string? ukprnField = null) : ValidationAttribute
+    public class GroupReferenceNumberAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
