@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
@@ -274,7 +274,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
+        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
     }
 
     [Theory]
@@ -491,7 +491,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
+        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
     }
 
     [Theory]
@@ -857,7 +857,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
+        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
     }
 
     [Theory]

@@ -170,6 +170,22 @@ public class HandoverProjectService(
             throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
     }
 
+    public async Task ValidateTrnAndTrustNameAsync(string trn, string trustName, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(trn) || string.IsNullOrWhiteSpace(trustName))
+            return;
+
+        var existingProject = await projectRepository.FindAsync(
+            x => x.NewTrustReferenceNumber == trn,
+            cancellationToken);
+
+        if (existingProject != null && existingProject.NewTrustName != trustName)
+        {
+            throw new ValidationException(
+                $"A trust with this TRN already exists. It is called {existingProject.NewTrustName}. Check the trust name you have entered for this conversion/transfer.");
+        }
+    }
+
     public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken)
     {
         // Validate trust exists

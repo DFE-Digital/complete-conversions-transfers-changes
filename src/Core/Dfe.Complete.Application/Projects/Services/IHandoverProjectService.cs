@@ -21,6 +21,7 @@ public interface IHandoverProjectService
     Task<Region> GetRegionForUrn(int urn, CancellationToken cancellationToken);
     Task<ProjectGroupId> GetOrCreateProjectGroup(string groupId, int incomingTrustUkprn, CancellationToken cancellationToken);
     Task ValidateUrnAsync(int urn, CancellationToken cancellationToken);
+    Task ValidateTrnAndTrustNameAsync(string trn, string trustName, CancellationToken cancellationToken);
     Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken);
     Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken);
 }

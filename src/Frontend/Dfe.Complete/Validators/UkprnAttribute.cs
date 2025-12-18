@@ -1,4 +1,3 @@
-﻿using Dfe.AcademiesApi.Client.Contracts;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -46,18 +45,6 @@ namespace Dfe.Complete.Validators
                 {
                     return new ValidationResult($"The outgoing and incoming trust cannot be the same");
                 }
-            }
-
-            try
-            {
-                var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
-                var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
-            }
-            catch (AggregateException)
-            {
-                var errorMessage = $"There's no trust with that UKPRN. Check the number you entered is correct";
-
-                return new ValidationResult(errorMessage);
             }
 
             // If valid, return success

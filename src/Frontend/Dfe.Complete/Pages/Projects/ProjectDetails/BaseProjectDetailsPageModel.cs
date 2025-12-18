@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
@@ -7,6 +8,7 @@ using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -41,7 +43,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         public string? OriginalTrustReferenceNumber { get; set; }  // Common
 
         [BindProperty]
-        [GroupReferenceNumber(ShouldMatchWithTrustUkprn: true, nameof(IncomingTrustUkprn))]
+        [GroupReferenceNumber]
         [Display(Name = "Group Reference Number")]
         public string? GroupReferenceNumber { get; set; } // Common
 
@@ -120,6 +122,57 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             {
                 ModelState.AddModelError("NewTrustReferenceNumber", "Enter a trust reference number (TRN)");
             }
+        }
+
+        protected async Task ValidateIncomingTrustUkprnExistsAsync(CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(IncomingTrustUkprn))
+                return;
+
+            var result = await Sender.Send(new GetTrustByUkprnRequest(IncomingTrustUkprn), cancellationToken);
+            if (!result.IsSuccess || result.Value == null)
+            {
+                ModelState.AddModelError(
+                    nameof(IncomingTrustUkprn),
+                    "There's no trust with that UKPRN. Check the number you entered is correct");
+            }
+        }
+
+        protected async Task ValidateGroupReferenceMatchesIncomingTrustAsync(CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(GroupReferenceNumber))
+                return;
+
+            if (string.IsNullOrWhiteSpace(IncomingTrustUkprn))
+            {
+                ModelState.AddModelError(nameof(GroupReferenceNumber), "Incoming trust ukprn cannot be empty");
+                return;
+            }
+
+            var result = await Sender.Send(
+                new GetProjectGroupByGroupReferenceNumberQuery(GroupReferenceNumber),
+                cancellationToken);
+
+            // If the group doesn't exist yet (or lookup failed), don't block saving.
+            if (!result.IsSuccess || result.Value == null)
+                return;
+
+            var groupUkprn = result.Value.TrustUkprn?.Value.ToString();
+            if (groupUkprn != null && IncomingTrustUkprn.Equals(groupUkprn))
+                return;
+
+            ModelState.AddModelError(
+                nameof(GroupReferenceNumber),
+                "The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN");
+        }
+
+        protected async Task ValidateIncomingTrustAndGroupReferenceBusinessRulesAsync(CancellationToken cancellationToken)
+        {
+            if (ModelState.GetFieldValidationState(nameof(IncomingTrustUkprn)) == ModelValidationState.Valid)
+                await ValidateIncomingTrustUkprnExistsAsync(cancellationToken);
+
+            if (ModelState.GetFieldValidationState(nameof(GroupReferenceNumber)) == ModelValidationState.Valid)
+                await ValidateGroupReferenceMatchesIncomingTrustAsync(cancellationToken);
         }
     }
 }

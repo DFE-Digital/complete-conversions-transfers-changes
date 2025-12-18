@@ -40,6 +40,10 @@ public class CreateConversionMatProjectCommandHandler(
 
             // Validate the request
             await handoverProjectService.ValidateUrnAsync(urn, cancellationToken);
+            await handoverProjectService.ValidateTrnAndTrustNameAsync(
+                request.NewTrustReferenceNumber!,
+                request.NewTrustName!,
+                cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
