@@ -4,6 +4,7 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.ProjectDetails;
@@ -290,6 +291,138 @@ public class BaseProjectDetailsPageModelTests
         Assert.True(model.IsHandingToRCS);
         Assert.True(model.TwoRequiresImprovement);
     }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public async Task ValidateIncomingTrustUkprnExistsAsync_WhenTrustLookupFails_AddsModelError(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
+    {
+        // Arrange
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
+        {
+            IncomingTrustUkprn = "12345678"
+        };
+
+        mockSender.Send(Arg.Any<GetTrustByUkprnRequest>(), Arg.Any<CancellationToken>())
+            .Returns(Result<TrustDto?>.Failure("not found"));
+
+        // Act
+        await model.TestValidateIncomingTrustUkprnExistsAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(model.ModelState.IsValid);
+        Assert.True(model.ModelState.ContainsKey(nameof(model.IncomingTrustUkprn)));
+        Assert.Equal(
+            "There's no trust with that UKPRN. Check the number you entered is correct",
+            Assert.Single(model.ModelState[nameof(model.IncomingTrustUkprn)].Errors).ErrorMessage);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public async Task ValidateIncomingTrustUkprnExistsAsync_WhenTrustLookupSucceeds_DoesNotAddModelError(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
+    {
+        // Arrange
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
+        {
+            IncomingTrustUkprn = "12345678"
+        };
+
+        mockSender.Send(Arg.Any<GetTrustByUkprnRequest>(), Arg.Any<CancellationToken>())
+            .Returns(Result<TrustDto?>.Success(new TrustDto()));
+
+        // Act
+        await model.TestValidateIncomingTrustUkprnExistsAsync(CancellationToken.None);
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public async Task ValidateGroupReferenceMatchesIncomingTrustAsync_WhenIncomingTrustMissing_AddsModelError(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
+    {
+        // Arrange
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
+        {
+            IncomingTrustUkprn = "",
+            GroupReferenceNumber = "GRP_12345678"
+        };
+
+        // Act
+        await model.TestValidateGroupReferenceMatchesIncomingTrustAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(model.ModelState.IsValid);
+        Assert.True(model.ModelState.ContainsKey(nameof(model.GroupReferenceNumber)));
+        Assert.Equal(
+            "Incoming trust ukprn cannot be empty",
+            Assert.Single(model.ModelState[nameof(model.GroupReferenceNumber)].Errors).ErrorMessage);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public async Task ValidateGroupReferenceMatchesIncomingTrustAsync_WhenGroupExistsButUkprnDiffers_AddsModelError(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
+    {
+        // Arrange
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
+        {
+            IncomingTrustUkprn = "11111111",
+            GroupReferenceNumber = "GRP_12345678"
+        };
+
+        mockSender.Send(Arg.Any<GetProjectGroupByGroupReferenceNumberQuery>(), Arg.Any<CancellationToken>())
+            .Returns(Result<ProjectGroupDto>.Success(new ProjectGroupDto { TrustUkprn = new Ukprn(22222222) }));
+
+        // Act
+        await model.TestValidateGroupReferenceMatchesIncomingTrustAsync(CancellationToken.None);
+
+        // Assert
+        Assert.False(model.ModelState.IsValid);
+        Assert.True(model.ModelState.ContainsKey(nameof(model.GroupReferenceNumber)));
+        Assert.Equal(
+            "The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN",
+            Assert.Single(model.ModelState[nameof(model.GroupReferenceNumber)].Errors).ErrorMessage);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
+    public async Task ValidateGroupReferenceMatchesIncomingTrustAsync_WhenGroupExistsAndUkprnMatches_DoesNotAddModelError(
+        [Frozen] ISender mockSender,
+        [Frozen] IErrorService mockErrorService,
+        [Frozen] ILogger mockLogger,
+        [Frozen] IProjectPermissionService projectPermissionService)
+    {
+        // Arrange
+        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger, projectPermissionService)
+        {
+            IncomingTrustUkprn = "22222222",
+            GroupReferenceNumber = "GRP_12345678"
+        };
+
+        mockSender.Send(Arg.Any<GetProjectGroupByGroupReferenceNumberQuery>(), Arg.Any<CancellationToken>())
+            .Returns(Result<ProjectGroupDto>.Success(new ProjectGroupDto { TrustUkprn = new Ukprn(22222222) }));
+
+        // Act
+        await model.TestValidateGroupReferenceMatchesIncomingTrustAsync(CancellationToken.None);
+
+        // Assert
+        Assert.True(model.ModelState.IsValid);
+    }
 }
 
 public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger, IProjectPermissionService projectPermissionService)
@@ -335,4 +468,10 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
     {
         await SetGroupReferenceNumberAsync();
     }    
+
+    public Task TestValidateIncomingTrustUkprnExistsAsync(CancellationToken cancellationToken) =>
+        ValidateIncomingTrustUkprnExistsAsync(cancellationToken);
+
+    public Task TestValidateGroupReferenceMatchesIncomingTrustAsync(CancellationToken cancellationToken) =>
+        ValidateGroupReferenceMatchesIncomingTrustAsync(cancellationToken);
 }

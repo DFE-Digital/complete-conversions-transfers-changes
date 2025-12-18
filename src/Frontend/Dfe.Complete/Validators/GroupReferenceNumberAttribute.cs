@@ -5,9 +5,6 @@ namespace Dfe.Complete.Validators
 {
     public class GroupReferenceNumberAttribute(bool ShouldMatchWithTrustUkprn = false, string? ukprnField = null) : ValidationAttribute
     {
-        private readonly bool _shouldMatchWithTrustUkprn = ShouldMatchWithTrustUkprn;
-        private readonly string? _UkprnField = ukprnField;
-
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var groupReferenceNumber = value as string;
