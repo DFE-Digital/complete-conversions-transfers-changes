@@ -62,7 +62,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: |
         dotnet-sonarscanner begin /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /o:dfe-digital /k:DFE-Digital_complete-api /s:${{ github.workspace }}/SonarQube.Analysis.xml
-        dotnet build --no-restore
-        dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
+        dotnet build Dfe.Complete --no-restore
+        dotnet test Dfe.Complete --no-build --verbosity normal --collect:"XPlat Code Coverage"
         reportgenerator -reports:"./**/coverage.cobertura.xml" -targetdir:./src/CoverageReport -reporttypes:SonarQube
         dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
