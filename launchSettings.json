@@ -5,11 +5,10 @@
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
       "launchBrowser": true,
-      "composeLaunchServiceName": "concernscasework",
-      "composeLaunchUrl": "https://localhost:5003",
+      "composeLaunchServiceName": "dfe.complete",
+      "composeLaunchUrl": "http://localhost:5002",
       "serviceActions": {
-        "dfe.complete": "StartDebugging",
-        "dfe.complete.api": "StartDebugging"
+        "dfe.complete": "StartDebugging"
       }
     }
   }
