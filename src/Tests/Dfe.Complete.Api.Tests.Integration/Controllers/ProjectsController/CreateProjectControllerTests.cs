@@ -274,7 +274,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
+        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
     }
 
     [Theory]
@@ -491,7 +491,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
+        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
     }
 
     [Theory]
@@ -857,7 +857,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"A project with the urn: {giasEstablishment.Urn!.Value} already exists", validationErrors);
+        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
     }
 
     [Theory]

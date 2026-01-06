@@ -38,7 +38,7 @@ public class HandoverProjectServiceValidationTests
             keyContactWriteRepository);
 
         var ex = await Assert.ThrowsAsync<UnprocessableContentException>(() => sut.ValidateUrnAsync(urn, CancellationToken.None));
-        Assert.Equal($"A project with the urn: {urn} already exists", ex.Message);
+        Assert.Equal($"URN {urn} already exists in active/inactive projects", ex.Message);
     }
 
     [Fact]
