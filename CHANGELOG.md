@@ -16,7 +16,14 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-18.1307...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-06.1312...main) for everything awaiting release
+
+## [1.35.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-06.1312) - 2026-01-06
+
+### Changed
+- move business logic out of project validation attributes
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-18.1307...production-2026-01-06.1312) for everything in the release
 
 ## [1.34.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-12-18.1307) - 2025-12-18
 
