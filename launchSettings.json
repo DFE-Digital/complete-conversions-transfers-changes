@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "launchBrowser": true,
+      "composeLaunchServiceName": "dfe.complete",
+      "composeLaunchUrl": "http://localhost:5002",
+      "serviceActions": {
+        "dfe.complete": "StartDebugging"
+      }
+    }
+  }
+}

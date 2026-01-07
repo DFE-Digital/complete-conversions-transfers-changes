@@ -31,7 +31,7 @@ COPY ./Directory.Build.props .
 
 # Mount GitHub Token and restore
 RUN --mount=type=secret,id=github_token dotnet nuget add source --username USERNAME --password $(cat /run/secrets/github_token) --store-password-in-clear-text --name github "https://nuget.pkg.github.com/DFE-Digital/index.json" && \
-    dotnet restore ${PROJECT_NAME}.sln
+    dotnet restore src/Api/${PROJECT_NAME}.Api/${PROJECT_NAME}.Api.csproj
 
 # Copy remaining source code
 COPY ./src/ /build/src/
