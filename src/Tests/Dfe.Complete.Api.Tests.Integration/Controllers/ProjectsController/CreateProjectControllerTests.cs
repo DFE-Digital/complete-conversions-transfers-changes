@@ -1,4 +1,4 @@
-﻿using AutoFixture;
+using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;

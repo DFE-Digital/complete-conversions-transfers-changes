@@ -1,15 +1,10 @@
-﻿using Dfe.Complete.Application.Projects.Queries.GetProject;
-using MediatR;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 
 namespace Dfe.Complete.Validators
 {
-    public class GroupReferenceNumberAttribute(bool ShouldMatchWithTrustUkprn = false, string? ukprnField = null) : ValidationAttribute
+    public class GroupReferenceNumberAttribute : ValidationAttribute
     {
-        private readonly bool _shouldMatchWithTrustUkprn = ShouldMatchWithTrustUkprn;
-        private readonly string? _UkprnField = ukprnField;
-
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var groupReferenceNumber = value as string;
@@ -30,39 +25,7 @@ namespace Dfe.Complete.Validators
             if (numberPortionOfRefNumber.Length != 8)
                 return new ValidationResult(errorMessage);
 
-            if (_shouldMatchWithTrustUkprn)
-                return ValidateTrustUkprn(validationContext, groupReferenceNumber);
-
             return ValidationResult.Success!;
-        }
-
-        private ValidationResult ValidateTrustUkprn(ValidationContext validationContext, string groupReferenceNumber)
-        {
-            if (string.IsNullOrEmpty(_UkprnField))
-                return new ValidationResult("UKPRN field name is not specified.");
-
-            var ukprnProperty = validationContext.ObjectType.GetProperty(_UkprnField);
-            if (ukprnProperty == null)
-                return new ValidationResult($"Property '{_UkprnField}' not found.");
-
-            var incomingUkprnValue = ukprnProperty.GetValue(validationContext.ObjectInstance)?.ToString();
-            if (string.IsNullOrEmpty(incomingUkprnValue))
-                return new ValidationResult("Incoming trust ukprn cannot be empty");
-
-            var senderObj = validationContext.GetService(typeof(ISender));
-            if (senderObj is not ISender sender)
-                return new ValidationResult("ISender service is not available in validation context.");
-
-            var result = sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(groupReferenceNumber)).Result;
-            if (result == null || result.Value == null)
-                return ValidationResult.Success!;
-
-            var trustUkprnObj = result.Value?.TrustUkprn;
-            var ukprn = trustUkprnObj?.Value.ToString();
-            if (ukprn != null && incomingUkprnValue.Equals(ukprn))
-                return ValidationResult.Success!;
-
-            return new ValidationResult("The group reference number must be for the same trust as all other group members, check the group reference number and incoming trust UKPRN");
         }
     }
 }

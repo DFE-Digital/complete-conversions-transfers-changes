@@ -1,4 +1,4 @@
-﻿namespace Dfe.Complete.Application.Constants;
+namespace Dfe.Complete.Application.Constants;
 
 public static class ValidationConstants
 {
