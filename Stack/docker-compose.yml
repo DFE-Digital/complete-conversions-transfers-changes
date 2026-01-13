@@ -1,0 +1,13 @@
+services:        
+   complete.redis:
+    container_name: complete.redis
+    image: redis:latest@sha256:5c7c0445ed86918cb9efb96d95a6bfc03ed2059fe2c5f02b4d74f477ffe47915
+    restart: always
+    ports:
+     - "6379:6379"
+    networks:
+      - local-dev
+
+networks:
+  local-dev:
+    

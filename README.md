@@ -22,6 +22,10 @@ It is recommended you request access to the complete development database by mak
 
 - Populate the User secrets file
 
+### Docker compose for local development
+
+Using docker compose for local development can be [found here](docs/docker-compose.md)
+
 ### Authorisation
 
 #### Frontend  
