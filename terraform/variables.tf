@@ -362,6 +362,24 @@ variable "enable_container_app_file_share" {
   default     = true
 }
 
+variable "storage_subnet_cidr" {
+  description = "Specify a subnet prefix to use for the storage subnet"
+  type        = string
+  default     = ""
+}
+
+variable "storage_account_public_access_enabled" {
+  description = "Should the Azure Storage Account have Public visibility?"
+  type        = bool
+  default     = false
+}
+
+variable "storage_account_ipv4_allow_list" {
+  description = "A list of public IPv4 address to grant access to the Storage Account"
+  type        = list(string)
+  default     = []
+}
+
 variable "data_protection_subnet_prefix" {
   description = "Subnet prefix to use for the Data Protection Key Vault Private Endpoint"
   type        = string
