@@ -1,5 +1,5 @@
 module "azure_container_apps_hosting" {
-  source = "github.com/DFE-Digital/terraform-azurerm-container-apps-hosting?ref=v1.19.1"
+  source = "github.com/DFE-Digital/terraform-azurerm-container-apps-hosting?ref=v2.6.2"
 
   environment    = local.environment
   project_name   = local.project_name
@@ -32,12 +32,15 @@ module "azure_container_apps_hosting" {
   health_insights_api_ipv4_allow_list    = local.health_insights_api_ipv4_allow_list
   custom_container_apps                  = local.custom_container_apps
 
-  existing_container_app_environment = local.existing_container_app_environment
-  existing_virtual_network           = local.existing_virtual_network
-  existing_resource_group            = local.existing_resource_group
-  launch_in_vnet                     = false
-  container_app_name_override        = "complete-dotnet-app"
-  enable_container_app_file_share    = local.enable_container_app_file_share
+  existing_container_app_environment    = local.existing_container_app_environment
+  existing_virtual_network              = local.existing_virtual_network
+  existing_resource_group               = local.existing_resource_group
+  launch_in_vnet                        = false
+  container_app_name_override           = "complete-dotnet-app"
+  enable_container_app_file_share       = local.enable_container_app_file_share
+  storage_account_public_access_enabled = local.storage_account_public_access_enabled
+  storage_account_ipv4_allow_list       = local.storage_account_ipv4_allow_list
+  storage_subnet_cidr                   = local.storage_subnet_cidr
 
   enable_monitoring              = local.enable_monitoring
   monitor_email_receivers        = local.monitor_email_receivers

@@ -44,5 +44,8 @@ locals {
   custom_container_apps                    = var.custom_container_apps
   enable_monitoring_traces                 = var.enable_monitoring_traces
   enable_container_app_file_share          = var.enable_container_app_file_share
+  storage_account_ipv4_allow_list          = var.storage_account_ipv4_allow_list
+  storage_account_public_access_enabled    = var.storage_account_public_access_enabled
+  storage_subnet_cidr                      = var.storage_subnet_cidr
   data_protection_subnet_prefix            = var.data_protection_subnet_prefix
 }
