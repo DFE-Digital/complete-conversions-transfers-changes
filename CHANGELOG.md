@@ -16,7 +16,11 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-06.1312...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-13.1321...main) for everything awaiting release
+
+## [1.36.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-13.1321) - 2026-01-13
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-06.1312...production-2026-01-13.1321) for everything in the release
 
 ## [1.35.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-06.1312) - 2026-01-06
 
