@@ -29,6 +29,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - move business logic out of project validation attributes
+- update link to accessibility statement
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-12-18.1307...production-2026-01-06.1312) for everything in the release
 
