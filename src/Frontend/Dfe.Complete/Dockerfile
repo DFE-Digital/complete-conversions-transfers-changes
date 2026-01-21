@@ -1,14 +1,14 @@
 # See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-azurelinux3.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-azurelinux3.0@sha256:281ff42ab40aa9adcbd1f04b7212003798651918b906a83fb347f050a20d1895 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
 # This stage is used to build the service project
-FROM mcr.microsoft.com/dotnet/sdk:8.0-azurelinux3.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-azurelinux3.0@sha256:33e67cb2e3c78a025287633627d45885a4c816ff34579592f8ab06b5ac6626d5 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Build.props", "."]
