@@ -50,9 +50,64 @@ jobs:
         with:
           environment: ${{ needs.set-env.outputs.environment }}
 
+  migrate-db:
+    name: EF migrate (script + update)
+    needs: [ set-env, validate-packages ]
+    runs-on: ubuntu-24.04
+    environment: ${{ needs.set-env.outputs.environment == 'production' && 'production-db' || needs.set-env.outputs.environment }}
+
+    permissions:
+      contents: read
+
+    steps:
+      # Checkout
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+
+      # Setup .NET
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: NuGet auth (GitHub Packages)
+        run: |
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --name "github" \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text
+
+      - name: Install dotnet-ef
+        run: dotnet tool install --global dotnet-ef --version 8.0.21
+
+      - name: Add dotnet tools to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Build (diagnostic)
+        run: |
+          dotnet build src/Api/Dfe.Complete.Api/Dfe.Complete.Api.csproj -c Release -v minimal
+
+      - name: Generate idempotent migration script (artifact)
+        run: |
+          dotnet ef migrations script --idempotent --output migrate.sql \
+            --project src/Core/Dfe.Complete.Infrastructure/Dfe.Complete.Infrastructure.csproj \
+            --startup-project src/Api/Dfe.Complete.Api/Dfe.Complete.Api.csproj \
+            --context CompleteContext
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ef-migrate-${{ needs.set-env.outputs.environment }}
+          path: migrate.sql
+
+      - name: Apply migrations (database update)
+        run: |
+          dotnet ef database update \
+            --project src/Core/Dfe.Complete.Infrastructure/Dfe.Complete.Infrastructure.csproj \
+            --startup-project src/Api/Dfe.Complete.Api/Dfe.Complete.Api.csproj \
+            --context CompleteContext
+
   build-import-deploy:
     name: Build, Import, Deploy
-    needs: [ set-env, validate-packages ]
+    needs: [ set-env, validate-packages, migrate-db ]
     runs-on: ubuntu-24.04
     environment: ${{ needs.set-env.outputs.environment }}
     permissions:
