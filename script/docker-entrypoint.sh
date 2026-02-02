@@ -1,7 +1,14 @@
 #!/bin/bash
 
 # exit on failures
-set -e
-set -o pipefail
+set -euo pipefail
 
-exec "$@"
+if [ "${RUN_DB_MIGRATIONS:-false}" = "true" ]; then
+  echo "Running EF migrations..."
+  /app/migratedb
+  echo "Migrations complete."
+else
+  echo "Skipping migrations (RUN_DB_MIGRATIONS != true)"
+fi
+
+exec dotnet Dfe.Complete.dll
