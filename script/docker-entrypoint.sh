@@ -3,7 +3,7 @@
 # exit on failures
 set -euo pipefail
 
-if [ "${RUN_DB_MIGRATIONS:-false}" = "true" ]; then
+if [[ "${RUN_DB_MIGRATIONS:-false}" = "true" ]]; then
   echo "Running EF migrations..."
   /app/migratedb
   echo "Migrations complete."

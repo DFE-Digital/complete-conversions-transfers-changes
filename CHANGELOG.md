@@ -16,7 +16,14 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-21.1326...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-02.1340...main) for everything awaiting release
+
+## [1.38.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-02.1340) - 2026-02-02
+
+### Fixed
+- Resolve screen reader issues with radio set on sponsored support grant ticket
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-21.1326...production-2026-02-02.1340) for everything in the release
 
 ## [1.37.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-21.1326) - 2026-01-21
 
