@@ -52,6 +52,37 @@ RUN dotnet build --no-restore -c Release && \
 # Copy entrypoint script
 COPY ./script/docker-entrypoint.sh /app/docker-entrypoint.sh
 
+# ============================================================
+# EF Migration Builder
+# ============================================================
+FROM build AS efbuilder
+WORKDIR /build
+
+ENV PATH=$PATH:/root/.dotnet/tools
+ENV DOTNET_ROOT=/usr/share/dotnet
+
+RUN dotnet tool install --global dotnet-ef --version 8.*
+
+RUN mkdir /sql
+
+RUN dotnet ef migrations bundle -r linux-x64 \
+    --project ./src/Core/Dfe.Complete.Infrastructure/Dfe.Complete.Infrastructure.csproj \
+    --startup-project ./src/Api/Dfe.Complete.Api/Dfe.Complete.Api.csproj \
+    --context CompleteContext \
+    --configuration Release \
+    --self-contained \
+    --output /sql/migratedb
+
+# ============================================================
+# Init Container
+# ============================================================
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS initcontainer
+WORKDIR /sql
+
+COPY --from=efbuilder /sql /sql
+COPY --from=build /app/appsettings* /sql/
+COPY --from=build /app/appsettings* /Dfe.Complete.Api/
+
 # Build a runtime environment
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS final
 WORKDIR /app
@@ -60,7 +91,11 @@ LABEL org.opencontainers.image.description="Complete Conversions Transfers and C
 
 COPY --from=build /app .
 COPY --from=assets /app ./wwwroot
+COPY --from=efbuilder /sql/migratedb ./migratedb
 
 # Set permissions and user
-RUN chmod +x ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh && \
+    chmod +x ./migratedb
+
 USER $APP_UID
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
