@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database.Interceptors;
@@ -21,6 +22,7 @@ public partial class CompleteContext : DbContext
     {
     }
 
+    [ExcludeFromCodeCoverage]
     public CompleteContext(DbContextOptions<CompleteContext> options)
     : base(options)
     {
