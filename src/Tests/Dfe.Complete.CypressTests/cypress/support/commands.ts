@@ -82,6 +82,13 @@ Cypress.Commands.add("acceptCookies", () => {
 
 Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) => {
     const continueOnFail = false;
+    const wcagStandards = [
+        'wcag2a',
+        'wcag2aa',
+        'wcag21a',
+        'wcag21aa',
+        'wcag22aa',
+    ]
 
     let ruleConfiguration: RuleObject = {
         region: { enabled: false },
@@ -100,7 +107,7 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
         {
             runOnly: {
                 type: "tag",
-                values: ["wcag22aa"],
+                values: wcagStandards,
             },
             rules: ruleConfiguration,
         },
