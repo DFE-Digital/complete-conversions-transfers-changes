@@ -92,6 +92,10 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
 
     let ruleConfiguration: RuleObject = {
         region: { enabled: false },
+        // govuk-frontend v5.x adds aria-expanded to radio inputs with conditional
+        // reveals, which is not yet permitted by the ARIA spec on the radio role.
+        // Tracked upstream: https://github.com/w3c/aria/issues/1404
+        'aria-allowed-attr': { enabled: false },
     };
 
     if (ruleOverride) {
