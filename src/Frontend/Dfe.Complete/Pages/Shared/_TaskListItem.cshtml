@@ -1,11 +1,13 @@
 @using Dfe.Complete.Utils
-@model TaskListStatus
+@using System.Text.Json
+@model TaskListItemViewModel
 
 @{
     string output;
     string colour;
+    string id = JsonNamingPolicy.KebabCaseLower.ConvertName(Model.Name);
 
-    switch (Model)
+    switch (Model.Status)
     {
         case TaskListStatus.Completed:
             output = "Completed";
@@ -27,4 +29,9 @@
     }
 }
 
-<strong class="govuk-tag govuk-tag--@colour app-task-list__tag" id="">@output</strong>
+<li class="app-task-list__item"> @* //NOSONAR: rendered inside a <ul> in the parent view *@
+    <span class="app-task-list__task-name">
+        <a aria-describedby="@id" class="govuk-link" href="@Model.Link">@Model.Name</a>
+    </span>
+    <strong class="govuk-tag govuk-tag--@colour app-task-list__tag" id="@id">@output</strong>
+</li>
