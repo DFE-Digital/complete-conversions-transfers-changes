@@ -29,14 +29,22 @@
                 <ul>
                   <li>academy order</li> <li>application to convert</li>
                 </ul>
-                <p>Check that no information is missing and there are no errors. You should also research the background of the project before you meet with the regional delivery officer.</p>
+                <p>Check there are no errors in the project information and documents. To familiarise yourself with the project, you should research the background of the project before you meet with the regional delivery officer.</p>
                 <p>Things to check during your background research include:</p>
                 <ul>
-                  <li>project information, such as advisory board conditions</li> <li>school or trust website for more information about the school</li> <li>Google Maps for potential land issues</li>
+                  <li>project information, such as conditions set as part of the decision</li> <li>school or trust website for more information about the school</li> <li>Google Maps for potential land issues</li>
                 </ul>
               </div>
             </details>
           </div>
+        </govuk-checkboxes-item-hint>
+      </govuk-checkboxes-item>
+      <govuk-checkboxes-item data-cy="task_handover_task_form_sacre" id="task_handover_task_form_sacre" asp-for="@Model.ConfirmSacreExemption" value="true" name="confirm-sacre-exemption" checked="@Model.ConfirmSacreExemption">
+        <b>Confirm if SACRE exemption applies</b>
+        <govuk-checkboxes-item-hint>
+          <p>
+            You must confirm if the school is applying for SACRE exemption status (does not apply to special academies, 16-19 academies, or schools with a religious designation). See full guidance on Exemption from daily act of Christian collective worship (SACRE).
+          </p>
         </govuk-checkboxes-item-hint>
       </govuk-checkboxes-item>
       <govuk-checkboxes-item data-cy="task_handover_task_form_notes" id="task_handover_task_form_notes" asp-for="@Model.MakeNotes" value="true" name="make-notes" checked="@Model.MakeNotes">
@@ -61,7 +69,7 @@
         <govuk-checkboxes-item-hint>
 
           <p>
-            Discuss any questions you have about the project in the meeting.
+            Discuss any questions you have about the project in the meeting. Establish stakeholder communication preferences, identify any controversies or potential obstacles and clarify anything you're unsure about.
           </p>
         </govuk-checkboxes-item-hint>
       </govuk-checkboxes-item>

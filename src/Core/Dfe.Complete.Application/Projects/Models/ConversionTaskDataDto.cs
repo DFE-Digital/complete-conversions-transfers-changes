@@ -11,6 +11,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? HandoverNotes { get; set; }
 
+        public bool? HandoverConfirmSacreExemption { get; set; }
+
         public bool? HandoverMeeting { get; set; }
 
         public DateTime CreatedAt { get; set; }
