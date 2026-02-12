@@ -37,8 +37,9 @@
                                             ((DateTime)user.LatestSession).ToUkDateTimeWithAmPmString() : "N/A")</td>
                     <td class="govuk-table__cell">
                         <a class="govuk-link"
-                            href="@String.Format(RouteConstants.ServiceSupportUsersEdit, user.Id.Value.ToStringOrDefault())">Edit
-                            user</a>
+                            href="@String.Format(RouteConstants.ServiceSupportUsersEdit, user.Id.Value.ToStringOrDefault())">
+                            Edit user <span class="govuk-visually-hidden"> for @user.FullName</span>
+                        </a>
                     </td>
                 </tr>
             }
