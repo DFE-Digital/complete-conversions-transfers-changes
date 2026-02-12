@@ -69,12 +69,6 @@ jobs:
             tag-prefix: "dotnet-"
             aca-name-secret: "ACA_CONTAINERAPP_NAME"
 
-          - image: "web"
-            dockerfile: "./Dockerfile.web"
-            build-target: "initcontainer"
-            tag-prefix: "dotnet-init-"
-            aca-name-secret: "ACA_CONTAINERAPP_NAME"
-
           - image: "api"
             dockerfile: "./Dockerfile.api"
             build-target: "final"
