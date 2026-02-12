@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-12.1359...main) for everything awaiting release
 
+---
+
 ## [1.39.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-12.1359) - 2026-02-12
 
 ### Changed
@@ -27,6 +29,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-02.1340...production-2026-02-12.1359) for everything in the release
 
+---
+
 ## [1.38.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-02.1340) - 2026-02-02
 
 ### Fixed
@@ -34,12 +38,16 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-21.1326...production-2026-02-02.1340) for everything in the release
 
+---
+
 ## [1.37.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-21.1326) - 2026-01-21
 
 ### Changed
 - 255804 - update accessibility statement link
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-13.1321...production-2026-01-21.1326) for everything in the release
+
+---
 
 ## [1.36.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-13.1321) - 2026-01-13
 
