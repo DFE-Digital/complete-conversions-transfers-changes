@@ -1,4 +1,3 @@
-@using Dfe.Complete.Utils
 @using System.Text.Json
 @model TaskListItemViewModel
 
@@ -21,7 +20,6 @@
             output = "Not applicable";
             colour = "grey";
             break;
-        case TaskListStatus.NotStarted:
         default:
             output = "Not started";
             colour = "blue";
