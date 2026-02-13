@@ -51,7 +51,7 @@ jobs:
           environment: ${{ needs.set-env.outputs.environment }}
 
   build-import-deploy:
-    name: Build, Import, Deploy
+    name: ${{ matrix.display-name }}
     needs: [ set-env, validate-packages ]
     runs-on: ubuntu-24.04
     environment: ${{ needs.set-env.outputs.environment }}
@@ -59,28 +59,41 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-
     strategy:
       matrix:
+        image: [
+          "web",
+          "init",
+          "api"
+        ]
         include:
           - image: "web"
-            dockerfile: "./Dockerfile.web"
-            build-target: "final"
+            display-name: "Build & Deploy Web App"
             tag-prefix: "dotnet-"
             aca-name-secret: "ACA_CONTAINERAPP_NAME"
-
+            dockerfile: "Dockerfile.web"
+            target-stage: "final"
+            deploy: true
+          - image: "init"
+            display-name: "Build Migration Init Container"
+            tag-prefix: "dotnet-migration-"
+            aca-name-secret: ""
+            dockerfile: "Dockerfile.web"
+            target-stage: "initcontainer"
+            deploy: false
           - image: "api"
-            dockerfile: "./Dockerfile.api"
-            build-target: "final"
+            display-name: "Build & Deploy API"
             tag-prefix: "dotnet-api-"
             aca-name-secret: "ACA_CONTAINERAPP_API_NAME"
-
+            dockerfile: "Dockerfile.api"
+            target-stage: "final"
+            deploy: true
     steps:
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
-          build-file-name: ${{ matrix.dockerfile }}
+          build-file-name: ./${{ matrix.dockerfile }}
           build-args: CI=true
-          build-target: ${{ matrix.build-target }}
+          build-target: ${{ matrix.target-stage }}
           image-name: ${{ needs.set-env.outputs.image-name }}
           tag-prefix: ${{ matrix.tag-prefix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,9 +113,10 @@ jobs:
           AZURE_ACR_CLIENT_ID: ${{ secrets.ACR_CLIENT_ID || '' }}
 
       - id: annotate
-        run: echo "ANNOTATE_RELEASE=${{ matrix.image == 'web' && matrix.build-target == 'final' && 'yes' || 'no' }}" >> $GITHUB_ENV
+        run: echo "ANNOTATE_RELEASE=${{ matrix.image == 'web' && matrix.deploy && 'yes' || 'no' }}" >> $GITHUB_ENV
 
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/deploy@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
+        if: ${{ matrix.deploy }}
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
