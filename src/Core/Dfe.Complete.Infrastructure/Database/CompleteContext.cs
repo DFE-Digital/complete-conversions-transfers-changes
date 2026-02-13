@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database.Interceptors;
@@ -15,9 +16,15 @@ public partial class CompleteContext : DbContext
 {
     private readonly IConfiguration? _configuration;
     const string DefaultSchema = "complete";
-    private readonly IServiceProvider _serviceProvider = null!;
+    private readonly IServiceProvider? _serviceProvider;
 
     public CompleteContext()
+    {
+    }
+
+    [ExcludeFromCodeCoverage]
+    public CompleteContext(DbContextOptions<CompleteContext> options)
+    : base(options)
     {
     }
 
@@ -66,8 +73,11 @@ public partial class CompleteContext : DbContext
             optionsBuilder.UseCompleteSqlServer(connectionString!, _configuration!.GetValue("EnableSQLRetryOnFailure", false));
         }
 
-        var mediator = _serviceProvider.GetRequiredService<IMediator>();
-        optionsBuilder.AddInterceptors(new DomainEventDispatcherInterceptor(mediator));
+        if (_serviceProvider != null)
+        {
+            var mediator = _serviceProvider.GetRequiredService<IMediator>();
+            optionsBuilder.AddInterceptors(new DomainEventDispatcherInterceptor(mediator));
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
