@@ -74,14 +74,31 @@ RUN dotnet ef migrations bundle -r linux-x64 \
     --output /sql/migratedb
 
 # ============================================================
-# Init Container
+# Init Container (Migration Bundle)
 # ============================================================
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS initcontainer
 WORKDIR /sql
 
-COPY --from=efbuilder /sql /sql
+# Copy the migration bundle and appsettings
+COPY --from=efbuilder /sql/migratedb /sql/migratedb
 COPY --from=build /app/appsettings* /sql/
-COPY --from=build /app/appsettings* /Dfe.Complete.Api/
+
+# Create simple migration entrypoint script
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "Starting database migration..."\n\
+if [ -z "$CONNECTION_STRING" ]; then\n\
+  echo "ERROR: CONNECTION_STRING environment variable is not set"\n\
+  exit 1\n\
+fi\n\
+echo "Running migration bundle..."\n\
+/sql/migratedb --connection "$CONNECTION_STRING"\n\
+echo "Migration completed successfully"\n\
+' > /sql/run-migration.sh && \
+    chmod +x /sql/run-migration.sh && \
+    chmod +x /sql/migratedb
+
+ENTRYPOINT ["/sql/run-migration.sh"]
 
 # Build a runtime environment
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS final
