@@ -532,6 +532,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.HandoverNotApplicable).HasColumnName("handover_not_applicable");
         projectConfiguration.Property(e => e.HandoverNotes).HasColumnName("handover_notes");
         projectConfiguration.Property(e => e.HandoverReview).HasColumnName("handover_review");
+        projectConfiguration.Property(e => e.HandoverConfirmSacreExemption).HasColumnName("handover_confirm_sacre_exemption");
         projectConfiguration.Property(e => e.LandQuestionnaireCleared).HasColumnName("land_questionnaire_cleared");
         projectConfiguration.Property(e => e.LandQuestionnaireReceived).HasColumnName("land_questionnaire_received");
         projectConfiguration.Property(e => e.LandQuestionnaireSaved).HasColumnName("land_questionnaire_saved");

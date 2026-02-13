@@ -8766,6 +8766,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "handoverConfirmSacreExemption": {
+            "type": "boolean",
+            "nullable": true
+          },
           "handoverMeetings": {
             "type": "boolean",
             "nullable": true
