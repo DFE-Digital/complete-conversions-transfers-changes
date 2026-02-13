@@ -68,21 +68,21 @@ jobs:
         ]
         include:
           - image: "web"
-            display-name: "Build & Deploy Web App"
+            display-name: "Build, Import, Deploy (web-final)"
             tag-prefix: "dotnet-"
             aca-name-secret: "ACA_CONTAINERAPP_NAME"
             dockerfile: "Dockerfile.web"
             target-stage: "final"
             deploy: true
           - image: "init"
-            display-name: "Build Migration Init Container"
+            display-name: "Build, Import (web-init)"
             tag-prefix: "dotnet-migration-"
             aca-name-secret: ""
             dockerfile: "Dockerfile.web"
             target-stage: "initcontainer"
             deploy: false
           - image: "api"
-            display-name: "Build & Deploy API"
+            display-name: "Build, Import, Deploy (api)"
             tag-prefix: "dotnet-api-"
             aca-name-secret: "ACA_CONTAINERAPP_API_NAME"
             dockerfile: "Dockerfile.api"
