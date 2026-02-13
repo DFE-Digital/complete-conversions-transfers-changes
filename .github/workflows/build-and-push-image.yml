@@ -75,7 +75,7 @@ jobs:
             target-stage: "final"
             deploy: true
           - image: "init"
-            display-name: "Build, Import, RUN MIGRATIONS (web-init)"
+            display-name: "Build, Import (web-init)"
             tag-prefix: "dotnet-migration-"
             aca-name-secret: ""
             dockerfile: "Dockerfile.web"
@@ -89,8 +89,6 @@ jobs:
             target-stage: "final"
             deploy: true
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
-
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
           build-file-name: ./${{ matrix.dockerfile }}
@@ -99,19 +97,6 @@ jobs:
           image-name: ${{ needs.set-env.outputs.image-name }}
           tag-prefix: ${{ matrix.tag-prefix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run migrations (docker run init image)
-        if: ${{ matrix.image == 'init' }}
-        env:
-          CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        run: |
-          set -euo pipefail
-          IMAGE_TAG="${{ needs.set-env.outputs.image-name }}:${{ matrix.tag-prefix }}${{ github.sha }}"
-          echo "Running migration image: ${IMAGE_TAG}"
-          docker image ls | head -n 50
-          docker run --rm \
-            -e CONNECTION_STRING="$CONNECTION_STRING" \
-            "${IMAGE_TAG}"
 
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/import@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
