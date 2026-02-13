@@ -49,7 +49,7 @@ WORKDIR /build/src/Frontend/${PROJECT_NAME}
 RUN dotnet build --no-restore -c Release && \
     dotnet publish --no-build -c Release -o /app
 
-# Copy entrypoint script (main container)
+# Copy entrypoint script
 COPY ./script/docker-entrypoint.sh /app/docker-entrypoint.sh
 
 # ============================================================
@@ -83,18 +83,24 @@ WORKDIR /sql
 COPY --from=efbuilder /sql/migratedb /sql/migratedb
 COPY --from=build /app/appsettings* /sql/
 
-# Copy init entrypoint script
-COPY ./script/docker-init-entrypoint.sh /sql/docker-init-entrypoint.sh
-
-# Permissions
-RUN chmod +x /sql/docker-init-entrypoint.sh && \
+# Create simple migration entrypoint script
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "Starting database migration..."\n\
+if [ -z "$CONNECTION_STRING" ]; then\n\
+  echo "ERROR: CONNECTION_STRING environment variable is not set"\n\
+  exit 1\n\
+fi\n\
+echo "Running migration bundle..."\n\
+/sql/migratedb --connection "$CONNECTION_STRING"\n\
+echo "Migration completed successfully"\n\
+' > /sql/run-migration.sh && \
+    chmod +x /sql/run-migration.sh && \
     chmod +x /sql/migratedb
 
-ENTRYPOINT ["/sql/docker-init-entrypoint.sh"]
+ENTRYPOINT ["/sql/run-migration.sh"]
 
-# ============================================================
-# Final runtime image
-# ============================================================
+# Build a runtime environment
 FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS final
 WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/DFE-Digital/complete-conversions-transfers-changes"
@@ -104,11 +110,9 @@ COPY --from=build /app .
 COPY --from=assets /app ./wwwroot
 COPY --from=efbuilder /sql/migratedb ./migratedb
 
+# Set permissions and user
 RUN chmod +x ./docker-entrypoint.sh && \
     chmod +x ./migratedb
 
 USER $APP_UID
-
-# IMPORTANT: ensure there's a default command so docker-entrypoint.sh can exec "$@"
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
-CMD ["dotnet", "Dfe.Complete.dll"]
