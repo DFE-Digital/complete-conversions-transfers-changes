@@ -27,11 +27,11 @@
             var note = Model.Notes[iNote];
             var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
 
-            @if (iNote > 0)
-            {
-                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
-            }
             <li id="note-entry-@note.Id">
+                @if (iNote > 0)
+                {
+                    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+                }
                 <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToDateString()</p>
                 <h3 class="govuk-heading-s govuk-!-padding-top-0">@note.UserFullName</h3>
                 <p class="govuk-body-m notes-body">@note.Body</p>
