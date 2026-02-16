@@ -100,19 +100,6 @@ jobs:
           tag-prefix: ${{ matrix.tag-prefix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run migrations (docker run init image)
-        if: ${{ matrix.image == 'init' }}
-        env:
-          CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        run: |
-          set -euo pipefail
-          IMAGE_TAG="${{ needs.set-env.outputs.image-name }}:${{ matrix.tag-prefix }}${{ github.sha }}"
-          echo "Running migration image: ${IMAGE_TAG}"
-          docker image ls | head -n 50
-          docker run --rm \
-            -e CONNECTION_STRING="$CONNECTION_STRING" \
-            "${IMAGE_TAG}"
-
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/import@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
