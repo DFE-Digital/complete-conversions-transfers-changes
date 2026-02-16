@@ -48,4 +48,7 @@ locals {
   storage_account_public_access_enabled    = var.storage_account_public_access_enabled
   storage_subnet_cidr                      = var.storage_subnet_cidr
   data_protection_subnet_prefix            = var.data_protection_subnet_prefix
+  enable_init_container                    = var.enable_init_container
+  init_container_image                     = var.init_container_image
+  init_container_command                   = var.init_container_command
 }
