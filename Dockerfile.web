@@ -83,14 +83,8 @@ WORKDIR /sql
 COPY --from=efbuilder /sql/migratedb /sql/migratedb
 COPY --from=build /app/appsettings* /sql/
 
-# Copy init entrypoint script
-COPY ./script/docker-init-entrypoint.sh /sql/docker-init-entrypoint.sh
-
 # Permissions
-RUN chmod +x /sql/docker-init-entrypoint.sh && \
-    chmod +x /sql/migratedb
-
-ENTRYPOINT ["/sql/docker-init-entrypoint.sh"]
+RUN chmod +x /sql/migratedb
 
 # ============================================================
 # Final runtime image

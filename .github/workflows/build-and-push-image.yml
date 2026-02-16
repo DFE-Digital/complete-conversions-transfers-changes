@@ -75,7 +75,7 @@ jobs:
             target-stage: "final"
             deploy: true
           - image: "init"
-            display-name: "Build, Import, RUN MIGRATIONS (web-init)"
+            display-name: "Build, Import (web-init)"
             tag-prefix: "dotnet-migration-"
             aca-name-secret: ""
             dockerfile: "Dockerfile.web"
