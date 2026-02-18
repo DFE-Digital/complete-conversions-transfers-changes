@@ -17,7 +17,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.15")
+                .HasAnnotation("ProductVersion", "8.0.21")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -406,6 +406,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<DateOnly?>("ReceiveGrantPaymentCertificateDateReceived")
                         .HasColumnType("date")
                         .HasColumnName("receive_grant_payment_certificate_date_received");
+
+                    b.Property<bool?>("ReceiveGrantPaymentCertificateNotApplicable")
+                        .HasColumnType("bit")
+                        .HasColumnName("receive_grant_payment_certificate_not_applicable");
 
                     b.Property<bool?>("ReceiveGrantPaymentCertificateSaveCertificate")
                         .HasColumnType("bit")
@@ -1198,9 +1202,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnName("team");
 
                     b.Property<bool?>("TwoRequiresImprovement")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false)
                         .HasColumnName("two_requires_improvement");
 
                     b.Property<string>("Type")
@@ -1298,6 +1300,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
                     b.HasIndex("ProjectId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("significant_date_histories", "complete");
                 });
 
@@ -1327,6 +1331,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SignificantDateHistoryId");
 
                     b.ToTable("significant_date_history_reasons", "complete");
                 });
@@ -1852,6 +1858,11 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("email");
 
+                    b.Property<string>("EntraUserObjectId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("entra_user_object_id");
+
                     b.Property<string>("FirstName")
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)")
@@ -1902,6 +1913,11 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EntraUserObjectId")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_users_entra_user_object_id")
+                        .HasFilter("[entra_user_object_id] IS NOT NULL");
 
                     b.ToTable("users", "complete");
                 });
@@ -1986,6 +2002,19 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.HasOne("Dfe.Complete.Domain.Entities.Project", null)
                         .WithMany("SignificantDateHistories")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("Dfe.Complete.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistoryReason", b =>
+                {
+                    b.HasOne("Dfe.Complete.Domain.Entities.SignificantDateHistory", null)
+                        .WithMany("Reasons")
+                        .HasForeignKey("SignificantDateHistoryId");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
@@ -1995,6 +2024,11 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("Notes");
 
                     b.Navigation("SignificantDateHistories");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
+                {
+                    b.Navigation("Reasons");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.User", b =>
