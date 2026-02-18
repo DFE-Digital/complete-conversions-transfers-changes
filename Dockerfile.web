@@ -81,7 +81,7 @@ WORKDIR /sql
 
 # Copy the migration bundle and appsettings
 COPY --from=efbuilder /sql/migratedb /sql/migratedb
-COPY --from=build /app/appsettings* /sql/
+COPY --from=build /app/appsettings* /Api/Dfe.Complete.Api/
 
 # Permissions
 RUN chmod +x /sql/migratedb
