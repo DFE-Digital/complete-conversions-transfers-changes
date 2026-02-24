@@ -82,9 +82,20 @@ Cypress.Commands.add("acceptCookies", () => {
 
 Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) => {
     const continueOnFail = false;
+    const wcagStandards = [
+        'wcag2a',
+        'wcag2aa',
+        'wcag21a',
+        'wcag21aa',
+        'wcag22aa',
+    ]
 
     let ruleConfiguration: RuleObject = {
         region: { enabled: false },
+        // govuk-frontend v5.x adds aria-expanded to radio inputs with conditional
+        // reveals, which is not yet permitted by the ARIA spec on the radio role.
+        // Tracked upstream: https://github.com/w3c/aria/issues/1404
+        'aria-allowed-attr': { enabled: false },
     };
 
     if (ruleOverride) {
@@ -100,7 +111,7 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
         {
             runOnly: {
                 type: "tag",
-                values: ["wcag22aa"],
+                values: wcagStandards,
             },
             rules: ruleConfiguration,
         },

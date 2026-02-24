@@ -16,7 +16,29 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-21.1326...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-12.1359...main) for everything awaiting release
+
+---
+
+## [1.39.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-12.1359) - 2026-02-12
+
+### Changed
+- [257443](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/CI%20Team/Stories?workitem=257443) - Update task list aria labels so that status is read with task
+- [257453](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/257453) - Update service support edit user so that user is read out with 'edit user'
+- [263297](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/263297) - small accessibility update to task note list
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-02.1340...production-2026-02-12.1359) for everything in the release
+
+---
+
+## [1.38.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-02.1340) - 2026-02-02
+
+### Fixed
+- Resolve screen reader issues with radio set on sponsored support grant ticket
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-21.1326...production-2026-02-02.1340) for everything in the release
+
+---
 
 ## [1.37.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-21.1326) - 2026-01-21
 
@@ -24,6 +46,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - 255804 - update accessibility statement link
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-01-13.1321...production-2026-01-21.1326) for everything in the release
+
+---
 
 ## [1.36.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-01-13.1321) - 2026-01-13
 

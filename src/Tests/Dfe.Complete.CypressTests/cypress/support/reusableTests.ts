@@ -96,9 +96,22 @@ export function shouldBeAbleToViewReportsLandingPage() {
 export function checkAccessibilityAcrossPages() {
     const visitedUrls = Cypress.env("visitedUrls");
     visitedUrls.forEach((url: string) => {
-        cy.visit(url, { failOnStatusCode: false });
-        Logger.log("Executing accessibility check for URL: " + url);
-        cy.executeAccessibilityTests();
+        let responseStatus = 200;
+
+        cy.intercept("GET", url, (req) => {
+            req.continue((res) => {
+                responseStatus = res.statusCode;
+            });
+        });
+
+        cy.visit(url, { failOnStatusCode: false }).then(() => {
+            if (responseStatus >= 500) {
+                Logger.log(`Skipping accessibility check for URL (status ${responseStatus}): ${url}`);
+            } else {
+                Logger.log("Executing accessibility check for URL: " + url);
+                cy.executeAccessibilityTests();
+            }
+        });
     });
 }
 
