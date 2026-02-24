@@ -83,6 +83,7 @@ namespace Dfe.Complete.Models
             if ((!taskData.HandoverReview.HasValue || taskData.HandoverReview == false) &&
                 (!taskData.HandoverMeeting.HasValue || taskData.HandoverMeeting == false) &&
                 (!taskData.HandoverNotes.HasValue || taskData.HandoverNotes == false) &&
+                (!taskData.HandoverConfirmSacreExemption.HasValue || taskData.HandoverConfirmSacreExemption == false) &&
                 (!taskData.HandoverNotApplicable.HasValue || taskData.HandoverNotApplicable == false))
             {
                 return TaskListStatus.NotStarted;
@@ -94,7 +95,8 @@ namespace Dfe.Complete.Models
 
             return (taskData.HandoverReview.Equals(true) &&
                 taskData.HandoverMeeting.Equals(true) &&
-                taskData.HandoverNotes.Equals(true))
+                taskData.HandoverNotes.Equals(true) &&
+                taskData.HandoverConfirmSacreExemption.Equals(true))
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
