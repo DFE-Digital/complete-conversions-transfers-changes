@@ -27,7 +27,7 @@ jobs:
       image-name: ${{ steps.var.outputs.image-name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - id: var
         run: |
@@ -51,7 +51,7 @@ jobs:
           environment: ${{ needs.set-env.outputs.environment }}
 
   build-import-deploy:
-    name: Build, Import, Deploy
+    name: ${{ matrix.display-name }}
     needs: [ set-env, validate-packages ]
     runs-on: ubuntu-24.04
     environment: ${{ needs.set-env.outputs.environment }}
@@ -63,20 +63,39 @@ jobs:
       matrix:
         image: [
           "web",
+          "init",
           "api"
         ]
         include:
           - image: "web"
+            display-name: "Build, Import, Deploy (web-final)"
             tag-prefix: "dotnet-"
             aca-name-secret: "ACA_CONTAINERAPP_NAME"
+            dockerfile: "Dockerfile.web"
+            target-stage: "final"
+            deploy: true
+          - image: "init"
+            display-name: "Build, Import (web-init)"
+            tag-prefix: "dotnet-migration-"
+            aca-name-secret: ""
+            dockerfile: "Dockerfile.web"
+            target-stage: "initcontainer"
+            deploy: false
           - image: "api"
+            display-name: "Build, Import, Deploy (api)"
             tag-prefix: "dotnet-api-"
             aca-name-secret: "ACA_CONTAINERAPP_API_NAME"
+            dockerfile: "Dockerfile.api"
+            target-stage: "final"
+            deploy: true
     steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
         with:
-          build-file-name: ./Dockerfile.${{ matrix.image }}
+          build-file-name: ./${{ matrix.dockerfile }}
           build-args: CI=true
+          build-target: ${{ matrix.target-stage }}
           image-name: ${{ needs.set-env.outputs.image-name }}
           tag-prefix: ${{ matrix.tag-prefix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -96,9 +115,10 @@ jobs:
           AZURE_ACR_CLIENT_ID: ${{ secrets.ACR_CLIENT_ID || '' }}
 
       - id: annotate
-        run: echo "ANNOTATE_RELEASE=${{ matrix.image == 'web' && 'yes' || 'no' }}" >> $GITHUB_ENV
+        run: echo "ANNOTATE_RELEASE=${{ matrix.image == 'web' && matrix.deploy && 'yes' || 'no' }}" >> $GITHUB_ENV
 
       - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/deploy@8e72e403f05ff9da09668207eef1d79e1ce9d1a7 # v5.2.1
+        if: ${{ matrix.deploy }}
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -119,7 +139,7 @@ jobs:
     needs: [ set-env, build-import-deploy ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           ref: ${{ github.ref }}
 

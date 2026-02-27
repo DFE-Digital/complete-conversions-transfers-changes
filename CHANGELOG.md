@@ -16,13 +16,25 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+<<<<<<< HEAD
 ### Fixed
 - Resolve screen reader issues with radio set on edit external contact organisation
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-12.1359...main) for everything awaiting release
+=======
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-26.1391...main) for everything awaiting release
+>>>>>>> main
 
 ---
 
+## [1.40.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-12.1359) - 2026-02-26
+
+### Changed
+- [252092](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/CI%20Team/Stories?workitem=252092) -Add/Update EF Core Migration to .Net Complete
+
+ See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-12.1359...production-2026-02-26.1391) for everything in the release
+
+---
 ## [1.39.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-02-12.1359) - 2026-02-12
 
 ### Changed
