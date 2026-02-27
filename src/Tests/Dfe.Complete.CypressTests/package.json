@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/node": "20.17.58",
     "@types/uuid": "9.0.8",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/eslint-plugin": "8.56.1",
     "axe-core": "4.10.3",
     "csv-stringify": "6.4.6",
     "cypress": "14.4.1",
