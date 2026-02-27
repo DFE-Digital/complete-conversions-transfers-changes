@@ -16,6 +16,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? NotApplicable,
         bool? HandoverReview,
         bool? HandoverNotes,
+        bool? HandoverConfirmSacreExemption,
         bool? HandoverMeetings
 
     ) : IRequest<Result<bool>>;
@@ -46,6 +47,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.HandoverMeeting = request.NotApplicable == true ? null : request.HandoverMeetings;
             tasksData.HandoverNotes = request.NotApplicable == true ? null : request.HandoverNotes;
             tasksData.HandoverReview = request.NotApplicable == true ? null : request.HandoverReview;
+            tasksData.HandoverConfirmSacreExemption = request.NotApplicable == true ? null : request.HandoverConfirmSacreExemption;
             tasksData.HandoverNotApplicable = request.NotApplicable;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.Now, cancellationToken);
