@@ -16,7 +16,14 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+<<<<<<< HEAD
+### Fixed
+- Resolve screen reader issues with radio set on edit external contact organisation
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-12.1359...main) for everything awaiting release
+=======
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-02-26.1391...main) for everything awaiting release
+>>>>>>> main
 
 ---
 

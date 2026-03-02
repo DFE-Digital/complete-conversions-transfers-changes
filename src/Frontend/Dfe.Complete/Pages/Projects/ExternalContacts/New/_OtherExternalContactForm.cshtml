@@ -1,4 +1,4 @@
-﻿@using Dfe.Complete.Utils
+@using Dfe.Complete.Utils
 @using Dfe.Complete.Domain.Enums
 @model Dfe.Complete.Models.ExternalContact.OtherExternalContactInputModel
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
@@ -10,7 +10,6 @@
     const string role = nameof(Model.Role);    
     const string primaryprojectcontact = nameof(Model.IsPrimaryProjectContact);
     const string contactType = nameof(Model.SelectedExternalContactType);
-    var selectedContactType = EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType);
 }
 
 <govuk-input name="@fullname" id="@fullname" asp-for="@Model.FullName">
@@ -43,7 +42,7 @@
     }
 </govuk-input>
 
-<govuk-radios name="@contactType" id="@contactType" asp-for="@Model.SelectedExternalContactType">
+<govuk-radios name="@contactType" id="@contactType-fieldset">
     <govuk-radios-fieldset>
         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
             <h2 class="govuk-fieldset__heading">
@@ -52,32 +51,27 @@
         </govuk-radios-fieldset-legend>
         @foreach (var externalContactType in Model.ContactTypeRadioOptions)
         {
-            var organisationName = $"organisation-{@externalContactType.ToDescription()}";
-            var displayDescription = string.Empty;
+            var description = externalContactType.ToDescription();
+            var selected = Model.SelectedExternalContactType == description;
+            var organisationName = $"organisation-{description}";
+            var displayDescription = externalContactType switch
+            {
+                ExternalContactType.IncomingTrust => "Incoming trust",
+                ExternalContactType.OutgoingTrust => "Outgoing trust",
+                _ => externalContactType.ToDisplayDescription()
+            };
 
-            <govuk-radios-item value="@externalContactType.ToDescription()" checked="@(externalContactType == selectedContactType)">                
-                @if (externalContactType == ExternalContactType.IncomingTrust)
-                {
-                    displayDescription = "Incoming trust";
-                }
-                else if (externalContactType == ExternalContactType.OutgoingTrust)
-                {
-                    displayDescription = "Outgoing trust";
-                }
-                else
-                {
-                    displayDescription = @externalContactType.ToDisplayDescription();
-                }
+            <govuk-radios-item value="@description" checked="@selected">
                 @displayDescription
-                @if (@externalContactType == ExternalContactType.Solicitor)
-                {   
+                @if (externalContactType == ExternalContactType.Solicitor)
+                {
                     <govuk-radios-item-conditional>
                         <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationSolicitor">
-                        <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
-                    </govuk-input>
+                            <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                        </govuk-input>
                     </govuk-radios-item-conditional>
                 }
-                @if (@externalContactType == ExternalContactType.Diocese)
+                @if (externalContactType == ExternalContactType.Diocese)
                 {
                     <govuk-radios-item-conditional>
                         <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationDiocese">
@@ -85,8 +79,8 @@
                         </govuk-input>
                     </govuk-radios-item-conditional>
                 }
-                @if (@externalContactType == ExternalContactType.Other)
-                {   
+                @if (externalContactType == ExternalContactType.Other)
+                {
                     <govuk-radios-item-conditional>
                         <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationOther">
                             <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
