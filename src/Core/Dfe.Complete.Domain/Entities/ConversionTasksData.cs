@@ -15,6 +15,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? HandoverNotes { get; set; }
 
+    public bool? HandoverConfirmSacreExemption { get; set; }
+
     public bool? HandoverMeeting { get; set; }
 
     public DateTime CreatedAt { get; set; }
