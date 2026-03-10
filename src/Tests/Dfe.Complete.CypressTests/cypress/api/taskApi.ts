@@ -11,6 +11,7 @@ interface UpdateHandoverWithDeliveryOfficerTaskRequest {
     notApplicable?: boolean;
     handoverReview?: boolean;
     handoverNotes?: boolean;
+    handoverConfirmSacreExemption?: boolean;
     handoverMeetings?: boolean;
 }
 
