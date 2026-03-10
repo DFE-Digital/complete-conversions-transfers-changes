@@ -9,17 +9,17 @@ namespace Dfe.Complete.Tests.Models
     public class ConversionTaskListViewModelTests
     {
         [Theory]
-        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(true, null, null, null, TaskListStatus.NotApplicable)]
-        [InlineData(true, true, true, true, TaskListStatus.NotApplicable)]
-        [InlineData(false, null, true, null, TaskListStatus.InProgress)]
-        [InlineData(null, null, true, null, TaskListStatus.InProgress)]
-        [InlineData(null, true, false, true, TaskListStatus.InProgress)]
-        [InlineData(false, true, false, true, TaskListStatus.InProgress)]
-        [InlineData(false, true, true, false, TaskListStatus.InProgress)]
-        [InlineData(false, true, true, true, TaskListStatus.Completed)]
-        [InlineData(null, true, true, true, TaskListStatus.Completed)]
-        public void HandoverWithRegionalDeliveryOfficerTaskStatus_ShouldReturns_CorrectResult(bool? handoverNotApplicable, bool? handoverReview, bool? handoverNotes, bool? handoverMeeting, TaskListStatus taskListStatus)
+        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(true, null, null, null, null, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
+        [InlineData(false, null, true, null, true, TaskListStatus.InProgress)]
+        [InlineData(null, null, true, null, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, false, true, true, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, true, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, true, false, true, TaskListStatus.InProgress)]
+        [InlineData(false, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(null, true, true, true, true, TaskListStatus.Completed)]
+        public void HandoverWithRegionalDeliveryOfficerTaskStatus_ShouldReturns_CorrectResult(bool? handoverNotApplicable, bool? handoverReview, bool? handoverNotes, bool? handoverMeeting, bool? handoverConfirmSacreExemption, TaskListStatus taskListStatus)
         {
             var model = new ConversionTaskDataDto
             {
@@ -27,6 +27,7 @@ namespace Dfe.Complete.Tests.Models
                 HandoverReview = handoverReview,
                 HandoverNotes = handoverNotes,
                 HandoverMeeting = handoverMeeting,
+                HandoverConfirmSacreExemption = handoverConfirmSacreExemption,
                 HandoverNotApplicable = handoverNotApplicable
             };
             var project = new ProjectDto();
