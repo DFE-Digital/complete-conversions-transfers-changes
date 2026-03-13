@@ -1,4 +1,5 @@
 ﻿@using Dfe.Complete.Constants
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
 
 <form method="post">
@@ -43,7 +44,7 @@
         <b>Confirm if SACRE exemption applies</b>
         <govuk-checkboxes-item-hint>
           <p>
-            You must confirm if the school is applying for SACRE exemption status (does not apply to special academies, 16-19 academies, or schools with a religious designation). See full guidance on Exemption from daily act of Christian collective worship (SACRE).
+            You must confirm if the school is applying for SACRE exemption status (does not apply to special academies, 16-19 academies, or schools with a religious designation). See full guidance on <a href="@_configuration["ExternalLinks:SACREGuidance"]" class="govuk-link" target="_blank">Exemption from daily act of Christian collective worship (SACRE) (opens in new tab)</a>
           </p>
         </govuk-checkboxes-item-hint>
       </govuk-checkboxes-item>
