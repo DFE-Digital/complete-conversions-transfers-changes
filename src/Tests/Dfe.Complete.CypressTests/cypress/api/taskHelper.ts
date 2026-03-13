@@ -200,6 +200,7 @@ export class TaskHelper {
                     notApplicable: false,
                     handoverReview: true,
                     handoverNotes: true,
+                    handoverConfirmSacreExemption: true,
                     handoverMeetings: true,
                 });
 
