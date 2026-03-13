@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260224150731_AddHandoverConfirmSacreExemption")]
+    [Migration("20260313143821_AddHandoverConfirmSacreExemption")]
     partial class AddHandoverConfirmSacreExemption
     {
         /// <inheritdoc />
@@ -1666,6 +1666,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("FormMSigned")
                         .HasColumnType("bit")
                         .HasColumnName("form_m_signed");
+
+                    b.Property<bool?>("HandoverConfirmSacreExemption")
+                        .HasColumnType("bit")
+                        .HasColumnName("handover_confirm_sacre_exemption");
 
                     b.Property<bool?>("HandoverMeeting")
                         .HasColumnType("bit")

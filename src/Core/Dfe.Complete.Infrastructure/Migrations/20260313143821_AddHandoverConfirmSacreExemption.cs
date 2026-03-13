@@ -13,6 +13,13 @@ namespace Dfe.Complete.Infrastructure.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "handover_confirm_sacre_exemption",
                 schema: "complete",
+                table: "transfer_tasks_data",
+                type: "bit",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "handover_confirm_sacre_exemption",
+                schema: "complete",
                 table: "conversion_tasks_data",
                 type: "bit",
                 nullable: true);
@@ -21,6 +28,11 @@ namespace Dfe.Complete.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "handover_confirm_sacre_exemption",
+                schema: "complete",
+                table: "transfer_tasks_data");
+
             migrationBuilder.DropColumn(
                 name: "handover_confirm_sacre_exemption",
                 schema: "complete",

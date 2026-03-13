@@ -61,6 +61,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.HandoverMeeting = request.NotApplicable == true ? null : request.HandoverMeetings;
             tasksData.HandoverNotes = request.NotApplicable == true ? null : request.HandoverNotes;
             tasksData.HandoverReview = request.NotApplicable == true ? null : request.HandoverReview;
+            tasksData.HandoverConfirmSacreExemption = request.NotApplicable == true ? null : request.HandoverConfirmSacreExemption;
             tasksData.HandoverNotApplicable = request.NotApplicable;
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.Now, cancellationToken);
