@@ -92,6 +92,7 @@ public class TransferTaskDataCustomization : ICustomization
             .With(x => x.HandoverMeeting, false)
             .With(x => x.HandoverNotApplicable, false)
             .With(x => x.HandoverNotes, false)
+            .With(x => x.HandoverConfirmSacreExemption, false)
             .With(x => x.HandoverReview, false)
             .With(x => x.InadequateOfsted, false)
             .With(x => x.LandConsentLetterDrafted, false)
