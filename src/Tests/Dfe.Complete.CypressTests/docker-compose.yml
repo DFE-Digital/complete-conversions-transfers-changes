@@ -5,6 +5,8 @@ services:
         image: ghcr.io/zaproxy/zaproxy:stable
         command: "zap.sh -daemon -port 8080 -host 0.0.0.0 -config api.key=${ZAP_API_KEY} -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -config network.localServers.mainProxy.alpn.enabled=false -config network.localServers.mainProxy.address=0.0.0.0"
         user: zap
+        volumes:
+            -   ./zap-reports:/zap/wrk:rw
     cypress:
         build:
             context: ./
