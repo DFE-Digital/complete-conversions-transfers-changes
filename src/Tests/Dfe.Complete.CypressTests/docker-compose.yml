@@ -9,7 +9,7 @@ services:
         build:
             context: ./
             dockerfile: Dockerfile
-        command: -- --env username='${USERNAME},password=${PASSWORD},url="${URL}",api="${URL}",apiKey=${API_KEY}',authKey=${AUTH_KEY},zapReport=true,zapApiKey=${ZAP_API_KEY},zapUrl="${HTTP_PROXY}"
+        command: -- --env username=${USERNAME},url=${URL},api=${API},authKey=${AUTH_KEY},tenantId=${TENANT_ID},clientId=${CLIENT_ID},clientSecret=${CLIENT_SECRET},completeApiClientId=${COMPLETE_API_CLIENT_ID},zapReport=true,zapApiKey=${ZAP_API_KEY},zapUrl=${HTTP_PROXY}
         depends_on:
             zap:
                 condition: service_healthy
