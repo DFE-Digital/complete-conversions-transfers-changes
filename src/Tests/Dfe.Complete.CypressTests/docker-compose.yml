@@ -16,5 +16,6 @@ services:
         environment:
             - HTTP_PROXY=${HTTP_PROXY}
             - NO_PROXY=${NO_PROXY}
+            - NODE_OPTIONS=--max-old-space-size=8192
         volumes:
             - ./:/reports:rw
