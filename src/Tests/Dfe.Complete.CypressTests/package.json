@@ -39,7 +39,7 @@
     "cypress-localstorage-commands": "2.2.8",
     "cypress-multi-reporters": "1.6.4",
     "cypress-slack-reporter": "1.5.4",
-    "eslint": "8.57.1",
+    "eslint": "9.26.0",
     "eslint-plugin-cypress": "2.15.2",
     "mocha": "10.8.2",
     "mochawesome": "7.1.4",
