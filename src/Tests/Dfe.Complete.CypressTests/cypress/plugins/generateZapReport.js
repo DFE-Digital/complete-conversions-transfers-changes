@@ -1,11 +1,12 @@
-import { zaproxy as ZapClient } from "zaproxy";
+import ZapClient from "zaproxy";
 
 export async function generateZapReport() {
+    const zapUrl = new URL(process.env.zapUrl || "http://zap:8080");
     const zapOptions = {
-        apiKey: process.env.ZAP_API_KEY,
+        apiKey: process.env.zapApiKey,
         proxy: {
-            host: process.env.ZAP_ADDRESS,
-            port: process.env.ZAP_PORT,
+            host: zapUrl.hostname,
+            port: parseInt(zapUrl.port, 10),
         },
     };
     const zaproxy = new ZapClient(zapOptions);
