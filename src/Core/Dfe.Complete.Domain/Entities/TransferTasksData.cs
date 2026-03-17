@@ -15,6 +15,8 @@ public class TransferTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? HandoverNotes { get; set; }
 
+    public bool? HandoverConfirmSacreExemption { get; set; }
+
     public bool? HandoverMeeting { get; set; }
 
     public bool? HandoverNotApplicable { get; set; }

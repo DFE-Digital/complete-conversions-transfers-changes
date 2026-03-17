@@ -16,6 +16,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? HandoverMeeting { get; set; }
 
+        public bool? HandoverConfirmSacreExemption { get; set; }
+
         public bool? HandoverNotApplicable { get; set; }
 
         public bool? StakeholderKickOffIntroductoryEmails { get; set; }

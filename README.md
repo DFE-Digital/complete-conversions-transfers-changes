@@ -22,7 +22,41 @@ It is recommended you request access to the complete development database by mak
 
 - Populate the User secrets file
 
-### Docker compose for local development
+## Database Migrations
+
+### Creating a Migration
+
+When you make changes to the domain models in `Dfe.Complete.Domain.Entities`, you need to create a new migration to update the database schema.
+
+Run the following command from the root of the repository:
+
+```powershell
+dotnet ef migrations add <MigrationName> -p src/Core/Dfe.Complete.Infrastructure -s src/Api/Dfe.Complete.Api
+```
+
+- `-p`: Specifies the project where the DbContext and migrations are located.
+- `-s`: Specifies the startup project (the API project is recommended as it has the necessary design-time tools).
+
+### Applying Migrations
+
+To apply migrations to your local database:
+
+```powershell
+# From the root of the repository
+dotnet ef database update -p src/Core/Dfe.Complete.Infrastructure -s src/Api/Dfe.Complete.Api
+
+# OR navigate to the Infrastructure project
+cd src/Core/Dfe.Complete.Infrastructure
+dotnet ef database update
+```
+
+### Design-Time Factory
+
+A `GenericDbContextFactory` (and `CompleteContextFactory`) exists in `Dfe.Complete.Infrastructure` to facilitate migrations at design-time. It defaults to the `Development` environment and attempts to load the connection string from `src/Api/Dfe.Complete.Api/appsettings.Development.json`.
+
+---
+
+## Docker compose for local development
 
 Using docker compose for local development can be [found here](docs/docker-compose.md)
 
