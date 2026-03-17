@@ -21,6 +21,9 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
     [BindProperty(Name = "make-notes")]
     public bool? MakeNotes { get; set; }
 
+    [BindProperty(Name = "confirm-sacre-exemption")]
+    public bool? ConfirmSacreExemption { get; set; }
+
     [BindProperty(Name = "attend-handover-meeting")]
     public bool? AttendHandoverMeeting { get; set; }
 
@@ -38,6 +41,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
         {
             ReviewProjectInformation = TransferTaskData.HandoverReview;
             MakeNotes = TransferTaskData.HandoverNotes;
+            ConfirmSacreExemption = TransferTaskData.HandoverConfirmSacreExemption;
             AttendHandoverMeeting = TransferTaskData.HandoverMeeting;
             NotApplicable = TransferTaskData.HandoverNotApplicable;
         }
@@ -45,6 +49,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
         {
             ReviewProjectInformation = ConversionTaskData.HandoverReview;
             MakeNotes = ConversionTaskData.HandoverNotes;
+            ConfirmSacreExemption = ConversionTaskData.HandoverConfirmSacreExemption;
             AttendHandoverMeeting = ConversionTaskData.HandoverMeeting;
             NotApplicable = ConversionTaskData.HandoverNotApplicable;
         }
@@ -53,7 +58,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public async Task<IActionResult> OnPost()
     {
-        await Sender.Send(new UpdateHandoverWithDeliveryOfficerTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        await Sender.Send(new UpdateHandoverWithDeliveryOfficerTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, ConfirmSacreExemption, AttendHandoverMeeting));
         SetTaskSuccessNotification();
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }

@@ -96,6 +96,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
             command.ProjectType = ProjectType.Transfer;
             command.HandoverMeetings = true;
+            command.HandoverConfirmSacreExemption = true;
             command.HandoverReview = false;
             command.HandoverNotes = true;
 
@@ -109,6 +110,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.HandoverNotApplicable);
             Assert.False(existingTaskData.HandoverReview);
             Assert.True(existingTaskData.HandoverMeeting);
+            Assert.True(existingTaskData.HandoverConfirmSacreExemption);
             Assert.True(existingTaskData.HandoverNotes);
         }
         [Theory]

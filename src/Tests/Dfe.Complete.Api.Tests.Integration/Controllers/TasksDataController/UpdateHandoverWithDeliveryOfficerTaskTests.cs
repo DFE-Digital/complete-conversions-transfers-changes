@@ -39,6 +39,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ProjectType = ProjectType.Transfer,
                 HandoverReview = true,
                 HandoverNotes = true,
+                HandoverConfirmSacreExemption = true,
                 HandoverMeetings = true,
             };
 
@@ -52,6 +53,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.HandoverReview);
             Assert.True(existingTaskData.HandoverNotes);
             Assert.True(existingTaskData.HandoverMeeting);
+            Assert.True(existingTaskData.HandoverConfirmSacreExemption);
             Assert.Null(existingTaskData.HandoverNotApplicable);
         }
 

@@ -7802,6 +7802,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "handoverConfirmSacreExemption": {
+            "type": "boolean",
+            "nullable": true
+          },
           "handoverNotApplicable": {
             "type": "boolean",
             "nullable": true
@@ -8242,6 +8246,10 @@
             "nullable": true
           },
           "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverConfirmSacreExemption": {
             "type": "boolean",
             "nullable": true
           },
@@ -8763,6 +8771,10 @@
             "nullable": true
           },
           "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverConfirmSacreExemption": {
             "type": "boolean",
             "nullable": true
           },
