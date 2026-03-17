@@ -41,6 +41,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
         {
             ReviewProjectInformation = TransferTaskData.HandoverReview;
             MakeNotes = TransferTaskData.HandoverNotes;
+            ConfirmSacreExemption = TransferTaskData.HandoverConfirmSacreExemption;
             AttendHandoverMeeting = TransferTaskData.HandoverMeeting;
             NotApplicable = TransferTaskData.HandoverNotApplicable;
         }

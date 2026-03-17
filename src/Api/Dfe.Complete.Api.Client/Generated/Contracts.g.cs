@@ -5337,6 +5337,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("handoverMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverMeeting { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("handoverConfirmSacreExemption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverConfirmSacreExemption { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("handoverNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverNotApplicable { get; set; } = default!;
 

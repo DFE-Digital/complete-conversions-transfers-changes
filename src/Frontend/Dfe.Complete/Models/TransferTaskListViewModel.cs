@@ -73,6 +73,7 @@ namespace Dfe.Complete.Models
         {
             if ((!taskData.HandoverReview.HasValue || taskData.HandoverReview == false) &&
                 (!taskData.HandoverMeeting.HasValue || taskData.HandoverReview == false) &&
+                (!taskData.HandoverConfirmSacreExemption.HasValue || taskData.HandoverConfirmSacreExemption == false) &&
                 (!taskData.HandoverNotes.HasValue || taskData.HandoverReview == false) &&
                 (!taskData.HandoverNotApplicable.HasValue || taskData.HandoverNotApplicable == false))
             {
@@ -85,7 +86,8 @@ namespace Dfe.Complete.Models
 
             return (taskData.HandoverReview.Equals(true) &&
                 taskData.HandoverMeeting.Equals(true) &&
-                taskData.HandoverNotes.Equals(true))
+                taskData.HandoverConfirmSacreExemption.Equals(true)) &&
+                taskData.HandoverNotes.Equals(true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
         private static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
