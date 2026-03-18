@@ -240,6 +240,8 @@ Cypress tests, including all networking required. You will need to update any co
 
 Currently, the `cy:zap` command runs the user-capabilities tests, as these cover the majority of the application.
 
+ZAP report is output to /zap-reports
+
 Create a `.env` file for docker, this file needs to include
 
 - all of your required cypress configuration for the desired environment
