@@ -1,6 +1,6 @@
 import { defineConfig } from "cypress";
 import { generateZapReport } from "cypress/plugins/generateZapReport";
-import path from "path";
+import path from "node:path";
 import webpackPreprocessor from "@cypress/webpack-preprocessor";
 import webpack from "webpack";
 
