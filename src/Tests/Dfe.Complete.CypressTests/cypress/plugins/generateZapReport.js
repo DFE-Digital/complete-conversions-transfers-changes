@@ -1,11 +1,12 @@
-import { zaproxy as ZapClient } from "zaproxy";
+import ZapClient from "zaproxy";
 
 export async function generateZapReport() {
+    const zapUrl = new URL(process.env.zapUrl || "https://zap:8080");
     const zapOptions = {
-        apiKey: process.env.ZAP_API_KEY,
+        apiKey: process.env.zapApiKey,
         proxy: {
-            host: process.env.ZAP_ADDRESS,
-            port: process.env.ZAP_PORT,
+            host: zapUrl.hostname,
+            port: Number.parseInt(zapUrl.port, 10),
         },
     };
     const zaproxy = new ZapClient(zapOptions);
@@ -16,7 +17,7 @@ export async function generateZapReport() {
             .recordsToScan()
             .then((resp) => {
                 try {
-                    recordsRemaining = parseInt(resp.recordsToScan, 10);
+                    recordsRemaining = Number.parseInt(resp.recordsToScan, 10);
                 } catch (err) {
                     if (err instanceof Error) {
                         console.log(`Error converting result: ${err.message}`);
