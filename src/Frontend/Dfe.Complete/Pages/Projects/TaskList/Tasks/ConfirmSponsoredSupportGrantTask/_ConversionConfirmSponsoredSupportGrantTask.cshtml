@@ -83,7 +83,7 @@
             </govuk-checkboxes-fieldset-legend>
             <govuk-checkboxes-item id="@(nameof(Model.PaymentAmount))" data-cy="paymentAmount" asp-for="@Model.PaymentAmount" value="true" name="@(nameof(Model.PaymentAmount))" checked="@Model.PaymentAmount">
                 <b>Tell the trust how much they are entitled to and how to claim the grant</b>
-                <govuk-checkboxes-hint>
+                <govuk-checkboxes-item-hint>
                     <div class="guidance">
                         <details data-module="govuk-details" class="govuk-details">
                             <summary class="govuk-details__summary">
@@ -96,19 +96,19 @@
                             </div>
                         </details>
                     </div>
-                </govuk-checkboxes-hint>
+                </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.PaymentForm))" data-cy="paymentForm" asp-for="@Model.PaymentForm" value="true" name="@(nameof(Model.PaymentForm))" checked="@Model.PaymentForm">
                 <b>Receive, check and save the support grant claim form in the school's SharePoint folder</b>
-                <govuk-checkboxes-hint>
+                <govuk-checkboxes-item>
                     <div class="govuk-hint">
                         <p>Check the form is complete and there is no missing information.</p>
                     </div>
-                </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.SendInformation))" data-cy="sendInformation" asp-for="@Model.SendInformation" value="true" name="@(nameof(Model.SendInformation))" checked="@Model.SendInformation">
                 <b>Send the grant information to the payments team</b>
-                <govuk-checkboxes-hint>
+                <govuk-checkboxes-item-hint>
                     <div class="govuk-hint">
                         <p>Send them the academy order and grant claim form.</p>
                         <div class="guidance">
@@ -138,11 +138,11 @@
                             </details>
                         </div>
                     </div>
-                </govuk-checkboxes-hint>
+                </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.InformTrust))" data-cy="informTrust" asp-for="@Model.InformTrust" value="true" name="@(nameof(Model.InformTrust))" checked="@Model.InformTrust">
                 <b>Tell the trust the grant is being processed</b>
-                <govuk-checkboxes-hint>
+                <govuk-checkboxes-item-hint>
                     <div class="guidance">
                         <details data-module="govuk-details" class="govuk-details">
                             <summary class="govuk-details__summary">
@@ -154,7 +154,7 @@
                             </div>
                         </details>
                     </div>
-                </govuk-checkboxes-hint>
+                </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
         </govuk-checkboxes-fieldset>
     </govuk-checkboxes>
