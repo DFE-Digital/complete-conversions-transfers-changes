@@ -6,7 +6,7 @@ export async function generateZapReport() {
         apiKey: process.env.zapApiKey,
         proxy: {
             host: zapUrl.hostname,
-            port: parseInt(zapUrl.port, 10),
+            port: Number.parseInt(zapUrl.port, 10),
         },
     };
     const zaproxy = new ZapClient(zapOptions);
