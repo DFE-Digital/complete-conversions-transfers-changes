@@ -16,6 +16,8 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+ - Sponsored grant tasks page, acessibility fixes for expandable content inside checkbox labels
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-17.1407...main) for everything awaiting release
 
 ---
