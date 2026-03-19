@@ -2,7 +2,6 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import { beforeEach } from "mocha";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { ProjectType } from "cypress/api/taskApi";

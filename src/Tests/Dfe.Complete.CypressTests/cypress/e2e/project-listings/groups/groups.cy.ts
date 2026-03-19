@@ -1,7 +1,6 @@
 import projectRemover from "cypress/api/projectRemover";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
-import { beforeEach } from "mocha";
 import navBar from "cypress/pages/navBar";
 import groupTable from "cypress/pages/groups/groupTable";
 import { dimensionsTrust } from "cypress/constants/stringTestConstants";
