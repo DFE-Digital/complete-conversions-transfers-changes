@@ -10,6 +10,7 @@ export default tseslint.config(
             "cypress/videos/**",
             "cypress/reports/**",
             "cypress/downloads/**",
+            "zap-reports/**",
         ],
     },
     eslint.configs.recommended,
