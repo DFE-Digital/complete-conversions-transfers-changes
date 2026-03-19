@@ -27,12 +27,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^7.0.2",
+    "@cypress/webpack-preprocessor": "7.0.2",
     "@types/node": "20.17.58",
     "@types/uuid": "9.0.8",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "axe-core": "4.10.3",
-    "buffer": "^6.0.3",
+    "buffer": "6.0.3",
     "csv-stringify": "6.4.6",
     "cypress": "14.4.1",
     "cypress-axe": "1.6.0",
@@ -46,12 +46,12 @@
     "mochawesome-merge": "4.4.1",
     "mochawesome-report-generator": "6.2.0",
     "prettier": "3.8.1",
-    "process": "^0.11.10",
-    "stream-browserify": "^3.0.0",
-    "ts-loader": "^9.5.4",
+    "process": "0.11.10",
+    "stream-browserify": "3.0.0",
+    "ts-loader": "9.5.4",
     "typescript": "5.2.2",
-    "util": "^0.12.5",
-    "webpack": "^5.105.4",
+    "util": "0.12.5",
+    "webpack": "5.105.4",
     "zaproxy": "2.0.0-rc.6"
   }
 }
