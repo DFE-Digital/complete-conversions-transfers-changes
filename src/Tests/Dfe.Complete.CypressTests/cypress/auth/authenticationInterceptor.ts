@@ -3,23 +3,25 @@ import { TestUser } from "cypress/constants/TestUser";
 
 export class AuthenticationInterceptor {
     register(user: TestUser = cypressUser) {
-        cy.intercept(
-            {
-                url: Cypress.expose(EnvUrl) + "/**",
-                middleware: true,
-            },
-            (req) => {
-                // Set an auth header on every request made by the browser
-                req.headers = {
-                    ...req.headers,
-                    Authorization: `Bearer ${Cypress.env(EnvAuthKey)}`,
-                    "x-user-context-name": user.email, // must be present, but not used
-                    "x-user-context-id": user.id, // must be present for antiforgery claims
-                    "x-user-ad-id": user.adId,
-                    "x-cypress-user": userType,
-                    "x-user-context-role-0": user.role,
-                };
-            },
-        ).as("AuthInterceptor");
+        cy.env([EnvAuthKey]).then(({ authKey }) => {
+            cy.intercept(
+                {
+                    url: Cypress.expose(EnvUrl) + "/**",
+                    middleware: true,
+                },
+                (req) => {
+                    // Set an auth header on every request made by the browser
+                    req.headers = {
+                        ...req.headers,
+                        Authorization: `Bearer ${authKey}`,
+                        "x-user-context-name": user.email, // must be present, but not used
+                        "x-user-context-id": user.id, // must be present for antiforgery claims
+                        "x-user-ad-id": user.adId,
+                        "x-cypress-user": userType,
+                        "x-user-context-role-0": user.role,
+                    };
+                },
+            ).as("AuthInterceptor");
+        });
     }
 }

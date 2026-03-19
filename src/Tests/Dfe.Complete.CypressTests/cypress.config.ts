@@ -6,7 +6,6 @@ import webpack from "webpack";
 
 export default defineConfig({
     allowCypressEnv: false,
-    expose: ["url", "api", "username"],
     defaultCommandTimeout: 5000,
     pageLoadTimeout: 20000,
     watchForFileChanges: false,
@@ -30,6 +29,8 @@ export default defineConfig({
     e2e: {
         excludeSpecPattern: ["*/**/legacy"],
         setupNodeEvents(on, config) {
+            const configProcessScopedVariables: Record<string, unknown> = {};
+
             // Cypress's built-in preprocessor uses tsconfig-paths-webpack-plugin,
             // which infinite-loops because our local "cypress/" directory shares
             // its name with the "cypress" npm package.
@@ -105,12 +106,29 @@ export default defineConfig({
             on("task", {
                 log(message) {
                     console.log(message);
-
                     return null;
+                },
+                set(keySet: Record<string, unknown>) {
+                    Object.entries(keySet).forEach(([key, value]) => {
+                        configProcessScopedVariables[key] = value;
+                    });
+                    return null;
+                },
+                get(keys: string[]) {
+                    const variablesToReturn: Record<string, unknown> = {};
+                    keys.forEach((key) => {
+                        variablesToReturn[key] = configProcessScopedVariables[key];
+                    });
+                    return variablesToReturn ;
                 },
             });
 
             config.baseUrl = config.env.url;
+            config.expose = {
+                url: config.env.url,
+                api: config.env.api,
+                username: config.env.username,
+            };
 
             return config;
         },
