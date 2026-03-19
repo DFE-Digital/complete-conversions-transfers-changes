@@ -238,21 +238,30 @@ application.
 These can be run using the configured `docker-compose.yml`, which will spin up containers for the ZAP daemon and the
 Cypress tests, including all networking required. You will need to update any config in the file before running
 
+Currently, the `cy:zap` command runs the user-capabilities tests, as these cover the majority of the application.
+
+ZAP report is output to /zap-reports
+
 Create a `.env` file for docker, this file needs to include
 
-- all of your required cypress configuration
+- all of your required cypress configuration for the desired environment
 - HTTP_PROXY e.g. http://zap:8080
-- ZAP_API_KEY, can be any random guid
+- NO_PROXY e.g. localhost
+- ZAP_API_KEY can be any random guid
 
 Example env:
 
 ```
 URL=<Enter URL>
-USERNAME=<Enter username>
 API=<Enter API>
-API_KEY=<Enter API key>
+USERNAME=<Enter username>
 AUTH_KEY=<Enter auth key>
+TENANT_ID=<Enter tenant id>
+CLIENT_ID=<Enter client id>
+CLIENT_SECRET=<Enter client secret>
+COMPLETE_API_CLIENT_ID=<Enter complete api client id>
 HTTP_PROXY=http://zap:8080
+NO_PROXY=localhost
 ZAP_API_KEY=<Enter random guid>
 
 ```
