@@ -17,7 +17,7 @@ class GroupApi extends ApiBase {
             return cy
                 .request({
                     method: "GET",
-                    url: Cypress.env(EnvApi) + "/v1/ProjectGroup/List",
+                    url: Cypress.expose(EnvApi) + "/v1/ProjectGroup/List",
                     headers: headers,
                 })
                 .then((response) => {

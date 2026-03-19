@@ -14,7 +14,7 @@ interface UserUpdateRequest {
 }
 
 class UserApi extends ApiBase {
-    private readonly userUrl = `${Cypress.env(EnvApi)}/v1/Users`;
+    private readonly userUrl = `${Cypress.expose(EnvApi)}/v1/Users`;
 
     public updateUser(body: UserUpdateRequest) {
         return this.userBaseRequest<IdObject>("PUT", body);

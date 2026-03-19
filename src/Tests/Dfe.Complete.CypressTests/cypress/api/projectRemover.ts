@@ -8,7 +8,7 @@ class ProjectRemover extends ApiBase {
             return cy
                 .request<boolean>({
                     method: "DELETE",
-                    url: Cypress.env(EnvApi) + "/v1/Projects",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects",
                     headers: headers,
                     body: { value: urn },
                 })

@@ -8,7 +8,7 @@ class ContactApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "POST",
-                    url: Cypress.env(EnvApi) + "/v1/Contacts/CreateExternalContact",
+                    url: Cypress.expose(EnvApi) + "/v1/Contacts/CreateExternalContact",
                     headers: headers,
                     body: contactRequest,
                     failOnStatusCode: false,
