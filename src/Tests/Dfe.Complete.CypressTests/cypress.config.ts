@@ -5,6 +5,8 @@ import webpackPreprocessor from "@cypress/webpack-preprocessor";
 import webpack from "webpack";
 
 export default defineConfig({
+    allowCypressEnv: false,
+    expose: ["url", "api", "username"],
     defaultCommandTimeout: 5000,
     pageLoadTimeout: 20000,
     watchForFileChanges: false,
@@ -48,14 +50,7 @@ export default defineConfig({
                             __dirname: true,
                         },
                         resolve: {
-                            extensions: [
-                                ".ts",
-                                ".tsx",
-                                ".js",
-                                ".jsx",
-                                ".mjs",
-                                ".json",
-                            ],
+                            extensions: [".ts", ".tsx", ".js", ".jsx", ".mjs", ".json"],
                             modules: [path.resolve(__dirname), "node_modules"],
                             fallback: {
                                 buffer: require.resolve("buffer/"),

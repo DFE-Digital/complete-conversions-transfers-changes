@@ -134,7 +134,7 @@ export enum ProjectType {
 }
 
 export class TaskApi extends ApiBase {
-    private readonly taskDataUrl = `${Cypress.env(EnvApi)}/v1/TasksData/TaskData`;
+    private readonly taskDataUrl = `${Cypress.expose(EnvApi)}/v1/TasksData/TaskData`;
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
         return this.taskDataBaseRequest<void>("HandoverDeliveryOfficer", requestBody);

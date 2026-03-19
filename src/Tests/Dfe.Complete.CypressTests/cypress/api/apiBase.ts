@@ -12,7 +12,7 @@ export class ApiBase {
         return {
             Authorization: `Bearer ${Cypress.env(UserAccessToken)}`,
             "Content-type": "application/json",
-            "x-user-context-name": Cypress.env(EnvUsername),
+            "x-user-context-name": Cypress.expose(EnvUsername),
         };
     }
 

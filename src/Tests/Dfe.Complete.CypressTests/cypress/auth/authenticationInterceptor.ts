@@ -5,7 +5,7 @@ export class AuthenticationInterceptor {
     register(user: TestUser = cypressUser) {
         cy.intercept(
             {
-                url: Cypress.env(EnvUrl) + "/**",
+                url: Cypress.expose(EnvUrl) + "/**",
                 middleware: true,
             },
             (req) => {

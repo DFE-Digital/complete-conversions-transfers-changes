@@ -32,7 +32,7 @@ export interface NoteDetail {
 export type NotesResponse = NoteDetail[];
 
 class NoteApi extends ApiBase {
-    private readonly noteUrl = `${Cypress.env(EnvApi)}/v1/Projects/Notes`;
+    private readonly noteUrl = `${Cypress.expose(EnvApi)}/v1/Projects/Notes`;
 
     public removeAllNotesForProject(projectId: string) {
         return this.getProjectNotes(projectId).then((response) => {

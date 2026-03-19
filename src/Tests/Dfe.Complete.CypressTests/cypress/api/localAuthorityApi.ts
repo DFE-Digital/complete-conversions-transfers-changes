@@ -39,7 +39,7 @@ interface CreateLocalAuthorityResponse {
 type ListLocalAuthoritiesResponse = LocalAuthorityItem[];
 
 class LocalAuthorityApi extends ApiBase {
-    private readonly localAuthorityUrl = `${Cypress.env(EnvApi)}/v1/ServiceSupport/LocalAuthority`;
+    private readonly localAuthorityUrl = `${Cypress.expose(EnvApi)}/v1/ServiceSupport/LocalAuthority`;
 
     public createLocalAuthority(request: CreateLocalAuthorityRequest): Chainable<CreateLocalAuthorityResponse> {
         return this.authenticatedRequest().then((headers) => {
