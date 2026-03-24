@@ -1,4 +1,3 @@
-import { beforeEach } from "mocha";
 import { serviceSupportUser, userToEdit } from "cypress/constants/cypressConstants";
 import usersPage from "cypress/pages/service-support/usersPage";
 import userApi from "cypress/api/userApi";

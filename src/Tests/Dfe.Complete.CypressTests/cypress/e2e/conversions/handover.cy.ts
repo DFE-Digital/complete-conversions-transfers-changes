@@ -1,5 +1,4 @@
 import projectRemover from "cypress/api/projectRemover";
-import { beforeEach } from "mocha";
 import { Logger } from "cypress/common/logger";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";

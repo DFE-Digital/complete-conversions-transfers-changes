@@ -23,10 +23,9 @@ Cypress.on("url:changed", (url) => {
     url = url.replace(`${Cypress.config("baseUrl")}`, "");
     url = url.split("#")[0]; // Remove any hash fragments
     url = url.split("?")[0]; // Remove any query parameters
-    if (!Cypress.env("visitedUrls")) {
-        Cypress.env("visitedUrls", new Set());
-    }
-    Cypress.env("visitedUrls").add(url);
+    const visitedUrls: Set<string> = Cypress.expose("visitedUrls") || new Set<string>();
+    visitedUrls.add(url);
+    Cypress.expose("visitedUrls", visitedUrls);
 });
 
 declare global {

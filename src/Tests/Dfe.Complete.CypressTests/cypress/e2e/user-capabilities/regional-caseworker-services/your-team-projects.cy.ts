@@ -1,4 +1,3 @@
-import { before } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
