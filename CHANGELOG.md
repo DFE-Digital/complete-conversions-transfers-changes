@@ -16,9 +16,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
- - Sponsored grant tasks page, acessibility fixes for expandable content inside checkbox labels
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-24.1419...main) for everything awaiting release
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-17.1407...main) for everything awaiting release
+---
+
+## [1.41.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-03-24.1419) - 2026-03-24
+
+### Changed
+- [257448](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/257448) - Sponsored grant tasks page, accessibility fixes for expandable content inside checkbox labels
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-17.1407...production-2026-03-24.1419) for everything in the release
 
 ---
 
