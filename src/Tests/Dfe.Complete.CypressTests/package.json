@@ -52,6 +52,6 @@
     "typescript": "5.2.2",
     "util": "^0.12.5",
     "webpack": "^5.105.4",
-    "zaproxy": "2.0.0-rc.6"
+    "zaproxy": "2.0.0-rc.7"
   }
 }
