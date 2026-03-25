@@ -1,51 +1,51 @@
 import {
-    EnvCompleteApiClientId,
     EnvClientId,
     EnvClientSecret,
+    EnvCompleteApiClientId,
     EnvTenantId,
     EnvUsername,
     UserAccessToken,
 } from "cypress/constants/cypressConstants";
 
 export class ApiBase {
-    protected getHeaders(): object {
-        return {
-            Authorization: `Bearer ${Cypress.env(UserAccessToken)}`,
-            "Content-type": "application/json",
-            "x-user-context-name": Cypress.env(EnvUsername),
-        };
+    protected authenticatedRequest(): Cypress.Chainable<object> {
+        return cy.task<Record<string, string>>("get", [UserAccessToken]).then((result) => {
+            if (result[UserAccessToken]) {
+                return this.buildHeaders(result[UserAccessToken]);
+            }
+            return this.fetchAccessToken();
+        });
     }
 
-    protected authenticatedRequest(): Cypress.Chainable<object> {
-        const accessToken = Cypress.env(UserAccessToken);
-        if (accessToken) {
-            return cy.wrap(this.getHeaders());
-        }
-
-        const tenantId = Cypress.env(EnvTenantId);
-        const clientId = Cypress.env(EnvClientId);
-        const clientSecret = Cypress.env(EnvClientSecret);
-        const completeApiClientId = Cypress.env(EnvCompleteApiClientId);
-        const scope = `api://${completeApiClientId}/.default`;
-
+    private fetchAccessToken(): Cypress.Chainable<object> {
         return cy
-            .request({
-                method: "POST",
-                url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-                form: true,
-                body: {
-                    grant_type: "client_credentials",
-                    client_id: clientId,
-                    client_secret: clientSecret,
-                    scope: scope,
-                },
+            .env([EnvTenantId, EnvClientId, EnvClientSecret, EnvCompleteApiClientId])
+            .then((env) => {
+                const scope = `api://${env[EnvCompleteApiClientId]}/.default`;
+                return cy.request({
+                    method: "POST",
+                    url: `https://login.microsoftonline.com/${env[EnvTenantId]}/oauth2/v2.0/token`,
+                    form: true,
+                    body: {
+                        grant_type: "client_credentials",
+                        client_id: env[EnvClientId],
+                        client_secret: env[EnvClientSecret],
+                        scope: scope,
+                    },
+                });
             })
             .then((response) => {
                 expect(response.status).to.eq(200);
-                const accessToken = response.body.access_token;
-                Cypress.env(UserAccessToken, accessToken);
-
-                return this.getHeaders();
+                const token = response.body.access_token;
+                return cy.task("set", { [UserAccessToken]: token }).then(() => this.buildHeaders(token));
             });
+    }
+
+    private buildHeaders(accessToken: string): object {
+        return {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-type": "application/json",
+            "x-user-context-name": Cypress.expose(EnvUsername),
+        };
     }
 }

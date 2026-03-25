@@ -1,7 +1,6 @@
 import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { beforeEach } from "mocha";
 import {
     currentMonthLong,
     dimensionsTrust,

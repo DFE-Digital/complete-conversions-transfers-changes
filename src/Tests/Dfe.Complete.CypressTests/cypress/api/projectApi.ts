@@ -19,7 +19,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<GetProjectResponse>({
                     method: "GET",
-                    url: Cypress.env(EnvApi) + "/v1/Projects",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects",
                     qs: { "urn.Value": urn },
                     headers: headers,
                     failOnStatusCode: false,
@@ -117,7 +117,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/Handover/Assign",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects/Project/Handover/Assign",
                     headers: headers,
                     body: request,
                 })
@@ -133,7 +133,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/AcademyUrn",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects/Project/AcademyUrn",
                     headers: headers,
                     body: {
                         projectId: { value: projectId },
@@ -152,7 +152,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/SignificantDate",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects/Project/SignificantDate",
                     headers: headers,
                     body: {
                         projectId: { value: projectId },
@@ -173,7 +173,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<boolean>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/Projects/project/Complete",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects/project/Complete",
                     headers: headers,
                     body: {
                         projectId: { value: projectId },
@@ -208,7 +208,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "POST",
-                    url: Cypress.env(EnvApi) + "/v1/projects/" + projectType,
+                    url: Cypress.expose(EnvApi) + "/v1/projects/" + projectType,
                     headers: headers,
                     body: request,
                 })

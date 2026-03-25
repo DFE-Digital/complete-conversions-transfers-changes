@@ -6,7 +6,6 @@ import {
     shouldNotHaveAccessToViewProjectReports,
     shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
-import { beforeEach } from "mocha";
 import { regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";

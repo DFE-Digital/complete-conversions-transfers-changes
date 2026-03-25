@@ -1,6 +1,5 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { nextMonthShort } from "cypress/constants/stringTestConstants";
-import { before } from "mocha";
 import search from "cypress/pages/search";
 import searchResultsPage from "cypress/pages/searchResultsPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";

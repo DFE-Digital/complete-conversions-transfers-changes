@@ -1,4 +1,3 @@
-import { beforeEach } from "mocha";
 import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,

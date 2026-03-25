@@ -7,7 +7,6 @@ import {
     shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import {

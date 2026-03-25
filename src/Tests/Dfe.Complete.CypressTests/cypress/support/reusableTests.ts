@@ -94,7 +94,7 @@ export function shouldBeAbleToViewReportsLandingPage() {
 }
 
 export function checkAccessibilityAcrossPages() {
-    const visitedUrls = Cypress.env("visitedUrls");
+    const visitedUrls = Cypress.expose("visitedUrls") as Set<string>;
     visitedUrls.forEach((url: string) => {
         let responseStatus = 200;
 
