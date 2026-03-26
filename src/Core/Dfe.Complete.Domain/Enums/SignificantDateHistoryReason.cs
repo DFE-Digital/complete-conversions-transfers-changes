@@ -5,7 +5,7 @@ namespace Dfe.Complete.Domain.Enums;
 
 public enum SignificantDateReason
 {
-
+    // This value is effectively archived due to AB changes but needs to be retained for historical change date reasons to show correctly
     [Description("advisory_board_conditions")]
     [DisplayDescription("Advisory board conditions not met")]
     AdvisoryBoardConditions = 1,
@@ -75,4 +75,7 @@ public enum SignificantDateReason
     [Description("academy")]
     [DisplayDescription("Academy")]
     Academy = 23,
+    [Description("decision_conditions")]
+    [DisplayDescription("Decision conditions not met")]
+    DecisionConditions = 24,
 }
