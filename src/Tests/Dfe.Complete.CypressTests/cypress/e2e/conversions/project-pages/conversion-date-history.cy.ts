@@ -29,6 +29,7 @@ const reasonsForChange1 = {
     AdvisoryBoardConditions: "Advisory board has been established to oversee the conversion process.",
     Buildings: "Building renovations are scheduled to start next month.",
     CorrectingAnError: "Correcting an error in the previous date setting.",
+    DecisionConditions: "Decision conditions have been established to oversee the conversion process.",
     Diocese: "Diocese has approved the conversion plans and is fully supportive.",
     Finance: "Financial audits have been completed and funding is secured.",
     Governance: "Governance structure has been reviewed and approved by the board.",
@@ -104,6 +105,7 @@ describe("View the conversion date history tests", () => {
             .hasReasonNewDate("Advisory board conditions not met", reasonsForChange1.AdvisoryBoardConditions)
             .hasReasonNewDate("Buildings", reasonsForChange1.Buildings)
             .hasReasonNewDate("Correcting an error", reasonsForChange1.CorrectingAnError)
+            .hasReasonNewDate("Decision conditions not met", reasonsForChange1.DecisionConditions)
             .hasReasonNewDate("Diocese", reasonsForChange1.Diocese)
             .hasReasonNewDate("Finance", reasonsForChange1.Finance)
             .hasReasonNewDate("Governance", reasonsForChange1.Governance)
