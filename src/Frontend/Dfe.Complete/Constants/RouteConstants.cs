@@ -102,6 +102,7 @@
         public const string ProjectRedactAndSendTask = ProjectTaskList + "/redact_and_send";
         public const string ProjectReceiveDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/receive_grant_payment_certificate";
         public const string ProjectComplete = Project + "/complete";
+        public const string ProjectHoldConfirm = Project + "/hold/confirm";
         public const string ProjectDaoRevocation = Project + "/dao-revocation";
         public const string ProjectDaoRevocationConfirm = ProjectDaoRevocation + "/confirm";
         public const string ProjectDaoRevocationReason = ProjectDaoRevocation + "/reasons";
