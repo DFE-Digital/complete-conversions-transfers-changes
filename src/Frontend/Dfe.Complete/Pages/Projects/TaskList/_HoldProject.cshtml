@@ -1,0 +1,23 @@
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Services
+
+@if (!Model.Project.IsOnHold)
+{
+    <div class="govuk-grid-row" id="holding_a_project">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <form action="@string.Format(RouteConstants.ProjectHoldConfirm, Model.ProjectId)" accept-charset="UTF-8"
+                        method="post">
+                    @Html.AntiForgeryToken()
+                    <h2 class="govuk-heading-m">Put the project on hold</h2>
+                    <p class="govuk-body">You can put a project on hold if you need to pause the project for any reason.</p>
+                    <div class="govuk-button-group">
+                        <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                            Put the project on hold
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
