@@ -147,7 +147,7 @@ describe("Change the transfer date tests", () => {
             )
             .selectReasonWithDetails("Correcting an error", "The previous date was incorrect.")
             .selectReasonWithDetails("Voluntary deferral", "Being voluntarily deferred for strategic reasons.")
-            .selectReasonWithDetails("Advisory board conditions not met", "Advisory board conditions not yet met.")
+            .selectReasonWithDetails("Decision conditions not met", "Decision conditions not yet met.")
             .saveAndContinue();
 
         Logger.log("Confirmation page shows the new transfer date");

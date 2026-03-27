@@ -27,23 +27,24 @@ let confirmedDateProjectId: string;
 
 const reasonsForChange1 = {
     Academy: "The academy has requested a later date to ensure all preparations are complete.",
-    AdvisoryBoardConditions: "Advisory board has been established to oversee the conversion process.",
+    AdvisoryBoardConditions: "Advisory board has been established to oversee the transfer process.",
     Buildings: "Building renovations are scheduled to start next month.",
     CommercialTransferAgreement: "Commercial transfer agreement has been drafted and is ready for review.",
     CorrectingAnError: "Correcting an error in the previous date setting.",
-    Diocese: "Diocese has approved the conversion plans and is fully supportive.",
+    DecisionConditions: "Decision conditions have been established to oversee the transfer process.",
+    Diocese: "Diocese has approved the transfer plans and is fully supportive.",
     Finance: "Financial audits have been completed and funding is secured.",
     Governance: "Governance structure has been reviewed and approved by the board.",
-    IncomingTrust: "Incoming trust has been selected and is ready to proceed with the conversion.",
+    IncomingTrust: "Incoming trust has been selected and is ready to proceed with the transfer.",
     Land: "Land acquisition is complete and all legal documents are in order.",
     LegalDocuments: "All legal documents have been reviewed and signed by the relevant parties.",
-    LocalAuthority: "Local authority has been consulted and supports the conversion.",
-    NegativePress: "No negative press has been reported regarding the conversion.",
+    LocalAuthority: "Local authority has been consulted and supports the transfer.",
+    NegativePress: "No negative press has been reported regarding the transfer.",
     OutgoingTrust: "Outgoing trust has been cooperative and supportive throughout the process.",
     Pensions: "Pension arrangements have been finalized and approved by the relevant authorities.",
     Tupe: "TUPE arrangements have been communicated to all staff and are in compliance with legal requirements.",
-    Union: "Union representatives have been consulted and are supportive of the conversion.",
-    Viability: "The school's viability has been assessed and confirmed as strong, ensuring a successful conversion.",
+    Union: "Union representatives have been consulted and are supportive of the transfer.",
+    Viability: "The school's viability has been assessed and confirmed as strong, ensuring a successful transfer.",
     VoluntaryDeferral: "Voluntary deferral has been requested to allow more time for preparations.",
 };
 
@@ -108,6 +109,7 @@ describe("View the transfer date history tests", () => {
             .hasReasonNewDate("Buildings", reasonsForChange1.Buildings)
             .hasReasonNewDate("Commercial transfer agreement", reasonsForChange1.CommercialTransferAgreement)
             .hasReasonNewDate("Correcting an error", reasonsForChange1.CorrectingAnError)
+            .hasReasonNewDate("Decision conditions not met", reasonsForChange1.DecisionConditions)
             .hasReasonNewDate("Diocese", reasonsForChange1.Diocese)
             .hasReasonNewDate("Finance", reasonsForChange1.Finance)
             .hasReasonNewDate("Governance", reasonsForChange1.Governance)
