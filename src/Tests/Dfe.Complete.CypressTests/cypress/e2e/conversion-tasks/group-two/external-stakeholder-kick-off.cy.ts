@@ -60,7 +60,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
             .hasGuidance("You can choose an email template (opens in new tab) to help you")
             .hasCheckboxLabel("Check the local authority proforma")
             .clickDropdown("What to do if you don't have the local authority proforma")
-            .hasGuidance("The person who prepared this project for decision")
+            .hasGuidance("The person who prepared the project for decision")
             .hasCheckboxLabel(
                 `Check the local authority is able to convert the school by the provisional conversion date: ${significateDateToDisplayDate(
                     setup.project.provisionalConversionDate,

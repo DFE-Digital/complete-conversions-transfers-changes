@@ -119,7 +119,7 @@ describe("Handover process tests for transfer projects", () => {
             .hasValue(macclesfieldTrust.name)
             .summaryShows("Outgoing trust UKPRN")
             .hasValue(macclesfieldTrust.ukprn)
-            .summaryShows("Advisory board date")
+            .summaryShows("Date of decision")
             .hasValue(significateDateToDisplayDate(formAMATProject.advisoryBoardDate))
             .summaryShows("Provisional transfer date")
             .hasValue(significateDateToDisplayDate(formAMATProject.provisionalTransferDate))
