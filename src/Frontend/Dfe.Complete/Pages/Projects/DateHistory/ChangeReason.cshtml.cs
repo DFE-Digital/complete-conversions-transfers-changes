@@ -131,7 +131,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 }
                 reasons.Add(SignificantDateReason.CorrectingAnError);
                 reasons.Add(SignificantDateReason.VoluntaryDeferral);
-                reasons.Add(SignificantDateReason.AdvisoryBoardConditions);
+                reasons.Add(SignificantDateReason.DecisionConditions);
 
                 Reasons = reasons;
             }
