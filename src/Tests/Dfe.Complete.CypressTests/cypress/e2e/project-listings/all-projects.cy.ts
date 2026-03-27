@@ -94,7 +94,7 @@ describe("View all projects", () => {
             .columnHasValue("URN", `${prepareProject.urn}`)
             .columnHasValue("Incoming trust", macclesfieldTrust.name)
             .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
-            .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisoryBoardDate))
+            .columnHasValue("Date of decision", significateDateToDisplayDate(prepareProject.advisoryBoardDate))
             .columnHasValue("Project type", "Conversion")
             .columnHasValueWithLink(
                 "Add handover details",
