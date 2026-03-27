@@ -6329,6 +6329,9 @@
             "type": "boolean",
             "nullable": true
           },
+          "isOnHold": {
+            "type": "boolean"
+          },
           "mainContactId": {
             "nullable": true,
             "oneOf": [
