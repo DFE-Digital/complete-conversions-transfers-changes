@@ -86,7 +86,7 @@ describe("View all projects", () => {
                 "URN",
                 "Incoming trust",
                 "Provisional conversion or transfer date",
-                "Advisory board date",
+                "Date of decision",
                 "Project type",
                 "Add handover details",
             ])
