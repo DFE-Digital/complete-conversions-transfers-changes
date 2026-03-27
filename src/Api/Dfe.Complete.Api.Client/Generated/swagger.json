@@ -4808,6 +4808,14 @@
                 "format": "date",
                 "nullable": true
               },
+              "onHoldDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "isOnHold": {
+                "type": "boolean"
+              },
               "significantDateProvisional": {
                 "type": "boolean",
                 "nullable": true

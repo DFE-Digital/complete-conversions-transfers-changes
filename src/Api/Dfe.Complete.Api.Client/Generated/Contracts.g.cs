@@ -2134,6 +2134,13 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? SignificantDate { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("onHoldDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? OnHoldDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("isOnHold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsOnHold { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("significantDateProvisional", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SignificantDateProvisional { get; set; } = default!;
 
