@@ -643,6 +643,24 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Updates the on hold status for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/OnHold")]
+        [SwaggerResponse(204, "Project put on hold successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateOnHoldAsync(
+            [FromBody] UpdateProjectOnHoldCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updates the completion for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>

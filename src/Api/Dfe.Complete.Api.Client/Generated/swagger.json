@@ -2190,6 +2190,39 @@
         }
       }
     },
+    "/v1/Projects/project/OnHold": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the on hold status for a specific project.",
+        "operationId": "Projects_UpdateOnHold",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectOnHoldCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Project put on hold successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Projects/project/Complete": {
       "patch": {
         "tags": [
@@ -7487,6 +7520,15 @@
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
         ]
+      },
+      "UpdateProjectOnHoldCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
       },
       "UpdateProjectCompletedCommand": {
         "type": "object",
