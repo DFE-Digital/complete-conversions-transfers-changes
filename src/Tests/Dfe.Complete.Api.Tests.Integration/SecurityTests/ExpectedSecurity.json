@@ -276,6 +276,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
+      "Controller": "ProjectsController",
+      "Action": "UpdateOnHoldAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
       "Controller": "TasksDataController",
       "Action": "GetConversionTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
