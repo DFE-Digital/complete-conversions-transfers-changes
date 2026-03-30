@@ -16,7 +16,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+-  remove advisory board references in articles of association task
+-  remove advisory board references in external stakeholder kickoff task
+- remove advisory board references in change decision reasons
+- remove advisory board references in handover flow
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-24.1419...main) for everything awaiting release
+
+### Changed
+- remove advisory board references in transfer handover with RDO task
 
 ---
 
