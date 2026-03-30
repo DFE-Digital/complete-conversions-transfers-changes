@@ -131,10 +131,10 @@ describe("About the project page - transfer projects: ", () => {
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
-            .hasChangeLink(`${changeLinkPath}advisory-board`)
+            .hasChangeLink(`${changeLinkPath}date-of-decision`)
             .summaryShows("Conditions from advisory board")
             .hasValue(project.advisoryBoardConditions!)
-            .hasChangeLink(`${changeLinkPath}advisory-board`)
+            .hasChangeLink(`${changeLinkPath}date-of-decision`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -272,10 +272,10 @@ describe("About the project page - transfer projects: ", () => {
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(projectFormAMat.advisoryBoardDate))
-            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
+            .hasChangeLink(`${formAMATChangeLinkPath}date-of-decision`)
             .summaryShows("Conditions from advisory board")
             .hasValue(projectFormAMat.advisoryBoardConditions!)
-            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
+            .hasChangeLink(`${formAMATChangeLinkPath}date-of-decision`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -407,6 +407,7 @@ describe("About the project page - transfer projects: ", () => {
             .keyHasValue("Is this transfer due to 2RI?", "Yes")
             .keyHasValue("Is this transfer due to an inadequate Ofsted rating?", "Yes")
             .keyHasValue("Is this transfer due to financial, safeguarding or governance issues?", "Yes")
+            // TODO 
             .subSection("Advisory board details")
             .keyHasValue("Date of advisory board", "10 January 2024")
             .keyHasValue("Conditions from advisory board", "Updated advisory board conditions")

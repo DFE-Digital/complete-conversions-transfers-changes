@@ -284,8 +284,8 @@ public class BaseProjectDetailsPageModelTests
         Assert.Equal("12345678", model.IncomingTrustUkprn);
         Assert.Equal("TR123456", model.NewTrustReferenceNumber);
         Assert.Equal("GR789012", model.GroupReferenceNumber);
-        Assert.Equal(project.AdvisoryBoardDate?.ToDateTime(default), model.AdvisoryBoardDate);
-        Assert.Equal("Test conditions", model.AdvisoryBoardConditions);
+        Assert.Equal(project.AdvisoryBoardDate?.ToDateTime(default), model.DecisionDate);
+        Assert.Equal("Test conditions", model.DecisionConditions);
         Assert.Equal("https://example.com/establishment", model.EstablishmentSharepointLink);
         Assert.Equal("https://example.com/trust", model.IncomingTrustSharepointLink);
         Assert.True(model.IsHandingToRCS);
@@ -459,8 +459,8 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
 
             await SetGroupReferenceNumberAsync();
 
-            AdvisoryBoardDate = Project.AdvisoryBoardDate?.ToDateTime(default);
-            AdvisoryBoardConditions = Project.AdvisoryBoardConditions;
+            DecisionDate = Project.AdvisoryBoardDate?.ToDateTime(default);
+            DecisionConditions = Project.AdvisoryBoardConditions;
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;

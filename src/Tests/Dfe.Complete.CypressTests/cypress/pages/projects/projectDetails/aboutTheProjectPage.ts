@@ -6,7 +6,7 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
         "Project assignment": "projectAssignment",
         "Reasons for the conversion": "reasonsForConversion",
         "Reasons for the transfer": "reasonsForTransfer",
-        "Advisory board details": "advisoryBoardDetails",
+        "Decision details": "decisionDetails",
         "School details": "schoolDetails",
         "Academy details": "academyDetails",
         "Incoming trust details": "incomingTrustDetails",

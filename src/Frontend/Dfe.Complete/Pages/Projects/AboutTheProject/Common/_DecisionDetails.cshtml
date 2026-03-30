@@ -16,7 +16,7 @@
                 </govuk-summary-list-row-value>
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
-                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Date of advisory board">Change</govuk-summary-list-row-action>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("date-of-decision")" visually-hidden-text="Date of decision">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
                 }
             </govuk-summary-list-row>
@@ -33,7 +33,7 @@
                 </govuk-summary-list-row-value>
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
-                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Conditions from advisory board">Change</govuk-summary-list-row-action>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("date-of-decision")" visually-hidden-text="Conditions of the decision">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
                 }
             </govuk-summary-list-row>

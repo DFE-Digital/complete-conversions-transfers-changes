@@ -71,10 +71,10 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
                 IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
-                AdvisoryBoardDate: AdvisoryBoardDate.HasValue
-                    ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
+                AdvisoryBoardDate: DecisionDate.HasValue
+                    ? DateOnly.FromDateTime(DecisionDate.Value)
                     : default,
-                AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
+                AdvisoryBoardConditions: DecisionConditions ?? string.Empty,
                 EstablishmentSharepointLink: EstablishmentSharepointLink ?? string.Empty,
                 IncomingTrustSharepointLink: IncomingTrustSharepointLink ?? string.Empty,
                 IsHandingToRCS: IsHandingToRCS ?? false,
