@@ -407,10 +407,9 @@ describe("About the project page - transfer projects: ", () => {
             .keyHasValue("Is this transfer due to 2RI?", "Yes")
             .keyHasValue("Is this transfer due to an inadequate Ofsted rating?", "Yes")
             .keyHasValue("Is this transfer due to financial, safeguarding or governance issues?", "Yes")
-            // TODO 
             .subSection("Decision details")
             .keyHasValue("Date of decision", "10 January 2024")
-            .keyHasValue("Conditions from advisory board", "Updated advisory board conditions")
+            .keyHasValue("Conditions of the decision", "Updated decision conditions")
             .subSection("Academy details")
             .keyHasValueWithLink(
                 "SharePoint folder",
