@@ -76,11 +76,8 @@
                 <govuk-date-input id="@dateOfAdvisoryBoardField" name-prefix="@dateOfAdvisoryBoardField" asp-for="@Model.AdvisoryBoardDate">
                     <govuk-date-input-fieldset>
                         <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
-                            Date of advisory board
+                            Date of decision
                         </govuk-date-input-fieldset-legend>
-                        <govuk-date-input-hint>
-                            You can find this in the advisory board template.
-                        </govuk-date-input-hint>
                         @if (Model.ErrorService.HasErrorForKey(@dateOfAdvisoryBoardField))
                         {
                             <govuk-date-input-error-message>@(Model.ErrorService.GetErrorMessage(dateOfAdvisoryBoardField))</govuk-date-input-error-message>
@@ -90,7 +87,7 @@
 
                 <govuk-textarea name="AdvisoryBoardConditions" asp-for="@Model.AdvisoryBoardConditions">
                     <govuk-textarea-label class="govuk-label--m">
-                        Advisory board conditions
+                        Conditions of decision
                     </govuk-textarea-label>
                 </govuk-textarea>
             </div>
