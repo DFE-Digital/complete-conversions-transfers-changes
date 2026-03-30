@@ -127,12 +127,12 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(project.financialSafeguardingGovernanceIssues ? "Yes" : "No")
             .hasChangeLink(`${changeLinkPath}financial-safeguarding-governance-issues`)
 
-            .subSection("Advisory board details")
-            .hasSubHeading("Advisory board details")
-            .summaryShows("Date of advisory board")
+            .subSection("Decision details")
+            .hasSubHeading("Decision details")
+            .summaryShows("Date of decision")
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .hasChangeLink(`${changeLinkPath}date-of-decision`)
-            .summaryShows("Conditions from advisory board")
+            .summaryShows("Conditions of the decision")
             .hasValue(project.advisoryBoardConditions!)
             .hasChangeLink(`${changeLinkPath}date-of-decision`)
 
@@ -268,12 +268,12 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(projectFormAMat.financialSafeguardingGovernanceIssues ? "Yes" : "No")
             .hasChangeLink(`${formAMATChangeLinkPath}financial-safeguarding-governance-issues`)
 
-            .subSection("Advisory board details")
-            .hasSubHeading("Advisory board details")
-            .summaryShows("Date of advisory board")
+            .subSection("Decision details")
+            .hasSubHeading("Decision details")
+            .summaryShows("Date of decision")
             .hasValue(significateDateToDisplayDate(projectFormAMat.advisoryBoardDate))
             .hasChangeLink(`${formAMATChangeLinkPath}date-of-decision`)
-            .summaryShows("Conditions from advisory board")
+            .summaryShows("Conditions of the decision")
             .hasValue(projectFormAMat.advisoryBoardConditions!)
             .hasChangeLink(`${formAMATChangeLinkPath}date-of-decision`)
 
@@ -363,8 +363,8 @@ describe("About the project page - transfer projects: ", () => {
             .pageHasMovedToSection("Project assignment")
             .jumpToSection("Reasons for the transfer")
             .pageHasMovedToSection("Reasons for the transfer")
-            .jumpToSection("Advisory board details")
-            .pageHasMovedToSection("Advisory board details")
+            .jumpToSection("Decision details")
+            .pageHasMovedToSection("Decision details")
             .jumpToSection("Academy details")
             .pageHasMovedToSection("Academy details")
             .jumpToSection("Incoming trust details")
@@ -385,8 +385,8 @@ describe("About the project page - transfer projects: ", () => {
             .doesntContain("Incoming trust UKPRN") // field should not be editable
             .doesntContain("Trust reference number (TRN)") // only SS can edit TRN
             .withGroupReferenceNumber(newGRP)
-            .withAdvisoryBoardDate("10", "01", "2024")
-            .withAdvisoryBoardConditions("Updated advisory board conditions")
+            .withDecisionDate("10", "01", "2024")
+            .withDecisionConditions("Updated decision conditions")
             .withSchoolOrAcademySharePointLink("https://educationgovuk.sharepoint.com/11")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com/22")
             .withOutgoingTrustSharePointLink("https://educationgovuk.sharepoint.com/33")
@@ -408,8 +408,8 @@ describe("About the project page - transfer projects: ", () => {
             .keyHasValue("Is this transfer due to an inadequate Ofsted rating?", "Yes")
             .keyHasValue("Is this transfer due to financial, safeguarding or governance issues?", "Yes")
             // TODO 
-            .subSection("Advisory board details")
-            .keyHasValue("Date of advisory board", "10 January 2024")
+            .subSection("Decision details")
+            .keyHasValue("Date of decision", "10 January 2024")
             .keyHasValue("Conditions from advisory board", "Updated advisory board conditions")
             .subSection("Academy details")
             .keyHasValueWithLink(

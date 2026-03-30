@@ -17,12 +17,12 @@ class EditProjectPage extends BasePage {
         return this;
     }
 
-    withAdvisoryBoardDate(day: string, month: string, year: string): this {
+    withDecisionDate(day: string, month: string, year: string): this {
         cy.enterDate("DecisionDate", day, month, year);
         return this;
     }
 
-    withAdvisoryBoardConditions(text: string): this {
+    withDecisionConditions(text: string): this {
         cy.getById("DecisionConditions").clear().typeFast(text);
         return this;
     }
