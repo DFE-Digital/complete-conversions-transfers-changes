@@ -29,23 +29,40 @@
         </div>
     </div>
 }
-@if (Model.ShowProjectCompletionValidationNotification)
-{
-    @await Html.PartialAsync("Completion/_ValidationNotification")
-}
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <span class="govuk-caption-l">
-      @(Model.Project.Type == ProjectType.Transfer ? "Academy" : "School") URN @Model.Project.Urn.Value
-      <govuk-tag class="govuk-tag--purple">@Model.Project.Type.ToDisplayDescription()</govuk-tag>
 
-      @if (Model.Project.FormAMat)
-      {
-        <govuk-tag class="govuk-tag--pink">Form a MAT</govuk-tag>
-      }
-      @if(Model.Project.State == ProjectState.DaoRevoked)
-      {
-          <govuk-tag class="govuk-tag govuk-tag--red">DAO REVOKED</govuk-tag>
+@if (Model.Project.IsOnHold)
+{
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <govuk-notification-banner>
+        <govuk-notification-banner-title>
+          Important
+        </govuk-notification-banner-title>
+        <h3>Project on hold</h3>
+        <p>The project was put on hold on @Model.Project.OnHoldDate.ToDateString().
+          You can <a href="@string.Format(RouteConstants.ProjectResumeConfirm, Model.ProjectId)">resume the project</a> if you are ready to continue with it.</p>
+      </govuk-notification-banner>
+    </div>
+  </div>
+  }
+
+  @if (Model.ShowProjectCompletionValidationNotification)
+  {
+      @await Html.PartialAsync("Completion/_ValidationNotification")
+  }
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">
+        @(Model.Project.Type == ProjectType.Transfer ? "Academy" : "School") URN @Model.Project.Urn.Value
+        <govuk-tag class="govuk-tag--purple">@Model.Project.Type.ToDisplayDescription()</govuk-tag>
+
+        @if (Model.Project.FormAMat)
+        {
+          <govuk-tag class="govuk-tag--pink">Form a MAT</govuk-tag>
+        }
+        @if(Model.Project.State == ProjectState.DaoRevoked)
+        {
+            <govuk-tag class="govuk-tag govuk-tag--red">DAO REVOKED</govuk-tag>
       } 
       @if (Model.Project.GroupId is not null)
       {

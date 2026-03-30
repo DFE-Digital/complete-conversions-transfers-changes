@@ -6362,6 +6362,11 @@
             "type": "boolean",
             "nullable": true
           },
+          "onHoldDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
           "isOnHold": {
             "type": "boolean"
           },

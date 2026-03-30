@@ -6,7 +6,7 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import onHoldPage from "cypress/pages/projects/onHold";
 // import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import { getSignificantDateString } from "cypress/support/formatDate";
+import { getSignificantDateString, toDisplayDate } from "cypress/support/formatDate";
 
 const nextMonth = getSignificantDateString(1);
 
@@ -30,28 +30,20 @@ describe("Complete conversion projects tests", () => {
         cy.acceptCookies();
     });
 
-    // flaky test - needs investigation whether this is the test or application issue
     it("should be able to hold a project", () => {
         cy.visit(`projects/${activeProjectId}/tasks`);
-        taskListPage.clickButton("Put the project on hold");
+        taskListPage
+            .clickButton("Put the project on hold")
+            .doesntContain("Resume the project")
+            .doesntContain("You can resume the project if you are ready to continue with it.")
+
         onHoldPage
             .confirmHoldText(activeProjectSchoolName)
             .continue();
-        // taskListPage.containsSuccessBannerWithMessage("Project held");
-        cy.reload();
-        // taskListPage
-        //     .containsImportantBannerWithMessage(
-        //         "",
-        //         "This project's Directive Academy Order was revoked on 15 June 2024.",
-        //     )
-        //     .contains("This project was put on hold ... ")
-        //     .doesntContain("Put the project on hold")
-        //     .contains("Resume the project");
-    });
 
-    it("should not be able to resume a project that isn't held", () => {
-        cy.visit(`projects/${activeProjectId}/tasks`);
-        taskListPage.doesntContain("Resume the project").doesntContain("You can resume the project if you are ready to continue with it.");
+        taskListPage
+            .containsSuccessBannerWithMessage("The project was put on hold.")
+            .containsImportantBannerWithMessage("Project on hold", `The project was put on hold on ${toDisplayDate(new Date())}.`)
     });
 
     it("Check accessibility across pages", () => {
