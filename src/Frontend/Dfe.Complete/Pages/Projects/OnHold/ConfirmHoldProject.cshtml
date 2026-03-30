@@ -1,0 +1,18 @@
+﻿@page "/projects/{projectId}/hold/confirm"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.OnHold.ConfirmHoldProjectModel
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Confirm hold project";
+}
+
+<form method="post">
+    <span class="govuk-caption-xl">@Model.Establishment.Name</span>
+    <h1 class="govuk-heading-xl">Put @Model.Establishment.Name on hold</h1>
+    <p>You are about to put @Model.Establishment.Name on hold. This will prevent any changes being made to the project until you resume it.</p>
+
+    <div class="govuk-button-group">
+        <govuk-button type="submit">Continue</govuk-button>
+        <a class="govuk-link" href="@String.Format(RouteConstants.Project, Model.ProjectId)">Cancel</a>
+    </div>
+</form>

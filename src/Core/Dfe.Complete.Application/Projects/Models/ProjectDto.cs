@@ -60,6 +60,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? AllConditionsMet { get; set; }
 
+        public DateOnly? OnHoldDate { get; set; }
+
         public bool IsOnHold { get; set; }
 
         public ContactId? MainContactId { get; set; }

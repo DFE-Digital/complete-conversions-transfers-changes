@@ -7,7 +7,8 @@ using System.Diagnostics.CodeAnalysis;
 namespace Dfe.Complete.Pages.Projects.ProjectView;
 
 [ExcludeFromCodeCoverage]
-public abstract class ProjectLayoutModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService, string currentNavigation) : BaseProjectPageModel(sender, logger, projectPermissionService)
+public abstract class ProjectLayoutModel(ISender sender, ILogger logger, IProjectPermissionService projectPermissionService, string currentNavigation)
+    : BaseProjectPageModel(sender, logger, projectPermissionService)
 {
     public string CurrentNavigationItem { get; } = currentNavigation;
 
@@ -23,4 +24,5 @@ public abstract class ProjectLayoutModel(ISender sender, ILogger logger, IProjec
     public const string InternalContactsNavigation = "internal-contacts";
     public const string ConversionDateHistoryNavigation = "conversion-date-history";
     public const string RecordDaoRevocationNavigation = "dao-revocation";
+    public const string HoldProjectNavigation = "hold-project";
 }

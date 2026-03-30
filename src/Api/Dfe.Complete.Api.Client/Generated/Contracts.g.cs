@@ -3648,6 +3648,10 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("allConditionsMet", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? AllConditionsMet { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("onHoldDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? OnHoldDate { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("isOnHold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsOnHold { get; set; } = default!;
 
