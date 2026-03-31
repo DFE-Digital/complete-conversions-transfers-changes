@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -10,8 +11,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory;
 
-public class ChangeDateProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeDateProjectModel> logger, IProjectPermissionService projectPermissionService) : ProjectLayoutModel(sender, logger, projectPermissionService, ConversionDateHistoryNavigation)
+public class ChangeDateProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeDateProjectModel> logger, IProjectPermissionService projectPermissionService, ISignificantDateValidator dateValidator) : ProjectLayoutModel(sender, logger, projectPermissionService, ConversionDateHistoryNavigation)
 {
+    private readonly ISignificantDateValidator _dateValidator = dateValidator;
+
     [BindProperty]
     [Required(ErrorMessage = "Enter a valid month and year for the revised date, like 9 2024")]
     [Display(Name = "Significant Date")]
@@ -48,14 +51,10 @@ public class ChangeDateProjectModel(ISender sender, IErrorService errorService, 
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectTaskList));
         }
 
-        if (SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
+        var validationResult = _dateValidator.ValidateSignificantDate(SignificantDate, Project);
+        if (!validationResult.IsValid)
         {
-            ModelState.AddModelError(nameof(SignificantDate), "The Significant date cannot be in the past");
-        }
-
-        if (SignificantDate == Project.SignificantDate)
-        {
-            ModelState.AddModelError(nameof(SignificantDate), "The new date cannot be the same as the current date. Check you have entered the correct date.");
+            ModelState.AddModelError(nameof(SignificantDate), validationResult.ErrorMessage!);
         }
 
         if (!ModelState.IsValid)
