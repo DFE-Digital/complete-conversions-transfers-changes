@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Dfe.Complete.Pages.Projects.OnHold;
+namespace Dfe.Complete.Pages.Projects.ProjectHold;
 
 [ExcludeFromCodeCoverage]
 public class ConfirmHoldProjectModel(ISender sender, ILogger<ConfirmHoldProjectModel> logger, IProjectPermissionService projectPermissionService)
@@ -18,6 +18,7 @@ public class ConfirmHoldProjectModel(ISender sender, ILogger<ConfirmHoldProjectM
     {
         await UpdateCurrentProject();
 
+// TODO show notification, hide button in the first place. Create ProjectHoldLayoutModel for core logic
         if ( Project.State != Domain.Enums.ProjectState.Active)
         {
             return Redirect(string.Format(RouteConstants.Project, ProjectId));
@@ -28,7 +29,7 @@ public class ConfirmHoldProjectModel(ISender sender, ILogger<ConfirmHoldProjectM
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var result = await sender.Send(new UpdateProjectOnHoldCommand(new ProjectId(new Guid(ProjectId))), HttpContext.RequestAborted);
+        var result = await Sender.Send(new UpdateProjectOnHoldCommand(new ProjectId(new Guid(ProjectId))), HttpContext.RequestAborted);
         if (result.IsSuccess)
         {
             TempData.SetNotification(

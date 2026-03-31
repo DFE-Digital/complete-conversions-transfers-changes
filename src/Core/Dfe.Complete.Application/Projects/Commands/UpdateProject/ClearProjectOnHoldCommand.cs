@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
-public record UpdateProjectOnHoldCommand(
+public record ClearProjectOnHoldCommand(
     [Required] ProjectId ProjectId
 ) : IRequest<Result<bool>>;
 
-internal class UpdateProjectOnHoldCommandHandler(
+internal class ClearProjectOnHoldCommandHandler(
     ICompleteRepository<Project> projectRepository)
-    : IRequestHandler<UpdateProjectOnHoldCommand, Result<bool>>
+    : IRequestHandler<ClearProjectOnHoldCommand, Result<bool>>
 {
-    public async Task<Result<bool>> Handle(UpdateProjectOnHoldCommand request,
+    public async Task<Result<bool>> Handle(ClearProjectOnHoldCommand request,
         CancellationToken cancellationToken)
     {
         var project = await projectRepository.Query()
@@ -25,7 +25,7 @@ internal class UpdateProjectOnHoldCommandHandler(
         if (project == null)
             return Result<bool>.Success(false);
 
-        project!.OnHoldDate = DateOnly.FromDateTime(DateTime.Now);
+        project!.OnHoldDate = null;
         await projectRepository.UpdateAsync(project, cancellationToken);
         return Result<bool>.Success(true);
     }
