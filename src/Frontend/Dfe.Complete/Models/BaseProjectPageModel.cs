@@ -166,7 +166,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
 
     public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
 
-    protected async Task GetProjectTaskDataAsync()
+    protected async Task SetProjectTaskDataAsync()
     {
         if (Project.TasksDataId != null)
         {

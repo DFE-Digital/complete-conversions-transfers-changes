@@ -45,7 +45,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         }
 
         await UpdateCurrentProject();
-        await GetProjectTaskDataAsync();
+        await SetProjectTaskDataAsync();
         await GetKeyContactForProjectsAsync();
 
         if (Project.Type == ProjectType.Transfer)
