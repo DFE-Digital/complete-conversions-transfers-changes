@@ -10,6 +10,12 @@ class OnHold extends TaskPage {
         this.contains(`You are about to put ${schoolName} on hold. This will prevent any changes being made to the project until you resume it.`);
         return this;
     }
+
+    confirmResumeText(schoolName: string, projectType: 'conversion' | 'transfer') {
+        this.contains(`You are about to resume ${schoolName}. This will allow you to make changes to the project.`);
+        this.contains(`Check that the ${projectType} date is correct.`);
+        return this;
+    }
 }
 
 const onHoldPage = new OnHold();
