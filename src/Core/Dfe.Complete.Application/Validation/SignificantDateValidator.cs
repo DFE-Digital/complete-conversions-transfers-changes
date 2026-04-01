@@ -1,17 +1,17 @@
-using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Application.Projects.Models;
 
 namespace Dfe.Complete.Application.Validation
 {
     public interface ISignificantDateValidator
     {
-        ValidationResult ValidateSignificantDate(DateOnly? significantDate, Project? existingProject = null);
-        ValidationResult ValidateSignificantDateNotSameAsCurrent(DateOnly? significantDate, Project project);
+        ValidationResult ValidateSignificantDate(DateOnly? significantDate, ProjectDto? existingProject = null);
+        ValidationResult ValidateSignificantDateNotSameAsCurrent(DateOnly? significantDate, ProjectDto project);
         ValidationResult ValidateSignificantDateInFuture(DateOnly? significantDate);
     }
 
     public class SignificantDateValidator : ISignificantDateValidator
     {
-        public ValidationResult ValidateSignificantDate(DateOnly? significantDate, Project? existingProject = null)
+        public ValidationResult ValidateSignificantDate(DateOnly? significantDate, ProjectDto? existingProject = null)
         {
             // Basic future date validation
             var futureValidation = ValidateSignificantDateInFuture(significantDate);
@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Validation
             return ValidationResult.Success();
         }
 
-        public ValidationResult ValidateSignificantDateNotSameAsCurrent(DateOnly? significantDate, Project project)
+        public ValidationResult ValidateSignificantDateNotSameAsCurrent(DateOnly? significantDate, ProjectDto project)
         {
             if (significantDate.HasValue && significantDate == project.SignificantDate)
             {
