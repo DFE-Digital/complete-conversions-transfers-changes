@@ -1,27 +1,26 @@
-﻿@using Dfe.Complete.Utils
-@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
+﻿@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
 
-<section id="advisoryBoardDetails" class="app-summary-card govuk-!-margin-bottom-6">
+<section id="decisionDetails" class="app-summary-card govuk-!-margin-bottom-6">
     <header class="app-summary-card__header">
         <h2 class="app-summary-card__title">
-            Advisory board details
+            Decision details
         </h2>
     </header>
     <div class="app-summary-card__body">
         <govuk-summary-list>
             <govuk-summary-list-row>
-                <govuk-summary-list-row-key>Date of advisory board</govuk-summary-list-row-key>
+                <govuk-summary-list-row-key>Date of decision</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
                     @Model.Project.AdvisoryBoardDate?.ToDateString()
                 </govuk-summary-list-row-value>
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
-                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Date of advisory board">Change</govuk-summary-list-row-action>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("date-of-decision")" visually-hidden-text="Date of decision">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
                 }
             </govuk-summary-list-row>
             <govuk-summary-list-row>
-                <govuk-summary-list-row-key>Conditions from advisory board</govuk-summary-list-row-key>
+                <govuk-summary-list-row-key>Conditions of the decision</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
                     @if (!string.IsNullOrWhiteSpace(Model.Project.AdvisoryBoardConditions))
                     {
@@ -33,7 +32,7 @@
                 </govuk-summary-list-row-value>
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
-                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Conditions from advisory board">Change</govuk-summary-list-row-action>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("date-of-decision")" visually-hidden-text="Conditions of the decision">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
                 }
             </govuk-summary-list-row>

@@ -48,13 +48,13 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         public string? GroupReferenceNumber { get; set; } // Common
 
         [BindProperty]
-        [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+        [Required(ErrorMessage = "Enter a date for the decision, like 1 4 2023")]
         [DateInPast]
-        [Display(Name = "Date of advisory board")]
-        public DateTime? AdvisoryBoardDate { get; set; } // Common
+        [Display(Name = "Date of decision")]
+        public DateTime? DecisionDate { get; set; } // Common
 
         [BindProperty]
-        public string? AdvisoryBoardConditions { get; set; } // Common
+        public string? DecisionConditions { get; set; } // Common
 
         [BindProperty]
         [SharePointLink]
@@ -106,8 +106,8 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
 
             await SetGroupReferenceNumberAsync();
 
-            AdvisoryBoardDate = Project.AdvisoryBoardDate?.ToDateTime(default);
-            AdvisoryBoardConditions = Project.AdvisoryBoardConditions;
+            DecisionDate = Project.AdvisoryBoardDate?.ToDateTime(default);
+            DecisionConditions = Project.AdvisoryBoardConditions;
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;

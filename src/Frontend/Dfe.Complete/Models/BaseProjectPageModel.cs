@@ -54,6 +54,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
 
     public async Task UpdateCurrentProject()
     {
+        
         var success = Guid.TryParse(ProjectId, out var guid);
 
         if (!success)
