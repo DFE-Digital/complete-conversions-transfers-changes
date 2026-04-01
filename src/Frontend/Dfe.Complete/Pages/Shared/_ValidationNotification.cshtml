@@ -2,7 +2,8 @@
 @using Dfe.Complete.Extensions;
 
 @{
-    var validationMessages = TempData.Get<List<string>>("CompleteProjectValidationMessages");
+    var validationMessages = TempData.Get<List<string>>("ProjectValidationMessages");
+    var message = TempData.Get<string>("ProjectValidationTitle");
 }
 
 @if (validationMessages != null && validationMessages.Count > 0)
@@ -14,7 +15,7 @@
                     Important
                 </govuk-notification-banner-title>
 
-                <p>This project cannot be completed until:</p>
+                <p>@message</p>
                 <ul>
                     @foreach (var message in validationMessages)
                     {

@@ -79,7 +79,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
     {
         if (validationErrors.Count != 0)
         {
-            StoreValidationErrors(validationErrors);
+            TempData.SetValidationNotification("You cannot complete this project until:", validationErrors);
             return RedirectToProjectTaskListWithValidation();
         }
 
@@ -96,20 +96,15 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         await Sender.Send(command);
     }
 
-    private void StoreValidationErrors(List<string> validationErrors)
-    {
-        TempData.Put("CompleteProjectValidationMessages", validationErrors);
-    }
-
     private RedirectResult RedirectToProjectTaskList()
     {
         var url = string.Format(RouteConstants.ProjectTaskList, ProjectId);
         return Redirect(url);
     }
 
-    private IActionResult RedirectToProjectTaskListWithValidation()
+    private RedirectResult RedirectToProjectTaskListWithValidation()
     {
-        var url = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
+        var url = string.Format(RouteConstants.ProjectTaskListValidationError, ProjectId);
         return Redirect(url);
     }
     private RedirectResult RedirectToProjectCompletePage()
@@ -118,7 +113,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         TempData.Add("ShowProjectCompleteConfirmation", true);
         return Redirect(url);
     }
-    private IActionResult RedirectToProjectPage()
+    private RedirectResult RedirectToProjectPage()
     {
         var url = string.Format(RouteConstants.Project, ProjectId);
         return Redirect(url);

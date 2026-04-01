@@ -60,6 +60,7 @@
         public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
 
         public const string ProjectTaskList = Project + "/tasks";
+        public const string ProjectTaskListValidationError = Project + "/tasks?projectValidation=true";
 
         public const string ProjectAbout = Project + "/information";
         public const string ProjectEditAbout = ProjectAbout + "/edit";
