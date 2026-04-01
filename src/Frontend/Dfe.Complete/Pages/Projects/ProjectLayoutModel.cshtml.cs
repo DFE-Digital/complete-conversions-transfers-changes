@@ -14,8 +14,8 @@ public abstract class ProjectLayoutModel(ISender sender, ILogger logger, IProjec
 
     public bool CanEditSignificantDate => Project != null && Project.SignificantDateProvisional is false && UserHasEditAccess();
 
-    [BindProperty(SupportsGet = true, Name = "projectCompletionValidation")]
-    public bool ShowProjectCompletionValidationNotification { get; set; }
+    [BindProperty(SupportsGet = true, Name = "projectValidation")]
+    public bool ShowProjectValidationNotification { get; set; }
 
     public const string TaskListNavigation = "task-list";
     public const string AboutTheProjectNavigation = "about-the-project";

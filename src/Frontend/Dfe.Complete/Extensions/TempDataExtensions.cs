@@ -6,6 +6,12 @@ namespace Dfe.Complete.Extensions
 {
     public static class TempDataExtensions
     {
+        public static void SetValidationNotification(this ITempDataDictionary tempData, string notificationTitle, List<string> errors)
+        {
+            tempData["ProjectValidationTitle"] = notificationTitle;
+            tempData["ProjectValidationMessages"] = string.Join("<br>", errors);
+        }
+
         public static void SetNotification(this ITempDataDictionary tempData, NotificationType notificationType, string notificationTitle, string notificationMessage)
         {
             tempData["NotificationType"] = notificationType.ToString().ToLower();

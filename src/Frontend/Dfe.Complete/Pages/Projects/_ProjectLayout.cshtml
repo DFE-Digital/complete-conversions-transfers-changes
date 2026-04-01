@@ -30,27 +30,12 @@
     </div>
 }
 
-@if (Model.Project.IsOnHold)
+@if (Model.ShowProjectValidationNotification)
 {
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <govuk-notification-banner>
-        <govuk-notification-banner-title>
-          Important
-        </govuk-notification-banner-title>
-        <h3>Project on hold</h3>
-        <p>The project was put on hold on @Model.Project.OnHoldDate.ToDateString().
-          You can <a href="@string.Format(RouteConstants.ProjectResumeConfirm, Model.ProjectId)">resume the project</a> if you are ready to continue with it.</p>
-      </govuk-notification-banner>
-    </div>
-  </div>
-  }
+    @await Html.PartialAsync("_ValidationNotification")
+}
 
-  @if (Model.ShowProjectCompletionValidationNotification)
-  {
-      @await Html.PartialAsync("Completion/_ValidationNotification")
-  }
-  <div class="govuk-grid-row">
+<div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-l">
         @(Model.Project.Type == ProjectType.Transfer ? "Academy" : "School") URN @Model.Project.Urn.Value
