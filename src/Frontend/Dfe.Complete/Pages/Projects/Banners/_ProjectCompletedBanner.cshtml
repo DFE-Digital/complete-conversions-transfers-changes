@@ -1,0 +1,17 @@
+@using Dfe.Complete.Utils
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Dfe.Complete.Pages.Projects.ProjectView
+@model ProjectLayoutModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <govuk-notification-banner>
+            <govuk-notification-banner-title>
+                Important
+            </govuk-notification-banner-title>
+            <h3>Project completed</h3>
+            <p>This project was completed on @Model.Project.CompletedAt.ToDateString().</p>
+            <p>Only Service Support team members can make changes to this project.</p>
+        </govuk-notification-banner>
+    </div>
+</div>

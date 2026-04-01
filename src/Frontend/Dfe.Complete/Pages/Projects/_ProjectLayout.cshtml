@@ -16,18 +16,7 @@
 
 @if (TempData["RecordedDaoRevocation"] != null)
 {
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <govuk-notification-banner class="govuk-notification-banner--success">
-                <govuk-notification-banner-title>
-                    Success
-                </govuk-notification-banner-title>
-                <h3 class="govuk-notification-banner__heading" id="dao-revocation">
-                    DAO revocation recorded successfully
-                </h3>
-            </govuk-notification-banner>
-        </div>
-    </div>
+    @await Html.PartialAsync("Banners/_DaoRevocationSuccessBanner")
 }
 
 @if (Model.ShowProjectValidationNotification)
@@ -64,63 +53,19 @@
 
 @if (Model.Project.IsOnHold)
 {
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <govuk-notification-banner>
-                <govuk-notification-banner-title>
-                    Important
-                </govuk-notification-banner-title>
-                <h3>Project on hold</h3>
-                <p>The project was put on hold on @Model.Project.OnHoldDate.ToDateString().</p>
-                <p>You can <a href="@string.Format(RouteConstants.ProjectResumeConfirm, Model.ProjectId)">resume the project</a> if you are ready to continue with it.</p>
-            </govuk-notification-banner>
-        </div>
-    </div>
+    @await Html.PartialAsync("Banners/_ProjectOnHoldBanner", Model)
 }
-
 @if (Model.Project.CompletedAt is not null)
 {
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <govuk-notification-banner>
-                <govuk-notification-banner-title>
-                    Important
-                </govuk-notification-banner-title>
-                <h3>Project completed</h3>
-                <p>This project was completed on @Model.Project.CompletedAt.ToDateString().</p>
-                <p>Only Service Support team members can make changes to this project.</p>
-            </govuk-notification-banner>
-        </div>
-    </div>
+    @await Html.PartialAsync("Banners/_ProjectCompletedBanner", Model)
 }
 else if (!@Model.UserHasEditAccess())
 {
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <govuk-notification-banner>
-                <govuk-notification-banner-title>
-                    Important
-                </govuk-notification-banner-title>
-                <h3>Not assigned to project</h3>
-                <p>This project is not assigned to you and cannot be changed, you can add notes or contacts if required.</p>
-            </govuk-notification-banner>
-        </div>
-    </div>
+    @await Html.PartialAsync("Banners/_ProjectNotAssignedBanner")
 }
-
 @if (Model.Project.State == ProjectState.DaoRevoked)
 {
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <govuk-notification-banner class="govuk-notification-banner">
-                <govuk-notification-banner-title>
-                    Important
-                </govuk-notification-banner-title>
-                <p>This project's Directive Academy Order was revoked on @Model.DaoRevocation.DateOfDecision.ToDateString().</p>
-                <p>Only Service Support team members can make changes to this project.</p>
-            </govuk-notification-banner>
-        </div>
-    </div>
+    @await Html.PartialAsync("Banners/_DaoRevokedBanner", Model)
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
