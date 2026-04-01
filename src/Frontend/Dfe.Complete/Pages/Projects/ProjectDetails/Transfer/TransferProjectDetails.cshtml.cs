@@ -87,8 +87,8 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
 
             await SetGroupReferenceNumberAsync();
 
-            AdvisoryBoardDate = Project.AdvisoryBoardDate?.ToDateTime(default);
-            AdvisoryBoardConditions = Project.AdvisoryBoardConditions;
+            DecisionDate = Project.AdvisoryBoardDate?.ToDateTime(default);
+            DecisionConditions = Project.AdvisoryBoardConditions;
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             OutgoingTrustSharepointLink = HttpUtility.UrlDecode(Project.OutgoingTrustSharepointLink);
@@ -124,10 +124,10 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
                 IncomingTrustUkprn: Int32.TryParse(IncomingTrustUkprn, out var val) ? new Ukprn(val) : null,
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
                 GroupReferenceNumber: GroupReferenceNumber,
-                AdvisoryBoardDate: AdvisoryBoardDate.HasValue
-                    ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
+                AdvisoryBoardDate: DecisionDate.HasValue
+                    ? DateOnly.FromDateTime(DecisionDate.Value)
                     : default,
-                AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
+                AdvisoryBoardConditions: DecisionConditions ?? string.Empty,
                 EstablishmentSharepointLink: EstablishmentSharepointLink ?? string.Empty,
                 IncomingTrustSharepointLink: IncomingTrustSharepointLink ?? string.Empty,
                 OutgoingTrustSharepointLink: OutgoingTrustSharepointLink ?? string.Empty,

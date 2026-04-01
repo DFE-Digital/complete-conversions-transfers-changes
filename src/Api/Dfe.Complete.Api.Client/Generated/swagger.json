@@ -7483,7 +7483,8 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy"
+          "Academy",
+          "DecisionConditions"
         ],
         "enum": [
           "AdvisoryBoardConditions",
@@ -7508,7 +7509,8 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy"
+          "Academy",
+          "DecisionConditions"
         ]
       },
       "RecordDaoRevocationDecisionCommand": {
