@@ -16,6 +16,12 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-01.1436...main) for everything awaiting release
+
+---
+
+## [1.42.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-01.1436) - 2026-04-01
+
 ### Changed
 - remove advisory board references in articles of association task
 - remove advisory board references in external stakeholder kickoff task
@@ -23,8 +29,7 @@ Security in case of vulnerabilities.
 - remove advisory board references in handover flow
 - remove advisory board references in transfer handover with RDO task
 
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-31.1433...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-31.1433...production-2026-04-01.1436) for everything in the release
 
 ---
 
