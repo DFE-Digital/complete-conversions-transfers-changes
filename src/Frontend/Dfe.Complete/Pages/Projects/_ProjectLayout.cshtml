@@ -53,6 +53,10 @@
             {
                 <govuk-tag class="govuk-tag--turquoise">In a group</govuk-tag>
             }
+            @if (Model.Project.IsOnHold)
+            {
+                <govuk-tag class="govuk-tag govuk-tag--red">On hold</govuk-tag>
+            }
         </span>
         <h1 class="govuk-heading-xl">@Model.Establishment.Name</h1>
     </div>
