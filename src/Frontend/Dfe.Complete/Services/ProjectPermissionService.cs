@@ -26,7 +26,7 @@ namespace Dfe.Complete.Services
         public bool UserCanEdit(ProjectDto project, ClaimsPrincipal user) =>
             UserIsServiceSupport(user) || (ProjectIsActive(project) && UserIsAssignee(project, user));
         public bool UserCanDaoRevocation(ProjectDto project, ClaimsPrincipal user) =>
-            ProjectIsActive(project) && (UserIsServiceSupport(user) || UserIsAssignee(project, user)) && project.DirectiveAcademyOrder == true;
+            ProjectIsActive(project) && !project.IsOnHold && (UserIsServiceSupport(user) || UserIsAssignee(project, user)) && project.DirectiveAcademyOrder == true;
 
         public bool UserIsAdmin(ProjectDto project, ClaimsPrincipal user) =>
             UserIsServiceSupport(user);
