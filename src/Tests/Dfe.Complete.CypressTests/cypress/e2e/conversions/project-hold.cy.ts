@@ -8,6 +8,7 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { getSignificantDateString, toDisplayDate } from "cypress/support/formatDate";
 
 const nextMonth = getSignificantDateString(1);
+const lastMonth = getSignificantDateString(-1);
 
 const activeProject = ProjectBuilder.createConversionProjectRequest({
     urn: urnPool.conversion.batmans,
@@ -23,18 +24,30 @@ const heldProject = ProjectBuilder.createConversionProjectRequest({
 let heldProjectId: string;
 const heldProjectSchoolName = "Whitchurch Primary School";
 
+const pastHeldProject = ProjectBuilder.createConversionProjectRequest({
+    urn: urnPool.conversion.stMarks,
+    provisionalConversionDate: lastMonth
+});
+let pastHeldProjectId: string;
+
 describe("Complete conversion projects tests", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(activeProject.urn);
         projectRemover.removeProjectIfItExists(heldProject.urn);
+        projectRemover.removeProjectIfItExists(pastHeldProject.urn);
 
         projectApi.createAndUpdateConversionProject(activeProject).then((response) => {
             activeProjectId = response.value;
         });
 
-        return projectApi.createAndUpdateConversionProject(heldProject).then((response) => {
+        projectApi.createAndUpdateConversionProject(heldProject).then((response) => {
             heldProjectId = response.value;
-            return projectApi.holdProject(heldProjectId)
+            projectApi.holdProject(heldProjectId)
+        });
+
+        projectApi.createAndUpdateConversionProject(pastHeldProject).then((response) => {
+            pastHeldProjectId = response.value;
+            projectApi.holdProject(pastHeldProjectId)
         });
     });
 
@@ -78,6 +91,20 @@ describe("Complete conversion projects tests", () => {
             .containsSuccessBannerWithMessage("The project was resumed.")
             .doesntContain("Resume the project")
             .doesntContain("You can resume the project if you are ready to continue with it.")
+    });
+
+    it("should not be able to resume a project if the date is in the past", () => {
+        cy.visit(`projects/${pastHeldProjectId}/tasks`);
+
+        taskListPage
+            .contains("Resume the project")
+            .contains("You can resume the project if you are ready to continue with it.")
+            .containsImportantBannerWithMessage("Project on hold", `The project was put on hold on ${toDisplayDate(new Date())}.`)
+
+        taskListPage.clickButton("Resume the project");
+
+        taskListPage.hasValidationBannerWith("You cannot resume");
+
     });
 
     it("Check accessibility across pages", () => {
