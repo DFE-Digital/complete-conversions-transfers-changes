@@ -5,7 +5,7 @@ import projectApi from "cypress/api/projectApi";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import onHoldPage from "cypress/pages/projects/onHold";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
-import { getSignificantDateString, toDisplayDate } from "cypress/support/formatDate";
+import { getSignificantDateString, significateDateToDisplayDate, toDisplayDate } from "cypress/support/formatDate";
 
 const nextMonth = getSignificantDateString(1);
 const lastMonth = getSignificantDateString(-1);
@@ -84,7 +84,7 @@ describe("Complete conversion projects tests", () => {
             .clickButton("Resume the project")
 
         onHoldPage
-            .confirmResumeText(heldProjectSchoolName, 'conversion')
+            .confirmResumeText(heldProjectSchoolName, 'conversion', significateDateToDisplayDate(nextMonth))
             .continue();
 
         taskListPage
@@ -103,8 +103,17 @@ describe("Complete conversion projects tests", () => {
 
         taskListPage.clickButton("Resume the project");
 
-        taskListPage.hasValidationBannerWith("You cannot resume");
+        taskListPage.hasValidationBannerWith("You cannot resume this project because the conversion date is in the past.");
+    });
 
+    it("should not be able to directly access resume a project if the date is in the past", () => {
+        cy.visit(`projects/${pastHeldProjectId}/resume/confirm`);
+
+        taskListPage
+            .contains("Resume the project")
+            .contains("You can resume the project if you are ready to continue with it.")
+            .containsImportantBannerWithMessage("Project on hold", `The project was put on hold on ${toDisplayDate(new Date())}.`)
+            .hasValidationBannerWith("You cannot resume this project because the conversion date is in the past.");
     });
 
     it("Check accessibility across pages", () => {
