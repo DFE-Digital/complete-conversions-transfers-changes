@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -18,8 +19,7 @@ public class ConfirmHoldProjectModel(ISender sender, ILogger<ConfirmHoldProjectM
     {
         await UpdateCurrentProject();
 
-// TODO show notification, hide button in the first place. Create ProjectHoldLayoutModel for core logic
-        if ( Project.State != Domain.Enums.ProjectState.Active)
+        if ( Project.State != ProjectState.Active)
         {
             return Redirect(string.Format(RouteConstants.Project, ProjectId));
         }
