@@ -97,7 +97,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>())
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>(), Arg.Any<bool>())
             .Returns([]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
@@ -173,7 +173,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-            projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>())
+            projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>(), Arg.Any<bool>())
             .Returns([]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
@@ -249,7 +249,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>())
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>(), Arg.Any<string>(), Arg.Any<bool>())
             .Returns(["validation message"]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
@@ -261,8 +261,8 @@ public class CompleteProjectModelTests
         // Assert
         var redirectResult = Assert.IsType<RedirectResult>(result);
         Assert.Multiple(
-            () => Assert.Equal($"/projects/{projectDto.Id.Value}/tasks?projectCompletionValidation=true", redirectResult.Url),
-            () => Assert.True(testClass.TempData.ContainsKey("CompleteProjectValidationMessages"))
+            () => Assert.Equal($"/projects/{projectDto.Id.Value}/tasks?projectValidation=true", redirectResult.Url),
+            () => Assert.True(testClass.TempData.ContainsKey("ProjectValidationMessages"))
         );
     }
 
@@ -328,7 +328,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>())
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>(), Arg.Any<string>(), Arg.Any<bool>())
             .Returns(["validation message"]);
 
         projectPermissionService.UserCanEdit(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
@@ -341,8 +341,8 @@ public class CompleteProjectModelTests
         var redirectResult = Assert.IsType<RedirectResult>(result);
 
         Assert.Multiple(
-            () => Assert.Equal($"/projects/{projectDto.Id.Value}/tasks?projectCompletionValidation=true", redirectResult.Url),
-            () => Assert.True(testClass.TempData.ContainsKey("CompleteProjectValidationMessages"))
+            () => Assert.Equal($"/projects/{projectDto.Id.Value}/tasks?projectValidation=true", redirectResult.Url),
+            () => Assert.True(testClass.TempData.ContainsKey("ProjectValidationMessages"))
         );
     }
 }

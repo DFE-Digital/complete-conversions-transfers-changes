@@ -31,6 +31,9 @@ public class TransferCompletionModel : CompletionModel
         if (!IncomingTrustUkprnEntered)
             validationErrors.Add(ValidationConstants.IncomingTrustUkprnMissing);
 
+        if (IsOnHold)
+            validationErrors.Add(ValidationConstants.ProjectOnHold);
+
         return validationErrors;
     }
 }
