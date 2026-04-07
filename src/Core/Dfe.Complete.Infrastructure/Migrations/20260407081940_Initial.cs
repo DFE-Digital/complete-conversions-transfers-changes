@@ -591,7 +591,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         principalSchema: "complete",
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "fk_rails_99e097b079",
                         column: x => x.project_id,
