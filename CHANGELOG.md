@@ -16,7 +16,19 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-01.1436...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-07.1450...main) for everything awaiting release
+
+---
+
+## [1.43.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-07.1450) - 2026-04-07
+
+### Added
+- [270913](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/270913) - Added project on-hold and resume functionality
+
+### Changed
+- [257450](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/257450) - Accessibility - 'Receive declaration of expenditure' Task - fix announcement of collapsed content
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-01.1436...production-2026-04-07.1450) for everything in the release
 
 ---
 
