@@ -33,13 +33,14 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList, null);
+            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList, null, true);
 
             // Assert            
             Assert.Contains(ValidationConstants.TransferDateInPast, result);
             Assert.Contains(ValidationConstants.AcademyTransferDateComplete, result);
             Assert.Contains(ValidationConstants.AuthorityToProceedComplete, result);
             Assert.Contains(ValidationConstants.ExpenditureCertificateComplete, result);
+            Assert.Contains(ValidationConstants.ProjectOnHold, result);
         }
 
         [Fact]
@@ -54,7 +55,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList, null);
+            var result = projectService.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList, null, false);
 
             // Assert            
             Assert.Contains(ValidationConstants.TransferDateInPast, result);
@@ -74,13 +75,14 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetTransferProjectCompletionValidationResult(LastMonthDate, false, taskList, null);
+            var result = projectService.GetTransferProjectCompletionValidationResult(LastMonthDate, false, taskList, null, false);
 
             // Assert                    
             Assert.DoesNotContain(ValidationConstants.TransferDateInPast, result);
             Assert.DoesNotContain(ValidationConstants.AcademyTransferDateComplete, result);
             Assert.DoesNotContain(ValidationConstants.AuthorityToProceedComplete, result);
             Assert.DoesNotContain(ValidationConstants.ExpenditureCertificateComplete, result);
+            Assert.DoesNotContain(ValidationConstants.ProjectOnHold, result);
         }
 
         [Theory]
@@ -97,7 +99,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetConversionProjectCompletionValidationResult(NextMonthDate, false, taskList, null);
+            var result = projectService.GetConversionProjectCompletionValidationResult(NextMonthDate, false, taskList, null, false);
 
             // Assert           
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);
@@ -117,12 +119,13 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, false, taskList, null);
+            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, false, taskList, null, false);
 
             // Assert            
             Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, result);
             Assert.DoesNotContain(ValidationConstants.AllConditionsMetComplete, result);
             Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, result);
+            Assert.DoesNotContain(ValidationConstants.ProjectOnHold, result);
         }
 
         [Fact]
@@ -136,7 +139,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, true, taskList, null);
+            var result = projectService.GetConversionProjectCompletionValidationResult(LastMonthDate, true, taskList, null, false);
 
             // Assert            
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);

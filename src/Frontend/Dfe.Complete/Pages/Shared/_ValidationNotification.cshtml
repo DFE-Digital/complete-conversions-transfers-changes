@@ -1,11 +1,11 @@
-﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using Dfe.Complete.Extensions;
+﻿@using Dfe.Complete.Extensions;
 
 @{
-    var validationMessages = TempData.Get<List<string>>("CompleteProjectValidationMessages");
+    var validationMessages = TempData.Get<List<string>>("ProjectValidationMessages");
+    var validationTitle = TempData.Get<string>("ProjectValidationTitle");
 }
 
-@if (validationMessages != null && validationMessages.Count > 0)
+@if (validationTitle != null)
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -14,13 +14,16 @@
                     Important
                 </govuk-notification-banner-title>
 
-                <p>This project cannot be completed until:</p>
+                <p>@validationTitle</p>
+                @if(validationMessages != null && validationMessages.Count > 0)
+                {
                 <ul>
                     @foreach (var message in validationMessages)
                     {
                         <li>@message</li>
                     }
                 </ul>
+                }
 
             </govuk-notification-banner>
         </div>

@@ -144,6 +144,7 @@
                 </ol>
             </div>
             <partial name="Projects/TaskList/_CompleteProject" model="Model" />
+            <partial name="Projects/TaskList/_HoldProject" model="Model" />
             @if (projectPermissionService.UserCanDaoRevocation(Model.Project, User))
             {
                 <div class="govuk-grid-row" id="revoke_a_directive_academy_order">

@@ -1,0 +1,38 @@
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+
+@if (Model.Project.State == ProjectState.Active)
+{
+    @if (!Model.Project.IsOnHold)
+    {
+        <div class="govuk-grid-row" id="holding_a_project">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-heading-m">Put the project on hold</h2>
+                    <p class="govuk-body">You can put a project on hold if you need to pause the project for any reason.</p>
+                    <div class="govuk-button-group">
+                        <a class="govuk-button govuk-button--secondary"
+                           href="@string.Format(RouteConstants.ProjectHoldConfirm, Model.ProjectId)">
+                            Put the project on hold
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="govuk-grid-row" id="resuming_a_project">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h2 class="govuk-heading-m">Resume the project</h2>
+                    <p class="govuk-body">You can resume the project if you are ready to continue with it.</p>
+                    <div class="govuk-button-group">
+                        <a class="govuk-button govuk-button--secondary"
+                           href="@string.Format(RouteConstants.ProjectResumeConfirm, Model.ProjectId)">Resume the project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

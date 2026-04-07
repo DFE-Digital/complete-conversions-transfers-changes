@@ -184,6 +184,23 @@ class ProjectApi extends ApiBase {
                 });
         });
     }
+    
+    holdProject(projectId: string) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<boolean>({
+                    method: "PATCH",
+                    url: Cypress.expose(EnvApi) + "/v1/Projects/Hold",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                    },
+                })
+                .then((response) => {
+                    return response.isOkStatusCode;
+                });
+        });
+    }
 
     private createAndUpdateProject(
         createProjectFn: () => Cypress.Chainable<CreateProjectResponse>,
