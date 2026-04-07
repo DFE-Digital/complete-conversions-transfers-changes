@@ -77,7 +77,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
 
         Notes = notesResult.Value ?? [];
 
-        await GetProjectTaskDataAsync();
+        await SetProjectTaskDataAsync();
         await SetCurrentUserTeamAsync();
 
         return Page();

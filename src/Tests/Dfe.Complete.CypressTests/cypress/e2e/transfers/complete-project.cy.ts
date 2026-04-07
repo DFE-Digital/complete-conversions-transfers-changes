@@ -83,7 +83,7 @@ describe("Complete transfer projects tests", () => {
         cy.visit(`projects/${allTasksCompleteNoUKPRNProjectId}/tasks`);
         taskListPage
             .clickButton("Complete project")
-            .hasImportantCompletedBannerWith("This project cannot be completed until:", [
+            .hasImportantCompletedBannerWith("You cannot complete this project until:", [
                 "The incoming trust UKPRN is entered",
             ]);
     });
@@ -92,7 +92,7 @@ describe("Complete transfer projects tests", () => {
         cy.visit(`projects/${noTasksCompletedProjectId}/tasks`);
         taskListPage
             .clickButton("Complete project")
-            .hasImportantCompletedBannerWith("This project cannot be completed until:", [
+            .hasImportantCompletedBannerWith("You cannot complete this project until:", [
                 "The transfer date has been confirmed and is in the past",
                 "The confirm this transfer has authority to proceed task is completed",
                 "The receive declaration of expenditure certificate task is completed",

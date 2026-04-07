@@ -45,6 +45,7 @@
         public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";
         public const string ExpenditureCertificateComplete = "The receive declaration of expenditure certificate task is completed";
         public const string AcademyTransferDateComplete = "The confirm the date the academy transferred task is completed";
+        public const string ProjectOnHold = "The project has been resumed";
 
         // For conversion
         public const string ConversionDateInPast = "The conversion date has been confirmed and is in the past";

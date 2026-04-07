@@ -196,7 +196,7 @@ describe("Change the conversion date tests", () => {
         Logger.log("Enter past date");
         changeDatePage.enterDate(1, 2025).saveAndContinue();
 
-        validationComponent.hasLinkedValidationError("The Significant date cannot be in the past");
+        validationComponent.hasLinkedValidationError("The Significant date must be in the future");
     });
 
     it("Should NOT be able to submit a change conversion date request with no reasons selected", () => {

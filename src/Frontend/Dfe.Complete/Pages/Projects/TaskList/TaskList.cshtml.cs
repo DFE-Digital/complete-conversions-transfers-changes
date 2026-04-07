@@ -19,7 +19,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             var baseResult = await base.OnGetAsync();
             if (baseResult is not PageResult) return baseResult;
-            await GetProjectTaskDataAsync();
+            await SetProjectTaskDataAsync();
             await GetKeyContactForProjectsAsync();
 
             TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
