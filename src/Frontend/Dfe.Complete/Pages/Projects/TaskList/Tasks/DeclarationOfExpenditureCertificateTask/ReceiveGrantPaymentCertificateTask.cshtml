@@ -60,25 +60,15 @@
                     <b>Check the declaration of expenditure certificate is correct</b>
                     <govuk-checkboxes-item-hint>
                         <p>Once they have sent it to you, check they've used the right template and there is no missing information.</p>
+                        <govuk-details>
+                            <govuk-details-summary>Using the right certificate</govuk-details-summary>
+                            <govuk-details-text>
+                                <p>If the school only received the £25,000 pre-opening support grant, they need to download and <external-link href="@_configuration["ExternalLinks:CompleteAcademyConversionsSupportGrantCertificate"]">complete the academy conversions, support grant certificate (opens in new tab)</external-link>.</p>
+                                <p>If the school or trust received a sponsored grant, they need to <external-link href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)</external-link>.</p>
+                            </govuk-details-text>
+                        </govuk-details>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        <div class="govuk-checkboxes__hint">
-            <details data-module="govuk-details" class="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">Using the right certificate</span>
-                </summary>
-                <div class="govuk-details__text">
-                    <p>If the school only received the £25,000 pre-opening support grant, they need to download and <external-link href="@_configuration["ExternalLinks:CompleteAcademyConversionsSupportGrantCertificate"]">complete the academy conversions, support grant certificate (opens in new tab)</external-link>.</p>
-                    <p>If the school or trust received a sponsored grant, they need to <external-link href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)</external-link>.</p>
-                </div>
-            </details>
-        </div>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>
                 </govuk-checkboxes-item>

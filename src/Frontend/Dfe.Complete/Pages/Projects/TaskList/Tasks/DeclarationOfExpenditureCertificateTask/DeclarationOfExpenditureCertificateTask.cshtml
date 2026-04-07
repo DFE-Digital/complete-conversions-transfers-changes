@@ -62,24 +62,14 @@
                     <govuk-checkboxes-item-hint>
                         <p>Make sure the amounts mentioned are accurate. You also need to make sure the grant has been used for allowable expenses and that there is no missing information.</p>
                         <p>Email <a href="mailto:@_configuration["Emails:CfugrantPaymentsRegionsGroup"]">@_configuration["Emails:CfugrantPaymentsRegionsGroup"]</a> if there are any issues.</p>
+                        <govuk-details>
+                            <govuk-details-summary>How to check the declaration of expenditure certificate</govuk-details-summary>
+                            <govuk-details-text>
+                                <p>You can read <external-link href="@_configuration["ExternalLinks:ProcessAndCheckDeclarationOfExpenditureCertificate"]">guidance on how to process and check the declaration of expenditure certificate (opens in new tab)</external-link> on SharePoint.</p>
+                            </govuk-details-text>
+                        </govuk-details>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        <div class="govuk-checkboxes__hint">
-            <details data-module="govuk-details" class="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">How to check the declaration of expenditure certificate</span>
-                </summary>
-                <div class="govuk-details__text">
-                    <p>You can read <external-link href="@_configuration["ExternalLinks:ProcessAndCheckDeclarationOfExpenditureCertificate"]">guidance on how to process and check the declaration of expenditure certificate (opens in new tab)</external-link> on SharePoint.</p>
-                </div>
-            </details>
-        </div>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>
                 </govuk-checkboxes-item>
