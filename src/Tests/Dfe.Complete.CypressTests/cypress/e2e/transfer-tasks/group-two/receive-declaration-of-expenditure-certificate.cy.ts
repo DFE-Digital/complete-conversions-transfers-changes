@@ -57,8 +57,8 @@ describe("Transfers tasks - Receive declaration of expenditure certificate", () 
                 "The incoming trust should send the certificate back to you within 10 days of the first reminder.",
             )
             .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
-            .expandGuidance("How to check the declaration of expenditure certificate")
-            .hasGuidance(
+            .expandPageGuidance("How to check the declaration of expenditure certificate")
+            .pageHasGuidance(
                 "You can read guidance on how to process and check the declaration of expenditure certificate",
             );
     });

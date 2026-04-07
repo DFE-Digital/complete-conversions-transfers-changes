@@ -104,6 +104,16 @@ export class TaskPage extends BasePage {
                 });
         });
     }
+
+    expandPageGuidance(summaryText: string) {
+        cy.contains("summary", summaryText).click();
+        return this;
+    }
+
+    pageHasGuidance(content: string) {
+        cy.contains(content).should("be.visible");
+        return this;
+    }
 }
 
 const taskPage = new TaskPage();

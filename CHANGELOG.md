@@ -28,6 +28,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - remove advisory board references in change decision reasons
 - remove advisory board references in handover flow
 - remove advisory board references in transfer handover with RDO task
+- Receive declaration of expenditure page, accessibility fixes for expandable content inside checkbox labels
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-31.1433...production-2026-04-01.1436) for everything in the release
 
