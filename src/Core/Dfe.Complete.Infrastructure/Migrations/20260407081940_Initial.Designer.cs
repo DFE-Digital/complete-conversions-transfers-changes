@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260127140331_Baseline_FromRuby")]
-    partial class Baseline_FromRuby
+    [Migration("20260407081940_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -294,6 +294,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("DirectionToTransferSigned")
                         .HasColumnType("bit")
                         .HasColumnName("direction_to_transfer_signed");
+
+                    b.Property<bool?>("HandoverConfirmSacreExemption")
+                        .HasColumnType("bit")
+                        .HasColumnName("handover_confirm_sacre_exemption");
 
                     b.Property<bool?>("HandoverMeeting")
                         .HasColumnType("bit")
@@ -1662,6 +1666,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("FormMSigned")
                         .HasColumnType("bit")
                         .HasColumnName("form_m_signed");
+
+                    b.Property<bool?>("HandoverConfirmSacreExemption")
+                        .HasColumnType("bit")
+                        .HasColumnName("handover_confirm_sacre_exemption");
 
                     b.Property<bool?>("HandoverMeeting")
                         .HasColumnType("bit")
