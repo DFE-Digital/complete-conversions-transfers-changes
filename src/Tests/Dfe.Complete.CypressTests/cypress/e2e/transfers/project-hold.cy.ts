@@ -10,23 +10,23 @@ import { getSignificantDateString, significateDateToDisplayDate, toDisplayDate }
 const nextMonth = getSignificantDateString(1);
 const lastMonth = getSignificantDateString(-1);
 
-const activeProject = ProjectBuilder.createConversionProjectRequest({
+const activeProject = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transfer.batmans,
-    provisionalConversionDate: nextMonth
+    provisionalTransferDate: nextMonth
 });
 let activeProjectId: string;
-const activeProjectSchoolName = "Batmans Hill Nursery School";
+const activeProjectSchoolName = "Batmans Hill Unit";
 
-const heldProject = ProjectBuilder.createConversionProjectRequest({
+const heldProject = ProjectBuilder.createTransferProjectRequest({
     urn: urnPool.transfer.abbey,
-    provisionalConversionDate: nextMonth
+    provisionalTransferDate: nextMonth
 });
 let heldProjectId: string;
-const heldProjectSchoolName = "Whitchurch Primary School";
+const heldProjectSchoolName = "Abbey College Manchester";
 
-const pastHeldProject = ProjectBuilder.createConversionProjectRequest({
+const pastHeldProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     urn: urnPool.transfer.manchester,
-    provisionalConversionDate: lastMonth
+    provisionalTransferDate: lastMonth
 });
 let pastHeldProjectId: string;
 
@@ -36,16 +36,16 @@ describe("Complete transfer projects tests", () => {
         projectRemover.removeProjectIfItExists(heldProject.urn);
         projectRemover.removeProjectIfItExists(pastHeldProject.urn);
 
-        projectApi.createAndUpdateConversionProject(activeProject).then((response) => {
+        projectApi.createAndUpdateTransferProject(activeProject).then((response) => {
             activeProjectId = response.value;
         });
 
-        projectApi.createAndUpdateConversionProject(heldProject).then((response) => {
+        projectApi.createAndUpdateTransferProject(heldProject).then((response) => {
             heldProjectId = response.value;
             projectApi.holdProject(heldProjectId)
         });
 
-        projectApi.createAndUpdateConversionProject(pastHeldProject).then((response) => {
+        projectApi.createAndUpdateMatTransferProject(pastHeldProject).then((response) => {
             pastHeldProjectId = response.value;
             projectApi.holdProject(pastHeldProjectId)
         });
