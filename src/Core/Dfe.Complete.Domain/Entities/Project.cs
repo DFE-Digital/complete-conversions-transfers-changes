@@ -42,6 +42,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public DateOnly? SignificantDate { get; set; }
 
+    public DateOnly? OnHoldDate { get; set; }
+    public bool IsOnHold => OnHoldDate.HasValue;
+
     public bool? SignificantDateProvisional { get; set; }
 
     public bool? DirectiveAcademyOrder { get; set; }

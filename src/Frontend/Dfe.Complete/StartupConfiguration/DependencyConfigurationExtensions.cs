@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Services.TrustCache;
+using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
@@ -20,6 +21,7 @@ namespace Dfe.Complete.StartupConfiguration
             services.AddScoped<IProjectService, ProjectService>();
 
             services.AddScoped<ITrustCache, TrustCacheService>();
+            services.AddScoped<ISignificantDateValidator, SignificantDateValidator>();
 
             services.AddScoped<IValidator<ExternalContactInputModel>, ExternalContactInputValidator<ExternalContactInputModel>>();
             services.AddScoped<IValidator<OtherExternalContactInputModel>, OtherExternalContactInputValidator>();

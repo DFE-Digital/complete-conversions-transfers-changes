@@ -207,6 +207,7 @@ public partial class CompleteContext : DbContext
             .HasConversion(
                 v => v!.Value,
                 v => new UserId(v));
+        projectConfiguration.Property(e => e.OnHoldDate).HasColumnName("on_hold_date");
         projectConfiguration.Property(e => e.SignificantDate).HasColumnName("significant_date");
         projectConfiguration.Property(e => e.SignificantDateProvisional)
             .HasDefaultValue(true)

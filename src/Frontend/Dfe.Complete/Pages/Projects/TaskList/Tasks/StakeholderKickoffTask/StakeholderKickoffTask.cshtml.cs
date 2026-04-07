@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
@@ -11,9 +12,11 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService, ISignificantDateValidator dateValidator)
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.StakeholderKickoff, projectPermissionService)
     {
+        private readonly ISignificantDateValidator _dateValidator = dateValidator;
+
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
 
@@ -68,9 +71,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
             var errorToRemove = "The Significant date must include a month and year";
             ModelState.RemoveError("significant-date", errorToRemove);
 
-            if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
+            var validationResult = _dateValidator.ValidateSignificantDateInFuture(SignificantDate);
+            if (!validationResult.IsValid)
             {
-                ModelState.AddModelError(nameof(SignificantDate), "The Significant date must be in the future.");
+                ModelState.AddModelError(nameof(SignificantDate), validationResult.ErrorMessage!);
             }
 
             if (ModelState.IsValidState())
