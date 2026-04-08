@@ -476,6 +476,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     type = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     assigned_to_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     significant_date = table.Column<DateOnly>(type: "date", nullable: true),
+                    on_hold_date = table.Column<DateOnly>(type: "date", nullable: true),
                     significant_date_provisional = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
                     directive_academy_order = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
                     region = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),

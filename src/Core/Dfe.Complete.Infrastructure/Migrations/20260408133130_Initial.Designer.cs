@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260407081940_Initial")]
+    [Migration("20260408133130_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -1154,6 +1154,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("new_trust_reference_number");
+
+                    b.Property<DateOnly?>("OnHoldDate")
+                        .HasColumnType("date")
+                        .HasColumnName("on_hold_date");
 
                     b.Property<Guid?>("OutgoingTrustMainContactId")
                         .HasColumnType("uniqueidentifier")
