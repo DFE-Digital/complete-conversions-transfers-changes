@@ -18,6 +18,9 @@ Security in case of vulnerabilities.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
 
+### Changed 
+- [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
+
 ---
 
 ## [1.44.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-08.1456) - 2026-04-08
@@ -27,7 +30,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - recreate initial migration
-- [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-07.1450...production-2026-04-08.1456) for everything in the release
 
