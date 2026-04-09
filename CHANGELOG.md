@@ -16,13 +16,19 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
+
+---
+
+## [1.44.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-08.1456) - 2026-04-08
+
 ### Added
 - add docker db config
 
 ### Changed
 - recreate initial migration
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-07.1450...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-07.1450...production-2026-04-08.1456) for everything in the release
 
 ---
 
