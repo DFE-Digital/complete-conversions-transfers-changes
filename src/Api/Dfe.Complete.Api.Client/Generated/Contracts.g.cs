@@ -6059,6 +6059,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantInformTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SponsoredSupportGrantInformTrust { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantHasVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantHasVendorAccount { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SponsoredSupportGrantNotApplicable { get; set; } = default!;
 
@@ -7601,6 +7604,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("informTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? InformTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("hasVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HasVendorAccount { get; set; } = default!;
 
         public string ToJson()
         {

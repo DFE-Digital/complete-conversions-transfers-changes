@@ -3,37 +3,6 @@
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGrantTask.ConfirmTransferGrantFundingLevelTaskModel
 
 
-
-<div class="guidance">
-    <details data-module="govuk-details" class="govuk-details">
-        <summary class="govuk-details__summary">
-            <span class="govuk-details__summary-text">How to check grant eligibility</span>
-        </summary>
-        <div class="govuk-details__text">
-            <p>The fast track grant amounts are:</p>
-            <ul>
-                <li>£70,000 for primary and special schools</li>
-                <li>£80,000 for secondary and all-through schools</li>
-            </ul>
-            <p>In some circumstances, the sponsor might be entitled to a larger grant.</p>
-            <p>This would be the intermediate grant, or the full sponsored grant.</p>
-            <p>Intermediate grant amounts are:</p>
-            <ul>
-                <li>£90,000 for primary and special schools</li>
-                <li>£115,000 for secondary and all-through schools</li>
-            </ul>
-            <p>Full sponsored grant amounts are:</p>
-            <ul>
-                <li>£110,000 for primary and special schools</li>
-                <li>£150,000 secondary and all-through schools</li>
-            </ul>
-            <p>All grants include the £25,000 conversion support grant. This is used to fund conversion costs, such as legal expenses. Any amount left after conversion costs have been paid for should be used for school improvements.</p>
-            <p>A business case must be approved by the regional director, for a trust to get the intermediate or full sponsored grant.</p>
-            <p>There is more <external-link class="govuk-link" href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">guidance on grant eligibility and spending (opens in new tab)</external-link> on GOV.UK.</p>
-        </div>
-    </details>
-</div>
-
 <form method="post">
     <input type="hidden" asp-for="TasksDataId" />
     <input type="hidden" asp-for="Type" />
@@ -99,10 +68,10 @@
                 </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.PaymentForm))" data-cy="paymentForm" asp-for="@Model.PaymentForm" value="true" name="@(nameof(Model.PaymentForm))" checked="@Model.PaymentForm">
-                <b>Receive, check and save the support grant claim form in the school's SharePoint folder</b>
+                <b>Receive, check and save the grant claim form in the school's SharePoint folder. Make sure no information is missing</b>
                 <govuk-checkboxes-item>
                     <div class="govuk-hint">
-                        <p>Check the form is complete and there is no missing information.</p>
+                        <p>Check the form is complete and there is no missing information. Save it in the school's SharePoint folder.</p>
                     </div>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-item>
@@ -110,49 +79,18 @@
                 <b>Send the grant information to the payments team</b>
                 <govuk-checkboxes-item-hint>
                     <div class="govuk-hint">
-                        <p>Send them the academy order and grant claim form.</p>
-                        <div class="guidance">
-                            <details data-module="govuk-details" class="govuk-details">
-                                <summary class="govuk-details__summary">
-                                    <span class="govuk-details__summary-text">What information to send</span>
-                                </summary>
-                                <div class="govuk-details__text">
-                                    <p>You'll find the directive academy order and grant claim form in the school's SharePoint folder.</p>
-                                    <p>You should send the documents to the Grant Payments team by email at <a href="mailto:@_configuration["Emails:GrantPaymentAndRecoveries"]" class="govuk-link" target="_blank">@_configuration["Emails:GrantPaymentAndRecoveries"]</a>.</p>
-                                    <p>The subject line of the email must include the:</p>
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        <li>region the school is in</li>
-                                        <li>sponsored grant level</li>
-                                        <li>school's name</li>
-                                    </ul>
-                                    <p>The content of the email must include the:</p>
-                                    <ul class="govuk-list govuk-list--bullet">
-                                        <li>type of grant, or grants, needed</li>
-                                        <li>amount of money the school is eligible for</li>
-                                        <li>school name</li>
-                                        <li>incoming trust name</li>
-                                        <li>confirmed conversion date</li>
-                                    </ul>
-                                    <p>It's helpful to include the school or trust's vendor account number too. The Grant Payments team will need this to be able to send the money.</p>
-                                </div>
-                            </details>
-                        </div>
+                        <p>Guidance on <external-link class="govuk-link" href="@_configuration["ExternalLinks:RequiredGuidanceForPaymentsTeam"]">what information is required by the grant payments team (opens in new tab)</external-link> is on the guidance site.</p>
                     </div>
                 </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.InformTrust))" data-cy="informTrust" asp-for="@Model.InformTrust" value="true" name="@(nameof(Model.InformTrust))" checked="@Model.InformTrust">
-                <b>Tell the trust the grant is being processed</b>
+                <b>Tell the school or trust the grant information has been sent and the grant is being processed</b>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item id="@(nameof(Model.HasVendorAccount))" data-cy="hasVendorAccount" asp-for="@Model.HasVendorAccount" value="true" name="@(nameof(Model.HasVendorAccount))" checked="@Model.HasVendorAccount">
+              <b>Check the school or trust have a vendor account</b>
                 <govuk-checkboxes-item-hint>
-                    <div class="guidance">
-                        <details data-module="govuk-details" class="govuk-details">
-                            <summary class="govuk-details__summary">
-                                <span class="govuk-details__summary-text">What to do if the trust do not receive the grant</span>
-                            </summary>
-                            <div class="govuk-details__text">
-                                <p>Email the Grant Payments team at <a href="mailto:@_configuration["Emails:GrantPaymentAndRecoveries"]" class="govuk-link" target="_blank">@_configuration["Emails:GrantPaymentAndRecoveries"]</a> if the trust say they have not got the grant.</p>
-                                <p>The Grant Payments team will provide an update on the payment progress.</p>
-                            </div>
-                        </details>
+                    <div class="govuk-hint">
+                        <p>You can check the <external-link class="govuk-link" href="@_configuration["ExternalLinks:MaintainingVendorData"]">Standing Data Team - Set Up and Maintain Vendor Data (opens in new tab)</external-link> page to check if the school or trust has a vendor account. This page provides information and guidance about identifying current vendors, setting up new vendors and maintaining vendor data, including the timescales associated with each</p>
                     </div>
                 </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>

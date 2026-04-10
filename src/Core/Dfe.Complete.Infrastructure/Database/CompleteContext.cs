@@ -597,6 +597,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.SponsoredSupportGrantPaymentAmount).HasColumnName("sponsored_support_grant_payment_amount");
         projectConfiguration.Property(e => e.SponsoredSupportGrantPaymentForm).HasColumnName("sponsored_support_grant_payment_form");
         projectConfiguration.Property(e => e.SponsoredSupportGrantSendInformation).HasColumnName("sponsored_support_grant_send_information");
+        projectConfiguration.Property(e => e.SponsoredSupportGrantHasVendorAccount).HasColumnName("sponsored_support_grant_has_vendor_account");
         projectConfiguration.Property(e => e.SponsoredSupportGrantType)
             .HasMaxLength(4000)
             .HasColumnName("sponsored_support_grant_type");
