@@ -605,6 +605,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.StakeholderKickOffLocalAuthorityProforma).HasColumnName("stakeholder_kick_off_local_authority_proforma");
         projectConfiguration.Property(e => e.StakeholderKickOffMeeting).HasColumnName("stakeholder_kick_off_meeting");
         projectConfiguration.Property(e => e.StakeholderKickOffSetupMeeting).HasColumnName("stakeholder_kick_off_setup_meeting");
+        projectConfiguration.Property(e => e.StakeholderKickOffDeclareBudgetChanges).HasColumnName("stakeholder_kick_off_declare_budget_changes");
         projectConfiguration.Property(e => e.SubleasesCleared).HasColumnName("subleases_cleared");
         projectConfiguration.Property(e => e.SubleasesEmailSigned).HasColumnName("subleases_email_signed");
         projectConfiguration.Property(e => e.SubleasesNotApplicable).HasColumnName("subleases_not_applicable");

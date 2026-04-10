@@ -31,6 +31,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? StakeholderKickOffMeeting { get; set; }
 
+    public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
+
+    public bool? StakeholderKickOffDeclareBudgetChanges { get; set; }
+
     public bool? ConversionGrantCheckVendorAccount { get; set; }
 
     public bool? ConversionGrantPaymentForm { get; set; }
@@ -140,6 +144,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? UpdateEsfaUpdate { get; set; }
 
     public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; }
+
     public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; }
 
     public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
@@ -189,8 +194,6 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? TenancyAtWillNotApplicable { get; set; }
 
     public bool? TrustModificationOrderNotApplicable { get; set; }
-
-    public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
 
     public bool? ConversionGrantNotApplicable { get; set; }
 

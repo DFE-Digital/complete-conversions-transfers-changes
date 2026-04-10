@@ -8383,6 +8383,14 @@
             "type": "boolean",
             "nullable": true
           },
+          "stakeholderKickOffCheckProvisionalConversionDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
+            "type": "boolean",
+            "nullable": true
+          },
           "conversionGrantCheckVendorAccount": {
             "type": "boolean",
             "nullable": true
@@ -8696,10 +8704,6 @@
             "nullable": true
           },
           "trustModificationOrderNotApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "stakeholderKickOffCheckProvisionalConversionDate": {
             "type": "boolean",
             "nullable": true
           },
@@ -9033,6 +9037,10 @@
             "nullable": true
           },
           "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
             "type": "boolean",
             "nullable": true
           },
