@@ -8723,6 +8723,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "sponsoredSupportGrantHasVendorAccount": {
+            "type": "boolean",
+            "nullable": true
+          },
           "sponsoredSupportGrantNotApplicable": {
             "type": "boolean",
             "nullable": true
@@ -10005,6 +10009,10 @@
             "nullable": true
           },
           "informTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "hasVendorAccount": {
             "type": "boolean",
             "nullable": true
           }

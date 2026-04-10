@@ -43,7 +43,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
           Expression<Func<TAggregate, bool>> predicate,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EntityFrameworkQueryableExtensions.ToListAsync<TAggregate>(this.DbSet().Where<TAggregate>(predicate), cancellationToken);
+            return await this.DbSet().Where<TAggregate>(predicate).ToListAsync<TAggregate>(cancellationToken);
         }
 
         /// <inheritdoc />
@@ -66,7 +66,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
           Expression<Func<TAggregate, bool>> predicate,
           CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>(this.DbSet(), predicate, cancellationToken);
+            return await this.DbSet().FirstOrDefaultAsync<TAggregate>(predicate, cancellationToken);
         }
 
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
         /// <inheritdoc />
         public virtual async Task<TAggregate> GetAsync(Expression<Func<TAggregate, bool>> predicate)
         {
-            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>(this.DbSet(), predicate, new CancellationToken());
+            return await this.DbSet().FirstOrDefaultAsync<TAggregate>(predicate, new CancellationToken());
         }
 
         /// <inheritdoc />
