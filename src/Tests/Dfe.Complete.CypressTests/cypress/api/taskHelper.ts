@@ -435,6 +435,7 @@ export class TaskHelper {
                     checkProvisionalDate: true,
                     stakeholderKickOffSetupMeeting: true,
                     stakeholderKickOffMeeting: true,
+                    stakeholderKickOffDeclareBudgetChanges: true,
                     significantDate: significantDate || "2027-09-01",
                     userEmail: userEmail || cypressUser.email,
                 });
