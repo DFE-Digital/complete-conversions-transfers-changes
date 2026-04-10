@@ -48,8 +48,7 @@
                                 <span class="govuk-details__summary-text">What to include in introductory emails</span>
                             </govuk-details-summary>
                             <govuk-details-text>
-                                <p>You can <external-link class="govuk-link" href="@_configuration["ExternalLinks:EmailTemplate"]">choose an email template (opens in new tab)</external-link> to help you write your introductory emails. There are templates for the @(isConversion ? "school or trust," : "outgoing trust, incoming trust") and their solicitors.</p>
-                                <p>This will help you to:</p>
+                                <p>Use this email to:</p>
                                 <ul>
                                     <li>organise kick-off meetings</li>
                                     <li>clarify roles and expectation</li>
@@ -77,9 +76,7 @@
                                 <govuk-details-text>
                                     <p>The person who prepared the project for decision should have asked for the proforma from the local authority and saved it in SharePoint.</p>
                                     <p>However, some local authorities will not share the proforma until after the academy order has been issued.</p>
-                                    <p>If it is not in SharePoint, check if the person who prepared the project has asked for it.</p>
-                                    <p>If they have not, ask the local authority to send the proforma to you and save it in SharePoint.</p>
-                                    <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:LocalAuthorityEmailTemplate"]" target="blank">use a local authority email template (opens in new tab)</a> to help you write this email.</p>
+                                    <p>Check if the person who prepared the project has asked for it. If they have not, ask the local authority to send the proforma to you and save it in SharePoint.</p>
                                 </govuk-details-text>
                             </govuk-details> 
                         </govuk-checkboxes-item-hint>
@@ -134,7 +131,8 @@
                                 </govuk-details-summary>
                                 <govuk-details-text>
                                     <p>You should discuss and record issues that might complicate or delay the project.</p>
-                                    <p>You can <external-link class="govuk-link" href="@_configuration["ExternalLinks:ConversionChecklist"]">use the @projectTypeString checklist (opens in new tab)</external-link> to guide the conversation and make sure you talk about everything you need to.</p>
+                                    <p>You can use this task list in Complete and the <external-link class="govuk-link" href="@_configuration["ExternalLinks:ApprovalToOpeningGuidance"]">Approval to Opening guidance</external-link> to guide you through the conversation to ensure you cover everything you need to. These are internal guidance documents only, the contents must not be shared externally.</p>
+                                    <p>For external guidance, refer stakeholders to the published <external-link class="govuk-link" href="@_configuration["ExternalLinks:ConvertToAcademyGuidance"]">Convert to an academy: guide for schools</external-link> and <external-link class="govuk-link" href="@_configuration["ExternalLinks:PublishedDeadlines"]">published deadlines.</external-link></p>
                                 </govuk-details-text>
                             </govuk-details>
                         }
