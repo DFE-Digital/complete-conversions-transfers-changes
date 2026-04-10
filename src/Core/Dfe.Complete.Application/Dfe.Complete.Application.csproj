@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">	
 	<PropertyGroup>
 	  <UserSecretsId>540d3c9a-13ab-455b-bd72-c863b77b00bf</UserSecretsId>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
 	</PropertyGroup>	
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="14.0.0" />

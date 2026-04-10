@@ -11,10 +11,15 @@
     <DockerServiceUrl>http://localhost:5002/</DockerServiceUrl>
   </PropertyGroup>
   <ItemGroup>
+    <None Include=".github\upgrades\scenarios\new-dotnet-version_107767\plan.md" />
+    <None Include=".github\upgrades\scenarios\new-dotnet-version_47e130\plan.md" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
 </Project>
