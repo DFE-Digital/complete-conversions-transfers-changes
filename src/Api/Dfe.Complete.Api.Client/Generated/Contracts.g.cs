@@ -743,40 +743,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task RecordDaoRevocationDecisionAsync(RecordDaoRevocationDecisionCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Clears the on hold status for a specific project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Project resumed successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ClearOnHoldAsync(ClearProjectOnHoldCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Clears the on hold status for a specific project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Project resumed successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ClearOnHoldAsync(ClearProjectOnHoldCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
-        /// Updates the on hold status for a specific project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Project put on hold successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateOnHoldAsync(UpdateProjectOnHoldCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Updates the on hold status for a specific project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Project put on hold successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateOnHoldAsync(UpdateProjectOnHoldCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Updates the completion for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -2167,13 +2133,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? SignificantDate { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("onHoldDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? OnHoldDate { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("isOnHold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? IsOnHold { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("significantDateProvisional", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SignificantDateProvisional { get; set; } = default!;
@@ -3665,13 +3624,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("allConditionsMet", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? AllConditionsMet { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("onHoldDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? OnHoldDate { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("isOnHold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? IsOnHold { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("mainContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public ContactId? MainContactId { get; set; } = default!;
 
@@ -4901,9 +4853,6 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Academy")]
         Academy = 22,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"DecisionConditions")]
-        DecisionConditions = 23,
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -4958,48 +4907,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"ChangeToGovernmentPolicy")]
         ChangeToGovernmentPolicy = 3,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ClearProjectOnHoldCommand
-    {
-        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectId? ProjectId { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static ClearProjectOnHoldCommand FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ClearProjectOnHoldCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UpdateProjectOnHoldCommand
-    {
-        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectId? ProjectId { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static UpdateProjectOnHoldCommand FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProjectOnHoldCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
 
     }
 
@@ -5430,9 +5337,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("handoverMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverMeeting { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("handoverConfirmSacreExemption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? HandoverConfirmSacreExemption { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("handoverNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverNotApplicable { get; set; } = default!;
 
@@ -5779,9 +5683,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("handoverNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverNotes { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("handoverConfirmSacreExemption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? HandoverConfirmSacreExemption { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("handoverMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverMeeting { get; set; } = default!;
@@ -6188,9 +6089,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("handoverNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverNotes { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("handoverConfirmSacreExemption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? HandoverConfirmSacreExemption { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("handoverMeetings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandoverMeetings { get; set; } = default!;

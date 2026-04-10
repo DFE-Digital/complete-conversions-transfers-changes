@@ -2190,72 +2190,6 @@
         }
       }
     },
-    "/v1/Projects/Hold/Clear": {
-      "patch": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Clears the on hold status for a specific project.",
-        "operationId": "Projects_ClearOnHold",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ClearProjectOnHoldCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Project resumed successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
-          }
-        }
-      }
-    },
-    "/v1/Projects/Hold": {
-      "patch": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Updates the on hold status for a specific project.",
-        "operationId": "Projects_UpdateOnHold",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateProjectOnHoldCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Project put on hold successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
-          }
-        }
-      }
-    },
     "/v1/Projects/project/Complete": {
       "patch": {
         "tags": [
@@ -4874,14 +4808,6 @@
                 "format": "date",
                 "nullable": true
               },
-              "onHoldDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "isOnHold": {
-                "type": "boolean"
-              },
               "significantDateProvisional": {
                 "type": "boolean",
                 "nullable": true
@@ -6395,14 +6321,6 @@
             "type": "boolean",
             "nullable": true
           },
-          "onHoldDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "isOnHold": {
-            "type": "boolean"
-          },
           "mainContactId": {
             "nullable": true,
             "oneOf": [
@@ -7483,8 +7401,7 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy",
-          "DecisionConditions"
+          "Academy"
         ],
         "enum": [
           "AdvisoryBoardConditions",
@@ -7509,8 +7426,7 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy",
-          "DecisionConditions"
+          "Academy"
         ]
       },
       "RecordDaoRevocationDecisionCommand": {
@@ -7560,24 +7476,6 @@
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
         ]
-      },
-      "ClearProjectOnHoldCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          }
-        }
-      },
-      "UpdateProjectOnHoldCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          }
-        }
       },
       "UpdateProjectCompletedCommand": {
         "type": "object",
@@ -7901,10 +7799,6 @@
             "nullable": true
           },
           "handoverMeeting": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "handoverConfirmSacreExemption": {
             "type": "boolean",
             "nullable": true
           },
@@ -8348,10 +8242,6 @@
             "nullable": true
           },
           "handoverNotes": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "handoverConfirmSacreExemption": {
             "type": "boolean",
             "nullable": true
           },
@@ -8873,10 +8763,6 @@
             "nullable": true
           },
           "handoverNotes": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "handoverConfirmSacreExemption": {
             "type": "boolean",
             "nullable": true
           },
