@@ -36,6 +36,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.PaymentForm = false;
             command.SendInformation = false;
             command.InformTrust = false;
+            command.HasVendorAccount = false;
 
             // Act
             await tasksDataClient.UpdateSponsoredSupportGrantTaskAsync(command, default);
