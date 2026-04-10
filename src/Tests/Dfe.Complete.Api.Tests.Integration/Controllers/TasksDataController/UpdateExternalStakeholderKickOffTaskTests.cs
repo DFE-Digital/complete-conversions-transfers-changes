@@ -86,7 +86,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.StakeholderKickOffIntroductoryEmails);
             Assert.True(existingTaskData.StakeholderKickOffSetupMeeting);
             Assert.True(existingTaskData.StakeholderKickOffMeeting);
-
             var existingProject = await dbContext.Projects
                 .Include(x => x.Notes)
                 .Include(x => x.SignificantDateHistories)
@@ -166,6 +165,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 CheckProvisionalDate = true,
                 StakeholderKickOffSetupMeeting = true,
                 StakeholderKickOffMeeting = true,
+                StakeholderKickOffDeclareBudgetChanges = true,
                 SignificantDate = testDate.ToDateTime(default),
                 UserEmail = testUser.Email
             };
@@ -182,6 +182,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.StakeholderKickOffLocalAuthorityProforma);
             Assert.True(existingTaskData.StakeholderKickOffSetupMeeting);
             Assert.True(existingTaskData.StakeholderKickOffMeeting);
+            Assert.True(existingTaskData.StakeholderKickOffDeclareBudgetChanges);
 
             var existingProject = await dbContext.Projects
                 .Include(x => x.Notes)
@@ -234,6 +235,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 CheckProvisionalDate = true,
                 StakeholderKickOffSetupMeeting = true,
                 StakeholderKickOffMeeting = true,
+                StakeholderKickOffDeclareBudgetChanges = true,
                 SignificantDate = testDate.ToDateTime(default),
                 UserEmail = "test@example.com"
             };
@@ -303,6 +305,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 CheckProvisionalDate = true,
                 StakeholderKickOffSetupMeeting = true,
                 StakeholderKickOffMeeting = true,
+                StakeholderKickOffDeclareBudgetChanges = true,
                 SignificantDate = testDate.ToDateTime(default),
                 UserEmail = "notfoundtest@example.com"
             };

@@ -55,6 +55,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 HostMeetingOrCall = ConversionTaskData.StakeholderKickOffMeeting;
                 LocalAuthorityProforma = ConversionTaskData.StakeholderKickOffLocalAuthorityProforma;
                 LocalAuthorityAbleToConvert = ConversionTaskData.StakeholderKickOffCheckProvisionalConversionDate;
+                SetBudgetDecisionExpectations = ConversionTaskData.StakeholderKickOffDeclareBudgetChanges;
             }
             else
             {
@@ -92,6 +93,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 LocalAuthorityAbleToConvert,
                 SendInvites,
                 HostMeetingOrCall,
+                SetBudgetDecisionExpectations,
                 SignificantDate,
                 User.Identity!.Name);
 

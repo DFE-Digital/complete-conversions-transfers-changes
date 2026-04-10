@@ -9044,6 +9044,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "stakeholderKickOffDeclareBudgetChanges": {
+            "type": "boolean",
+            "nullable": true
+          },
           "significantDate": {
             "type": "string",
             "format": "date",

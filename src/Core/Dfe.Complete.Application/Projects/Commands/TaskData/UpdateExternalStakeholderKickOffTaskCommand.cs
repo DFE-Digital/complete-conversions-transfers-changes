@@ -17,6 +17,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? CheckProvisionalDate,
         bool? StakeholderKickOffSetupMeeting,
         bool? StakeholderKickOffMeeting,
+        bool? StakeholderKickOffDeclareBudgetChanges,
         DateOnly? SignificantDate,
         string? UserEmail) : IRequest;
 
@@ -54,6 +55,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 conversionTasksData.StakeholderKickOffCheckProvisionalConversionDate = request.CheckProvisionalDate;
                 conversionTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
                 conversionTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
+                conversionTasksData!.StakeholderKickOffDeclareBudgetChanges = request.StakeholderKickOffDeclareBudgetChanges;
                 await taskDataWriteRepository.UpdateConversionAsync(conversionTasksData, now, cancellationToken);
             }
             else
