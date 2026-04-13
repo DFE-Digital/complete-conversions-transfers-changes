@@ -35,7 +35,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
         [BindProperty(Name = "informTrust")]
         public bool? InformTrust { get; set; }
 
-        [BindProperty(Name = "vendorAccount")]
+        [BindProperty(Name = "hasVendorAccount")]
         public bool? HasVendorAccount { get; set; }
 
         [BindProperty]
