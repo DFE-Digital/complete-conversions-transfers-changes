@@ -197,6 +197,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? SponsoredSupportGrantInformTrust { get; set; }
 
+        public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
+
         public bool? SponsoredSupportGrantNotApplicable { get; set; }
 
         public bool? HandoverNotApplicable { get; set; }

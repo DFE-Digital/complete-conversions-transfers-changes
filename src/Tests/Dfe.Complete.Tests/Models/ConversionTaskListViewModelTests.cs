@@ -186,14 +186,16 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ProcessConversionSupportGrant);
         }
         [Theory]
-        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, "", false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, false, false, "", false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, "", false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, "GrantType", false, TaskListStatus.Completed)]
-        [InlineData(false, false, false, false, "", true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, "", false, TaskListStatus.NotStarted)]
+        [InlineData(false, true, false, false, false, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, false, false, false, false, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, "GrantType", false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, false, "", true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         public void ConfirmAndProcessSponsoredSupportGrantTaskStatus_ShouldReturn_CorrectStatus(
+            bool? hasVendorAccount,
             bool? informTrust,
             bool? paymentForm,
             bool? sendInformation,
@@ -205,6 +207,7 @@ namespace Dfe.Complete.Tests.Models
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
+                SponsoredSupportGrantHasVendorAccount = hasVendorAccount,
                 SponsoredSupportGrantInformTrust = informTrust,
                 SponsoredSupportGrantPaymentForm = paymentForm,
                 SponsoredSupportGrantSendInformation = sendInformation,

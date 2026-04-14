@@ -1,5 +1,6 @@
 ﻿@page "/projects/{projectId}/tasks/sponsored_support_grant"
 @using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGrantTask.ConfirmTransferGrantFundingLevelTaskModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -11,22 +12,14 @@
         @{
             if (isConversion)
             {
-                <p>There are 3 levels of sponsored grant available to academies:</p>
+                <p>There are 3 levels of sponsored grant available to sponsored schools:</p>
                 <ul>
                     <li>fast track</li> 
                     <li>intermediate</li> 
                     <li>full sponsored</li>
                 </ul>
-                
-                <p>Academies or their sponsor trust can only apply for one of these grant levels at first. The level of grant can be increased later on if necessary.</p>
-                
-                <p>These grants are only available to schools converting due to:</p>
-                
-                <ul>
-                    <li>an inadequate rating in an Ofsted inspection</li> 
-                    <li>intervention by DfE following at least 2 requires improvement ratings in Ofsted inspections</li>
-                </ul>
-                <p>Schools issued a directive academy order are automatically eligible for these grants. Others converting with an academy order may be able to access this funding too. This is judged on a case-by-case basis.</p>
+
+                <p>Internal guidance can be found in the <external-link class="govuk-link" href="@_configuration["ExternalLinks:ApprovalToOpeningGuidance"]">Approval to Opening guidance  (opens in new tab)</external-link> and external guidance can be found at <external-link class="govuk-link" href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">Sponsored academies funding: guidance for sponsors.</external-link></p>
             }
             else
             {
