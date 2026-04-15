@@ -22,6 +22,9 @@ Security in case of vulnerabilities.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
 
+### Added 
+- [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
+
 ### Changed 
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
 

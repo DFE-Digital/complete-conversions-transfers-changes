@@ -1,0 +1,37 @@
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmStatutoryConsultationTask.ConfirmStatutoryConsultationTaskModel
+
+<form method="post">
+  <input type="hidden" asp-for="TasksDataId" />
+    <input type="hidden" asp-for="Type" />
+  
+  <p class="govuk-body">
+    Under the Academies Act 2010, a school must consult all relevant parties prior to converting to academy status.
+  </p>
+  
+  <p class="govuk-body">
+    The statutory requirement does not prescribe who should be consulted or the length of the consultation. Generally, a school will consult parents, staff, pupils, other schools, the local authority, and the wider community.
+  </p>
+  
+  <p class="govuk-body">
+    DfE requires confirmation that stakeholder consultation has been completed and there has either been no opposition to the school's academy conversion by any stakeholders, or if there has been opposition, how it has been addressed. This would have usually been completed at the application stage, but occasionally consultations are carried out or conclude afterwards.
+  </p>
+
+  <govuk-checkboxes name="options">
+    <govuk-checkboxes-fieldset>
+      <govuk-checkboxes-fieldset-legend>
+      </govuk-checkboxes-fieldset-legend>
+      
+      <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+        <b>Not applicable</b>
+      </govuk-checkboxes-item>
+
+      <govuk-checkboxes-item data-cy="consultation-complete" id="consultation-complete" asp-for="@Model.ConsultationComplete" value="true" name="consultation-complete" checked="@Model.ConsultationComplete">
+        <b>Consultation(s) complete and any issues being managed</b>
+      </govuk-checkboxes-item>
+
+    </govuk-checkboxes-fieldset>
+  </govuk-checkboxes>
+  
+  @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+</form>

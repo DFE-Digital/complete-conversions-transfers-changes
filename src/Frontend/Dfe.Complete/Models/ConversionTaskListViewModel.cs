@@ -38,6 +38,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
+        public TaskListStatus ConfirmStatutoryConsultation { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -74,7 +75,8 @@ namespace Dfe.Complete.Models
                 ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
-                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData)
+                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
+                ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData)
             };
         }
 
@@ -609,6 +611,21 @@ namespace Dfe.Complete.Models
             return (taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Standard ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.ChurchOrTrust ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Commercial && !string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmStatutoryConsultationTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.StatutoryConsultationNotApplicable.HasValue || taskData.StatutoryConsultationNotApplicable == false) &&
+                (!taskData.StatutoryConsultationComplete.HasValue || taskData.StatutoryConsultationComplete == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.StatutoryConsultationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return taskData.StatutoryConsultationComplete == true 
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }
