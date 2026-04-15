@@ -253,6 +253,10 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementSaved { get; set; }
 
+        public bool? StatutoryConsultationNotApplicable { get; set; }
+
+        public bool? StatutoryConsultationComplete { get; set; }
+
 
     }
 }
