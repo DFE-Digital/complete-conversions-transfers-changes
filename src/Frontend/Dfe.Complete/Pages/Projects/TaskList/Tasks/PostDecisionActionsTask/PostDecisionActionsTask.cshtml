@@ -7,10 +7,23 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>Has the school's application form, the AO and the LA Proforma been uploaded to Sharepoint.</p>
+        <p>Check that no information is missing from the existing project documents.</p>
     </div>
 }
 @section TaskSection {
+    <details data-module="govuk-details" class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">What to check for</span>
+        </summary>
+        <div class="govuk-details__text">
+            <p>You should check existing project documents, including:</p>
+            <ul>
+                <li>application to convert</li>
+                <li>LA proforma</li>
+                <li>academy order</li>
+            </ul>
+        </div>
+    </details>
 
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
@@ -20,61 +33,13 @@
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item data-cy="@nameof(Model.ApplicationUploaded)" id="@(nameof(Model.ApplicationUploaded))" asp-for="@Model.ApplicationUploaded" value="true" name="@(nameof(Model.ApplicationUploaded))" checked="@Model.ApplicationUploaded">
                     <b>Application uploaded and verified</b>
-                    <div class="govuk-hint">
-                        <p>Check that no information is missing from the existing project documents.</p>
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">What to check for</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>You should check existing project documents, including:</p>
-                                <ul>
-                                    <li>application to convert</li>
-                                    <li>LA proforma</li>
-                                    <li>academy order</li>
-                                </ul>
-                            </govuk-details-text>
-                        </govuk-details>
-                    </div>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="@nameof(Model.AcademyOrderUploaded)" id="@(nameof(Model.AcademyOrderUploaded))" asp-for="@Model.AcademyOrderUploaded" value="true" name="@(nameof(Model.AcademyOrderUploaded))" checked="@Model.AcademyOrderUploaded">
                     <b>Academy Order uploaded and verified</b>
-                    <div class="govuk-hint">
-                        <p>Check that no information is missing from the existing project documents.</p>
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">What to check for</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>You should check existing project documents, including:</p>
-                                <ul>
-                                    <li>application to convert</li>
-                                    <li>LA proforma</li>
-                                    <li>academy order</li>
-                                </ul>
-                            </govuk-details-text>
-                        </govuk-details>
-                    </div>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="@nameof(Model.LaProformaUploaded)" id="@(nameof(Model.LaProformaUploaded))" asp-for="@Model.LaProformaUploaded" value="true" name="@(nameof(Model.LaProformaUploaded))" checked="@Model.LaProformaUploaded">
                     <b>LA proforma uploaded and verified</b>
-                    <div class="govuk-hint">
-                        <p>Check that no information is missing from the existing project documents.</p>
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">What to check for</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>You should check existing project documents, including:</p>
-                                <ul>
-                                    <li>application to convert</li>
-                                    <li>LA proforma</li>
-                                    <li>academy order</li>
-                                </ul>
-                            </govuk-details-text>
-                        </govuk-details>
-                    </div>
-                </govuk-checkboxes-item>
+                    </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
