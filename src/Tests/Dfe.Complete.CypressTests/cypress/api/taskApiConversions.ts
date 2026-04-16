@@ -105,6 +105,13 @@ interface UpdateTenancyAtWillTaskRequest {
     receiveSigned?: boolean;
 }
 
+interface UpdatePostDecisionActionsTaskRequest {
+    taskDataId: TaskDataId;
+    applicationUploaded?: boolean;
+    academyOrderUploaded?: boolean;
+    laProformaUploaded?: boolean;
+}
+
 interface UpdateTrustModificationOrderTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -173,6 +180,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateTenancyAtWillTask(requestBody: UpdateTenancyAtWillTaskRequest) {
         return this.taskDataBaseRequest<void>("TenancyAtWill", requestBody);
+    }
+
+    public updatePostDecisionActionsTask(requestBody: UpdatePostDecisionActionsTaskRequest) {
+        return this.taskDataBaseRequest<void>("PostDecisionActions", requestBody);
     }
 
     public updateTrustModificationOrderTask(requestBody: UpdateTrustModificationOrderTaskRequest) {
