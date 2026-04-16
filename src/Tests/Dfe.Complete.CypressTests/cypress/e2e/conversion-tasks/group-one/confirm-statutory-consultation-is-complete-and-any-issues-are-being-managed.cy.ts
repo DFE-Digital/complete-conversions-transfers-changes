@@ -3,7 +3,6 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
-import { ProjectType } from "cypress/api/taskApi";
 import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 
 const taskPath = "confirm_statutory_consultation";
