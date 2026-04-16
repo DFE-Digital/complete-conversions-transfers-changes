@@ -21,19 +21,15 @@ describe("Conversion tasks - Confirm and process the sponsored support grant", (
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("How to check grant eligibility")
-            .hasDropdownContent("The fast track grant amounts are")
             .clickDropdown("Changing the grant amount if the trust needs more funding later")
             .hasDropdownContent("Trusts can discover new information")
             .hasCheckboxLabel("Tell the trust how much they are entitled to and how to claim the grant")
             .expandGuidance("How to claim different grants")
             .hasGuidance("The sponsor can claim for the fast track grant first")
-            .hasCheckboxLabel("Send the grant information to the payments team")
-            .expandGuidance("What information to send")
-            .hasGuidance("You'll find the directive academy order and grant claim form")
-            .hasCheckboxLabel("Tell the trust the grant is being processed")
-            .expandGuidance("What to do if the trust do not receive the grant")
-            .hasGuidance("Email the Grant Payments team at");
+            .hasCheckboxLabel("Send the grant information and vendor account details to the payments team")
+            .hasCheckboxLabel("Tell the school or trust the grant information has been sent and the grant is being processed")
+            .hasCheckboxLabel("Check the school or trust have a vendor account")
+            .hasGuidance("Standing Data Team - Set Up and Maintain Vendor Data (opens in new tab)")
     });
 
     it("should submit the form and persist selections", () => {
@@ -41,7 +37,7 @@ describe("Conversion tasks - Confirm and process the sponsored support grant", (
         taskPage
             .hasCheckboxLabel("Tell the trust how much they are entitled to and how to claim the grant")
             .tick()
-            .hasCheckboxLabel("Send the grant information to the payments team")
+            .hasCheckboxLabel("Send the grant information and vendor account details to the payments team")
             .tick()
             .saveAndReturn();
         taskListPage
@@ -53,7 +49,7 @@ describe("Conversion tasks - Confirm and process the sponsored support grant", (
             .hasCheckboxLabel("Tell the trust how much they are entitled to and how to claim the grant")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Send the grant information to the payments team")
+            .hasCheckboxLabel("Send the grant information and vendor account details to the payments team")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -63,7 +59,7 @@ describe("Conversion tasks - Confirm and process the sponsored support grant", (
         taskPage
             .hasCheckboxLabel("Tell the trust how much they are entitled to and how to claim the grant")
             .isUnticked()
-            .hasCheckboxLabel("Send the grant information to the payments team")
+            .hasCheckboxLabel("Send the grant information and vendor account details to the payments team")
             .isUnticked();
     });
 
