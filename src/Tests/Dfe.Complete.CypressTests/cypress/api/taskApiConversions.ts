@@ -14,6 +14,12 @@ interface UpdateCompleteNotificationOfChangeTaskRequest {
     sendDocument?: boolean;
 }
 
+interface UpdateConfirmStatutoryConsultationTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    statutoryConsultationComplete?: boolean;
+}
+
 interface UpdateConfirmAcademyOpenedDateTaskRequest {
     taskDataId: TaskDataId;
     academyOpenedDate?: string | null;
@@ -115,6 +121,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateCompleteNotificationOfChangeTask(requestBody: UpdateCompleteNotificationOfChangeTaskRequest) {
         return this.taskDataBaseRequest<void>("CompleteNotificationOfChange", requestBody);
+    }
+
+    public updateConfirmStatutoryConsultationTask(requestBody: UpdateConfirmStatutoryConsultationTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmStatutoryConsultation", requestBody);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {

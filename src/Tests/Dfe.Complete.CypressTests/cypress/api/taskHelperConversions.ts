@@ -423,6 +423,32 @@ class TaskHelperConversions extends TaskHelper {
                 return taskApiConversions.updateTrustModificationOrderTask(defaultBody);
         }
     }
+
+    updateConfirmStatutoryConsultation(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            statutoryConsultationComplete: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApiConversions.updateConfirmStatutoryConsultationTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updateConfirmStatutoryConsultationTask({
+                    ...defaultBody,
+                    notApplicable: false,
+                    statutoryConsultationComplete: true,
+                });
+
+            default:
+                return taskApiConversions.updateConfirmStatutoryConsultationTask(defaultBody);
+        }
+    }
 }
 
 const taskHelperConversions = new TaskHelperConversions();
