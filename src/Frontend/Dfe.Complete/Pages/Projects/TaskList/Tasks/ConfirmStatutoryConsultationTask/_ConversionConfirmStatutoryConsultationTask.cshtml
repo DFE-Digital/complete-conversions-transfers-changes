@@ -3,20 +3,12 @@
 
 <form method="post">
   <input type="hidden" asp-for="TasksDataId" />
-    <input type="hidden" asp-for="Type" />
   
-  <p class="govuk-body">
-    Under the Academies Act 2010, a school must consult all relevant parties prior to converting to academy status.
-  </p>
-  
-  <p class="govuk-body">
-    The statutory requirement does not prescribe who should be consulted or the length of the consultation. Generally, a school will consult parents, staff, pupils, other schools, the local authority, and the wider community.
-  </p>
-  
-  <p class="govuk-body">
-    DfE requires confirmation that stakeholder consultation has been completed and there has either been no opposition to the school's academy conversion by any stakeholders, or if there has been opposition, how it has been addressed. This would have usually been completed at the application stage, but occasionally consultations are carried out or conclude afterwards.
-  </p>
-
+  <div class="govuk-hint">
+    <p>Under the Academies Act 2010, a school must consult all relevant parties prior to converting to academy status.</p>
+    <p>The statutory requirement does not prescribe who should be consulted or the length of the consultation. Generally, a school will consult parents, staff, pupils, other schools, the local authority, and the wider community.</p>  
+    <p>DfE requires confirmation that stakeholder consultation has been completed and there has either been no opposition to the school's academy conversion by any stakeholders, or if there has been opposition, how it has been addressed. This would have usually been completed at the application stage, but occasionally consultations are carried out or conclude afterwards.</p>
+  </div>
   <govuk-checkboxes name="options">
     <govuk-checkboxes-fieldset>
       <govuk-checkboxes-fieldset-legend>

@@ -3915,7 +3915,7 @@
           "TasksData"
         ],
         "summary": "Updates the confirm statutory consultation task for conversion project.",
-        "operationId": "TasksData_UpdateConfirmStatutoryConsultationTaskDataByTaskDataId",
+        "operationId": "TasksData_UpdateConfirmStatutoryConsultationTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update task data command.",
@@ -9928,14 +9928,6 @@
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
           },
           "notApplicable": {
             "type": "boolean",

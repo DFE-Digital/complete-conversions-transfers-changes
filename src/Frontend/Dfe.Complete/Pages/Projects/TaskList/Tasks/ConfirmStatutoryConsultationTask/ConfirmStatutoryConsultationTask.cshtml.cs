@@ -20,13 +20,10 @@ public class ConfirmStatutoryConsultationTaskModel(ISender sender, IAuthorizatio
 
     [BindProperty]
     public Guid? TasksDataId { get; set; }
-    [BindProperty]
-    public ProjectType? Type { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
-        Type = Project.Type;
         TasksDataId = Project.TasksDataId?.Value;
         
         NotApplicable = ConversionTaskData.StatutoryConsultationNotApplicable;
@@ -37,7 +34,7 @@ public class ConfirmStatutoryConsultationTaskModel(ISender sender, IAuthorizatio
 
     public async Task<IActionResult> OnPost()
     {
-        await Sender.Send(new UpdateConfirmStatutoryConsultationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ConsultationComplete));
+        await Sender.Send(new UpdateConfirmStatutoryConsultationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, ConsultationComplete));
         SetTaskSuccessNotification();
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }

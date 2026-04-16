@@ -1656,7 +1656,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The update task data command.</param>
         /// <returns>Successfully updated the confirm statutory consultation task data</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync(UpdateConfirmStatutoryConsultationTaskCommand request);
+        System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskAsync(UpdateConfirmStatutoryConsultationTaskCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -1665,7 +1665,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The update task data command.</param>
         /// <returns>Successfully updated the confirm statutory consultation task data</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync(UpdateConfirmStatutoryConsultationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskAsync(UpdateConfirmStatutoryConsultationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Updating the subleases task data for conversion project.
@@ -7499,10 +7499,6 @@ namespace Dfe.Complete.Client.Contracts
     {
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public ProjectType? ProjectType { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? NotApplicable { get; set; } = default!;
