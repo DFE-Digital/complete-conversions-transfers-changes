@@ -795,5 +795,30 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ConfirmDateAcademyOpened);
         }
 
+        [Theory]
+        [InlineData(null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, TaskListStatus.InProgress)]
+        [InlineData(true, true, false, TaskListStatus.InProgress)]
+        public void PostDecisionActionsTaskStatus_ShouldReturn_CorrectStatus(
+            bool? applicationUploaded, bool? academyOrderUploaded, bool? laProformaUploaded, TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                PostDecisionActionsApplicationUploaded = applicationUploaded,
+                PostDecisionActionsAcademyOrderUploaded = academyOrderUploaded,
+                PostDecisionActionsLaProformaUploaded = laProformaUploaded
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.PostDecisionActions);
+        }
+
     }
 }

@@ -256,6 +256,12 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? CommercialTransferAgreementSaved { get; set; }
     public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
+    public bool? PostDecisionActionsApplicationUploaded { get; set; }
+
+    public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
+
+    public bool? PostDecisionActionsLaProformaUploaded { get; set; }
+
     private ConversionTasksData() { }
 
     public ConversionTasksData(

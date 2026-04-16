@@ -200,4 +200,8 @@ public enum NoteTaskIdentifier
     [Description("redact_and_send")]
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
+
+    [Description("post_decision_actions")]
+    [DisplayDescription("Post decision actions")]
+    PostDecisionActions = 52,
 }

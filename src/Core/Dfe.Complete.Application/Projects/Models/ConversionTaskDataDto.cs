@@ -253,6 +253,12 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementSaved { get; set; }
 
+        public bool? PostDecisionActionsApplicationUploaded { get; set; }
+
+        public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
+
+        public bool? PostDecisionActionsLaProformaUploaded { get; set; }
+
 
     }
 }
