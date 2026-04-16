@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260410082234_AddSignificantStakeholderKickoffDeclareBudgetChangeFlag")]
+    partial class AddSignificantStakeholderKickoffDeclareBudgetChangeFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -456,10 +459,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("ShareInformationEmail")
                         .HasColumnType("bit")
                         .HasColumnName("share_information_email");
-
-                    b.Property<bool?>("SponsoredSupportGrantHasVendorAccount")
-                        .HasColumnType("bit")
-                        .HasColumnName("sponsored_support_grant_has_vendor_account");
 
                     b.Property<bool?>("SponsoredSupportGrantInformTrust")
                         .HasColumnType("bit")

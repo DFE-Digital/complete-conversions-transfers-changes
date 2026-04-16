@@ -5804,6 +5804,12 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StakeholderKickOffMeeting { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffCheckProvisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffDeclareBudgetChanges", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffDeclareBudgetChanges { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("conversionGrantCheckVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConversionGrantCheckVendorAccount { get; set; } = default!;
 
@@ -6040,9 +6046,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("trustModificationOrderNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TrustModificationOrderNotApplicable { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("stakeholderKickOffCheckProvisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("conversionGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConversionGrantNotApplicable { get; set; } = default!;
@@ -6364,6 +6367,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffDeclareBudgetChanges", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffDeclareBudgetChanges { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]

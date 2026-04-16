@@ -68,6 +68,7 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     checkProvisionalDate?: boolean;
     stakeholderKickOffSetupMeeting?: boolean;
     stakeholderKickOffMeeting?: boolean;
+    stakeholderKickOffDeclareBudgetChanges?: boolean;
     significantDate?: string;
     userEmail?: string;
 }

@@ -32,6 +32,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         [BindProperty(Name = "host-meeting-or-call")]
         public bool? HostMeetingOrCall { get; set; }
 
+        [BindProperty(Name = "set-budget-decision-expectations")]
+        public bool? SetBudgetDecisionExpectations { get; set; }
+
         [BindProperty(Name = "significant-date")]
         [DisplayName("The Significant date")]
         public DateOnly? SignificantDate { get; set; }
@@ -52,6 +55,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 HostMeetingOrCall = ConversionTaskData.StakeholderKickOffMeeting;
                 LocalAuthorityProforma = ConversionTaskData.StakeholderKickOffLocalAuthorityProforma;
                 LocalAuthorityAbleToConvert = ConversionTaskData.StakeholderKickOffCheckProvisionalConversionDate;
+                SetBudgetDecisionExpectations = ConversionTaskData.StakeholderKickOffDeclareBudgetChanges;
             }
             else
             {
@@ -89,6 +93,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 LocalAuthorityAbleToConvert,
                 SendInvites,
                 HostMeetingOrCall,
+                SetBudgetDecisionExpectations,
                 SignificantDate,
                 User.Identity!.Name);
 
