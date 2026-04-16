@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260416161849_AddPostDecisionActionsTaskFields")]
+    partial class AddPostDecisionActionsTaskFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,10 +371,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("master_funding_agreement_signed_secretary_state");
 
-                    b.Property<int?>("NurseryArrangement")
-                        .HasColumnType("int")
-                        .HasColumnName("nursery_arrangement");
-
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_email");
@@ -525,14 +524,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("StakeholderKickOffSetupMeeting")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_setup_meeting");
-
-                    b.Property<bool?>("StatutoryConsultationComplete")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_complete  ");
-
-                    b.Property<bool?>("StatutoryConsultationNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_not_applicable");
 
                     b.Property<bool?>("SubleasesCleared")
                         .HasColumnType("bit")
