@@ -70,8 +70,28 @@ describe("Conversion tasks - Post decision actions", () => {
             .hasTaskStatusInProgress("Post decision actions");
     });
 
-    checkAccessibilityAcrossPages([
-        () => taskListPage.selectTask("Post decision actions"),
-        () => taskPage.tick().saveAndReturn(),
-    ]);
+    it("should show task status based on the checkboxes that are checked", () => {
+        cy.visit(`projects/${setup.projectId}/tasks`);
+
+        TaskHelperConversions.updatePostDecisionActions(setup.taskId, "notStarted");
+        cy.reload();
+        taskListPage.hasTaskStatusNotStarted("Post decision actions");
+
+        TaskHelperConversions.updatePostDecisionActions(setup.taskId, "inProgress");
+        cy.reload();
+        taskListPage.hasTaskStatusInProgress("Post decision actions");
+
+        TaskHelperConversions.updatePostDecisionActions(setup.taskId, "completed");
+        cy.reload();
+        taskListPage.hasTaskStatusCompleted("Post decision actions");
+    });
+
+    it("Should NOT see the 'save and return' button for another user's project", () => {
+        cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
+        taskPage.noSaveAndReturnExists();
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
+    });
 });

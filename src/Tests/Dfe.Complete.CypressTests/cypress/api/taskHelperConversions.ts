@@ -423,6 +423,35 @@ class TaskHelperConversions extends TaskHelper {
                 return taskApiConversions.updateTrustModificationOrderTask(defaultBody);
         }
     }
+
+    public updatePostDecisionActions(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            applicationUploaded: false,
+            academyOrderUploaded: false,
+            laProformaUploaded: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApiConversions.updatePostDecisionActionsTask({
+                    ...defaultBody,
+                    applicationUploaded: true,
+                    academyOrderUploaded: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updatePostDecisionActionsTask({
+                    taskDataId: { value: taskDataId },
+                    applicationUploaded: true,
+                    academyOrderUploaded: true,
+                    laProformaUploaded: true,
+                });
+
+            default:
+                return taskApiConversions.updatePostDecisionActionsTask(defaultBody);
+        }
+    }
 }
 
 const taskHelperConversions = new TaskHelperConversions();
