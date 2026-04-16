@@ -1,0 +1,46 @@
+﻿@page "/projects/{projectId}/tasks/confirm_nursery_arrangement"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmNurseryArrangementTask.ConfirmNurseryArrangementTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
+}
+
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The academy trust should confirm how any nursery provision will be run upon opening (e.g. direct provision, governor-led or PVI provider). The expectation is the nursery will be run the same way as it was under the maintained school.</p>
+        <p>DOs must refer to the <external-link href="@_configuration["ExternalLinks:NurseryGuidance"]">nursery/early years guidance (opens in new tab)</external-link> if the nursery is currently run under S.27 powers. Also see the guidance on what to look for and what actions to take for each proposal.</p>
+    </div>
+}
+
+@section TaskSection {
+    <form method="post" novalidate data-cy="task-update-nursery-arrangement">
+    
+        <govuk-radios name="nursery_arrangement" asp-for="@Model.SelectedNurseryArrangement">
+            <govuk-radios-fieldset>
+                <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--m">
+                    Confirm academy nursery arrangement
+                </govuk-radios-fieldset-legend>
+                @foreach (var type in Model.NurseryArrangementOptions)
+                {
+                    <govuk-radios-item data-cy="confirm_nursery_@type.ToDescription()" value="@type.ToDescription()">@type.ToDisplayDescription()
+                    
+                        @if (type == NurseryArrangementOption.AChildrensCentre)
+                        {
+                            <govuk-radios-hint class="govuk-hint" data-cy="hint_@type.ToDescription()">
+                                See <external-link href="@_configuration["ExternalLinks:SureStartCentresGuidance"]">Children’s Centres and Sure Start Centres Guidance (opens in new tab)</external-link> on the guidance site.
+                            </govuk-radios-hint>
+                        }
+                    
+                        </govuk-radios-item>
+
+                }
+            </govuk-radios-fieldset>
+        </govuk-radios>
+        
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

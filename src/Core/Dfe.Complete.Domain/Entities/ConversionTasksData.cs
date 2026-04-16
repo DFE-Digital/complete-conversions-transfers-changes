@@ -252,6 +252,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? CommercialTransferAgreementSaved { get; set; }
 
+    public NurseryArrangementOption? NurseryArrangement { get; set; }
+
     private ConversionTasksData() { }
 
     public ConversionTasksData(

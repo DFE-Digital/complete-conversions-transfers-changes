@@ -134,6 +134,7 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.TrustModificationOrderSaved, false)
             .With(x => x.TrustModificationOrderSentLegal, false)
             .With(x => x.UpdateEsfaUpdate, false)
+            .With(x => x.NurseryArrangement, fixture.Create<NurseryArrangementOption>())
         );
     }
 }
