@@ -10655,9 +10655,9 @@ namespace Dfe.Complete.Client
         /// <param name="request">The update task data command.</param>
         /// <returns>Successfully updated the confirm statutory consultation task data</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync(UpdateConfirmStatutoryConsultationTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskAsync(UpdateConfirmStatutoryConsultationTaskCommand request)
         {
-            return UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync(request, System.Threading.CancellationToken.None);
+            return UpdateConfirmStatutoryConsultationTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -10667,7 +10667,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The update task data command.</param>
         /// <returns>Successfully updated the confirm statutory consultation task data</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync(UpdateConfirmStatutoryConsultationTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateConfirmStatutoryConsultationTaskAsync(UpdateConfirmStatutoryConsultationTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");

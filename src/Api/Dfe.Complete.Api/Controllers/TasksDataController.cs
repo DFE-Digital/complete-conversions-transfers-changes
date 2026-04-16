@@ -781,7 +781,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("TaskData/ConfirmStatutoryConsultation")]
         [SwaggerResponse(204, "Successfully updated the confirm statutory consultation task data")]
         [SwaggerResponse(404, "Conversion task data not found for the given task data Id.")]
-        public async Task<IActionResult> UpdateConfirmStatutoryConsultationTaskDataByTaskDataIdAsync([FromBody] UpdateConfirmStatutoryConsultationTaskCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateConfirmStatutoryConsultationTaskAsync([FromBody] UpdateConfirmStatutoryConsultationTaskCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
