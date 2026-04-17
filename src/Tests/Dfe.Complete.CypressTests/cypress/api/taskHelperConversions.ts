@@ -449,6 +449,22 @@ class TaskHelperConversions extends TaskHelper {
                 return taskApiConversions.updateConfirmStatutoryConsultationTask(defaultBody);
         }
     }
+
+    updateTupeConsultation(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: ProjectType.Conversion, // ProjectType.Conversion
+            completed: false,
+        };
+
+        if (status === 'completed')
+            return taskApiConversions.updateTupeConsultationTask({
+                ...defaultBody,
+                completed: true,
+            });
+
+        return taskApiConversions.updateTupeConsultationTask(defaultBody);
+    }
 }
 
 const taskHelperConversions = new TaskHelperConversions();
