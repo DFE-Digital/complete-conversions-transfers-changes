@@ -20,6 +20,9 @@ Security in case of vulnerabilities.
 - use API user secrets before appsettings
 - [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
 
+### Added
+- [275398](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275398) - Add new task "LA confirms payroll deadline (LA)" to project kick-off task list
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
 
 ### Changed 
@@ -810,12 +813,12 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - New route `/projects/team/unassigned`
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
-### Changed  
-- Sort all projects by region list alphabetically
+### Changed
+ - Sort all projects by region list alphabetically
 
-### Fixed  
-- Note FK Ids are now required
-- Separated created and assigned users in project creation
+### Fixed
+ - Note FK Ids are now required
+ - Separated created and assigned users in project creation
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...production-2025-05-22.290) for everything in the release
 
