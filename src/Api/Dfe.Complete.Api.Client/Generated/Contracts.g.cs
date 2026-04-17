@@ -1769,6 +1769,15 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateProcessConversionSupportGrantTaskAsync(UpdateProcessSupportGrantTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>Nursery arrangement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateNurseryArrangementTaskAsync(UpdateNurseryArrangementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Nursery arrangement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateNurseryArrangementTaskAsync(UpdateNurseryArrangementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -4290,6 +4299,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"RedactAndSend")]
         RedactAndSend = 48,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"NurseryArrangement")]
+        NurseryArrangement = 49,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6146,6 +6158,10 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("commercialTransferAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CommercialTransferAgreementSaved { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("nurseryArrangement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NurseryArrangementOption? NurseryArrangement { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -6173,6 +6189,27 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"Commercial")]
         Commercial = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum NurseryArrangementOption
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NotApplicable")]
+        NotApplicable = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectProvision")]
+        DirectProvision = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SubsidiaryCompanyOfTheTrust")]
+        SubsidiaryCompanyOfTheTrust = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AnIndependentProvider")]
+        AnIndependentProvider = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AChildrensCentre")]
+        AChildrensCentre = 4,
 
     }
 
@@ -7747,6 +7784,31 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProcessSupportGrantTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateNurseryArrangementTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("nurseryArrangement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NurseryArrangementOption? NurseryArrangement { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateNurseryArrangementTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateNurseryArrangementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

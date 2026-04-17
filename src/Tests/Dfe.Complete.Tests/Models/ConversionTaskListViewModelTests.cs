@@ -795,5 +795,26 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ConfirmDateAcademyOpened);
         }
 
+        [Theory]
+        [InlineData(null, TaskListStatus.NotStarted)]
+        [InlineData(NurseryArrangementOption.NotApplicable, TaskListStatus.NotApplicable)]
+        [InlineData(NurseryArrangementOption.DirectProvision, TaskListStatus.Completed)]
+        [InlineData(NurseryArrangementOption.SubsidiaryCompanyOfTheTrust, TaskListStatus.Completed)]
+        [InlineData(NurseryArrangementOption.AnIndependentProvider, TaskListStatus.Completed)]
+        [InlineData(NurseryArrangementOption.AChildrensCentre, TaskListStatus.Completed)]
+        public void ConfirmNurseryArrangementTaskStatus_ShouldReturn_CorrectStatus(NurseryArrangementOption? arrangement, TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                NurseryArrangement = arrangement,
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.ConfirmNurseryArrangement);
+        }
+
     }
 }

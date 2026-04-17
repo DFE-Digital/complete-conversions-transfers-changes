@@ -253,6 +253,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementSaved { get; set; }
 
-
+        public NurseryArrangementOption? NurseryArrangement { get; set; }
     }
 }

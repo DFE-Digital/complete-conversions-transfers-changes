@@ -4140,6 +4140,37 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/NurseryArrangement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "operationId": "TasksData_UpdateNurseryArrangementTask",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNurseryArrangementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Nursery arrangement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TestEmail/welcome": {
       "get": {
         "tags": [
@@ -6966,7 +6997,8 @@
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
-          "RedactAndSend"
+          "RedactAndSend",
+          "NurseryArrangement"
         ],
         "enum": [
           "Handover",
@@ -7017,7 +7049,8 @@
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
-          "RedactAndSend"
+          "RedactAndSend",
+          "NurseryArrangement"
         ]
       },
       "CreateNoteCommand": {
@@ -8840,6 +8873,14 @@
           "commercialTransferAgreementSaved": {
             "type": "boolean",
             "nullable": true
+          },
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
           }
         }
       },
@@ -8855,6 +8896,24 @@
           "Standard",
           "ChurchOrTrust",
           "Commercial"
+        ]
+      },
+      "NurseryArrangementOption": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
+        ],
+        "enum": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
         ]
       },
       "UpdateHandoverWithDeliveryOfficerTaskCommand": {
@@ -10122,6 +10181,23 @@
           "conversionGrantSharePaymentDate": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdateNurseryArrangementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
           }
         }
       },
