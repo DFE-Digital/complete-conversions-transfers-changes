@@ -241,6 +241,10 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
 
+        public DateOnly? LAPayrollDeadline { get; set; }
+
+        public bool? LAConfirmsPayrollDeadline { get; set; }
+
         public string? RiskProtectionArrangementReason { get; set; }
 
         public bool? ArticlesOfAssociationSent { get; set; }

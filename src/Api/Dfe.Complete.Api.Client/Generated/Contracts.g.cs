@@ -1243,6 +1243,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateConfirmAcademyOpenedDateTaskAsync(UpdateConfirmAcademyOpenedDateTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Update the LA confirms payroll deadline task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>LA confirms payroll deadline task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLAConfirmsPayrollDeadlineTaskAsync(UpdateLAConfirmsPayrollDeadlineTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the LA confirms payroll deadline task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>LA confirms payroll deadline task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLAConfirmsPayrollDeadlineTaskAsync(UpdateLAConfirmsPayrollDeadlineTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -2340,6 +2357,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("significantDateHistories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<SignificantDateHistory>? SignificantDateHistories { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("laPayrollDeadlineConfirmed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LaPayrollDeadlineConfirmed { get; set; } = default!;
 
         public string ToJson()
         {
@@ -3799,6 +3819,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("localAuthorityId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LocalAuthorityId? LocalAuthorityId { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("laPayrollDeadlineConfirmed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LaPayrollDeadlineConfirmed { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -4371,8 +4394,11 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"TupeConsultation")]
         TupeConsultation = 52,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"LAConfirmsPayrollDeadline")]
+        LAConfirmsPayrollDeadline = 53,
+
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmDBSChecks")]
-        ConfirmDBSChecks = 53,
+        ConfirmDBSChecks = 54,
 
     }
 
@@ -6212,6 +6238,13 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? ConfirmDateAcademyOpenedDateOpened { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("laPayrollDeadline", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? LaPayrollDeadline { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("laConfirmsPayrollDeadline", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LaConfirmsPayrollDeadline { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("riskProtectionArrangementReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? RiskProtectionArrangementReason { get; set; } = default!;
 
@@ -6804,6 +6837,31 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyOpenedDateTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateLAConfirmsPayrollDeadlineTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("payrollDeadline", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? PayrollDeadline { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateLAConfirmsPayrollDeadlineTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLAConfirmsPayrollDeadlineTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

@@ -382,6 +382,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateLAConfirmsPayrollDeadlineTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateChurchSupplementalAgreementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },

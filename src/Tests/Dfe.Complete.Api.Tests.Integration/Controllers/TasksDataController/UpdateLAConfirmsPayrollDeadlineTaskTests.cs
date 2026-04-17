@@ -12,9 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Xunit;
 
-namespace Dfe.Complete.Api.Tests.Integration.Commands
+namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
-    public class UpdateLAConfirmsPayrollDeadlineTaskCommandTests
+    public class UpdateLAConfirmsPayrollDeadlineTaskTests
     {
         [Theory]
         [CustomAutoData(

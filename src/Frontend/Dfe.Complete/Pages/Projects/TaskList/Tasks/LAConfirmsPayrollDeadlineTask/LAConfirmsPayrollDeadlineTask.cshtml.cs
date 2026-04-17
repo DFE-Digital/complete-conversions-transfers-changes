@@ -27,12 +27,28 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTa
                 return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
-            PayrollDeadline = ConversionTaskData.LAConfirmsPayrollDeadline;
+            PayrollDeadline = ConversionTaskData.LAPayrollDeadline;
 
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
+            // Custom validation for payroll deadline
+            if (PayrollDeadline.HasValue)
+            {
+                // Check if date is in the future
+                if (PayrollDeadline <= DateOnly.FromDateTime(DateTime.Now))
+                {
+                    ModelState.AddModelError("payroll-deadline", "The payroll deadline must be in the future.");
+                }
+
+                // Check if date is before the significant date
+                if (Project.SignificantDate.HasValue && PayrollDeadline >= Project.SignificantDate.Value)
+                {
+                    ModelState.AddModelError("payroll-deadline", "The payroll deadline must be before the significant date.");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 await base.OnGetAsync();
