@@ -1,0 +1,34 @@
+@page "/projects/{projectId}/tasks/la_confirms_payroll_deadline"
+@using Dfe.Complete.Utils;
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTask.LAConfirmsPayrollDeadlineTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+    var payrollDeadline = "payroll-deadline";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The LA must confirm if they have a payroll deadline in relation to the confirmed conversion date. They must also confirm what information they will require as part of this. This is usually discussed/agreed between the LA, school and incoming trust when they agree a conversion date, but this may need to be renegotiated if a project slips.</p>
+    </div>
+}
+@section TaskSection {  
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-date-input data-cy="@payrollDeadline" id="@payrollDeadline" name-prefix="@payrollDeadline" asp-for="@Model.PayrollDeadline">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
+                    Enter the payroll deadline
+                </govuk-date-input-fieldset-legend>
+                <govuk-date-input-hint>
+                    <p>For example 27 5 2026</p>
+                </govuk-date-input-hint>
+                @if (ErrorService.HasErrorForKey(@payrollDeadline))
+                {
+                    <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@payrollDeadline)</govuk-date-input-error-message>
+                }
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

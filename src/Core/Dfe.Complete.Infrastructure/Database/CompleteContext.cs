@@ -65,7 +65,9 @@ public partial class CompleteContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public virtual DbSet<LAPayrollDeadlineTask> LAPayrollDeadlineTasks { get; set; }
+
+    protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
@@ -80,7 +82,7 @@ public partial class CompleteContext : DbContext
         }
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Project>(ConfigureProject);
         modelBuilder.Entity<User>(ConfigureUser);
@@ -1214,5 +1216,13 @@ public partial class CompleteContext : DbContext
             .HasColumnName("updated_at");
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    protected void OnModelCreatingPartial(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<LAPayrollDeadlineTask>(entity =>
+        {
+            entity.ToTable("la_payroll_deadline_tasks");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Deadline).IsRequired();
+        });
+    }
 }

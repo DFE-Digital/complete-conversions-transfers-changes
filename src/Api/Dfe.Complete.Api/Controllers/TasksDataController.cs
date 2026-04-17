@@ -288,6 +288,25 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Update the LA confirms payroll deadline task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/LAConfirmsPayrollDeadline")]
+        [SwaggerResponse(204, "LA confirms payroll deadline task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateLAConfirmsPayrollDeadlineTaskAsync(
+            [FromBody] UpdateLAConfirmsPayrollDeadlineTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
 
         /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.

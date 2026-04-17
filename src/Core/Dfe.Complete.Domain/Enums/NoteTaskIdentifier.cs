@@ -200,4 +200,8 @@ public enum NoteTaskIdentifier
     [Description("redact_and_send")]
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
+
+    [Description("la_confirms_payroll_deadline")]
+    [DisplayDescription("LA confirms payroll deadline")]
+    LAConfirmsPayrollDeadline = 55,
 }

@@ -475,4 +475,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             Urn.Value,
             schoolName));
     }
+
+    public bool? LAPayrollDeadlineConfirmed { get; set; }
 }
