@@ -201,7 +201,7 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
 
-    [Description("nursey_arrangement")]
+    [Description("confirm_nursery_arrangement")]
     [DisplayDescription("Confirm academy nursery arrangement")]
     NurseryArrangement = 51
 

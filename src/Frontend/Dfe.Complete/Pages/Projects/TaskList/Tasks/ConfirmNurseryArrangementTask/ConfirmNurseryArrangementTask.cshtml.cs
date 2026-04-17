@@ -18,9 +18,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmNurseryArrangementTa
         [BindProperty(Name = "nursery_arrangement")]
         public NurseryArrangementOption? SelectedNurseryArrangement { get; set; }
 
+
+        [BindProperty]
+        public Guid? TasksDataId { get; set; }
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            TasksDataId = Project.TasksDataId?.Value;
 
             if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
@@ -32,7 +38,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmNurseryArrangementTa
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateNurseryArrangementTaskCommand(new TaskDataId(Project.TasksDataId!.Value), SelectedNurseryArrangement));
+            await Sender.Send(new UpdateNurseryArrangementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault()), SelectedNurseryArrangement));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

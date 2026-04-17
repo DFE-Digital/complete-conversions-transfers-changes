@@ -18,7 +18,8 @@
 
 @section TaskSection {
     <form method="post" novalidate data-cy="task-update-nursery-arrangement">
-    
+        <input type="hidden" asp-for="@Model.TasksDataId" />
+
         <govuk-radios name="nursery_arrangement" asp-for="@Model.SelectedNurseryArrangement">
             <govuk-radios-fieldset>
                 <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--m">
@@ -26,10 +27,16 @@
                 </govuk-radios-fieldset-legend>
                 @foreach (var type in Model.NurseryArrangementOptions)
                 {
-                    <govuk-radios-item data-cy="confirm_nursery_@type.ToDescription()" value="@type.ToDescription()">@type.ToDisplayDescription()
-                    
+                    var selected = type == Model.SelectedNurseryArrangement;
+                    <govuk-radios-item data-cy="confirm_nursery_@type.ToDescription()"
+                                       id="nursery_arrangement_@type.ToString()"
+                                       value="@type"
+                                       name="@type.ToDescription()"
+                                       checked="@selected">
+                        @type.ToDisplayDescription()
                         @if (type == NurseryArrangementOption.AChildrensCentre)
                         {
+                            <br />
                             <govuk-radios-hint class="govuk-hint" data-cy="hint_@type.ToDescription()">
                                 See <external-link href="@_configuration["ExternalLinks:SureStartCentresGuidance"]">Children’s Centres and Sure Start Centres Guidance (opens in new tab)</external-link> on the guidance site.
                             </govuk-radios-hint>
