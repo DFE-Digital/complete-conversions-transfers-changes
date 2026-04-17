@@ -99,6 +99,12 @@ interface UpdateTenancyAtWillTaskRequest {
     receiveSigned?: boolean;
 }
 
+interface UpdateTupeConsultationTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    completed?: boolean;
+}
+
 interface UpdateTrustModificationOrderTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -167,6 +173,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateTrustModificationOrderTask(requestBody: UpdateTrustModificationOrderTaskRequest) {
         return this.taskDataBaseRequest<void>("TrustModificationOrder", requestBody);
+    }
+
+    public updateTupeConsultationTask(requestBody: UpdateTupeConsultationTaskRequest) {
+        return this.taskDataBaseRequest<void>("TupeConsultation", requestBody);
     }
 }
 

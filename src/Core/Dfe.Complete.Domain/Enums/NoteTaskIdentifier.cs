@@ -200,4 +200,8 @@ public enum NoteTaskIdentifier
     [Description("redact_and_send")]
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
+
+    [Description("tupe_consultation")]
+    [DisplayDescription("TUPE Consultation")]
+    TupeConsultation = 53,
 }
