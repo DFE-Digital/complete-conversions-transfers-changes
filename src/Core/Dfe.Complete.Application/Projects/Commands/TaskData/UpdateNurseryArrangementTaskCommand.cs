@@ -2,14 +2,14 @@
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
+
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
-    using Dfe.Complete.Application.Common.Models;
-    using Dfe.Complete.Domain.Enums;
-    using Dfe.Complete.Domain.ValueObjects;
-    using MediatR;
-
 
     public record UpdateNurseryArrangementTaskCommand(
         TaskDataId TaskDataId,
