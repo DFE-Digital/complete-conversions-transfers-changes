@@ -38,6 +38,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
+        public TaskListStatus PostDecisionActions { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -74,7 +75,8 @@ namespace Dfe.Complete.Models
                 ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
-                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData)
+                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
+                PostDecisionActions = PostDecisionActionsTaskStatus(taskData)
             };
         }
 
@@ -609,6 +611,20 @@ namespace Dfe.Complete.Models
             return (taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Standard ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.ChurchOrTrust ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Commercial && !string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus PostDecisionActionsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.PostDecisionActionsApplicationUploaded.HasValue || taskData.PostDecisionActionsApplicationUploaded == false) &&
+                (!taskData.PostDecisionActionsAcademyOrderUploaded.HasValue || taskData.PostDecisionActionsAcademyOrderUploaded == false) &&
+                (!taskData.PostDecisionActionsLaProformaUploaded.HasValue || taskData.PostDecisionActionsLaProformaUploaded == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.PostDecisionActionsApplicationUploaded == true &&
+                taskData.PostDecisionActionsAcademyOrderUploaded == true &&
+                taskData.PostDecisionActionsLaProformaUploaded == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }

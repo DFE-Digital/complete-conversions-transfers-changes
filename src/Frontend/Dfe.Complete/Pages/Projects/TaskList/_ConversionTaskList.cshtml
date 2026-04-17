@@ -10,6 +10,7 @@
 
     var projectKickoffTasks = new[]
     {
+        new TaskListItemViewModel("Post decision actions", Model.TaskLink("post_decision_actions"), Model.ConversionTaskList.PostDecisionActions),
         new TaskListItemViewModel("Handover with regional delivery officer", Model.TaskLink("handover"), Model.ConversionTaskList.HandoverWithRegionalDeliveryOfficer),
         new TaskListItemViewModel("External stakeholder kick-off", Model.TaskLink("stakeholder_kick_off"), Model.ConversionTaskList.ExternalStakeHolderKickoff),
         new TaskListItemViewModel("Confirm the academy's risk protection arrangements", Model.TaskLink("risk_protection_arrangement"), Model.ConversionTaskList.ConfirmAcademyRiskProtectionArrangements),
