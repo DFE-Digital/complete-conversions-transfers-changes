@@ -3081,6 +3081,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/LAConfirmsPayrollDeadline": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the LA confirms payroll deadline task for conversion project.",
+        "operationId": "TasksData_UpdateLAConfirmsPayrollDeadlineTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLAConfirmsPayrollDeadlineTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "LA confirms payroll deadline task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ChurchSupplementalAgreement": {
       "patch": {
         "tags": [
@@ -5171,6 +5204,10 @@
                 "items": {
                   "$ref": "#/components/schemas/SignificantDateHistory"
                 }
+              },
+              "laPayrollDeadlineConfirmed": {
+                "type": "boolean",
+                "nullable": true
               }
             }
           }
@@ -6612,6 +6649,10 @@
                 "$ref": "#/components/schemas/LocalAuthorityId"
               }
             ]
+          },
+          "laPayrollDeadlineConfirmed": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -7063,7 +7104,8 @@
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
-          "PostDecisionActions"
+          "PostDecisionActions",
+          "LAConfirmsPayrollDeadline"
         ],
         "enum": [
           "Handover",
@@ -7117,7 +7159,8 @@
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
-          "PostDecisionActions"
+          "PostDecisionActions",
+          "LAConfirmsPayrollDeadline"
         ]
       },
       "CreateNoteCommand": {
@@ -8913,6 +8956,15 @@
             "format": "date",
             "nullable": true
           },
+          "laPayrollDeadline": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "laConfirmsPayrollDeadline": {
+            "type": "boolean",
+            "nullable": true
+          },
           "riskProtectionArrangementReason": {
             "type": "string",
             "nullable": true
@@ -9398,6 +9450,20 @@
             "$ref": "#/components/schemas/TaskDataId"
           },
           "academyOpenedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLAConfirmsPayrollDeadlineTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "payrollDeadline": {
             "type": "string",
             "format": "date",
             "nullable": true

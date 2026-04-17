@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using MediatR;
-using Dfe.Complete.Api.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 
@@ -195,21 +194,6 @@ namespace Dfe.Complete.Api
             app.MapControllers();
 
             app.MapHealthChecks("/health").AllowAnonymous();
-
-            // Add endpoints for LA Confirms Payroll Deadline Task
-            app.MapPost("/projects/{projectId}/tasks/la_confirms_payroll_deadline", async (Guid projectId, [FromBody] PayrollDeadlineRequest request, ISender sender) =>
-            {
-                var command = new UpdateLAConfirmsPayrollDeadlineTaskCommand(new TaskDataId(request.TasksDataId), request.PayrollDeadline);
-                await sender.Send(command);
-                return Results.Ok();
-            }).WithName("UpdatePayrollDeadlineTask");
-
-            app.MapGet("/projects/{projectId}/tasks/la_confirms_payroll_deadline", async (Guid projectId, ISender sender) =>
-            {
-                var query = new GetPayrollDeadlineTaskQuery(projectId);
-                var result = await sender.Send(query);
-                return Results.Ok(result);
-            }).WithName("GetPayrollDeadlineTask");
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Logger is working...");
