@@ -22,10 +22,11 @@ Security in case of vulnerabilities.
 ### Changed 
 - use API user secrets before appsettings
 - [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
-- [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capaticy task info
+- [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capacity task info
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
 
 ### Added
+- [275398](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275398) - Add new task "LA confirms payroll deadline (LA)" to project kick-off task list
 - [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
 - [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
 
@@ -816,12 +817,12 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - New route `/projects/team/unassigned`
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
-### Changed  
-- Sort all projects by region list alphabetically
+### Changed
+ - Sort all projects by region list alphabetically
 
-### Fixed  
-- Note FK Ids are now required
-- Separated created and assigned users in project creation
+### Fixed
+ - Note FK Ids are now required
+ - Separated created and assigned users in project creation
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...production-2025-05-22.290) for everything in the release
 

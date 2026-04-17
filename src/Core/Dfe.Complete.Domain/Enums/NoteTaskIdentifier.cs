@@ -212,4 +212,8 @@ public enum NoteTaskIdentifier
     [Description("post_decision_actions")]
     [DisplayDescription("Post decision actions")]
     PostDecisionActions = 52,
+
+    [Description("la_confirms_payroll_deadline")]
+    [DisplayDescription("LA confirms payroll deadline")]
+    LAConfirmsPayrollDeadline = 55,
 }

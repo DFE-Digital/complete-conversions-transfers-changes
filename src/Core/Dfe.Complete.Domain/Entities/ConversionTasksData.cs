@@ -279,4 +279,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
     }
+
+    public DateOnly? LAPayrollDeadline { get; set; }
+
+    public bool? LAConfirmsPayrollDeadline { get; set; }
 }
