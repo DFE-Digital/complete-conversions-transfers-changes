@@ -149,6 +149,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
+    public bool? TupeConsultationCompleted { get; set; }
+
     public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
 
     public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }

@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+- [275287](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275287) - add new "TUPE Consultation" task to conversion project task list
+
 ### Changed 
 - use API user secrets before appsettings
 - [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task

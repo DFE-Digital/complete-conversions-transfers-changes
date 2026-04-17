@@ -327,6 +327,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateTupeConsultationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateRedactAndSendDocumentsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
