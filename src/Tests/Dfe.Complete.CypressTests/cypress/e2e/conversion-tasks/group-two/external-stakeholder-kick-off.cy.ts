@@ -57,7 +57,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
         taskPage
             .hasCheckboxLabel("Send introductory emails")
             .clickDropdown("What to include in introductory emails")
-            .hasGuidance("This will help you to:' with 'Use this email to:")
+            .hasGuidance("You can choose an email template (opens in new tab) to help you")
             .hasCheckboxLabel("Check the local authority proforma")
             .clickDropdown("What to do if you don't have the local authority proforma")
             .hasGuidance("The person who prepared the project for decision")
@@ -76,10 +76,7 @@ describe("Conversion tasks - External stakeholder kick off", () => {
             .hasGuidance("Some schools and trusts may prefer to have a one-to-one call with you")
             .hasCheckboxLabel("Host the kick-off meeting or call")
             .clickDropdown("What to talk about in the meeting")
-            .hasGuidance("You should discuss and record issues that might complicate or delay the project")
-            .hasGuidance(
-                "These are internal guidance documents only, the contents must not be shared externally.",
-            );
+            .hasGuidance("You can use the conversion checklist (opens in new tab) to guide the conversation");
     });
 
     it("should submit the form and persist selections", () => {

@@ -337,6 +337,7 @@ export class TaskHelper {
             paymentForm: false,
             sendInformation: false,
             informTrust: false,
+            hasVendorAccount: false,
         };
 
         switch (status) {
@@ -360,6 +361,7 @@ export class TaskHelper {
                     paymentForm: true,
                     sendInformation: true,
                     informTrust: true,
+                    hasVendorAccount: true,
                 });
 
             default:
