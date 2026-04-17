@@ -21,9 +21,9 @@ describe("Conversion tasks - TUPE Consultation", () => {
 
     it("should display the TUPE consultation information", () => {
         taskPage
-            .hasText("TUPE (Transfer of Undertakings [Protection of Employment]) is a legal process")
-            .hasText("As part of TUPE, all staff and unions must be consulted")
-            .hasText("DfE requires confirmation that the TUPE consultation has been completed");
+            .contains("TUPE (Transfer of Undertakings [Protection of Employment]) is a legal process")
+            .contains("As part of TUPE, all staff and unions must be consulted")
+            .contains("DfE requires confirmation that the TUPE consultation has been completed");
     });
 
     it("should submit the form and persist selections", () => {

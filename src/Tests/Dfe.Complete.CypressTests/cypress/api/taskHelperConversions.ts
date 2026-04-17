@@ -431,16 +431,13 @@ class TaskHelperConversions extends TaskHelper {
             completed: false,
         };
 
-        switch (status) {
-            case "completed":
-                return taskApiConversions.updateTupeConsultationTask({
-                    ...defaultBody,
-                    completed: true,
-                });
+        if (status === 'completed')
+            return taskApiConversions.updateTupeConsultationTask({
+                ...defaultBody,
+                completed: true,
+            });
 
-            default:
-                return taskApiConversions.updateTupeConsultationTask(defaultBody);
-        }
+        return taskApiConversions.updateTupeConsultationTask(defaultBody);
     }
 }
 
