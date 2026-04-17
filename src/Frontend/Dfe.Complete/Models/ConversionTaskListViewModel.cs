@@ -127,6 +127,7 @@ namespace Dfe.Complete.Models
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
                  taskData.StakeholderKickOffCheckProvisionalConversionDate == true &&
+                 taskData.StakeholderKickOffDeclareBudgetChanges == true &&
                  project.SignificantDateProvisional == false)
             {
                 return TaskListStatus.Completed;
@@ -135,6 +136,8 @@ namespace Dfe.Complete.Models
                    taskData.StakeholderKickOffLocalAuthorityProforma == true ||
                    taskData.StakeholderKickOffSetupMeeting == true ||
                    taskData.StakeholderKickOffMeeting == true ||
+                   taskData.StakeholderKickOffCheckProvisionalConversionDate == true ||
+                   taskData.StakeholderKickOffDeclareBudgetChanges == true ||
                     project.SignificantDateProvisional == false)
                     ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
@@ -537,25 +540,31 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ConfirmAndProcessSponsoredSupportGrantTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.SponsoredSupportGrantInformTrust.HasValue || taskData.SponsoredSupportGrantInformTrust == false) &&
-                (!taskData.SponsoredSupportGrantPaymentForm.HasValue || taskData.SponsoredSupportGrantPaymentForm == false) &&
-                (!taskData.SponsoredSupportGrantSendInformation.HasValue || taskData.SponsoredSupportGrantSendInformation == false) &&
-                (!taskData.SponsoredSupportGrantPaymentAmount.HasValue || taskData.SponsoredSupportGrantPaymentAmount == false) &&
+            if (taskData.SponsoredSupportGrantInformTrust is null or false &&
+                taskData.SponsoredSupportGrantPaymentForm is null or false &&
+                taskData.SponsoredSupportGrantSendInformation is null or false &&
+                taskData.SponsoredSupportGrantPaymentAmount is null or false &&
                 string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType) &&
-                (!taskData.SponsoredSupportGrantNotApplicable.HasValue || taskData.SponsoredSupportGrantNotApplicable == false))
+                taskData.SponsoredSupportGrantNotApplicable is null or false &&
+                taskData.SponsoredSupportGrantHasVendorAccount is null or false)
             {
                 return TaskListStatus.NotStarted;
             }
+
             if (taskData.SponsoredSupportGrantNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
-            return (taskData.SponsoredSupportGrantInformTrust == true &&
-                taskData.SponsoredSupportGrantPaymentForm == true &&
-                taskData.SponsoredSupportGrantSendInformation == true &&
-                taskData.SponsoredSupportGrantPaymentAmount == true &&
-                !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+
+            return (taskData is
+                    {
+                        SponsoredSupportGrantInformTrust: true, SponsoredSupportGrantPaymentForm: true,
+                        SponsoredSupportGrantSendInformation: true, SponsoredSupportGrantPaymentAmount: true,
+                        SponsoredSupportGrantHasVendorAccount: true
+                    } &&
+                    !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ProcessConversionSupportGrantTaskStatus(ConversionTaskDataDto taskData)

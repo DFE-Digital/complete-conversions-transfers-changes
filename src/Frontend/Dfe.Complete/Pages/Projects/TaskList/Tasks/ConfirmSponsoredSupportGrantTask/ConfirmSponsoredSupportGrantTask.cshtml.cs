@@ -35,6 +35,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
         [BindProperty(Name = "informTrust")]
         public bool? InformTrust { get; set; }
 
+        [BindProperty(Name = "hasVendorAccount")]
+        public bool? HasVendorAccount { get; set; }
+
         [BindProperty]
         public Guid? TasksDataId { get; set; }
 
@@ -67,14 +70,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGran
                 PaymentForm = ConversionTaskData.SponsoredSupportGrantPaymentForm;
                 SendInformation = ConversionTaskData.SponsoredSupportGrantSendInformation;
                 InformTrust = ConversionTaskData.SponsoredSupportGrantInformTrust;
+                HasVendorAccount = ConversionTaskData.SponsoredSupportGrantHasVendorAccount;
             }
 
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            var sponsoredSupportGrantType = SponsoredSupportGrantType == null ? null : EnumExtensions.FromDescriptionValue<SponsoredSupportGrantType>(SponsoredSupportGrantType);
-            await _sender.Send(new UpdateConfirmSponsoredSupportGrantTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, sponsoredSupportGrantType, PaymentAmount, PaymentForm, SendInformation, InformTrust));
+            var sponsoredSupportGrantType = SponsoredSupportGrantType?.FromDescriptionValue<SponsoredSupportGrantType>();
+            await _sender.Send(new UpdateConfirmSponsoredSupportGrantTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, sponsoredSupportGrantType, PaymentAmount, PaymentForm, SendInformation, InformTrust, HasVendorAccount));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

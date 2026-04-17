@@ -27,6 +27,10 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? StakeholderKickOffMeeting { get; set; }
 
+        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
+
+        public bool? StakeholderKickOffDeclareBudgetChanges { get; set; }
+
         public bool? ConversionGrantCheckVendorAccount { get; set; }
 
         public bool? ConversionGrantPaymentForm { get; set; }
@@ -185,8 +189,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? TrustModificationOrderNotApplicable { get; set; }
 
-        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
-
         public bool? ConversionGrantNotApplicable { get; set; }
 
         public bool? SponsoredSupportGrantPaymentAmount { get; set; }
@@ -196,6 +198,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? SponsoredSupportGrantSendInformation { get; set; }
 
         public bool? SponsoredSupportGrantInformTrust { get; set; }
+
+        public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
         public bool? SponsoredSupportGrantNotApplicable { get; set; }
 

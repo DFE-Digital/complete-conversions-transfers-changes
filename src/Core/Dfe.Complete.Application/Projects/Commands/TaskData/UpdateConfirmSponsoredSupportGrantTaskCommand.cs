@@ -20,7 +20,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? PaymentAmount,
         bool? PaymentForm,
         bool? SendInformation,
-        bool? InformTrust
+        bool? InformTrust,
+        bool? HasVendorAccount
     ) : IRequest<Result<bool>>;
 
     internal class UpdateConfirmSponsoredSupportGrantTaskCommandHandler(
@@ -54,6 +55,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.SponsoredSupportGrantPaymentForm = request.NotApplicable == true ? null : request.PaymentForm;
             tasksData.SponsoredSupportGrantSendInformation = request.NotApplicable == true ? null : request.SendInformation;
             tasksData.SponsoredSupportGrantInformTrust = request.NotApplicable == true ? null : request.InformTrust;
+            tasksData.SponsoredSupportGrantHasVendorAccount = request.NotApplicable == true ? null : request.HasVendorAccount;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }

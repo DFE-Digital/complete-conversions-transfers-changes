@@ -68,6 +68,7 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     checkProvisionalDate?: boolean;
     stakeholderKickOffSetupMeeting?: boolean;
     stakeholderKickOffMeeting?: boolean;
+    stakeholderKickOffDeclareBudgetChanges?: boolean;
     significantDate?: string;
     userEmail?: string;
 }
@@ -113,6 +114,7 @@ interface UpdateSponsoredSupportGrantTaskRequest {
     paymentForm: boolean;
     sendInformation: boolean;
     informTrust: boolean;
+    hasVendorAccount: boolean;
 }
 
 export type RPAOption = "Standard" | "ChurchOrTrust" | "Commercial";

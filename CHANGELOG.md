@@ -16,10 +16,17 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed 
+- use API user secrets before appsettings
+- [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
 
 ### Changed 
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
+
+### Security
+- [275939](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275939) - Issue #18/19 remove unnecessary query param from "HelpRedactingDocuments" link
 
 ---
 

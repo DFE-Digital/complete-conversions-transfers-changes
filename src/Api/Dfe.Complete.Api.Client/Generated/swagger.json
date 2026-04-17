@@ -8416,6 +8416,14 @@
             "type": "boolean",
             "nullable": true
           },
+          "stakeholderKickOffCheckProvisionalConversionDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
+            "type": "boolean",
+            "nullable": true
+          },
           "conversionGrantCheckVendorAccount": {
             "type": "boolean",
             "nullable": true
@@ -8732,10 +8740,6 @@
             "type": "boolean",
             "nullable": true
           },
-          "stakeholderKickOffCheckProvisionalConversionDate": {
-            "type": "boolean",
-            "nullable": true
-          },
           "conversionGrantNotApplicable": {
             "type": "boolean",
             "nullable": true
@@ -8753,6 +8757,10 @@
             "nullable": true
           },
           "sponsoredSupportGrantInformTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantHasVendorAccount": {
             "type": "boolean",
             "nullable": true
           },
@@ -9092,6 +9100,10 @@
             "nullable": true
           },
           "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
             "type": "boolean",
             "nullable": true
           },
@@ -10064,6 +10076,10 @@
             "nullable": true
           },
           "informTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "hasVendorAccount": {
             "type": "boolean",
             "nullable": true
           }

@@ -100,6 +100,14 @@
                         </govuk-checkboxes-item-hint>
                     </govuk-checkboxes-item>
 
+                    <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_set_budget_decision_expectations" id="stakeholder_kick_off_task_form_set_budget_decision_expectations" asp-for="@Model.SetBudgetDecisionExpectations" value="true" name="set-budget-decision-expectations" checked="@Model.SetBudgetDecisionExpectations">
+                        <b>Set expectations around declaring significant changes to the schools predicted budget figures</b>
+                        <govuk-checkboxes-item-hint>
+                            <p>At any time in the process, the Trust must confirm if there have been any significant changes to the converting schools’ budget position since the Academy Order was approved.</p>
+                            <p>If any budget changes are raised, <external-link class="govuk-link" href="@_configuration["ExternalLinks:SFSOCommissionForm"]">SFSO should be commissioned</external-link> from the outset, to challenge any potentially risky elements early on.</p>
+                        </govuk-checkboxes-item-hint>
+                    </govuk-checkboxes-item>
+
                 }
 
                 <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_setup_meeting" id="stakeholder_kick_off_task_form_setup_meeting" asp-for="@Model.SendInvites" value="true" name="send-invites" checked="@Model.SendInvites">

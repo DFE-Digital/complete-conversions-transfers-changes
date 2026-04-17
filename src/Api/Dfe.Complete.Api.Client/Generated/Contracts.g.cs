@@ -5816,6 +5816,12 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StakeholderKickOffMeeting { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffCheckProvisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffDeclareBudgetChanges", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffDeclareBudgetChanges { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("conversionGrantCheckVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConversionGrantCheckVendorAccount { get; set; } = default!;
 
@@ -6053,9 +6059,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("trustModificationOrderNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TrustModificationOrderNotApplicable { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("stakeholderKickOffCheckProvisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("conversionGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConversionGrantNotApplicable { get; set; } = default!;
 
@@ -6070,6 +6073,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantInformTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SponsoredSupportGrantInformTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantHasVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantHasVendorAccount { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SponsoredSupportGrantNotApplicable { get; set; } = default!;
@@ -6398,6 +6404,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffDeclareBudgetChanges", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffDeclareBudgetChanges { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
@@ -7638,6 +7647,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("informTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? InformTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("hasVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HasVendorAccount { get; set; } = default!;
 
         public string ToJson()
         {

@@ -36,13 +36,13 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(false, null, null, null, null, null, TaskListStatus.InProgress)]
-        [InlineData(true, false, null, false, null, false, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(true, true, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(true, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, true, TaskListStatus.InProgress)]
-        [InlineData(false, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(false, null, null, null, null, null, null, TaskListStatus.InProgress)]
+        [InlineData(true, false, null, false, null, false, false, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, true, true, true, TaskListStatus.InProgress)]
+        [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
         public void ExternalStakeHolderKickoffTaskStatus_ShouldReturn_CorrectStatus(
             bool? significantDateProvisional,
             bool? introEmails,
@@ -50,6 +50,7 @@ namespace Dfe.Complete.Tests.Models
             bool? setupMeeting,
             bool? meeting,
             bool? checkProvisionalDate,
+            bool? budgetDecision,
             TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -59,7 +60,8 @@ namespace Dfe.Complete.Tests.Models
                 StakeholderKickOffLocalAuthorityProforma = proforma,
                 StakeholderKickOffSetupMeeting = setupMeeting,
                 StakeholderKickOffMeeting = meeting,
-                StakeholderKickOffCheckProvisionalConversionDate = checkProvisionalDate
+                StakeholderKickOffCheckProvisionalConversionDate = checkProvisionalDate,
+                StakeholderKickOffDeclareBudgetChanges = budgetDecision
             };
 
             var project = new ProjectDto
@@ -186,14 +188,16 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ProcessConversionSupportGrant);
         }
         [Theory]
-        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, "", false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, false, false, "", false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, "", false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, "GrantType", false, TaskListStatus.Completed)]
-        [InlineData(false, false, false, false, "", true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, "", false, TaskListStatus.NotStarted)]
+        [InlineData(false, true, false, false, false, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, false, false, false, false, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, "", false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, "GrantType", false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, false, "", true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         public void ConfirmAndProcessSponsoredSupportGrantTaskStatus_ShouldReturn_CorrectStatus(
+            bool? hasVendorAccount,
             bool? informTrust,
             bool? paymentForm,
             bool? sendInformation,
@@ -205,6 +209,7 @@ namespace Dfe.Complete.Tests.Models
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
+                SponsoredSupportGrantHasVendorAccount = hasVendorAccount,
                 SponsoredSupportGrantInformTrust = informTrust,
                 SponsoredSupportGrantPaymentForm = paymentForm,
                 SponsoredSupportGrantSendInformation = sendInformation,
