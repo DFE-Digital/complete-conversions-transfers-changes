@@ -337,6 +337,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmStatutoryConsultationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateConfirmDateAcademyTransferredTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
@@ -569,6 +574,6 @@
       "Controller": "TasksDataController",
       "Action": "UpdateProcessConversionSupportGrantTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }   
+    }
   ]
 }
