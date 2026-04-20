@@ -1,0 +1,40 @@
+﻿@page "/projects/{projectId}/tasks/confirm_dbs_checks"
+
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DBSChecksTask.ConfirmDBSChecksModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+
+
+@section TaskHeaderHintSection {
+    <h2 class="govuk-heading-l">The academy trust must confirm all staff at the converting schools have the appropriate DBS checks for their role.</h2>
+    <div class="govuk-hint">
+        <p>When a new academy trust is forming, the trust’s chair of trustees must complete a suitability check with the FFO as soon as they are appointed. Further information can be found here.  The DO requires confirmation that the CoG has a DBS check has been completed. </p>
+    </div>
+}
+
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="confirm-dbs-checks" asp-for="@Model.ConfirmDBSChecks" value="true" name="@nameof(Model.ConfirmDBSChecks)" data-cy="@nameof(Model.ConfirmDBSChecks)" checked="@Model.ConfirmDBSChecks">
+                    <b>Confirm DBS checks are taking place/being reviewed</b>
+                    <govuk-checkboxes-item-hint>
+                        <div class="govuk-hint">
+                            <p>The academy trust’s responsibility to ensure that all staff at the converting school(s) have appropriate DBS in place for their roles. </p>
+                        </div>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

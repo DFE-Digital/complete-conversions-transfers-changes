@@ -200,4 +200,8 @@ public enum NoteTaskIdentifier
     [Description("redact_and_send")]
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
+
+    [Description("confirm_dbs_checks")]
+    [DisplayDescription("DBS checks")]
+    ConfirmDBSChecks = 56
 }

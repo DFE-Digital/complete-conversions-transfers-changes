@@ -253,6 +253,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementSaved { get; set; }
 
+        public bool? ConfirmDBSChecks { get; set; }
 
     }
 }

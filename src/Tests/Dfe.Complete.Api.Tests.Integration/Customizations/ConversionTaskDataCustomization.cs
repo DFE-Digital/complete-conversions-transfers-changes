@@ -135,6 +135,7 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.TrustModificationOrderSentLegal, false)
             .With(x => x.UpdateEsfaUpdate, false)
             .With(x => x.SponsoredSupportGrantHasVendorAccount, false)
+            .With(x => x.ConfirmDBSChecks, false)
         );
     }
 }

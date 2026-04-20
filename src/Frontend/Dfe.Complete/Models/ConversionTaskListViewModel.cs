@@ -39,7 +39,8 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
         public bool ShowProcessConversionSupportGrant { get; set; }
-
+        public TaskListStatus ConfirmDbsChecks { get; set; }
+        
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
             return (taskData == null) ? new() : new ConversionTaskListViewModel
@@ -76,8 +77,20 @@ namespace Dfe.Complete.Models
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
-                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData)
+                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
+                ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
             };
+        }
+        private static TaskListStatus ConfirmDbsChecksTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.ConfirmDBSChecks is null)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return taskData.ConfirmDBSChecks == true
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
