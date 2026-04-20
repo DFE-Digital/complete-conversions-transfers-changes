@@ -19,9 +19,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 
 namespace Dfe.Complete.Api
 {

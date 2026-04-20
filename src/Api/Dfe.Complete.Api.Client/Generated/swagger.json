@@ -5110,10 +5110,6 @@
                 "items": {
                   "$ref": "#/components/schemas/SignificantDateHistory"
                 }
-              },
-              "laPayrollDeadlineConfirmed": {
-                "type": "boolean",
-                "nullable": true
               }
             }
           }
@@ -6555,10 +6551,6 @@
                 "$ref": "#/components/schemas/LocalAuthorityId"
               }
             ]
-          },
-          "laPayrollDeadlineConfirmed": {
-            "type": "boolean",
-            "nullable": true
           }
         }
       },
@@ -8859,10 +8851,6 @@
           "laPayrollDeadline": {
             "type": "string",
             "format": "date",
-            "nullable": true
-          },
-          "laConfirmsPayrollDeadline": {
-            "type": "boolean",
             "nullable": true
           },
           "riskProtectionArrangementReason": {

@@ -19,23 +19,31 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
     });
 
     it("should be able to input a valid future date before the significant date", () => {
+        const today = new Date();
+        const dayTomorrow = String(today.getDate() + 1);
+        const month = String(today.getMonth() + 1);
+        const year = String(today.getFullYear());
+
         Logger.log("Input the date and save");
-        taskPage.enterDate("15", "6", "2025", "payroll-deadline").saveAndReturn();
+        taskPage.enterDate(dayTomorrow, month, year, "payroll-deadline").saveAndReturn();
         taskListPage
             .hasTaskStatusCompleted("LA confirms payroll deadline (LA)")
             .selectTask("LA confirms payroll deadline (LA)");
 
         Logger.log("Confirm date persists and clear date");
-        taskPage.hasDate("15", "6", "2025", "payroll-deadline").enterDate("", "", "", "payroll-deadline").saveAndReturn();
+        taskPage.hasDate(dayTomorrow, month, year, "payroll-deadline").enterDate("", "", "", "payroll-deadline").saveAndReturn();
         taskListPage
             .hasTaskStatusNotStarted("LA confirms payroll deadline (LA)")
             .selectTask("LA confirms payroll deadline (LA)");
         taskPage.hasDate("", "", "", "payroll-deadline");
     });
 
-    it("should show validation error for past dates", () => {
+    it("should show validation errors", () => {
         Logger.log("Try to input a past date");
-        taskPage.enterDate("15", "6", "2020", "payroll-deadline").saveTask().hasErrors();
+        taskPage
+            .enterDate("15", "6", "2020", "payroll-deadline")
+            .saveAndReturn()
+            .hasLinkedValidationErrorForField('payroll-deadline.Day', "The payroll deadline must be in the future");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
