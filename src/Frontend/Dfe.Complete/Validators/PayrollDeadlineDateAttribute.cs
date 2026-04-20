@@ -3,19 +3,19 @@ using System.Reflection;
 
 namespace Dfe.Complete.Validators
 {
-    public class PayrollDeadlineDateAttribute : ValidationAttribute
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public class PayrollDeadlineDateAttribute(string significantDatePropertyName) : ValidationAttribute
     {
-        public string SignificantDatePropertyName { get; set; }
+        public string SignificantDatePropertyName { get; set; } = significantDatePropertyName;
 
-        public PayrollDeadlineDateAttribute(string significantDatePropertyName)
-        {
-            SignificantDatePropertyName = significantDatePropertyName;
-        }
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided
-            var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            PropertyInfo? property = null;
+            if (!string.IsNullOrEmpty(validationContext.MemberName))
+            {
+                property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+            }
             var displayAttribute = property?.GetCustomAttribute<DisplayAttribute>();
             var displayName = displayAttribute?.GetName() ?? validationContext.DisplayName;
 
@@ -23,7 +23,7 @@ namespace Dfe.Complete.Validators
 
             if (date == null)
             {
-                return ValidationResult.Success;
+                return ValidationResult.Success!;
             }
 
             // Check if date is in the future
@@ -37,17 +37,14 @@ namespace Dfe.Complete.Validators
             if (significantDateProperty != null)
             {
                 var significantDateValue = significantDateProperty.GetValue(validationContext.ObjectInstance);
-                if (significantDateValue is DateOnly significantDate)
+                if (significantDateValue is DateOnly significantDate && date >= significantDate)
                 {
-                    if (date >= significantDate)
-                    {
-                        return new ValidationResult($"The {displayName} must be before the significant date.");
-                    }
+                    return new ValidationResult($"The {displayName} must be before the significant date.");
                 }
             }
 
             // If valid, return success
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }
