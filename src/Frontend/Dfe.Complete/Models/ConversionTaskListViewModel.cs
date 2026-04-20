@@ -109,6 +109,7 @@ namespace Dfe.Complete.Models
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
                  taskData.StakeholderKickOffCheckProvisionalConversionDate == true &&
+                 taskData.StakeholderKickOffDeclareBudgetChanges == true &&
                  project.SignificantDateProvisional == false)
             {
                 return TaskListStatus.Completed;
@@ -117,6 +118,8 @@ namespace Dfe.Complete.Models
                    taskData.StakeholderKickOffLocalAuthorityProforma == true ||
                    taskData.StakeholderKickOffSetupMeeting == true ||
                    taskData.StakeholderKickOffMeeting == true ||
+                   taskData.StakeholderKickOffCheckProvisionalConversionDate == true ||
+                   taskData.StakeholderKickOffDeclareBudgetChanges == true ||
                     project.SignificantDateProvisional == false)
                     ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }

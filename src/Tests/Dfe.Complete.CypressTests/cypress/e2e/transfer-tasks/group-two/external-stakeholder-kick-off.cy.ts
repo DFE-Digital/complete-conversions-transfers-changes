@@ -58,12 +58,12 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
         taskPage
             .hasCheckboxLabel("Send introductory emails")
             .clickDropdown("What to include in introductory emails")
-            .hasGuidance("You can choose an email template (opens in new tab) to help you")
+            .hasGuidance("You should aim to do this in the first week after you have been assigned the project")
+            .hasGuidance("Ideally the kick-off meeting should take place within the first two weeks")
             .hasCheckboxLabel("Send invites to the kick-off meeting or call")
             .clickDropdown("How to arrange the kick-off meeting")
             .hasGuidance("Once the trust have got back to you with a suitable date and list of attendees")
             .hasGuidance("Some trusts may prefer to have a one-to-one call with you")
-
             .hasCheckboxLabel("Host the kick-off meeting or call")
             .hasDropdownContent("Make sure all attendees understand what they need to do");
     });

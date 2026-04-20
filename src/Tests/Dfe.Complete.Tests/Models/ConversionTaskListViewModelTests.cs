@@ -36,13 +36,13 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(false, null, null, null, null, null, TaskListStatus.InProgress)]
-        [InlineData(true, false, null, false, null, false, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(true, true, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(true, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, true, TaskListStatus.InProgress)]
-        [InlineData(false, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(false, null, null, null, null, null, null, TaskListStatus.InProgress)]
+        [InlineData(true, false, null, false, null, false, false, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, true, true, true, TaskListStatus.InProgress)]
+        [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
         public void ExternalStakeHolderKickoffTaskStatus_ShouldReturn_CorrectStatus(
             bool? significantDateProvisional,
             bool? introEmails,
@@ -50,6 +50,7 @@ namespace Dfe.Complete.Tests.Models
             bool? setupMeeting,
             bool? meeting,
             bool? checkProvisionalDate,
+            bool? budgetDecision,
             TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -59,7 +60,8 @@ namespace Dfe.Complete.Tests.Models
                 StakeholderKickOffLocalAuthorityProforma = proforma,
                 StakeholderKickOffSetupMeeting = setupMeeting,
                 StakeholderKickOffMeeting = meeting,
-                StakeholderKickOffCheckProvisionalConversionDate = checkProvisionalDate
+                StakeholderKickOffCheckProvisionalConversionDate = checkProvisionalDate,
+                StakeholderKickOffDeclareBudgetChanges = budgetDecision
             };
 
             var project = new ProjectDto
