@@ -43,7 +43,19 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
         taskPage
             .enterDate("15", "6", "2020", "payroll-deadline")
             .saveAndReturn()
-            .hasLinkedValidationErrorForField('payroll-deadline.Day', "The payroll deadline must be in the future");
+            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be in the future");
+
+        Logger.log("Try to input a date after the significant date");
+        taskPage
+            .enterDate("15", "6", String(new Date().getFullYear() + 10), "payroll-deadline")
+            .saveAndReturn()
+            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be before the significant date");
+
+        Logger.log("Try to input an invalid date");
+        taskPage
+            .enterDate("15", "16", "2020", "payroll-deadline")
+            .saveAndReturn()
+            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be a real date");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
