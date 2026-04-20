@@ -103,8 +103,5 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public LocalAuthorityId? LocalAuthorityId { get; set; }
 
-        public bool? LAPayrollDeadlineConfirmed { get; set; }
-
-        // Add the new property to the `ProjectDto`.
     }
 }
