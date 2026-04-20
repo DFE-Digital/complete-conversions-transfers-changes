@@ -36,22 +36,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTa
             // Custom validation for payroll deadline
             if (PayrollDeadline.HasValue)
             {
+                await base.OnGetAsync();
+
                 // Check if date is in the future
                 if (PayrollDeadline <= DateOnly.FromDateTime(DateTime.Now))
                 {
                     ModelState.AddModelError("payroll-deadline", "The payroll deadline must be in the future.");
                 }
-
-                // Check if date is before the significant date
-                if (Project.SignificantDate.HasValue && PayrollDeadline >= Project.SignificantDate.Value)
+                else if (Project.SignificantDate.HasValue && PayrollDeadline >= Project.SignificantDate.Value)
                 {
+                    // Check if date is before the significant date
                     ModelState.AddModelError("payroll-deadline", "The payroll deadline must be before the significant date.");
                 }
             }
 
             if (!ModelState.IsValid)
             {
-                await base.OnGetAsync();
                 errorService.AddErrors(ModelState);
                 return Page();
             }

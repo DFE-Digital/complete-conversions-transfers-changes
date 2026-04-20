@@ -243,7 +243,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public DateOnly? LAPayrollDeadline { get; set; }
 
-
         public string? RiskProtectionArrangementReason { get; set; }
 
         public bool? ArticlesOfAssociationSent { get; set; }

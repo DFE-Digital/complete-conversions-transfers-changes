@@ -218,7 +218,7 @@ public enum NoteTaskIdentifier
     TupeConsultation = 53,
 
     [Description("la_confirms_payroll_deadline")]
-    [DisplayDescription("LA confirms payroll deadline")]
+    [DisplayDescription("LA confirms payroll deadline (LA)")]
     LAConfirmsPayrollDeadline = 55,
     
     [Description("confirm_dbs_checks")]

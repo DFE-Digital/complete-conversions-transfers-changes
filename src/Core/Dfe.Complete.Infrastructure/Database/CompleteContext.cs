@@ -65,9 +65,7 @@ public partial class CompleteContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<LAPayrollDeadlineTask> LAPayrollDeadlineTasks { get; set; }
-
-    protected void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
@@ -82,7 +80,7 @@ public partial class CompleteContext : DbContext
         }
     }
 
-    protected void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Project>(ConfigureProject);
         modelBuilder.Entity<User>(ConfigureUser);
@@ -553,6 +551,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.LandRegistryCleared).HasColumnName("land_registry_cleared");
         projectConfiguration.Property(e => e.LandRegistryReceived).HasColumnName("land_registry_received");
         projectConfiguration.Property(e => e.LandRegistrySaved).HasColumnName("land_registry_saved");
+        projectConfiguration.Property(e => e.LAPayrollDeadline).HasColumnName("la_payroll_deadline");
         projectConfiguration.Property(e => e.MasterFundingAgreementCleared).HasColumnName("master_funding_agreement_cleared");
         projectConfiguration.Property(e => e.MasterFundingAgreementNotApplicable).HasColumnName("master_funding_agreement_not_applicable");
         projectConfiguration.Property(e => e.MasterFundingAgreementReceived).HasColumnName("master_funding_agreement_received");
@@ -1224,13 +1223,5 @@ public partial class CompleteContext : DbContext
             .HasColumnName("updated_at");
     }
 
-    protected void OnModelCreatingPartial(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<LAPayrollDeadlineTask>(entity =>
-        {
-            entity.ToTable("la_payroll_deadline_tasks");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Deadline).IsRequired();
-        });
-    }
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

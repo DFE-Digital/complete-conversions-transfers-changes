@@ -1,9 +1,7 @@
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
@@ -37,7 +35,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             await dbContext.SaveChangesAsync();
 
             var testDate = new DateOnly(2025, 6, 15);
-            var command = new UpdateLAConfirmsPayrollDeadlineTaskCommand(new TaskDataId(taskData.Id.Value), testDate);
+            var command = new UpdateLAConfirmsPayrollDeadlineTaskCommand
+            {
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
+                PayrollDeadline = new DateTime(2025, 6, 15)
+            };
 
             // Act
             await tasksDataClient.UpdateLAConfirmsPayrollDeadlineTaskAsync(command, default);

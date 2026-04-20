@@ -2358,9 +2358,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("significantDateHistories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.List<SignificantDateHistory>? SignificantDateHistories { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("laPayrollDeadlineConfirmed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? LaPayrollDeadlineConfirmed { get; set; } = default!;
-
         public string ToJson()
         {
 
@@ -3818,9 +3815,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("localAuthorityId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LocalAuthorityId? LocalAuthorityId { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("laPayrollDeadlineConfirmed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? LaPayrollDeadlineConfirmed { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6241,9 +6235,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("laPayrollDeadline", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? LaPayrollDeadline { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("laConfirmsPayrollDeadline", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? LaConfirmsPayrollDeadline { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("riskProtectionArrangementReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? RiskProtectionArrangementReason { get; set; } = default!;

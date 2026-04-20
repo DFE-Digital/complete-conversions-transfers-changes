@@ -243,6 +243,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
 
+    public DateOnly? LAPayrollDeadline { get; set; }
+
     public string? RiskProtectionArrangementReason { get; set; }
 
     public bool? ArticlesOfAssociationSent { get; set; }
@@ -283,8 +285,4 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
     }
-
-    public DateOnly? LAPayrollDeadline { get; set; }
-
-    public bool? LAConfirmsPayrollDeadline { get; set; }
 }
