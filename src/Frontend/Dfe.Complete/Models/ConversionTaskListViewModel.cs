@@ -39,6 +39,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
+        public bool ShowProcessConversionSupportGrant { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -76,7 +77,8 @@ namespace Dfe.Complete.Models
                 ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
-                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData)
+                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
+                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData)
             };
         }
 
@@ -578,6 +580,11 @@ namespace Dfe.Complete.Models
                 taskData.ConversionGrantSendInformation == true &&
                 taskData.ConversionGrantSharePaymentDate == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static bool ShouldShowProcessConversionSupportGrant(ConversionTaskDataDto taskData)
+        {
+            return taskData.ConversionGrantNotApplicable != true;
         }
 
         private static TaskListStatus CompleteNotificationOfChangeTaskStatus(ConversionTaskDataDto taskData)
