@@ -80,7 +80,7 @@ namespace Dfe.Complete.Models
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
-                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData)
+                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData)
             };

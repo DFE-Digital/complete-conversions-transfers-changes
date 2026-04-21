@@ -4317,7 +4317,10 @@ namespace Dfe.Complete.Client.Contracts
         RedactAndSend = 48,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmStatutoryConsultation")]
-        ConfirmStatutoryConsultation = 49
+        ConfirmStatutoryConsultation = 49,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NurseryArrangement")]
+        NurseryArrangement = 50,
 
     }
 
@@ -6174,7 +6177,11 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("commercialTransferAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CommercialTransferAgreementSaved { get; set; } = default!;
-      
+
+        [Newtonsoft.Json.JsonProperty("nurseryArrangement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NurseryArrangementOption? NurseryArrangement { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("statutoryConsultationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StatutoryConsultationNotApplicable { get; set; } = default!;
 

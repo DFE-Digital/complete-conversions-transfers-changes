@@ -7028,8 +7028,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "NurseryArrangement",
-          "ConfirmStatutoryConsultation"
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement"
         ],
         "enum": [
           "Handover",
@@ -7081,8 +7081,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "NurseryArrangement",
-          "ConfirmStatutoryConsultation"
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement"
         ]
       },
       "CreateNoteCommand": {
@@ -8905,6 +8905,14 @@
           "commercialTransferAgreementSaved": {
             "type": "boolean",
             "nullable": true
+          },
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
           },
           "statutoryConsultationNotApplicable": {
             "type": "boolean",
