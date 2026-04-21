@@ -3909,6 +3909,36 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmStatutoryConsultation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the confirm statutory consultation task for conversion project.",
+        "operationId": "TasksData_UpdateConfirmStatutoryConsultationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update task data command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmStatutoryConsultationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated the confirm statutory consultation task data"
+          },
+          "404": {
+            "description": "Conversion task data not found for the given task data Id."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/Subleases": {
       "patch": {
         "tags": [
@@ -6998,7 +7028,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "NurseryArrangement"
+          "NurseryArrangement",
+          "ConfirmStatutoryConsultation"
         ],
         "enum": [
           "Handover",
@@ -7050,7 +7081,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "NurseryArrangement"
+          "NurseryArrangement",
+          "ConfirmStatutoryConsultation"
         ]
       },
       "CreateNoteCommand": {
@@ -8874,13 +8906,13 @@
             "type": "boolean",
             "nullable": true
           },
-          "nurseryArrangement": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NurseryArrangementOption"
-              }
-            ]
+          "statutoryConsultationNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -9936,6 +9968,23 @@
             "$ref": "#/components/schemas/TaskDataId"
           },
           "shareInformationEmail": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmStatutoryConsultationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
             "type": "boolean",
             "nullable": true
           }

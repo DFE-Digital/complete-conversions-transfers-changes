@@ -257,6 +257,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
     public NurseryArrangementOption? NurseryArrangement { get; set; }
+    
+    public bool? StatutoryConsultationNotApplicable { get; set; }
+
+    public bool? StatutoryConsultationComplete { get; set; }
 
     private ConversionTasksData() { }
 

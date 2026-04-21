@@ -69,9 +69,10 @@ describe("Conversion tasks - Process conversion support grant", () => {
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Process conversion support grant");
 
+        // Task hides when "Not applicable"
         TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "notApplicable");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Process conversion support grant");
+        cy.contains("Process conversion support grant").should("not.exist");
 
         TaskHelperConversions.updateProcessConversionSupportGrant(setup.taskId, "inProgress");
         cy.reload();

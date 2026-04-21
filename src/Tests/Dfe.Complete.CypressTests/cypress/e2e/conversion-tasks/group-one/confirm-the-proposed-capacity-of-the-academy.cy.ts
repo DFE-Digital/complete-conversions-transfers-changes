@@ -22,7 +22,7 @@ describe("Conversion tasks - Confirm the proposed capacity of the academy", () =
     it("should expand and collapse guidance details", () => {
         taskPage
             .clickDropdown("Why pupil capacity is needed")
-            .hasDropdownContent("Pupil capacity numbers enable the ESFA")
+            .hasDropdownContent("Pupil capacity numbers enable the FFO")
             .clickDropdown("Help confirming the academy's proposed capacity")
             .hasDropdownContent(
                 "The proposed capacity is the maximum number of pupils and students the academy can teach.",

@@ -39,6 +39,8 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
+        public bool ShowProcessConversionSupportGrant { get; set; }
+        public TaskListStatus ConfirmStatutoryConsultation { get; set; }
 
         public TaskListStatus ConfirmNurseryArrangement { get; set; }
 
@@ -79,6 +81,8 @@ namespace Dfe.Complete.Models
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
                 ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData)
+                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
+                ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData)
             };
         }
 
@@ -588,6 +592,11 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
+        private static bool ShouldShowProcessConversionSupportGrant(ConversionTaskDataDto taskData)
+        {
+            return taskData.ConversionGrantNotApplicable != true;
+        }
+
         private static TaskListStatus CompleteNotificationOfChangeTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.CompleteNotificationOfChangeCheckDocument.HasValue || taskData.CompleteNotificationOfChangeCheckDocument == false) &&
@@ -629,6 +638,21 @@ namespace Dfe.Complete.Models
             return (taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Standard ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.ChurchOrTrust ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Commercial && !string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmStatutoryConsultationTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.StatutoryConsultationNotApplicable.HasValue || taskData.StatutoryConsultationNotApplicable == false) &&
+                (!taskData.StatutoryConsultationComplete.HasValue || taskData.StatutoryConsultationComplete == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.StatutoryConsultationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return taskData.StatutoryConsultationComplete == true 
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }

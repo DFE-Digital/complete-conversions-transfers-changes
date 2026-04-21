@@ -772,6 +772,22 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Updates the confirm statutory consultation task for conversion project.
+        /// </summary>
+        /// <param name="request">The update task data command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmStatutoryConsultation")]
+        [SwaggerResponse(204, "Successfully updated the confirm statutory consultation task data")]
+        [SwaggerResponse(404, "Conversion task data not found for the given task data Id.")]
+        public async Task<IActionResult> UpdateConfirmStatutoryConsultationTaskAsync([FromBody] UpdateConfirmStatutoryConsultationTaskCommand request, CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updating the subleases task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
