@@ -1,0 +1,15 @@
+@page "/projects/{projectId}/tasks/confirm_statutory_consultation"
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmStatutoryConsultationTask.ConfirmStatutoryConsultationTaskModel
+@{
+  Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+
+@section TaskSection {
+  @if (Model.Project.Type == ProjectType.Conversion)
+  {
+    @await Html.PartialAsync("_ConversionConfirmStatutoryConsultationTask", Model)
+  }
+}
