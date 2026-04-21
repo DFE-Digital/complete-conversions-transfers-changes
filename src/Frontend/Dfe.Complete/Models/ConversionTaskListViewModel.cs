@@ -19,6 +19,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmIncomingTrustCeoDetails { get; set; }
         public TaskListStatus ConfirmMainContact { get; set; }
         public TaskListStatus ConfirmProposedCapacityOfTheAcademy { get; set; }
+
         public TaskListStatus LandQuestionnaire { get; set; }
         public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
@@ -40,6 +41,8 @@ namespace Dfe.Complete.Models
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
         public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmStatutoryConsultation { get; set; }
+
+        public TaskListStatus ConfirmNurseryArrangement { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -77,9 +80,26 @@ namespace Dfe.Complete.Models
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
+                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData)
             };
+        }
+
+        private static TaskListStatus ConfirmNurseryArrangementTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.NurseryArrangement is null)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            if (taskData.NurseryArrangement == NurseryArrangementOption.NotApplicable)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+
+            return TaskListStatus.Completed;
+            
         }
 
         private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)

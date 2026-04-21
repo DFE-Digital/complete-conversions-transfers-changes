@@ -27,10 +27,12 @@ public static class EnumExtensions
         return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
     }
 
-    public static string ToDisplayDescription<T>(this T source)
+    public static string ToDisplayDescription<T>(this T? source)
     {
-        if (EqualityComparer<T>.Default.Equals(source, default!))
+        if (source is null)
+        {
             return string.Empty;
+        }
 
         var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
 
