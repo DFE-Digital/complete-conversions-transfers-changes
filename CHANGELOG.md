@@ -25,6 +25,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
+- [275380](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275380) - added dbs checks to the task list
 
 ### Changed 
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
