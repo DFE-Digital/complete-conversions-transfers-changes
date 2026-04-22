@@ -607,6 +607,8 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.StakeholderKickOffMeeting).HasColumnName("stakeholder_kick_off_meeting");
         projectConfiguration.Property(e => e.StakeholderKickOffSetupMeeting).HasColumnName("stakeholder_kick_off_setup_meeting");
         projectConfiguration.Property(e => e.StakeholderKickOffDeclareBudgetChanges).HasColumnName("stakeholder_kick_off_declare_budget_changes");
+        projectConfiguration.Property(e => e.StatutoryConsultationNotApplicable).HasColumnName("statutory_consultation_not_applicable");
+        projectConfiguration.Property(e => e.StatutoryConsultationComplete).HasColumnName("statutory_consultation_complete  ");
         projectConfiguration.Property(e => e.SubleasesCleared).HasColumnName("subleases_cleared");
         projectConfiguration.Property(e => e.SubleasesEmailSigned).HasColumnName("subleases_email_signed");
         projectConfiguration.Property(e => e.SubleasesNotApplicable).HasColumnName("subleases_not_applicable");
@@ -634,6 +636,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
+        projectConfiguration.Property(e => e.NurseryArrangement).HasColumnName("nursery_arrangement");
         projectConfiguration.Property(e => e.ConfirmDBSChecks).HasColumnName("confirm_dbs_checks");
     }
 

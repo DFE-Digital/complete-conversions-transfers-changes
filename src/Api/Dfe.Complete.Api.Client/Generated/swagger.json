@@ -3909,6 +3909,36 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmStatutoryConsultation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the confirm statutory consultation task for conversion project.",
+        "operationId": "TasksData_UpdateConfirmStatutoryConsultationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update task data command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmStatutoryConsultationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated the confirm statutory consultation task data"
+          },
+          "404": {
+            "description": "Conversion task data not found for the given task data Id."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/Subleases": {
       "patch": {
         "tags": [
@@ -4140,18 +4170,18 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/ConfirmDbsChecks": {
+    "/v1/TasksData/TaskData/NurseryArrangement": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "operationId": "TasksData_UpdateConfirmDbsChecksTask",
+        "operationId": "TasksData_UpdateNurseryArrangementTask",
         "requestBody": {
           "x-name": "request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmDbsChecksTaskCommand"
+                "$ref": "#/components/schemas/UpdateNurseryArrangementTaskCommand"
               }
             }
           },
@@ -4160,7 +4190,7 @@
         },
         "responses": {
           "204": {
-            "description": "Conversion's Confirm DBS Checks task updated successfully."
+            "description": "Nursery arrangement task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -6998,7 +7028,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "ConfirmDBSChecks"
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement"
         ],
         "enum": [
           "Handover",
@@ -7050,7 +7081,8 @@
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
           "RedactAndSend",
-          "ConfirmDBSChecks"
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement"
         ]
       },
       "CreateNoteCommand": {
@@ -8874,7 +8906,19 @@
             "type": "boolean",
             "nullable": true
           },
-          "confirmDBSChecks": {
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
+          },
+          "statutoryConsultationNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
             "type": "boolean",
             "nullable": true
           }
@@ -8892,6 +8936,24 @@
           "Standard",
           "ChurchOrTrust",
           "Commercial"
+        ]
+      },
+      "NurseryArrangementOption": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
+        ],
+        "enum": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
         ]
       },
       "UpdateHandoverWithDeliveryOfficerTaskCommand": {
@@ -9919,6 +9981,23 @@
           }
         }
       },
+      "UpdateConfirmStatutoryConsultationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateSubleasesTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -10162,16 +10241,20 @@
           }
         }
       },
-      "UpdateConfirmDbsChecksTaskCommand": {
+      "UpdateNurseryArrangementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "confirmDBSChecks": {
-            "type": "boolean",
-            "nullable": true
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
           }
         }
       },

@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260416133959_AddNurseryArrangement")]
+    partial class AddNurseryArrangement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,10 +217,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("CompleteNotificationOfChangeTellLocalAuthority")
                         .HasColumnType("bit")
                         .HasColumnName("complete_notification_of_change_tell_local_authority");
-
-                    b.Property<bool?>("ConfirmDBSChecks")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_dbs_checks");
 
                     b.Property<DateOnly?>("ConfirmDateAcademyOpenedDateOpened")
                         .HasColumnType("date")
@@ -465,10 +464,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("share_information_email");
 
-                    b.Property<bool?>("SponsoredSupportGrantHasVendorAccount")
-                        .HasColumnType("bit")
-                        .HasColumnName("sponsored_support_grant_has_vendor_account");
-
                     b.Property<bool?>("SponsoredSupportGrantInformTrust")
                         .HasColumnType("bit")
                         .HasColumnName("sponsored_support_grant_inform_trust");
@@ -498,10 +493,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_check_provisional_conversion_date");
 
-                    b.Property<bool?>("StakeholderKickOffDeclareBudgetChanges")
-                        .HasColumnType("bit")
-                        .HasColumnName("stakeholder_kick_off_declare_budget_changes");
-
                     b.Property<bool?>("StakeholderKickOffIntroductoryEmails")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_introductory_emails");
@@ -517,14 +508,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("StakeholderKickOffSetupMeeting")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_setup_meeting");
-
-                    b.Property<bool?>("StatutoryConsultationComplete")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_complete  ");
-
-                    b.Property<bool?>("StatutoryConsultationNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_not_applicable");
 
                     b.Property<bool?>("SubleasesCleared")
                         .HasColumnType("bit")

@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260416133442_AllConfirmStatutoryConsultationFields")]
+    partial class AllConfirmStatutoryConsultationFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,10 +218,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("complete_notification_of_change_tell_local_authority");
 
-                    b.Property<bool?>("ConfirmDBSChecks")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_dbs_checks");
-
                     b.Property<DateOnly?>("ConfirmDateAcademyOpenedDateOpened")
                         .HasColumnType("date")
                         .HasColumnName("confirm_date_academy_opened_date_opened");
@@ -371,10 +370,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("MasterFundingAgreementSignedSecretaryState")
                         .HasColumnType("bit")
                         .HasColumnName("master_funding_agreement_signed_secretary_state");
-
-                    b.Property<int?>("NurseryArrangement")
-                        .HasColumnType("int")
-                        .HasColumnName("nursery_arrangement");
 
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")

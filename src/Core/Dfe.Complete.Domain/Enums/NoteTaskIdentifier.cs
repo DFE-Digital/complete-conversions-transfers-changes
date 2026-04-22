@@ -203,5 +203,13 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_dbs_checks")]
     [DisplayDescription("DBS checks")]
-    ConfirmDBSChecks = 56
+    ConfirmDBSChecks = 56,
+
+    [Description("confirm_statutory_consultation")]
+    [DisplayDescription("Confirm statutory consultation is complete and any issues are being managed")]
+    ConfirmStatutoryConsultation = 50,
+
+    [Description("confirm_nursery_arrangement")]
+    [DisplayDescription("Confirm academy nursery arrangement")]
+    NurseryArrangement = 51
 }
