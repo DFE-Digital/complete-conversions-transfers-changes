@@ -1142,5 +1142,39 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingKeyContactData);
             Assert.Equal(contact.Id.Value, existingKeyContactData.IncomingTrustCeoId?.Value);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdatePostDecisionActionsTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            Complete.Client.Contracts.UpdatePostDecisionActionsTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ApplicationUploaded = true;
+            command.AcademyOrderUploaded = false;
+            command.LaProformaUploaded = true;
+
+            // Act
+            await tasksDataClient.UpdatePostDecisionActionsTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.PostDecisionActionsApplicationUploaded);
+            Assert.False(existingTaskData.PostDecisionActionsAcademyOrderUploaded);
+            Assert.True(existingTaskData.PostDecisionActionsLaProformaUploaded);
+        }
     }
 }

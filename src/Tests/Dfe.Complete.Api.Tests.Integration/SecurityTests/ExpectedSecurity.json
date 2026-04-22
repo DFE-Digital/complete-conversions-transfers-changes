@@ -551,6 +551,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "TasksDataController",
+      "Action": "UpdatePostDecisionActionsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "UpdateAssignedUserAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"

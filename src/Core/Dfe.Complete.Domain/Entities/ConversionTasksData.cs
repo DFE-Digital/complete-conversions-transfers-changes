@@ -262,6 +262,12 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? StatutoryConsultationComplete { get; set; }
 
+    public bool? PostDecisionActionsApplicationUploaded { get; set; }
+
+    public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
+
+    public bool? PostDecisionActionsLaProformaUploaded { get; set; }
+
     private ConversionTasksData() { }
 
     public ConversionTasksData(

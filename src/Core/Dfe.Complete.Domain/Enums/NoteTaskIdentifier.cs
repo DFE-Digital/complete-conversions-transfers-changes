@@ -207,5 +207,9 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_nursery_arrangement")]
     [DisplayDescription("Confirm academy nursery arrangement")]
-    NurseryArrangement = 51
+    NurseryArrangement = 51,
+
+    [Description("post_decision_actions")]
+    [DisplayDescription("Post decision actions")]
+    PostDecisionActions = 52,
 }
