@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DBSChecksTask
         [BindProperty]
         public Guid? TasksDataId { get; set; }
 
-        [BindProperty(Name = "confirm-dbs-checks")]
+        [BindProperty]
         public bool? ConfirmDBSChecks { get; set; }
 
         public override async Task<IActionResult> OnGetAsync()
