@@ -82,7 +82,6 @@ namespace Dfe.Complete.Models
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
-                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
                 ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
             };

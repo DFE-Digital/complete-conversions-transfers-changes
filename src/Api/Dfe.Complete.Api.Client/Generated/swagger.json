@@ -4201,6 +4201,37 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmDbsChecks": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "operationId": "TasksData_UpdateConfirmDbsChecksTask",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmDbsChecksTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion's Confirm DBS Checks task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TestEmail/welcome": {
       "get": {
         "tags": [
@@ -7029,7 +7060,8 @@
           "AcademyDetails",
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
-          "NurseryArrangement"
+          "NurseryArrangement",
+          "ConfirmDBSChecks"
         ],
         "enum": [
           "Handover",
@@ -7082,7 +7114,8 @@
           "AcademyDetails",
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
-          "NurseryArrangement"
+          "NurseryArrangement",
+          "ConfirmDBSChecks"
         ]
       },
       "CreateNoteCommand": {
@@ -8906,6 +8939,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "confirmDBSChecks": {
+            "type": "boolean",
+            "nullable": true
+          },
           "nurseryArrangement": {
             "nullable": true,
             "oneOf": [
@@ -10255,6 +10292,19 @@
                 "$ref": "#/components/schemas/NurseryArrangementOption"
               }
             ]
+          }
+        }
+      },
+      "UpdateConfirmDbsChecksTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "confirmDBSChecks": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
