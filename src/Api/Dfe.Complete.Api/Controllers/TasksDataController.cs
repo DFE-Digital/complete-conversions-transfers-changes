@@ -939,12 +939,12 @@ namespace Dfe.Complete.Api.Controllers
 
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
-        [Route("TaskData/NurseryArrangement")]
-        [SwaggerResponse(204, "Nursery arrangement task updated successfully.")]
+        [Route("TaskData/ConfirmDbsChecks")]
+        [SwaggerResponse(204, "Conversion's Confirm DBS Checks task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]
-        public async Task<IActionResult> UpdateNurseryArrangementTaskAsync(
-            [FromBody] Up request,
+        public async Task<IActionResult> UpdateConfirmDbsChecksTaskAsync(
+            [FromBody] UpdateConfirmDbsChecksTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
