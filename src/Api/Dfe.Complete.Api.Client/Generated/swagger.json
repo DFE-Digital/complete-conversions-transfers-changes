@@ -4170,6 +4170,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/PostDecisionActions": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the post decision actions task data for conversion project.",
+        "operationId": "TasksData_UpdatePostDecisionActionsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostDecisionActionsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Post decision actions task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/NurseryArrangement": {
       "patch": {
         "tags": [
@@ -4191,37 +4224,6 @@
         "responses": {
           "204": {
             "description": "Nursery arrangement task updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project/User not found."
-          }
-        }
-      }
-    },
-    "/v1/TasksData/TaskData/ConfirmDbsChecks": {
-      "patch": {
-        "tags": [
-          "TasksData"
-        ],
-        "operationId": "TasksData_UpdateConfirmDbsChecksTask",
-        "requestBody": {
-          "x-name": "request",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmDbsChecksTaskCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Conversion's Confirm DBS Checks task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -7061,7 +7063,7 @@
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
-          "ConfirmDBSChecks"
+          "PostDecisionActions"
         ],
         "enum": [
           "Handover",
@@ -7115,7 +7117,7 @@
           "RedactAndSend",
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
-          "ConfirmDBSChecks"
+          "PostDecisionActions"
         ]
       },
       "CreateNoteCommand": {
@@ -8939,10 +8941,6 @@
             "type": "boolean",
             "nullable": true
           },
-          "confirmDBSChecks": {
-            "type": "boolean",
-            "nullable": true
-          },
           "nurseryArrangement": {
             "nullable": true,
             "oneOf": [
@@ -8956,6 +8954,18 @@
             "nullable": true
           },
           "statutoryConsultationComplete": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsApplicationUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsAcademyOrderUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsLaProformaUploaded": {
             "type": "boolean",
             "nullable": true
           }
@@ -10278,6 +10288,27 @@
           }
         }
       },
+      "UpdatePostDecisionActionsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "applicationUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "academyOrderUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "laProformaUploaded": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateNurseryArrangementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -10292,19 +10323,6 @@
                 "$ref": "#/components/schemas/NurseryArrangementOption"
               }
             ]
-          }
-        }
-      },
-      "UpdateConfirmDbsChecksTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "confirmDBSChecks": {
-            "type": "boolean",
-            "nullable": true
           }
         }
       },

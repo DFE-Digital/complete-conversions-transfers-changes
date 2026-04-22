@@ -923,6 +923,25 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Updates the post decision actions task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/PostDecisionActions")]
+        [SwaggerResponse(204, "Post decision actions task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdatePostDecisionActionsTaskAsync(
+            [FromBody] UpdatePostDecisionActionsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/NurseryArrangement")]

@@ -256,10 +256,16 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? ConfirmDBSChecks { get; set; }
         
         public NurseryArrangementOption? NurseryArrangement { get; set; }
-        
+
         public bool? StatutoryConsultationNotApplicable { get; set; }
 
         public bool? StatutoryConsultationComplete { get; set; }
+
+        public bool? PostDecisionActionsApplicationUploaded { get; set; }
+
+        public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
+
+        public bool? PostDecisionActionsLaProformaUploaded { get; set; }
 
 
     }

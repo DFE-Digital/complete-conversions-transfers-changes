@@ -562,6 +562,9 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseNotApplicable).HasColumnName("one_hundred_and_twenty_five_year_lease_not_applicable");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseReceive).HasColumnName("one_hundred_and_twenty_five_year_lease_receive");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseSaveLease).HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
+        projectConfiguration.Property(e => e.PostDecisionActionsAcademyOrderUploaded).HasColumnName("post_decision_actions_academy_order_uploaded");
+        projectConfiguration.Property(e => e.PostDecisionActionsApplicationUploaded).HasColumnName("post_decision_actions_application_uploaded");
+        projectConfiguration.Property(e => e.PostDecisionActionsLaProformaUploaded).HasColumnName("post_decision_actions_la_proforma_uploaded");
         projectConfiguration.Property(e => e.ProposedCapacityOfTheAcademyNotApplicable).HasColumnName("proposed_capacity_of_the_academy_not_applicable");
         projectConfiguration.Property(e => e.ProposedCapacityOfTheAcademyReceptionToSixYears)
             .HasMaxLength(4000)

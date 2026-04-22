@@ -39,9 +39,10 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
-        public bool ShowProcessConversionSupportGrant { get; set; }       
         public TaskListStatus ConfirmStatutoryConsultation { get; set; }
         public TaskListStatus ConfirmNurseryArrangement { get; set; }
+        public TaskListStatus PostDecisionActions { get; set; }
+        public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmDbsChecks { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
@@ -83,6 +84,7 @@ namespace Dfe.Complete.Models
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
+                PostDecisionActions = PostDecisionActionsTaskStatus(taskData),
                 ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
             };
         }
@@ -653,6 +655,7 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
+
         private static TaskListStatus ConfirmStatutoryConsultationTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.StatutoryConsultationNotApplicable.HasValue || taskData.StatutoryConsultationNotApplicable == false) &&
@@ -665,6 +668,20 @@ namespace Dfe.Complete.Models
                 return TaskListStatus.NotApplicable;
             }
             return taskData.StatutoryConsultationComplete == true 
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus PostDecisionActionsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.PostDecisionActionsApplicationUploaded.HasValue || taskData.PostDecisionActionsApplicationUploaded == false) &&
+                (!taskData.PostDecisionActionsAcademyOrderUploaded.HasValue || taskData.PostDecisionActionsAcademyOrderUploaded == false) &&
+                (!taskData.PostDecisionActionsLaProformaUploaded.HasValue || taskData.PostDecisionActionsLaProformaUploaded == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.PostDecisionActionsApplicationUploaded == true &&
+                taskData.PostDecisionActionsAcademyOrderUploaded == true &&
+                taskData.PostDecisionActionsLaProformaUploaded == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }
