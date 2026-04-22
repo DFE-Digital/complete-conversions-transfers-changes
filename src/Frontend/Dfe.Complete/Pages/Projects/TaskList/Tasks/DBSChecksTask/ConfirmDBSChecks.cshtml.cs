@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DBSChecksTask
 {
-    public class ConfirmDBSChecksModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmDBSChecksModel> logger, IProjectPermissionService projectPermissionService)
+    public class ConfirmDbsChecksModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmDbsChecksModel> logger, IProjectPermissionService projectPermissionService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmDBSChecks, projectPermissionService)
     {
 
