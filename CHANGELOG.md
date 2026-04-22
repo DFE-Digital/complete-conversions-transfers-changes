@@ -18,18 +18,13 @@ Security in case of vulnerabilities.
 
 ### Added
 - [266928](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266928) - new "Post decision actions" task for conversion projects to verify application forms, academy orders and LA proformas have been uploaded to Sharepoint
+- [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
+- [275380](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275380) - added dbs checks to the task list
 
 ### Changed 
 - use API user secrets before appsettings
 - [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
 - [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capaticy task info
-- [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
-
-### Added
-- [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
-- [275380](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275380) - added dbs checks to the task list
-
-### Changed 
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
 - [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
 
