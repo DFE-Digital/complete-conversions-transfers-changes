@@ -136,6 +136,7 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.UpdateEsfaUpdate, false)
             .With(x => x.NurseryArrangement, fixture.Create<NurseryArrangementOption>())
             .With(x => x.SponsoredSupportGrantHasVendorAccount, false)
+            .With(x => x.ConfirmDBSChecks, false)
         );
     }
 }
