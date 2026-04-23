@@ -584,6 +584,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateNurseryArrangementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }   
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmDbsChecksTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }
   ]
 }
