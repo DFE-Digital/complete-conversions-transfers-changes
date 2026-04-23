@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Api",
@@ -4702,6 +4702,11 @@
           "Establishment",
           "DirectorOfChildServices"
         ],
+        "x-enum-descriptions": [
+          "Contact::Project",
+          "Contact::Establishment",
+          "Contact::DirectorOfChildServices"
+        ],
         "enum": [
           "Project",
           "Establishment",
@@ -5045,6 +5050,10 @@
           "Conversion",
           "Transfer"
         ],
+        "x-enum-descriptions": [
+          "Conversion::Project",
+          "Transfer::Project"
+        ],
         "enum": [
           "Conversion",
           "Transfer"
@@ -5063,6 +5072,17 @@
           "London",
           "SouthEast",
           "SouthWest"
+        ],
+        "x-enum-descriptions": [
+          "north_east",
+          "north_west",
+          "yorkshire_and_the_humber",
+          "east_midlands",
+          "west_midlands",
+          "east_of_england",
+          "london",
+          "south_east",
+          "south_west"
         ],
         "enum": [
           "NorthEast",
@@ -5093,6 +5113,10 @@
           "Conversion",
           "Transfer"
         ],
+        "x-enum-descriptions": [
+          "Conversion::TasksData",
+          "Transfer::TasksData"
+        ],
         "enum": [
           "Conversion",
           "Transfer"
@@ -5115,6 +5139,21 @@
           "EastMidlands",
           "BusinessSupport",
           "DataConsumers"
+        ],
+        "x-enum-descriptions": [
+          "regional_casework_services",
+          "service_support",
+          "london",
+          "south_east",
+          "yorkshire_and_the_humber",
+          "north_west",
+          "east_of_england",
+          "west_midlands",
+          "north_east",
+          "south_west",
+          "east_midlands",
+          "business_support",
+          "data_consumers"
         ],
         "enum": [
           "RegionalCaseWorkerServices",
@@ -5140,6 +5179,13 @@
           "Completed",
           "Deleted",
           "DaoRevoked",
+          "Inactive"
+        ],
+        "x-enum-descriptions": [
+          "Active",
+          "Completed",
+          "Deleted",
+          "Dao Revoked",
           "Inactive"
         ],
         "enum": [
@@ -6886,6 +6932,57 @@
           "AcademyDetails",
           "RedactAndSend"
         ],
+        "x-enum-descriptions": [
+          "handover",
+          "land_questionnaire",
+          "land_registry",
+          "stakeholder_kick_off",
+          "supplemental_funding_agreement",
+          "articles_of_association",
+          "deed_of_novation_and_variation",
+          "deed_of_variation",
+          "redact_and_send_documents",
+          "proposed_capacity_of_the_academy",
+          "declaration_of_expenditure_certificate",
+          "conditions_met",
+          "confirm_date_academy_transferred",
+          "conditions_met",
+          "receive_grant_payment_certificate",
+          "confirm_date_academy_opened",
+          "church_supplemental_agreement",
+          "commercial_transfer_agreement",
+          "main_contact",
+          "master_funding_agreement",
+          "confirm_incoming_trust_ceo_contact",
+          "risk_protection_arrangement",
+          "rpa_policy",
+          "check_accuracy_of_higher_needs",
+          "complete_notification_of_change",
+          "conversion_grant",
+          "sponsored_support_grant",
+          "confirm_headteacher_contact",
+          "confirm_chair_of_governors_contact",
+          "trust_modification_order",
+          "direction_to_transfer",
+          "one_hundred_and_twenty_five_year_lease",
+          "subleases",
+          "tenancy_at_will",
+          "school_completed",
+          "share_information",
+          "confirm_outgoing_trust_ceo_contact",
+          "request_new_urn_and_record",
+          "sponsored_support_grant",
+          "check_and_confirm_financial_information",
+          "form_m",
+          "closure_or_transfer_declaration",
+          "bank_details_changing",
+          "confirm_incoming_trust_has_completed_all_actions",
+          "land_consent_letter",
+          "deed_of_termination_for_the_master_funding_agreement",
+          "deed_termination_church_agreement",
+          "academy_details",
+          "redact_and_send"
+        ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
@@ -7403,6 +7500,31 @@
           "CommercialTransferAgreement",
           "Academy"
         ],
+        "x-enum-descriptions": [
+          "advisory_board_conditions",
+          "buildings",
+          "correcting_an_error",
+          "diocese",
+          "finance",
+          "governance",
+          "incoming_trust",
+          "land",
+          "legacy_reason",
+          "legal_documents",
+          "local_authority",
+          "negative_press",
+          "outgoing_trust",
+          "pensions",
+          "progressing_faster_than_expected",
+          "school",
+          "stakeholder_kick_off",
+          "tupe",
+          "union",
+          "viability",
+          "voluntary_deferral",
+          "commercial_transfer_agreement",
+          "academy"
+        ],
         "enum": [
           "AdvisoryBoardConditions",
           "Buildings",
@@ -7469,6 +7591,12 @@
           "SafeguardingConcernsAddressed",
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
+        ],
+        "x-enum-descriptions": [
+          "school_rated_good_or_outstanding",
+          "safeguarding_concerns_addressed",
+          "school_closed_or_closing",
+          "change_to_government_policy"
         ],
         "enum": [
           "SchoolRatedGoodOrOutstanding",
@@ -8741,6 +8869,11 @@
           "ChurchOrTrust",
           "Commercial"
         ],
+        "x-enum-descriptions": [
+          "standard",
+          "church_or_trust",
+          "commercial"
+        ],
         "enum": [
           "Standard",
           "ChurchOrTrust",
@@ -9451,6 +9584,10 @@
           "Surplus",
           "Deficit"
         ],
+        "x-enum-descriptions": [
+          "surplus",
+          "deficit"
+        ],
         "enum": [
           "Surplus",
           "Deficit"
@@ -9916,6 +10053,12 @@
           "FastTrack",
           "Intermediate",
           "FullSponsored"
+        ],
+        "x-enum-descriptions": [
+          "standard",
+          "fast_track",
+          "intermediate",
+          "full_sponsored"
         ],
         "enum": [
           "StandardTransferGrant",

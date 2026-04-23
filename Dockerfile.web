@@ -1,5 +1,5 @@
 # Set the major version of dotnet
-ARG DOTNET_VERSION=8.0
+ARG DOTNET_VERSION=10.0
 # Set the major version of nodejs
 ARG NODEJS_VERSION_MAJOR=22
 
@@ -61,7 +61,7 @@ WORKDIR /build
 ENV PATH=$PATH:/root/.dotnet/tools
 ENV DOTNET_ROOT=/usr/share/dotnet
 
-RUN dotnet tool install --global dotnet-ef --version 8.*
+RUN dotnet tool install --global dotnet-ef --version 10.*
 
 RUN mkdir /sql
 
