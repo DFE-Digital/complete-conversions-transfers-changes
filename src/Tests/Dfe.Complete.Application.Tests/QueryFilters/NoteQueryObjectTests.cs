@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Application.Notes.Queries.QueryFilters;
+using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -25,11 +25,12 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
         [Fact]
         public void NoteIdQuery_NullId_DoesNotFilter()
         {
+            var notes = SampleNotes().ToList();
             var query = new NoteIdQuery(null);
-            var filteredNotes = query.Apply(SampleNotes()).ToList();
+            var filteredNotes = query.Apply(notes.AsQueryable()).ToList();
 
             Assert.Equal(9, filteredNotes.Count);
-            Assert.Equivalent(filteredNotes, SampleNotes().ToList());
+            Assert.Equivalent(filteredNotes, notes);
         }
 
         [Fact]
@@ -50,11 +51,12 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
         [Fact]
         public void ProjectNoteByIdQuery_NullId_DoesNotFilter()
         {
+            var notes = SampleNotes().ToList();
             var query = new ProjectNoteByIdQuery(null);
-            var filteredNotes = query.Apply(SampleNotes()).ToList();
+            var filteredNotes = query.Apply(notes.AsQueryable()).ToList();
 
             Assert.Equal(9, filteredNotes.Count);
-            Assert.Equivalent(filteredNotes, SampleNotes().ToList());
+            Assert.Equivalent(filteredNotes, notes);
         }
 
         [Fact]

@@ -25,7 +25,7 @@ namespace Dfe.Complete.Infrastructure.Database
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             if (string.IsNullOrWhiteSpace(connectionString))
-                connectionString = "Server=localhost;Database=Complete;Trusted_Connection=true;";
+                throw new InvalidOperationException("DefaultConnection is missing.");
 
             bool enableSensitiveDataLogging =
                 environmentName == "Development" && configuration.GetValue("EnableSensitiveDataLogging", false);
