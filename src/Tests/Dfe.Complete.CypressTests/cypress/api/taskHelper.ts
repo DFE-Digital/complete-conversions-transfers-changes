@@ -337,6 +337,7 @@ export class TaskHelper {
             paymentForm: false,
             sendInformation: false,
             informTrust: false,
+            hasVendorAccount: false,
         };
 
         switch (status) {
@@ -360,6 +361,7 @@ export class TaskHelper {
                     paymentForm: true,
                     sendInformation: true,
                     informTrust: true,
+                    hasVendorAccount: true,
                 });
 
             default:
@@ -435,6 +437,7 @@ export class TaskHelper {
                     checkProvisionalDate: true,
                     stakeholderKickOffSetupMeeting: true,
                     stakeholderKickOffMeeting: true,
+                    stakeholderKickOffDeclareBudgetChanges: true,
                     significantDate: significantDate || "2027-09-01",
                     userEmail: userEmail || cypressUser.email,
                 });

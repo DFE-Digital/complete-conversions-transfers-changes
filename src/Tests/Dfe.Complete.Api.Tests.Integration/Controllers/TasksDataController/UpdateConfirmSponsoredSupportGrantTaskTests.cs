@@ -36,6 +36,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.PaymentForm = false;
             command.SendInformation = false;
             command.InformTrust = false;
+            command.HasVendorAccount = false;
 
             // Act
             await tasksDataClient.UpdateSponsoredSupportGrantTaskAsync(command, default);
@@ -49,6 +50,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.SponsoredSupportGrantPaymentForm);
             Assert.False(existingTaskData.SponsoredSupportGrantSendInformation);
             Assert.False(existingTaskData.SponsoredSupportGrantInformTrust);
+            Assert.False(existingTaskData.SponsoredSupportGrantHasVendorAccount);
         }
 
         [Theory]

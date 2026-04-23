@@ -14,6 +14,12 @@ interface UpdateCompleteNotificationOfChangeTaskRequest {
     sendDocument?: boolean;
 }
 
+interface UpdateConfirmStatutoryConsultationTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    statutoryConsultationComplete?: boolean;
+}
+
 interface UpdateConfirmAcademyOpenedDateTaskRequest {
     taskDataId: TaskDataId;
     academyOpenedDate?: string | null;
@@ -99,6 +105,13 @@ interface UpdateTenancyAtWillTaskRequest {
     receiveSigned?: boolean;
 }
 
+interface UpdatePostDecisionActionsTaskRequest {
+    taskDataId: TaskDataId;
+    applicationUploaded?: boolean;
+    academyOrderUploaded?: boolean;
+    laProformaUploaded?: boolean;
+}
+
 interface UpdateTrustModificationOrderTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -115,6 +128,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateCompleteNotificationOfChangeTask(requestBody: UpdateCompleteNotificationOfChangeTaskRequest) {
         return this.taskDataBaseRequest<void>("CompleteNotificationOfChange", requestBody);
+    }
+
+    public updateConfirmStatutoryConsultationTask(requestBody: UpdateConfirmStatutoryConsultationTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmStatutoryConsultation", requestBody);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
@@ -163,6 +180,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateTenancyAtWillTask(requestBody: UpdateTenancyAtWillTaskRequest) {
         return this.taskDataBaseRequest<void>("TenancyAtWill", requestBody);
+    }
+
+    public updatePostDecisionActionsTask(requestBody: UpdatePostDecisionActionsTaskRequest) {
+        return this.taskDataBaseRequest<void>("PostDecisionActions", requestBody);
     }
 
     public updateTrustModificationOrderTask(requestBody: UpdateTrustModificationOrderTaskRequest) {

@@ -368,6 +368,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("master_funding_agreement_signed_secretary_state");
 
+                    b.Property<int?>("NurseryArrangement")
+                        .HasColumnType("int")
+                        .HasColumnName("nursery_arrangement");
+
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_email");
@@ -383,6 +387,18 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseSaveLease")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
+
+                    b.Property<bool?>("PostDecisionActionsAcademyOrderUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_academy_order_uploaded");
+
+                    b.Property<bool?>("PostDecisionActionsApplicationUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_application_uploaded");
+
+                    b.Property<bool?>("PostDecisionActionsLaProformaUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_la_proforma_uploaded");
 
                     b.Property<bool?>("ProposedCapacityOfTheAcademyNotApplicable")
                         .HasColumnType("bit")
@@ -457,6 +473,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("share_information_email");
 
+                    b.Property<bool?>("SponsoredSupportGrantHasVendorAccount")
+                        .HasColumnType("bit")
+                        .HasColumnName("sponsored_support_grant_has_vendor_account");
+
                     b.Property<bool?>("SponsoredSupportGrantInformTrust")
                         .HasColumnType("bit")
                         .HasColumnName("sponsored_support_grant_inform_trust");
@@ -486,6 +506,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_check_provisional_conversion_date");
 
+                    b.Property<bool?>("StakeholderKickOffDeclareBudgetChanges")
+                        .HasColumnType("bit")
+                        .HasColumnName("stakeholder_kick_off_declare_budget_changes");
+
                     b.Property<bool?>("StakeholderKickOffIntroductoryEmails")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_introductory_emails");
@@ -501,6 +525,14 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("StakeholderKickOffSetupMeeting")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_setup_meeting");
+
+                    b.Property<bool?>("StatutoryConsultationComplete")
+                        .HasColumnType("bit")
+                        .HasColumnName("statutory_consultation_complete  ");
+
+                    b.Property<bool?>("StatutoryConsultationNotApplicable")
+                        .HasColumnType("bit")
+                        .HasColumnName("statutory_consultation_not_applicable");
 
                     b.Property<bool?>("SubleasesCleared")
                         .HasColumnType("bit")
@@ -1151,6 +1183,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("new_trust_reference_number");
+
+                    b.Property<DateOnly?>("OnHoldDate")
+                        .HasColumnType("date")
+                        .HasColumnName("on_hold_date");
 
                     b.Property<Guid?>("OutgoingTrustMainContactId")
                         .HasColumnType("uniqueidentifier")

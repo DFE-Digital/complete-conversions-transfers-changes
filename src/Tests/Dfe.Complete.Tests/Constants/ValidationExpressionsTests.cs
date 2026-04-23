@@ -40,6 +40,7 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("123456", false)]
         [InlineData("020 8327 3737", true)]
         [InlineData("0330 222 9331", true)]
+        [InlineData("0300 1234 105", true)] 
         public void UKPhone_Validation(string input, bool expectedIsValid)
         {
             var isValid = UKPhoneRegex().IsMatch(input);

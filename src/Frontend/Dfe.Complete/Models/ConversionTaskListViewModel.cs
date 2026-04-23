@@ -19,6 +19,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmIncomingTrustCeoDetails { get; set; }
         public TaskListStatus ConfirmMainContact { get; set; }
         public TaskListStatus ConfirmProposedCapacityOfTheAcademy { get; set; }
+
         public TaskListStatus LandQuestionnaire { get; set; }
         public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
@@ -38,6 +39,10 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
+        public TaskListStatus ConfirmStatutoryConsultation { get; set; }
+        public TaskListStatus ConfirmNurseryArrangement { get; set; }
+        public TaskListStatus PostDecisionActions { get; set; }
+        public bool ShowProcessConversionSupportGrant { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -74,8 +79,28 @@ namespace Dfe.Complete.Models
                 ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
-                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData)
+                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
+                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
+                ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
+                ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
+                PostDecisionActions = PostDecisionActionsTaskStatus(taskData)
             };
+        }
+
+        private static TaskListStatus ConfirmNurseryArrangementTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.NurseryArrangement is null)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            if (taskData.NurseryArrangement == NurseryArrangementOption.NotApplicable)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+
+            return TaskListStatus.Completed;
+            
         }
 
         private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
@@ -107,6 +132,7 @@ namespace Dfe.Complete.Models
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
                  taskData.StakeholderKickOffCheckProvisionalConversionDate == true &&
+                 taskData.StakeholderKickOffDeclareBudgetChanges == true &&
                  project.SignificantDateProvisional == false)
             {
                 return TaskListStatus.Completed;
@@ -115,6 +141,8 @@ namespace Dfe.Complete.Models
                    taskData.StakeholderKickOffLocalAuthorityProforma == true ||
                    taskData.StakeholderKickOffSetupMeeting == true ||
                    taskData.StakeholderKickOffMeeting == true ||
+                   taskData.StakeholderKickOffCheckProvisionalConversionDate == true ||
+                   taskData.StakeholderKickOffDeclareBudgetChanges == true ||
                     project.SignificantDateProvisional == false)
                     ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
@@ -517,25 +545,31 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ConfirmAndProcessSponsoredSupportGrantTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.SponsoredSupportGrantInformTrust.HasValue || taskData.SponsoredSupportGrantInformTrust == false) &&
-                (!taskData.SponsoredSupportGrantPaymentForm.HasValue || taskData.SponsoredSupportGrantPaymentForm == false) &&
-                (!taskData.SponsoredSupportGrantSendInformation.HasValue || taskData.SponsoredSupportGrantSendInformation == false) &&
-                (!taskData.SponsoredSupportGrantPaymentAmount.HasValue || taskData.SponsoredSupportGrantPaymentAmount == false) &&
+            if (taskData.SponsoredSupportGrantInformTrust is null or false &&
+                taskData.SponsoredSupportGrantPaymentForm is null or false &&
+                taskData.SponsoredSupportGrantSendInformation is null or false &&
+                taskData.SponsoredSupportGrantPaymentAmount is null or false &&
                 string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType) &&
-                (!taskData.SponsoredSupportGrantNotApplicable.HasValue || taskData.SponsoredSupportGrantNotApplicable == false))
+                taskData.SponsoredSupportGrantNotApplicable is null or false &&
+                taskData.SponsoredSupportGrantHasVendorAccount is null or false)
             {
                 return TaskListStatus.NotStarted;
             }
+
             if (taskData.SponsoredSupportGrantNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
-            return (taskData.SponsoredSupportGrantInformTrust == true &&
-                taskData.SponsoredSupportGrantPaymentForm == true &&
-                taskData.SponsoredSupportGrantSendInformation == true &&
-                taskData.SponsoredSupportGrantPaymentAmount == true &&
-                !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+
+            return (taskData is
+                    {
+                        SponsoredSupportGrantInformTrust: true, SponsoredSupportGrantPaymentForm: true,
+                        SponsoredSupportGrantSendInformation: true, SponsoredSupportGrantPaymentAmount: true,
+                        SponsoredSupportGrantHasVendorAccount: true
+                    } &&
+                    !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ProcessConversionSupportGrantTaskStatus(ConversionTaskDataDto taskData)
@@ -557,6 +591,11 @@ namespace Dfe.Complete.Models
                 taskData.ConversionGrantSendInformation == true &&
                 taskData.ConversionGrantSharePaymentDate == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static bool ShouldShowProcessConversionSupportGrant(ConversionTaskDataDto taskData)
+        {
+            return taskData.ConversionGrantNotApplicable != true;
         }
 
         private static TaskListStatus CompleteNotificationOfChangeTaskStatus(ConversionTaskDataDto taskData)
@@ -600,6 +639,36 @@ namespace Dfe.Complete.Models
             return (taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Standard ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.ChurchOrTrust ||
                 taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Commercial && !string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+
+        private static TaskListStatus ConfirmStatutoryConsultationTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.StatutoryConsultationNotApplicable.HasValue || taskData.StatutoryConsultationNotApplicable == false) &&
+                (!taskData.StatutoryConsultationComplete.HasValue || taskData.StatutoryConsultationComplete == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.StatutoryConsultationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return taskData.StatutoryConsultationComplete == true 
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus PostDecisionActionsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.PostDecisionActionsApplicationUploaded.HasValue || taskData.PostDecisionActionsApplicationUploaded == false) &&
+                (!taskData.PostDecisionActionsAcademyOrderUploaded.HasValue || taskData.PostDecisionActionsAcademyOrderUploaded == false) &&
+                (!taskData.PostDecisionActionsLaProformaUploaded.HasValue || taskData.PostDecisionActionsLaProformaUploaded == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.PostDecisionActionsApplicationUploaded == true &&
+                taskData.PostDecisionActionsAcademyOrderUploaded == true &&
+                taskData.PostDecisionActionsLaProformaUploaded == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }

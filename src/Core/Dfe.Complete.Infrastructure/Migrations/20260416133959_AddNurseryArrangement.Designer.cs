@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260127140331_Baseline_FromRuby")]
-    partial class Baseline_FromRuby
+    [Migration("20260416133959_AddNurseryArrangement")]
+    partial class AddNurseryArrangement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -295,6 +295,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("direction_to_transfer_signed");
 
+                    b.Property<bool?>("HandoverConfirmSacreExemption")
+                        .HasColumnType("bit")
+                        .HasColumnName("handover_confirm_sacre_exemption");
+
                     b.Property<bool?>("HandoverMeeting")
                         .HasColumnType("bit")
                         .HasColumnName("handover_meeting");
@@ -366,6 +370,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("MasterFundingAgreementSignedSecretaryState")
                         .HasColumnType("bit")
                         .HasColumnName("master_funding_agreement_signed_secretary_state");
+
+                    b.Property<int?>("NurseryArrangement")
+                        .HasColumnType("int")
+                        .HasColumnName("nursery_arrangement");
 
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
@@ -1151,6 +1159,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("new_trust_reference_number");
 
+                    b.Property<DateOnly?>("OnHoldDate")
+                        .HasColumnType("date")
+                        .HasColumnName("on_hold_date");
+
                     b.Property<Guid?>("OutgoingTrustMainContactId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("outgoing_trust_main_contact_id");
@@ -1662,6 +1674,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("FormMSigned")
                         .HasColumnType("bit")
                         .HasColumnName("form_m_signed");
+
+                    b.Property<bool?>("HandoverConfirmSacreExemption")
+                        .HasColumnType("bit")
+                        .HasColumnName("handover_confirm_sacre_exemption");
 
                     b.Property<bool?>("HandoverMeeting")
                         .HasColumnType("bit")

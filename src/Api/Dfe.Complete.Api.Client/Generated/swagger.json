@@ -2190,6 +2190,72 @@
         }
       }
     },
+    "/v1/Projects/Hold/Clear": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Clears the on hold status for a specific project.",
+        "operationId": "Projects_ClearOnHold",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClearProjectOnHoldCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Project resumed successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Hold": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the on hold status for a specific project.",
+        "operationId": "Projects_UpdateOnHold",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectOnHoldCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Project put on hold successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Projects/project/Complete": {
       "patch": {
         "tags": [
@@ -3843,6 +3909,36 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmStatutoryConsultation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the confirm statutory consultation task for conversion project.",
+        "operationId": "TasksData_UpdateConfirmStatutoryConsultationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update task data command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmStatutoryConsultationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated the confirm statutory consultation task data"
+          },
+          "404": {
+            "description": "Conversion task data not found for the given task data Id."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/Subleases": {
       "patch": {
         "tags": [
@@ -4070,6 +4166,70 @@
           },
           "404": {
             "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/PostDecisionActions": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the post decision actions task data for conversion project.",
+        "operationId": "TasksData_UpdatePostDecisionActionsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePostDecisionActionsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Post decision actions task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/NurseryArrangement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "operationId": "TasksData_UpdateNurseryArrangementTask",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNurseryArrangementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Nursery arrangement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
           }
         }
       }
@@ -4812,6 +4972,14 @@
                 "type": "string",
                 "format": "date",
                 "nullable": true
+              },
+              "onHoldDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "isOnHold": {
+                "type": "boolean"
               },
               "significantDateProvisional": {
                 "type": "boolean",
@@ -6367,6 +6535,14 @@
             "type": "boolean",
             "nullable": true
           },
+          "onHoldDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "isOnHold": {
+            "type": "boolean"
+          },
           "mainContactId": {
             "nullable": true,
             "oneOf": [
@@ -6930,7 +7106,10 @@
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
-          "RedactAndSend"
+          "RedactAndSend",
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement",
+          "PostDecisionActions"
         ],
         "x-enum-descriptions": [
           "handover",
@@ -6981,7 +7160,10 @@
           "deed_of_termination_for_the_master_funding_agreement",
           "deed_termination_church_agreement",
           "academy_details",
-          "redact_and_send"
+          "redact_and_send",
+          "confirm_statutory_consultation",
+          "confirm_nursery_arrangement",
+          "post_decision_actions"
         ],
         "enum": [
           "Handover",
@@ -7032,7 +7214,10 @@
           "DeedOfTerminationForMasterFundingAgreement",
           "DeedOfTerminationForChurchSupplementalAgreement",
           "AcademyDetails",
-          "RedactAndSend"
+          "RedactAndSend",
+          "ConfirmStatutoryConsultation",
+          "NurseryArrangement",
+          "PostDecisionActions"
         ]
       },
       "CreateNoteCommand": {
@@ -7498,7 +7683,8 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy"
+          "Academy",
+          "DecisionConditions"
         ],
         "x-enum-descriptions": [
           "advisory_board_conditions",
@@ -7523,7 +7709,8 @@
           "viability",
           "voluntary_deferral",
           "commercial_transfer_agreement",
-          "academy"
+          "academy",
+          "decision_conditions"
         ],
         "enum": [
           "AdvisoryBoardConditions",
@@ -7548,7 +7735,8 @@
           "Viability",
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
-          "Academy"
+          "Academy",
+          "DecisionConditions"
         ]
       },
       "RecordDaoRevocationDecisionCommand": {
@@ -7604,6 +7792,24 @@
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
         ]
+      },
+      "ClearProjectOnHoldCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
+      "UpdateProjectOnHoldCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
       },
       "UpdateProjectCompletedCommand": {
         "type": "object",
@@ -8409,6 +8615,14 @@
             "type": "boolean",
             "nullable": true
           },
+          "stakeholderKickOffCheckProvisionalConversionDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
+            "type": "boolean",
+            "nullable": true
+          },
           "conversionGrantCheckVendorAccount": {
             "type": "boolean",
             "nullable": true
@@ -8725,10 +8939,6 @@
             "type": "boolean",
             "nullable": true
           },
-          "stakeholderKickOffCheckProvisionalConversionDate": {
-            "type": "boolean",
-            "nullable": true
-          },
           "conversionGrantNotApplicable": {
             "type": "boolean",
             "nullable": true
@@ -8746,6 +8956,10 @@
             "nullable": true
           },
           "sponsoredSupportGrantInformTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantHasVendorAccount": {
             "type": "boolean",
             "nullable": true
           },
@@ -8858,6 +9072,34 @@
           "commercialTransferAgreementSaved": {
             "type": "boolean",
             "nullable": true
+          },
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
+          },
+          "statutoryConsultationNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsApplicationUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsAcademyOrderUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "postDecisionActionsLaProformaUploaded": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -8878,6 +9120,31 @@
           "Standard",
           "ChurchOrTrust",
           "Commercial"
+        ]
+      },
+      "NurseryArrangementOption": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
+        ],
+        "x-enum-descriptions": [
+          "notApplicable",
+          "directProvision",
+          "subsidiaryCompanyOfTheTrust",
+          "independentProvider",
+          "childrensCentre"
+        ],
+        "enum": [
+          "NotApplicable",
+          "DirectProvision",
+          "SubsidiaryCompanyOfTheTrust",
+          "AnIndependentProvider",
+          "AChildrensCentre"
         ]
       },
       "UpdateHandoverWithDeliveryOfficerTaskCommand": {
@@ -9064,6 +9331,10 @@
             "nullable": true
           },
           "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffDeclareBudgetChanges": {
             "type": "boolean",
             "nullable": true
           },
@@ -9905,6 +10176,23 @@
           }
         }
       },
+      "UpdateConfirmStatutoryConsultationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "statutoryConsultationComplete": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateSubleasesTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -10042,6 +10330,10 @@
           "informTrust": {
             "type": "boolean",
             "nullable": true
+          },
+          "hasVendorAccount": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -10147,6 +10439,44 @@
           "conversionGrantSharePaymentDate": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdatePostDecisionActionsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "applicationUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "academyOrderUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "laProformaUploaded": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateNurseryArrangementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "nurseryArrangement": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NurseryArrangementOption"
+              }
+            ]
           }
         }
       },

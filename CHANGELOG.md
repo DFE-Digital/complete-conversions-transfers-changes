@@ -16,7 +16,70 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-24.1419...main) for everything awaiting release
+### Added
+- [266928](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266928) - new "Post decision actions" task for conversion projects to verify application forms, academy orders and LA proformas have been uploaded to Sharepoint
+
+### Changed 
+- use API user secrets before appsettings
+- [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
+- [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capaticy task info
+- [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
+
+### Added
+- [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
+- [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
+
+### Security
+- [275939](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275939) - Issue #18/19 remove unnecessary query param from "HelpRedactingDocuments" link
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
+
+---
+
+## [1.44.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-08.1456) - 2026-04-08
+
+### Added
+- add docker db config
+
+### Changed
+- recreate initial migration
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-07.1450...production-2026-04-08.1456) for everything in the release
+
+---
+
+## [1.43.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-07.1450) - 2026-04-07
+
+### Added
+- [270913](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/270913) - Added project on-hold and resume functionality
+
+### Changed
+- [257450](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/257450) - Accessibility - 'Receive declaration of expenditure' Task - fix announcement of collapsed content
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-01.1436...production-2026-04-07.1450) for everything in the release
+
+---
+
+## [1.42.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-04-01.1436) - 2026-04-01
+
+### Changed
+- remove advisory board references in articles of association task
+- remove advisory board references in external stakeholder kickoff task
+- remove advisory board references in change decision reasons
+- remove advisory board references in handover flow
+- remove advisory board references in transfer handover with RDO task
+- Receive declaration of expenditure page, accessibility fixes for expandable content inside checkbox labels
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-31.1433...production-2026-04-01.1436) for everything in the release
+
+---
+
+## [1.41.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-03-31.1433) - 2026-03-31
+
+### Changed
+- [270502](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/270502) - remove spacing validation for phone numbers
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-03-24.1419...production-2026-03-31.1433) for everything in the release
 
 ---
 

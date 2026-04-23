@@ -25,8 +25,8 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
             .clickDropdown("Update the grant assurance spreadsheet")
             .hasDropdownContent("Regional Casework Services team members must update the support grant assurance")
             .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
-            .expandGuidance("Using the right certificate")
-            .hasGuidance("If the school only received the £25,000 pre-opening support grant,");
+            .expandPageGuidance("Using the right certificate")
+            .pageHasGuidance("If the school only received the £25,000 pre-opening support grant,");
     });
 
     it("should submit the form and persist selections", () => {

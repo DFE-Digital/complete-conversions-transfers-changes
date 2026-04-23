@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260313143821_AddHandoverConfirmSacreExemption")]
-    partial class AddHandoverConfirmSacreExemption
+    [Migration("20260416161849_AddPostDecisionActionsTaskFields")]
+    partial class AddPostDecisionActionsTaskFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -387,6 +387,18 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
 
+                    b.Property<bool?>("PostDecisionActionsAcademyOrderUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_academy_order_uploaded");
+
+                    b.Property<bool?>("PostDecisionActionsApplicationUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_application_uploaded");
+
+                    b.Property<bool?>("PostDecisionActionsLaProformaUploaded")
+                        .HasColumnType("bit")
+                        .HasColumnName("post_decision_actions_la_proforma_uploaded");
+
                     b.Property<bool?>("ProposedCapacityOfTheAcademyNotApplicable")
                         .HasColumnType("bit")
                         .HasColumnName("proposed_capacity_of_the_academy_not_applicable");
@@ -460,6 +472,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("share_information_email");
 
+                    b.Property<bool?>("SponsoredSupportGrantHasVendorAccount")
+                        .HasColumnType("bit")
+                        .HasColumnName("sponsored_support_grant_has_vendor_account");
+
                     b.Property<bool?>("SponsoredSupportGrantInformTrust")
                         .HasColumnType("bit")
                         .HasColumnName("sponsored_support_grant_inform_trust");
@@ -488,6 +504,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("StakeholderKickOffCheckProvisionalConversionDate")
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_check_provisional_conversion_date");
+
+                    b.Property<bool?>("StakeholderKickOffDeclareBudgetChanges")
+                        .HasColumnType("bit")
+                        .HasColumnName("stakeholder_kick_off_declare_budget_changes");
 
                     b.Property<bool?>("StakeholderKickOffIntroductoryEmails")
                         .HasColumnType("bit")
@@ -1154,6 +1174,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("new_trust_reference_number");
+
+                    b.Property<DateOnly?>("OnHoldDate")
+                        .HasColumnType("date")
+                        .HasColumnName("on_hold_date");
 
                     b.Property<Guid?>("OutgoingTrustMainContactId")
                         .HasColumnType("uniqueidentifier")

@@ -1,0 +1,24 @@
+﻿@page "/projects/{projectId}/resume/confirm"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.ProjectHold.ConfirmResumeProjectModel
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Confirm resume project";
+
+    var dateText = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
+}
+
+<form method="post">
+    <span class="govuk-caption-xl">@Model.Establishment.Name</span>
+    <h1 class="govuk-heading-xl">Resume @Model.Establishment.Name</h1>
+    <p>You are about to resume @Model.Establishment.Name.</p>
+    <h2 class="govuk-heading-l">Check the @(dateText) date</h2>
+    <p>The current @(dateText) date is: <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
+    <p>Check that this date is correct when resuming the project.</p>
+
+    <div class="govuk-button-group">
+        <govuk-button type="submit">Continue</govuk-button>
+        <a class="govuk-link" href="@String.Format(RouteConstants.Project, Model.ProjectId)">Cancel</a>
+    </div>
+</form>

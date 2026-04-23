@@ -31,6 +31,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? StakeholderKickOffMeeting { get; set; }
 
+    public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
+
+    public bool? StakeholderKickOffDeclareBudgetChanges { get; set; }
+
     public bool? ConversionGrantCheckVendorAccount { get; set; }
 
     public bool? ConversionGrantPaymentForm { get; set; }
@@ -140,6 +144,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? UpdateEsfaUpdate { get; set; }
 
     public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; }
+
     public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; }
 
     public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
@@ -189,8 +194,6 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? TenancyAtWillNotApplicable { get; set; }
 
     public bool? TrustModificationOrderNotApplicable { get; set; }
-
-    public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; }
 
     public bool? ConversionGrantNotApplicable { get; set; }
 
@@ -251,6 +254,19 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
     public bool? CommercialTransferAgreementSaved { get; set; }
+    public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
+
+    public NurseryArrangementOption? NurseryArrangement { get; set; }
+    
+    public bool? StatutoryConsultationNotApplicable { get; set; }
+
+    public bool? StatutoryConsultationComplete { get; set; }
+
+    public bool? PostDecisionActionsApplicationUploaded { get; set; }
+
+    public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
+
+    public bool? PostDecisionActionsLaProformaUploaded { get; set; }
 
     private ConversionTasksData() { }
 

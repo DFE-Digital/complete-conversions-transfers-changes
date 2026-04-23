@@ -25,19 +25,27 @@ class TaskListPage extends basePage {
         return this;
     }
 
+    public hasValidationBannerWith(description: string, errors?: string[]) {
+        const banner = cy.getByClass(this.bannerClass)
+            .contains("p", description);
+
+        if (errors?.length) {
+            banner
+                .parent()
+                .parent()
+                .within(() => {
+                    cy.get("h2").should("contain.text", "Important");
+                    cy.get("p").shouldHaveText(description);
+                    for (const error of errors) {
+                        cy.get("li").contains(error);
+                    }
+                    cy.get("li").should("have.length", errors?.length);
+                });
+        }
+    }
+
     public hasImportantCompletedBannerWith(description: string, outstandingTasks: string[]) {
-        cy.getByClass(this.bannerClass)
-            .contains("p", description)
-            .parent()
-            .parent()
-            .within(() => {
-                cy.get("h2").should("contain.text", "Important");
-                cy.get("p").shouldHaveText(description);
-                for (const task of outstandingTasks) {
-                    cy.get("li").contains(task);
-                }
-                cy.get("li").should("have.length", outstandingTasks.length);
-            });
+        this.hasValidationBannerWith(description, outstandingTasks);
     }
 
     private hasTaskStatus(taskName: string, status: string) {

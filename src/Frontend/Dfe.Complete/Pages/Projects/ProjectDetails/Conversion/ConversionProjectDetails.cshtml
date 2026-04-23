@@ -9,7 +9,7 @@
     ViewData["Title"] = Model.EstablishmentName;
 
     const string incomingUkprnField = nameof(Model.IncomingTrustUkprn);
-    const string dateOfAdvisoryBoardField = nameof(Model.AdvisoryBoardDate);
+    const string dateOfDecisionField = nameof(Model.DecisionDate);
     const string schoolSharePointLinkField = nameof(Model.EstablishmentSharepointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharepointLink);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
@@ -72,25 +72,22 @@
                 </govuk-input>
             </div>
 
-            <div class="govuk-form-group" id="advisory-board">
-                <govuk-date-input id="@dateOfAdvisoryBoardField" name-prefix="@dateOfAdvisoryBoardField" asp-for="@Model.AdvisoryBoardDate">
+            <div class="govuk-form-group" id="date-of-decision">
+                <govuk-date-input id="@dateOfDecisionField" name-prefix="@dateOfDecisionField" asp-for="@Model.DecisionDate">
                     <govuk-date-input-fieldset>
                         <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
-                            Date of advisory board
+                            Date of decision
                         </govuk-date-input-fieldset-legend>
-                        <govuk-date-input-hint>
-                            You can find this in the advisory board template.
-                        </govuk-date-input-hint>
-                        @if (Model.ErrorService.HasErrorForKey(@dateOfAdvisoryBoardField))
+                        @if (Model.ErrorService.HasErrorForKey(@dateOfDecisionField))
                         {
-                            <govuk-date-input-error-message>@(Model.ErrorService.GetErrorMessage(dateOfAdvisoryBoardField))</govuk-date-input-error-message>
+                            <govuk-date-input-error-message>@(Model.ErrorService.GetErrorMessage(dateOfDecisionField))</govuk-date-input-error-message>
                         }
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
 
-                <govuk-textarea name="AdvisoryBoardConditions" asp-for="@Model.AdvisoryBoardConditions">
+                <govuk-textarea name="DecisionConditions" asp-for="@Model.DecisionConditions">
                     <govuk-textarea-label class="govuk-label--m">
-                        Advisory board conditions
+                        Conditions of decision
                     </govuk-textarea-label>
                 </govuk-textarea>
             </div>

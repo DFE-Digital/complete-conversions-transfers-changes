@@ -1940,6 +1940,124 @@ public partial class ProjectsControllerTests
     [CustomAutoData(
        typeof(CustomWebApplicationDbContextFactoryCustomization),
        typeof(ProjectCustomization))]
+    public async Task ClearOnHoldAsync_ShouldClearOnHold_WhenProjectExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 0
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var project = projects[0];
+
+        var command = new ClearProjectOnHoldCommand()
+        {
+            ProjectId = new ProjectId() { Value = project.Id.Value }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Active, project.State);
+        await projectsClient.ClearOnHoldAsync(command);
+
+        // Assert
+        dbContext.ChangeTracker.Clear();
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+        Assert.NotNull(existingProject);
+        Assert.Null(existingProject.OnHoldDate);
+        Assert.False(existingProject.IsOnHold);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
+    public async Task UpdateOnHoldAsync_ShouldUpdateOnHold_WhenProjectExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 0
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var project = projects[0];
+
+        var command = new UpdateProjectOnHoldCommand()
+        {
+            ProjectId = new ProjectId() { Value = project.Id.Value }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Active, project.State);
+        await projectsClient.UpdateOnHoldAsync(command);
+
+        // Assert
+        dbContext.ChangeTracker.Clear();
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+        Assert.NotNull(existingProject);
+        Assert.NotNull(existingProject.OnHoldDate);
+        Assert.True(existingProject.IsOnHold);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
     public async Task UpdateCompleteAsync_ShouldUpdateCompleted_WhenProjectExists(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,

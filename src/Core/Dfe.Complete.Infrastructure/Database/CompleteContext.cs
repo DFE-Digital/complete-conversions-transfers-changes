@@ -207,6 +207,7 @@ public partial class CompleteContext : DbContext
             .HasConversion(
                 v => v!.Value,
                 v => new UserId(v));
+        projectConfiguration.Property(e => e.OnHoldDate).HasColumnName("on_hold_date");
         projectConfiguration.Property(e => e.SignificantDate).HasColumnName("significant_date");
         projectConfiguration.Property(e => e.SignificantDateProvisional)
             .HasDefaultValue(true)
@@ -561,6 +562,9 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseNotApplicable).HasColumnName("one_hundred_and_twenty_five_year_lease_not_applicable");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseReceive).HasColumnName("one_hundred_and_twenty_five_year_lease_receive");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseSaveLease).HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
+        projectConfiguration.Property(e => e.PostDecisionActionsAcademyOrderUploaded).HasColumnName("post_decision_actions_academy_order_uploaded");
+        projectConfiguration.Property(e => e.PostDecisionActionsApplicationUploaded).HasColumnName("post_decision_actions_application_uploaded");
+        projectConfiguration.Property(e => e.PostDecisionActionsLaProformaUploaded).HasColumnName("post_decision_actions_la_proforma_uploaded");
         projectConfiguration.Property(e => e.ProposedCapacityOfTheAcademyNotApplicable).HasColumnName("proposed_capacity_of_the_academy_not_applicable");
         projectConfiguration.Property(e => e.ProposedCapacityOfTheAcademyReceptionToSixYears)
             .HasMaxLength(4000)
@@ -596,6 +600,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.SponsoredSupportGrantPaymentAmount).HasColumnName("sponsored_support_grant_payment_amount");
         projectConfiguration.Property(e => e.SponsoredSupportGrantPaymentForm).HasColumnName("sponsored_support_grant_payment_form");
         projectConfiguration.Property(e => e.SponsoredSupportGrantSendInformation).HasColumnName("sponsored_support_grant_send_information");
+        projectConfiguration.Property(e => e.SponsoredSupportGrantHasVendorAccount).HasColumnName("sponsored_support_grant_has_vendor_account");
         projectConfiguration.Property(e => e.SponsoredSupportGrantType)
             .HasMaxLength(4000)
             .HasColumnName("sponsored_support_grant_type");
@@ -604,6 +609,9 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.StakeholderKickOffLocalAuthorityProforma).HasColumnName("stakeholder_kick_off_local_authority_proforma");
         projectConfiguration.Property(e => e.StakeholderKickOffMeeting).HasColumnName("stakeholder_kick_off_meeting");
         projectConfiguration.Property(e => e.StakeholderKickOffSetupMeeting).HasColumnName("stakeholder_kick_off_setup_meeting");
+        projectConfiguration.Property(e => e.StakeholderKickOffDeclareBudgetChanges).HasColumnName("stakeholder_kick_off_declare_budget_changes");
+        projectConfiguration.Property(e => e.StatutoryConsultationNotApplicable).HasColumnName("statutory_consultation_not_applicable");
+        projectConfiguration.Property(e => e.StatutoryConsultationComplete).HasColumnName("statutory_consultation_complete  ");
         projectConfiguration.Property(e => e.SubleasesCleared).HasColumnName("subleases_cleared");
         projectConfiguration.Property(e => e.SubleasesEmailSigned).HasColumnName("subleases_email_signed");
         projectConfiguration.Property(e => e.SubleasesNotApplicable).HasColumnName("subleases_not_applicable");
@@ -631,6 +639,8 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
+
+        projectConfiguration.Property(e => e.NurseryArrangement).HasColumnName("nursery_arrangement");
     }
 
     private static void ConfigureTransferTasksData(EntityTypeBuilder<TransferTasksData> projectConfiguration)

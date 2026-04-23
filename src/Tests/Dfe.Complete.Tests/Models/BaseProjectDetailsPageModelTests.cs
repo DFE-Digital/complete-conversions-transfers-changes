@@ -5,6 +5,8 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Services.AcademiesApi;
+using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.ProjectDetails;
@@ -14,10 +16,12 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using System.Security.Claims;
 using System.Web;
 
 namespace Dfe.Complete.Tests.Models;
@@ -262,15 +266,52 @@ public class BaseProjectDetailsPageModelTests
         {
             ProjectId = projectId.ToString(),
             Project = project,
-            Establishment = establishment
+            Establishment = establishment,
+            PageContext = new PageContext()
+            {
+                HttpContext = new DefaultHttpContext()
+            }
         };
+
+        // Mock the queries that the real base implementation will call
+        var projectResult = Result<ProjectDto?>.Success(project);
+        mockSender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
+            .Returns(projectResult);
+
+        var establishmentResult = Result<EstablishmentDto?>.Success(establishment);
+        mockSender.Send(Arg.Any<GetEstablishmentByUrnRequest>(), Arg.Any<CancellationToken>())
+            .Returns(establishmentResult);
+
+        // Mock the incoming trust query (called by SetIncomingTrustAsync)
+        var trustDto = new TrustDto { Name = "Test Incoming Trust" };
+        var trustResult = Result<TrustDto?>.Success(trustDto);
+        mockSender.Send(Arg.Any<GetTrustByUkprnRequest>(), Arg.Any<CancellationToken>())
+            .Returns(trustResult);
+
+        // Mock the user query (called by User.GetUserTeam extension method)
+        var userDto = new UserDto { Team = "london" };
+        var userResult = Result<UserDto?>.Success(userDto);
+        mockSender.Send(Arg.Any<GetUserByOidQuery>(), Arg.Any<CancellationToken>())
+            .Returns(userResult);
 
         // Mock the group query
         var groupSuccessResult = Result<ProjectGroupDto>.Success(projectGroup);
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(groupSuccessResult);
 
-        model.SetBaseOnGetResult(new PageResult());
+        // Mock permission service for the base implementation
+        projectPermissionService.UserCanView(Arg.Any<ProjectDto>(), Arg.Any<ClaimsPrincipal>())
+            .Returns(true);
+
+        // Mock the User claims for SetCurrentUserTeamAsync
+        var claims = new List<Claim>
+        {
+            new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, "RegionalDeliveryOfficer")
+        };
+        var identity = new ClaimsIdentity(claims, "test");
+        var principal = new ClaimsPrincipal(identity);
+        model.PageContext.HttpContext.User = principal;
 
         // Act
         var result = await model.OnGetAsync();
@@ -284,8 +325,8 @@ public class BaseProjectDetailsPageModelTests
         Assert.Equal("12345678", model.IncomingTrustUkprn);
         Assert.Equal("TR123456", model.NewTrustReferenceNumber);
         Assert.Equal("GR789012", model.GroupReferenceNumber);
-        Assert.Equal(project.AdvisoryBoardDate?.ToDateTime(default), model.AdvisoryBoardDate);
-        Assert.Equal("Test conditions", model.AdvisoryBoardConditions);
+        Assert.Equal(project.AdvisoryBoardDate?.ToDateTime(default), model.DecisionDate);
+        Assert.Equal("Test conditions", model.DecisionConditions);
         Assert.Equal("https://example.com/establishment", model.EstablishmentSharepointLink);
         Assert.Equal("https://example.com/trust", model.IncomingTrustSharepointLink);
         Assert.True(model.IsHandingToRCS);
@@ -459,8 +500,8 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
 
             await SetGroupReferenceNumberAsync();
 
-            AdvisoryBoardDate = Project.AdvisoryBoardDate?.ToDateTime(default);
-            AdvisoryBoardConditions = Project.AdvisoryBoardConditions;
+            DecisionDate = Project.AdvisoryBoardDate?.ToDateTime(default);
+            DecisionConditions = Project.AdvisoryBoardConditions;
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;
@@ -469,6 +510,7 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
             return Page();
         }
 
+        // Call the real base implementation when no mock result is set
         return await base.OnGetAsync();
     }
 

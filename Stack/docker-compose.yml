@@ -1,4 +1,19 @@
 services:        
+   complete.sqldb:
+    image: mcr.microsoft.com/azure-sql-edge:latest@sha256:902628a8be89e35dfb7895ca31d602974c7bafde4d583a0d0873844feb1c42cf
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "1433:1433"
+    networks:
+      - local-dev
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P ${DATABASE_PASSWORD} -C -Q 'SELECT 1' || exit 1
+      interval: 2s
+      retries: 10
+    restart: always
+
    complete.redis:
     container_name: complete.redis
     image: redis:latest@sha256:5c7c0445ed86918cb9efb96d95a6bfc03ed2059fe2c5f02b4d74f477ffe47915
