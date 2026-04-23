@@ -201,6 +201,10 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
 
+    [Description("confirm_dbs_checks")]
+    [DisplayDescription("DBS checks")]
+    ConfirmDBSChecks = 56,
+
     [Description("confirm_statutory_consultation")]
     [DisplayDescription("Confirm statutory consultation is complete and any issues are being managed")]
     ConfirmStatutoryConsultation = 50,

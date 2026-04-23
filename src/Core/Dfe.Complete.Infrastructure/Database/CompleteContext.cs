@@ -639,8 +639,8 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
-
         projectConfiguration.Property(e => e.NurseryArrangement).HasColumnName("nursery_arrangement");
+        projectConfiguration.Property(e => e.ConfirmDBSChecks).HasColumnName("confirm_dbs_checks");
     }
 
     private static void ConfigureTransferTasksData(EntityTypeBuilder<TransferTasksData> projectConfiguration)

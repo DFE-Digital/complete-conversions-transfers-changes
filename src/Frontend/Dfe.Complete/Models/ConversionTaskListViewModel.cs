@@ -43,6 +43,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmNurseryArrangement { get; set; }
         public TaskListStatus PostDecisionActions { get; set; }
         public bool ShowProcessConversionSupportGrant { get; set; }
+        public TaskListStatus ConfirmDbsChecks { get; set; }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -80,11 +81,23 @@ namespace Dfe.Complete.Models
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
-                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
+                ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
-                PostDecisionActions = PostDecisionActionsTaskStatus(taskData)
+                PostDecisionActions = PostDecisionActionsTaskStatus(taskData),
+                ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
             };
+        }
+        private static TaskListStatus ConfirmDbsChecksTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.ConfirmDBSChecks is null)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return taskData.ConfirmDBSChecks == true
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmNurseryArrangementTaskStatus(ConversionTaskDataDto taskData)
