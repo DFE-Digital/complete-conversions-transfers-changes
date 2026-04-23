@@ -32,6 +32,7 @@ COPY src/Tests/${PROJECT_NAME}.Domain.Tests/${PROJECT_NAME}.Domain.Tests.csproj 
 COPY src/Tests/${PROJECT_NAME}.Tests.Common/${PROJECT_NAME}.Tests.Common.csproj src/Tests/${PROJECT_NAME}.Tests.Common/
 COPY src/Tests/${PROJECT_NAME}.Tests/${PROJECT_NAME}.Tests.csproj src/Tests/${PROJECT_NAME}.Tests/
 COPY src/Tests/${PROJECT_NAME}.UserContext.Tests/${PROJECT_NAME}.UserContext.Tests.csproj src/Tests/${PROJECT_NAME}.UserContext.Tests/
+COPY src/Tests/${PROJECT_NAME}.Utils.Tests/${PROJECT_NAME}.Utils.Tests.csproj src/Tests/${PROJECT_NAME}.Utils.Tests/
 
 # Copy solution and props files
 COPY ./${PROJECT_NAME}.sln .
