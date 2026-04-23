@@ -66,6 +66,8 @@ RUN dotnet tool install --global dotnet-ef --version 10.*
 
 RUN mkdir /sql
 
+# Provide a dummy connection string so UseSqlServer doesn't throw ArgumentNullException during evaluate
+ENV ConnectionStrings__DefaultConnection="Server=localhost;Database=dummy;"
 RUN dotnet ef migrations bundle -r linux-x64 \
     --project ./src/Core/Dfe.Complete.Infrastructure/Dfe.Complete.Infrastructure.csproj \
     --startup-project ./src/Api/Dfe.Complete.Api/Dfe.Complete.Api.csproj \
