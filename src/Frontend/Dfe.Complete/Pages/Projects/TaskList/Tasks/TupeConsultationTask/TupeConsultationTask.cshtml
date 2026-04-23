@@ -28,6 +28,6 @@
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
 
-        <govuk-button type="submit" class="govuk-!-margin-top-6">Update and return to task list</govuk-button>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
