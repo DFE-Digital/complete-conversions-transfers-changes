@@ -1,5 +1,6 @@
 using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
@@ -40,6 +41,7 @@ public class ChangeDateProjectModel(ISender sender, IErrorService errorService, 
     public async Task<IActionResult> OnPost()
     {
         await base.OnGetAsync();
+        await SetProjectTaskDataAsync();
 
         if (!CanEditSignificantDate)
         {
@@ -51,8 +53,9 @@ public class ChangeDateProjectModel(ISender sender, IErrorService errorService, 
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectTaskList));
         }
 
-        var validationResult = _dateValidator.ValidateSignificantDate(SignificantDate, Project);
-        if (!validationResult.IsValid)
+        var validationResult = _dateValidator.ValidateSignificantDate(SignificantDate, Project, 
+            Project.Type == ProjectType.Conversion ? ConversionTaskData.LAPayrollDeadline : null);
+        if (validationResult != null)
         {
             ModelState.AddModelError(nameof(SignificantDate), validationResult.ErrorMessage!);
         }

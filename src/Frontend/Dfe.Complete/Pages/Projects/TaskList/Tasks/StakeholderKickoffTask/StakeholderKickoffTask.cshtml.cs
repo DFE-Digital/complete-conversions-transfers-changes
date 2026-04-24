@@ -75,8 +75,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
             var errorToRemove = "The Significant date must include a month and year";
             ModelState.RemoveError("significant-date", errorToRemove);
 
-            var validationResult = _dateValidator.ValidateSignificantDateInFuture(SignificantDate);
-            if (!validationResult.IsValid)
+            var validationResult = _dateValidator.ValidateSignificantDate(SignificantDate, Project, 
+                Project.Type == ProjectType.Conversion ? ConversionTaskData.LAPayrollDeadline : null);
+
+            if (validationResult != null)
             {
                 ModelState.AddModelError(nameof(SignificantDate), validationResult.ErrorMessage!);
             }

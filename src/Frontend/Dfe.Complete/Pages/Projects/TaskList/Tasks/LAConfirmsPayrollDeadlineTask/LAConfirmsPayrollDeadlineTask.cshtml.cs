@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -11,9 +12,10 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTask
 {
-    public class LAConfirmsPayrollDeadlineTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LAConfirmsPayrollDeadlineTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
+    public class LAConfirmsPayrollDeadlineTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LAConfirmsPayrollDeadlineTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService, ISignificantDateValidator significantDateValidator)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.LAConfirmsPayrollDeadline, projectPermissionService)
     {
+        private readonly ISignificantDateValidator _significantDateValidator = significantDateValidator;
         [BindProperty(Name = "payroll-deadline")]
         [DisplayName("Payroll deadline")]
         public DateOnly? PayrollDeadline { get; set; }
@@ -35,18 +37,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTa
         {
             await base.OnGetAsync();
 
-            // Custom validation for payroll deadline
+            // Use domain validator for payroll deadline validation
             if (PayrollDeadline.HasValue)
             {
-                // Check if date is in the future
-                if (PayrollDeadline <= DateOnly.FromDateTime(DateTime.Now))
+                var validationResult = _significantDateValidator.ValidatePayrollDeadline(PayrollDeadline, Project);
+                if (validationResult != null)
                 {
-                    ModelState.AddModelError("payroll-deadline", ValidationConstants.PayrollDateIsPast);
-                }
-                else if (Project.SignificantDate.HasValue && PayrollDeadline >= Project.SignificantDate.Value)
-                {
-                    // Check if date is before the significant date
-                    ModelState.AddModelError("payroll-deadline", ValidationConstants.PayrollDateAfterSignificantDate);
+                    ModelState.AddModelError("payroll-deadline", validationResult.ErrorMessage!);
                 }
             }
 
