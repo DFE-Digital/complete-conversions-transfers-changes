@@ -624,6 +624,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.SupplementalFundingAgreementCleared).HasColumnName("supplemental_funding_agreement_cleared");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementReceived).HasColumnName("supplemental_funding_agreement_received");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSaved).HasColumnName("supplemental_funding_agreement_saved");
+        projectConfiguration.Property(e => e.SupplementalFundingAgreementDraftSaved).HasColumnName("supplemental_funding_agreement_draft_saved");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSent).HasColumnName("supplemental_funding_agreement_sent");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSigned).HasColumnName("supplemental_funding_agreement_signed");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSignedSecretaryState).HasColumnName("supplemental_funding_agreement_signed_secretary_state");

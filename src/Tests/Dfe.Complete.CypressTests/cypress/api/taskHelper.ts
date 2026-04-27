@@ -377,6 +377,7 @@ export class TaskHelper {
             cleared: false,
             signed: false,
             saved: false,
+            draftSaved: false,
             signedSecretaryState: false,
         };
         switch (status) {
@@ -394,6 +395,7 @@ export class TaskHelper {
                     cleared: true,
                     signed: true,
                     saved: true,
+                    draftSaved: true,
                     signedSecretaryState: true,
                 });
 

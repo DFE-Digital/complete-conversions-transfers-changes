@@ -443,9 +443,10 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
         [InlineData(true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, true, false, true, true, true, TaskListStatus.Completed)] // DraftSaved instead of Saved
         [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
         public void SupplementalFundingAgreementTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? signed, bool? draftSaved,
             bool? signedSecretaryState, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -455,7 +456,7 @@ namespace Dfe.Complete.Tests.Models
                 SupplementalFundingAgreementCleared = cleared,
                 SupplementalFundingAgreementSaved = saved,
                 SupplementalFundingAgreementSigned = signed,
-                SupplementalFundingAgreementSent = sent,
+                SupplementalFundingAgreementDraftSaved = draftSaved,
                 SupplementalFundingAgreementSignedSecretaryState = signedSecretaryState
             };
 

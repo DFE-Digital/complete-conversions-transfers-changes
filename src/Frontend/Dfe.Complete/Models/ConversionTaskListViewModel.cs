@@ -415,6 +415,7 @@ namespace Dfe.Complete.Models
             if ((!taskData.SupplementalFundingAgreementReceived.HasValue || taskData.SupplementalFundingAgreementReceived == false) &&
                (!taskData.SupplementalFundingAgreementCleared.HasValue || taskData.SupplementalFundingAgreementCleared == false) &&
                (!taskData.SupplementalFundingAgreementSaved.HasValue || taskData.SupplementalFundingAgreementSaved == false) &&
+               (!taskData.SupplementalFundingAgreementDraftSaved.HasValue || taskData.SupplementalFundingAgreementDraftSaved == false) &&
                (!taskData.SupplementalFundingAgreementSigned.HasValue || taskData.SupplementalFundingAgreementSigned == false) &&
                (!taskData.SupplementalFundingAgreementSignedSecretaryState.HasValue || taskData.SupplementalFundingAgreementSignedSecretaryState == false))
             {
@@ -423,8 +424,8 @@ namespace Dfe.Complete.Models
             return (taskData.SupplementalFundingAgreementCleared == true &&
                taskData.SupplementalFundingAgreementReceived == true &&
                taskData.SupplementalFundingAgreementSaved == true &&
+               taskData.SupplementalFundingAgreementDraftSaved == true &&
                taskData.SupplementalFundingAgreementSigned == true &&
-               taskData.SupplementalFundingAgreementSent == true &&
                taskData.SupplementalFundingAgreementSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
