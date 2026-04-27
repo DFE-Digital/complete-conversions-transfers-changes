@@ -24,9 +24,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
         [BindProperty(Name = "signed")]
         public bool? Signed { get; set; }
 
-        [BindProperty(Name = "sent")]
-        public bool? Sent { get; set; }
-
         [BindProperty(Name = "signed_secretary_state")]
         public bool? SignedSecretaryState { get; set; }
 
@@ -53,7 +50,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
             {
                 Received = ConversionTaskData.SupplementalFundingAgreementReceived;
                 Cleared = ConversionTaskData.SupplementalFundingAgreementCleared;
-                Sent = ConversionTaskData.SupplementalFundingAgreementSent;
                 Saved = ConversionTaskData.SupplementalFundingAgreementSaved;
                 Signed = ConversionTaskData.SupplementalFundingAgreementSigned;
                 SignedSecretaryState = ConversionTaskData.SupplementalFundingAgreementSignedSecretaryState;
@@ -62,7 +58,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
+            await Sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Saved, Signed, SignedSecretaryState));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

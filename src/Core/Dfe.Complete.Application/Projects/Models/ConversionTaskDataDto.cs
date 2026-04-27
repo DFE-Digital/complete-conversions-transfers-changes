@@ -61,8 +61,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? SupplementalFundingAgreementSaved { get; set; }
 
-        public bool? SupplementalFundingAgreementSent { get; set; }
-
         public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
         public bool? ChurchSupplementalAgreementReceived { get; set; }
