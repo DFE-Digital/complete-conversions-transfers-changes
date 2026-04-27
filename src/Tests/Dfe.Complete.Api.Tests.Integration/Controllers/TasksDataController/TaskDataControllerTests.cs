@@ -282,6 +282,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.ProjectType = ProjectType.Conversion;
             command.Cleared = true;
             command.Saved = false;
+            command.DraftSaved = true;
             command.Received = true;
             command.Signed = true;
             command.SignedSecretaryState = true;
@@ -296,6 +297,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
+            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
             Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
             Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
         }
@@ -332,6 +334,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
+            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]

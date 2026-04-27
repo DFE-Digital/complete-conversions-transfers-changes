@@ -68,6 +68,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     // 277812 - field preserved for historical data but no longer used in the application
     public bool? SupplementalFundingAgreementSent { get; set; }
 
+    public bool? SupplementalFundingAgreementDraftSaved { get; set; }
+
     public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
     public bool? ChurchSupplementalAgreementReceived { get; set; }
