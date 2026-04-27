@@ -121,7 +121,7 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.SupplementalFundingAgreementCleared, false)
             .With(x => x.SupplementalFundingAgreementReceived, false)
             .With(x => x.SupplementalFundingAgreementSaved, false)
-            .With(x => x.SupplementalFundingAgreementSent, false)
+            .With(x => x.SupplementalFundingAgreementDraftSaved, false)
             .With(x => x.SupplementalFundingAgreementSigned, false)
             .With(x => x.SupplementalFundingAgreementSignedSecretaryState, false)
             .With(x => x.TenancyAtWillEmailSigned, false)

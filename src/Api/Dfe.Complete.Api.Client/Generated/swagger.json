@@ -8615,11 +8615,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "supplementalFundingAgreementSaved": {
+          "supplementalFundingAgreementDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "supplementalFundingAgreementSent": {
+          "supplementalFundingAgreementSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -9304,11 +9304,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "sent": {
+          "saved": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
+          "draftSaved": {
             "type": "boolean",
             "nullable": true
           },
