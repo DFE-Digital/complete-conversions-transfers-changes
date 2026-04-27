@@ -1,4 +1,3 @@
-using Dfe.Complete.Constants;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Services;
@@ -12,9 +11,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList
     {
         public TransferTaskListViewModel TransferTaskList { get; set; } = null!;
         public ConversionTaskListViewModel ConversionTaskList { get; set; } = null!;
-
-        public string TaskLink(string task) => string.Format(RouteConstants.ProjectTask, ProjectId, task);
-
+        
         public override async Task<IActionResult> OnGetAsync()
         {
             var baseResult = await base.OnGetAsync();
