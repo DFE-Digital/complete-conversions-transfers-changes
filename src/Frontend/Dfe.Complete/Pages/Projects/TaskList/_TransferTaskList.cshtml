@@ -1,53 +1,8 @@
-﻿@using Dfe.Complete.Domain.Enums;
-@using Dfe.Complete.Utils
+﻿@using Dfe.Complete.Pages.Projects.TaskList
 
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
-    var confirmDateAcademyTransferredTitle = NoteTaskIdentifier.ConfirmDateAcademyTransferred.ToDisplayDescription();
-
-    var projectKickoffTasks = new List<TaskListItemViewModel>
-    {
-        new("Handover with regional delivery officer", Model.TaskLink("handover"), Model.TransferTaskList.HandoverWithRegionalDeliveryOfficer, 1),
-        new("External stakeholder kick-off", Model.TaskLink("stakeholder_kick_off"), Model.TransferTaskList.ExternalStakeHolderKickoff, 2),
-        new("Confirm the academy's risk protection arrangements", Model.TaskLink("rpa_policy"), Model.TransferTaskList.ConfirmAcademyRiskProtectionArrangements, 3),
-        new("Confirm the headteacher's details", Model.TaskLink("confirm_headteacher_contact"), Model.TransferTaskList.ConfirmHeadTeacherDetails, 4),
-        new("Confirm the incoming trust CEO's details", Model.TaskLink("confirm_incoming_trust_ceo_contact"), Model.TransferTaskList.ConfirmIncomingTrustCeoDetails, 5),
-        new("Confirm the outgoing trust CEO's details", Model.TaskLink("confirm_outgoing_trust_ceo_contact"), Model.TransferTaskList.ConfirmOutgoingTrustCeoDetails, 6),
-        new("Confirm the main contact", Model.TaskLink("main_contact"), Model.TransferTaskList.ConfirmMainContact, 7),
-        new("Request a new URN and record for the academy", Model.TaskLink("request_new_urn_and_record"), Model.TransferTaskList.RequestNewURNAndRecordForTheAcademy, 8),
-        new("Confirm transfer grant funding level", Model.TaskLink("sponsored_support_grant"), Model.TransferTaskList.ConfirmTransferGrantFundingLevel, 9),
-        new("Check and confirm academy and trust financial information", Model.TaskLink("check_and_confirm_financial_information"), Model.TransferTaskList.CheckAndConfirmAcademyAndTrustFinancialInfo, 10)
-    };
-
-    var legalDocumentsTasks = new List<TaskListItemViewModel>
-    {
-        new("Form M", Model.TaskLink("form_m"), Model.TransferTaskList.FormM, 1),
-        new("Land consent letter", Model.TaskLink("land_consent_letter"), Model.TransferTaskList.LandConsentLetter, 2),
-        new("Supplemental funding agreement", Model.TaskLink("supplemental_funding_agreement"), Model.TransferTaskList.SupplementalFundingAgreement, 3),
-        new("Deed of novation and variation", Model.TaskLink("deed_of_novation_and_variation"), Model.TransferTaskList.DeedOfNovationAndVariation, 4),
-        new("Church supplemental agreement", Model.TaskLink("church_supplemental_agreement"), Model.TransferTaskList.ChurchSupplementalAgreement, 5),
-        new("Master funding agreement", Model.TaskLink("master_funding_agreement"), Model.TransferTaskList.MasterFundingAgreement, 6),
-        new("Articles of association", Model.TaskLink("articles_of_association"), Model.TransferTaskList.ArticlesOfAssociation, 7),
-        new("Deed of variation", Model.TaskLink("deed_of_variation"), Model.TransferTaskList.DeedoOfVariation, 8),
-        new("Deed of termination for the master funding agreement", Model.TaskLink("deed_of_termination_for_the_master_funding_agreement"), Model.TransferTaskList.DeedOfTerminationForTheMasterFundingAgreement, 9),
-        new("Deed of termination for the church supplemental agreement", Model.TaskLink("deed_termination_church_agreement"), Model.TransferTaskList.DeedOfTerminationForChurchSupplementalAreement, 10),
-        new("Commercial transfer agreement", Model.TaskLink("commercial_transfer_agreement"), Model.TransferTaskList.CommercialTransferAgreement, 11),
-        new("Closure or transfer declaration", Model.TaskLink("closure_or_transfer_declaration"), Model.TransferTaskList.ClosureOrTransferDeclaration, 12)
-    };
-
-    var getReadyToTransferTasks = new List<TaskListItemViewModel>
-    {
-        new("Confirm if the bank details for the general annual grant payment need to change", Model.TaskLink("bank_details_changing"), Model.TransferTaskList.ConfirmBankDetailsChangingForGeneralAnnualGrantPayment, 1),
-        new("Confirm the incoming trust has completed all actions", Model.TaskLink("confirm_incoming_trust_has_completed_all_actions"), Model.TransferTaskList.ConfirmIncomingTrustHasCompletedAllActions, 2),
-        new("Confirm this transfer has authority to proceed", Model.TaskLink("conditions_met"), Model.TransferTaskList.ConfirmThisTransferHasAuthorityToProceed, 3)
-    };
-
-    var afterTransferTasks = new List<TaskListItemViewModel>
-    {
-        new(confirmDateAcademyTransferredTitle, Model.TaskLink("confirm_date_academy_transferred"), Model.TransferTaskList.ConfirmDateAcademyTransferred, 1), 
-        new("Redact and send documents", Model.TaskLink("redact_and_send_documents"), Model.TransferTaskList.RedactAndSendDocuments, 2),
-        new("Receive declaration of expenditure certificate", Model.TaskLink("declaration_of_expenditure_certificate"), Model.TransferTaskList.DeclarationOfExpenditureCertificate, 3)
-    };
+    var transferTasks = TransferTasks.BuildTaskList(Model.TransferTaskList, Model.ProjectId);
 }
 
 <div class="govuk-grid-row">
@@ -91,7 +46,7 @@
                                         Project kick-off
                                     </h3>
                                     <ul class="app-task-list__items">
-                                        @foreach (var task in projectKickoffTasks)
+                                        @foreach (var task in transferTasks.ProjectKickoffTasks)
                                         {
                                             <partial name="Shared/_TaskListItem" model="task" />
                                         }
@@ -102,7 +57,7 @@
                                         Clear and sign legal documents
                                     </h3>
                                     <ul class="app-task-list__items">
-                                        @foreach (var task in legalDocumentsTasks)
+                                        @foreach (var task in transferTasks.LegalDocumentsTasks)
                                         {
                                             <partial name="Shared/_TaskListItem" model="task" />
                                         }
@@ -113,7 +68,7 @@
                                         Get ready to transfer
                                     </h3>
                                     <ul class="app-task-list__items">
-                                        @foreach (var task in getReadyToTransferTasks)
+                                         @foreach (var task in transferTasks.ReadyToTransferTasks)
                                         {
                                             <partial name="Shared/_TaskListItem" model="task" />
                                         }
@@ -124,7 +79,7 @@
                                         After transfer
                                     </h3>
                                     <ul class="app-task-list__items">
-                                        @foreach (var task in afterTransferTasks)
+                                        @foreach (var task in transferTasks.AfterTransferTasks)
                                         {
                                             <partial name="Shared/_TaskListItem" model="task" />
                                         }

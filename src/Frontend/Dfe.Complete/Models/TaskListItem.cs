@@ -7,5 +7,5 @@ public sealed record TaskListItemViewModel(
     string Name,
     string Link,
     TaskListStatus Status,
-    int Order
+    int DisplayOrder
 );
