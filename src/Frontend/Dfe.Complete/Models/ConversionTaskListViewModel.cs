@@ -416,7 +416,6 @@ namespace Dfe.Complete.Models
                (!taskData.SupplementalFundingAgreementCleared.HasValue || taskData.SupplementalFundingAgreementCleared == false) &&
                (!taskData.SupplementalFundingAgreementSaved.HasValue || taskData.SupplementalFundingAgreementSaved == false) &&
                (!taskData.SupplementalFundingAgreementSigned.HasValue || taskData.SupplementalFundingAgreementSigned == false) &&
-               (!taskData.SupplementalFundingAgreementSent.HasValue || taskData.SupplementalFundingAgreementSent == false) &&
                (!taskData.SupplementalFundingAgreementSignedSecretaryState.HasValue || taskData.SupplementalFundingAgreementSignedSecretaryState == false))
             {
                 return TaskListStatus.NotStarted;
