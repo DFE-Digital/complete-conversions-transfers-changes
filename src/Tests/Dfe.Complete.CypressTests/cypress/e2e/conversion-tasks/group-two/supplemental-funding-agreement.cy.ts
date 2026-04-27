@@ -28,8 +28,6 @@ describe("Conversion tasks - Supplemental funding agreement", () => {
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Sent to team leader or deputy director")
-            .tick()
             .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .tick()
             .saveAndReturn();
@@ -39,9 +37,6 @@ describe("Conversion tasks - Supplemental funding agreement", () => {
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Sent to team leader or deputy director")
-            .isTicked()
-            .untick()
             .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .isTicked()
             .untick()
@@ -50,8 +45,6 @@ describe("Conversion tasks - Supplemental funding agreement", () => {
             .hasTaskStatusNotStarted("Supplemental funding agreement")
             .selectTask("Supplemental funding agreement");
         taskPage
-            .hasCheckboxLabel("Sent to team leader or deputy director")
-            .isUnticked()
             .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .isUnticked();
     });
