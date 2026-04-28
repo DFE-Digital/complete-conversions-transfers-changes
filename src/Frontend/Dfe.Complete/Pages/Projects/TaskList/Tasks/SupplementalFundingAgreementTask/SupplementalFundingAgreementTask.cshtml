@@ -49,34 +49,24 @@
                 </govuk-checkboxes-item>
                 @if (Model.Project.Type == ProjectType.Conversion)
                 {
+                    <govuk-checkboxes-item data-cy="draft-saved" id="draft-saved" asp-for="@Model.DraftSaved" value="true" name="draft-saved" checked="@Model.DraftSaved">
+                        <b>Draft saved in @(isConversion ? "school's " : "academy") SharePoint folder</b>
+                    </govuk-checkboxes-item> 
                     <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
                         <b>Signed by school or trust</b>
                     </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
+                        <b>Signed and sealed on behalf of SoS</b>
+                    </govuk-checkboxes-item> 
                 }
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
-                    <b>Saved in the @(isConversion ? "school's " : "academy") SharePoint folder</b>
+                    <b>@(isConversion ?
+                        "Final version saved in school's SharePoint folder" :
+                        "Saved in the academy SharePoint folder"
+                    )</b>
                 </govuk-checkboxes-item> 
             </govuk-checkboxes-fieldset> 
         </govuk-checkboxes> 
-        @if(Model.Type == ProjectType.Conversion)
-        {
-            <h2 class="govuk-heading-l">
-                Signed by the Secretary of State
-            </h2>
-            <div class="govuk-caption-m">
-                <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the supplemental funding agreement.</p> 
-                <p>Usually this is your team leader or the deputy director. </p>
-            </div>
-            <govuk-checkboxes name="options">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend>
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
-                        <b>Document signed on behalf of the Secretary of State</b>
-                    </govuk-checkboxes-item> 
-                </govuk-checkboxes-fieldset> 
-            </govuk-checkboxes>  
-        }
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form> 
 }
