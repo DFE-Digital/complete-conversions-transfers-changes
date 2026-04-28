@@ -443,7 +443,8 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
         [InlineData(true, true, true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, true, false, true, true, true, TaskListStatus.Completed)] // DraftSaved instead of Saved
+        [InlineData(true, true, true, true, false, true, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, true, false, TaskListStatus.InProgress)]
         [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
         public void SupplementalFundingAgreementTaskStatus_ShouldReturn_CorrectStatus(
             bool? received, bool? cleared, bool? saved, bool? signed, bool? draftSaved,
