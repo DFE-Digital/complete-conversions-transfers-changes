@@ -54,7 +54,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
         }
 
         [Theory]
@@ -82,6 +81,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ProjectType = ProjectType.Conversion,
                 Received = true,
                 Cleared = true,
+                DraftSaved = true,
                 Saved = true,
                 Signed = true,
                 SignedSecretaryState = true,

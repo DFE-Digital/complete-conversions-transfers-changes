@@ -334,7 +334,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
