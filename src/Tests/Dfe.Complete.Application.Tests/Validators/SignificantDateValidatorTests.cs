@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using System.ComponentModel.DataAnnotations;
 using Xunit;
 
 namespace Dfe.Complete.Application.Tests.Validators
@@ -32,7 +31,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(futureDate);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -45,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(pastDate);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
         }
 
@@ -61,7 +60,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(futureDate, existingProject);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -75,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(date, existingProject);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The new date cannot be the same as the current date. Check you have entered the correct date.", result.ErrorMessage);
         }
 
@@ -91,7 +90,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(pastDate, existingProject);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
         }
 
@@ -106,7 +105,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(nullDate, existingProject);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Theory]
@@ -124,7 +123,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(futureDate, existingProject);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Theory]
@@ -140,7 +139,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(pastDate);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
         }
 
@@ -161,7 +160,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -176,7 +175,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
         }
 
@@ -192,7 +191,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The new date cannot be the same as the current date. Check you have entered the correct date.", result.ErrorMessage);
         }
 
@@ -209,7 +208,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The significant date must be after the payroll deadline.", result.ErrorMessage);
         }
 
@@ -225,7 +224,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(date, existingProject, date);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The significant date must be after the payroll deadline.", result.ErrorMessage);
         }
 
@@ -242,7 +241,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, nullPayrollDate);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         #endregion
@@ -261,7 +260,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidatePayrollDeadline(payrollDate, project);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -276,7 +275,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidatePayrollDeadline(payrollDate, project);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The payroll deadline must be in the future.", result.ErrorMessage);
         }
 
@@ -292,7 +291,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidatePayrollDeadline(payrollDate, project);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.False(result.IsValid);
             Assert.Equal("The payroll deadline must be before the significant date.", result.ErrorMessage);
         }
 
@@ -308,7 +307,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidatePayrollDeadline(nullPayrollDate, project);
 
             // Assert
-            Assert.Equal(ValidationResult.Success, result);
+            Assert.True(result.IsValid);
         }
 
         #endregion

@@ -24,7 +24,7 @@ public class ConfirmResumeProjectModel(ISender sender, ILogger<ConfirmResumeProj
         await SetEstablishmentAsync();
         
         var validationResult = _dateValidator.ValidateSignificantDateInFuture(Project.SignificantDate);
-        if (validationResult != null)
+        if (!validationResult.IsValid)
         {
             TempData.SetValidationNotification($"You cannot resume this project because the {(Project.Type == ProjectType.Conversion ? "conversion" : "transfer")} date is in the past. Change it to a future date and try again.");
             return Redirect(string.Format(RouteConstants.ProjectTaskListValidationError, ProjectId));

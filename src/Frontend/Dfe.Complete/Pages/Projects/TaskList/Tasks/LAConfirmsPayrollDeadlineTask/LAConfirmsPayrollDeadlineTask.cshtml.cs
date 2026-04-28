@@ -41,7 +41,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTa
             if (PayrollDeadline.HasValue)
             {
                 var validationResult = _significantDateValidator.ValidatePayrollDeadline(PayrollDeadline, Project);
-                if (validationResult != null)
+                if (!validationResult.IsValid)
                 {
                     ModelState.AddModelError("payroll-deadline", validationResult.ErrorMessage!);
                 }

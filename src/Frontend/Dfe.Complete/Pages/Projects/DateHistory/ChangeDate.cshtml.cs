@@ -55,7 +55,7 @@ public class ChangeDateProjectModel(ISender sender, IErrorService errorService, 
 
         var validationResult = _dateValidator.ValidateSignificantDate(SignificantDate, Project, 
             Project.Type == ProjectType.Conversion ? ConversionTaskData.LAPayrollDeadline : null);
-        if (validationResult != null)
+        if (!validationResult.IsValid)
         {
             ModelState.AddModelError(nameof(SignificantDate), validationResult.ErrorMessage!);
         }
