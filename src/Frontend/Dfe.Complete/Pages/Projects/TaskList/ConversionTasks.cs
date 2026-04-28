@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Utils;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
+namespace Dfe.Complete.Pages.Projects.TaskList
 {
     public static class ConversionTasks
     {

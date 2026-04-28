@@ -1,4 +1,4 @@
-﻿namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
+﻿namespace Dfe.Complete.Pages.Projects.TaskList
 {
     public class TaskLinkBuilder(string routeConstraints, string projectId)
     {

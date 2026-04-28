@@ -3,7 +3,6 @@
     using Dfe.Complete.Constants;
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Models;
-    using Dfe.Complete.Pages.Projects.TaskList.Tasks;
     using Dfe.Complete.Utils;
 
     public static class TransferTasks

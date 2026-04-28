@@ -1,4 +1,4 @@
-using Dfe.Complete.Pages.Projects.TaskList.Tasks;
+using Dfe.Complete.Pages.Projects.TaskList;
 using FluentAssertions;
 
 namespace Dfe.Complete.Tests.Pages.Projects.TaskList.Tasks;
