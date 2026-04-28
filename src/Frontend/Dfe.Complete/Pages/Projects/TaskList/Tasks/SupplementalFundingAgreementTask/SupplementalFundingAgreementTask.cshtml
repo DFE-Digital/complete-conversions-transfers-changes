@@ -29,7 +29,6 @@
         <govuk-details-text>
             <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion?"a school":"an academy") or trust, and remove or add optional clauses, are expected, otherwise we do not expect any deviations to the model.</p>
             <p>You'll need to <external-link class="govuk-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit (opens in new tab)</external-link> about changes to clause text.</p>
-            <p>We only accept new supplemental funding agreements that use the 2020 edition of the model documents.</p>
         </govuk-details-text>
     </govuk-details>
 
@@ -46,6 +45,9 @@
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
                     <b>Cleared</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>If the school has applied for and been approved for a SACRE exemption, check the relevant wording has not been removed from the mainstream model document as per <external-link href="@_configuration["ExternalLinks:SACREGuidance"]">guidance</external-link></p>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 @if (Model.Project.Type == ProjectType.Conversion)
                 {
@@ -57,6 +59,9 @@
                     </govuk-checkboxes-item>
                     <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
                         <b>Signed and sealed on behalf of SoS</b>
+                        <govuk-checkboxes-item-hint>
+                            <p>The Secretary of State, or somebody with the <external-link href="@_configuration["ExternalLinks:SOSAuthorisedSignatories"]">authority to act on their behalf</external-link> must sign the supplemental funding agreement.</p>
+                        </govuk-checkboxes-item-hint>
                     </govuk-checkboxes-item> 
                 }
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
