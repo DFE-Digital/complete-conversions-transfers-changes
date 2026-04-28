@@ -147,7 +147,7 @@ public class ExternalLinkTagHelperTest
         tagHelper.Process(context, output);
 
         // Assert
-        Assert.Equal(customClass, output.Attributes["class"].Value);
+        Assert.Equal("govuk-link custom-link-class", output.Attributes["class"].Value);
     }
 
     [Fact]
