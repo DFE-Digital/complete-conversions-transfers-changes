@@ -49,7 +49,7 @@
                 </govuk-checkboxes-item>
                 @if (Model.Project.Type == ProjectType.Conversion)
                 {
-                    <govuk-checkboxes-item data-cy="draft-saved" id="draft-saved" asp-for="@Model.DraftSaved" value="true" name="draft-saved" checked="@Model.DraftSaved">
+                    <govuk-checkboxes-item data-cy="draft_saved" id="draft_saved" asp-for="@Model.DraftSaved" value="true" name="draft_saved" checked="@Model.DraftSaved">
                         <b>Draft saved in @(isConversion ? "school's " : "academy") SharePoint folder</b>
                     </govuk-checkboxes-item> 
                     <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
