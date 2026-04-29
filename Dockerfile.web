@@ -1,5 +1,5 @@
 # Set the major version of dotnet
-ARG DOTNET_VERSION=8.0
+ARG DOTNET_VERSION=10.0
 # Set the major version of nodejs
 ARG NODEJS_VERSION_MAJOR=22
 
@@ -32,6 +32,7 @@ COPY src/Tests/${PROJECT_NAME}.Domain.Tests/${PROJECT_NAME}.Domain.Tests.csproj 
 COPY src/Tests/${PROJECT_NAME}.Tests.Common/${PROJECT_NAME}.Tests.Common.csproj src/Tests/${PROJECT_NAME}.Tests.Common/
 COPY src/Tests/${PROJECT_NAME}.Tests/${PROJECT_NAME}.Tests.csproj src/Tests/${PROJECT_NAME}.Tests/
 COPY src/Tests/${PROJECT_NAME}.UserContext.Tests/${PROJECT_NAME}.UserContext.Tests.csproj src/Tests/${PROJECT_NAME}.UserContext.Tests/
+COPY src/Tests/${PROJECT_NAME}.Utils.Tests/${PROJECT_NAME}.Utils.Tests.csproj src/Tests/${PROJECT_NAME}.Utils.Tests/
 
 # Copy solution and props files
 COPY ./${PROJECT_NAME}.sln .
@@ -39,7 +40,8 @@ COPY ./Directory.Build.props .
 
 # Mount GitHub Token and restore
 RUN --mount=type=secret,id=github_token dotnet nuget add source --username USERNAME --password $(cat /run/secrets/github_token) --store-password-in-clear-text --name github "https://nuget.pkg.github.com/DFE-Digital/index.json" && \
-    dotnet restore src/Frontend/${PROJECT_NAME}/${PROJECT_NAME}.csproj
+    dotnet restore src/Frontend/${PROJECT_NAME}/${PROJECT_NAME}.csproj && \
+    dotnet restore src/Api/${PROJECT_NAME}.Api/${PROJECT_NAME}.Api.csproj
 
 # Copy remaining source code
 COPY ./src/ /build/src/
@@ -48,6 +50,9 @@ COPY ./src/ /build/src/
 WORKDIR /build/src/Frontend/${PROJECT_NAME}
 RUN dotnet build --no-restore -c Release && \
     dotnet publish --no-build -c Release -o /app
+
+WORKDIR /build/src/Api/${PROJECT_NAME}.Api
+RUN dotnet build --no-restore -c Release
 
 # Copy entrypoint script (main container)
 COPY ./script/docker-entrypoint.sh /app/docker-entrypoint.sh
@@ -61,7 +66,7 @@ WORKDIR /build
 ENV PATH=$PATH:/root/.dotnet/tools
 ENV DOTNET_ROOT=/usr/share/dotnet
 
-RUN dotnet tool install --global dotnet-ef --version 8.*
+RUN dotnet tool install --global dotnet-ef --version 10.*
 
 RUN mkdir /sql
 
@@ -71,6 +76,7 @@ RUN dotnet ef migrations bundle -r linux-x64 \
     --context CompleteContext \
     --configuration Release \
     --self-contained \
+    --no-build \
     --output /sql/migratedb
 
 # ============================================================
