@@ -2850,6 +2850,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/TupeConsultation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the TUPE Consultation task data for conversion project.",
+        "operationId": "TasksData_UpdateTupeConsultationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTupeConsultationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion's TUPE Consultation task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RedactAndSendDocuments": {
       "patch": {
         "tags": [
@@ -7141,6 +7174,7 @@
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
           "PostDecisionActions",
+          "TupeConsultation",
           "ConfirmDBSChecks"
         ],
         "x-enum-descriptions": [
@@ -7250,6 +7284,7 @@
           "ConfirmStatutoryConsultation",
           "NurseryArrangement",
           "PostDecisionActions",
+          "TupeConsultation",
           "ConfirmDBSChecks"
         ]
       },
@@ -8880,6 +8915,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "tupeConsultationCompleted": {
+            "type": "boolean",
+            "nullable": true
+          },
           "oneHundredAndTwentyFiveYearLeaseReceive": {
             "type": "boolean",
             "nullable": true
@@ -9422,6 +9461,27 @@
             "nullable": true
           },
           "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateTupeConsultationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "completed": {
             "type": "boolean",
             "nullable": true
           }

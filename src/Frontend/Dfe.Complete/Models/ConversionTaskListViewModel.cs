@@ -13,6 +13,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus CompleteNotificationOfChange { get; set; }
         public TaskListStatus ProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmAndProcessSponsoredSupportGrant { get; set; }
+        public TaskListStatus TupeConsultation { get; set; }
         public TaskListStatus ConfirmAcademyName { get; set; }
         public TaskListStatus ConfirmHeadTeacherDetails { get; set; }
         public TaskListStatus ConfirmChairOfGovernorsDetails { get; set; }
@@ -56,6 +57,7 @@ namespace Dfe.Complete.Models
                 CompleteNotificationOfChange = CompleteNotificationOfChangeTaskStatus(taskData),
                 ProcessConversionSupportGrant = ProcessConversionSupportGrantTaskStatus(taskData),
                 ConfirmAndProcessSponsoredSupportGrant = ConfirmAndProcessSponsoredSupportGrantTaskStatus(taskData),
+                TupeConsultation = TupeConsultationTaskStatus(taskData),
                 ConfirmAcademyName = ConfirmAcademyNameTaskStatus(taskData),
                 ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(keyContacts),
                 ConfirmChairOfGovernorsDetails = ConfirmChairOfGovernorsDetailsTaskStatus(keyContacts),
@@ -581,6 +583,18 @@ namespace Dfe.Complete.Models
                         SponsoredSupportGrantHasVendorAccount: true
                     } &&
                     !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus TupeConsultationTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (!taskData.TupeConsultationCompleted.HasValue || taskData.TupeConsultationCompleted == false)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return taskData.TupeConsultationCompleted == true
                 ? TaskListStatus.Completed
                 : TaskListStatus.InProgress;
         }

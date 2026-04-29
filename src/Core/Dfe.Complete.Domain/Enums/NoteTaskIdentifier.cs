@@ -201,10 +201,6 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Redact and send documents")]
     RedactAndSend = 49,
 
-    [Description("confirm_dbs_checks")]
-    [DisplayDescription("DBS checks")]
-    ConfirmDBSChecks = 56,
-
     [Description("confirm_statutory_consultation")]
     [DisplayDescription("Confirm statutory consultation is complete and any issues are being managed")]
     ConfirmStatutoryConsultation = 50,
@@ -216,4 +212,12 @@ public enum NoteTaskIdentifier
     [Description("post_decision_actions")]
     [DisplayDescription("Post decision actions")]
     PostDecisionActions = 52,
+    
+    [Description("tupe_consultation")]
+    [DisplayDescription("TUPE Consultation")]
+    TupeConsultation = 53,
+    
+    [Description("confirm_dbs_checks")]
+    [DisplayDescription("DBS checks")]
+    ConfirmDBSChecks = 56,
 }
