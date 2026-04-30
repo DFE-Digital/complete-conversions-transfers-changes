@@ -20,16 +20,7 @@ describe("Conversion tasks - Post decision actions", () => {
     });
 
     it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Application uploaded and verified")
-            .expandGuidance("What to check for")
-            .hasGuidance("You should check existing project documents, including:")
-            .hasCheckboxLabel("Academy Order uploaded and verified")
-            .expandGuidance("What to check for")
-            .hasGuidance("application to convert")
-            .hasCheckboxLabel("LA proforma uploaded and verified")
-            .expandGuidance("What to check for")
-            .hasGuidance("academy order");
+        taskPage.clickDropdown("What to check for").hasDropdownContent("application to convert");
     });
 
     it("should submit the form and persist selections", () => {
@@ -42,9 +33,7 @@ describe("Conversion tasks - Post decision actions", () => {
             .hasCheckboxLabel("LA proforma uploaded and verified")
             .tick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusCompleted("Post decision actions")
-            .selectTask("Post decision actions");
+        taskListPage.hasTaskStatusCompleted("Post decision actions").selectTask("Post decision actions");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
@@ -55,9 +44,7 @@ describe("Conversion tasks - Post decision actions", () => {
             .hasCheckboxLabel("LA proforma uploaded and verified")
             .untick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusNotStarted("Post decision actions")
-            .selectTask("Post decision actions");
+        taskListPage.hasTaskStatusNotStarted("Post decision actions").selectTask("Post decision actions");
 
         Logger.log("Select partial checkboxes and save");
         taskPage
@@ -66,8 +53,7 @@ describe("Conversion tasks - Post decision actions", () => {
             .hasCheckboxLabel("Academy Order uploaded and verified")
             .tick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusInProgress("Post decision actions");
+        taskListPage.hasTaskStatusInProgress("Post decision actions");
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
