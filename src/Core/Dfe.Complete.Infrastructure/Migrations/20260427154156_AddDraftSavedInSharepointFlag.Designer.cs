@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260427154156_AddDraftSavedInSharepointFlag")]
+    partial class AddDraftSavedInSharepointFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,10 +318,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("HandoverReview")
                         .HasColumnType("bit")
                         .HasColumnName("handover_review");
-
-                    b.Property<DateOnly?>("LAPayrollDeadline")
-                        .HasColumnType("date")
-                        .HasColumnName("la_payroll_deadline");
 
                     b.Property<bool?>("LandQuestionnaireCleared")
                         .HasColumnType("bit")

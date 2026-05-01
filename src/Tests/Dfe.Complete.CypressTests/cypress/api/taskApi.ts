@@ -124,8 +124,8 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     projectType?: ProjectType;
     received?: boolean;
     cleared?: boolean;
-    sent?: boolean;
     saved?: boolean;
+    draftSaved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
 }
