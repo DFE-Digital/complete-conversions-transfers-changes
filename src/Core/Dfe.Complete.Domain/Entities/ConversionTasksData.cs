@@ -246,6 +246,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
 
+    public DateOnly? LAPayrollDeadline { get; set; }
+
     public string? RiskProtectionArrangementReason { get; set; }
 
     public bool? ArticlesOfAssociationSent { get; set; }

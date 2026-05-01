@@ -73,6 +73,20 @@ export class TaskPage extends BasePage {
         return this;
     }
 
+    // date validation
+    public hasLinkedValidationErrorForField(fieldId: string, message: string): this {
+        cy.get(`.govuk-error-summary a[href="#${fieldId}"]`)
+            .contains(message)
+            .should("exist")
+            .invoke("attr", "href")
+            .then((href: string | undefined) => {
+                cy.get(href as string).should("exist");
+                cy.get((href as string) + "-error").should("contain.text", message);
+            });
+
+        return this;
+    }
+
     // checkbox validation
 
     expandGuidance(summaryText: string) {

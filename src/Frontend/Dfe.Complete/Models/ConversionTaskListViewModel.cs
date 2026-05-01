@@ -20,7 +20,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmIncomingTrustCeoDetails { get; set; }
         public TaskListStatus ConfirmMainContact { get; set; }
         public TaskListStatus ConfirmProposedCapacityOfTheAcademy { get; set; }
-
+        public TaskListStatus LAConfirmsPayrollDeadline { get; set; }
         public TaskListStatus LandQuestionnaire { get; set; }
         public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
@@ -66,6 +66,7 @@ namespace Dfe.Complete.Models
                 ChurchSupplementalAgreement = ChurchSupplementalAgreementTaskStatus(taskData),
                 ConfirmMainContact = ConfirmMainContactTaskStatus(project),
                 ConfirmProposedCapacityOfTheAcademy = ConfirmProposedCapacityOfTheAcademyTaskStatus(taskData),
+                LAConfirmsPayrollDeadline = LAConfirmsPayrollDeadlineTaskStatus(taskData),
                 LandQuestionnaire = LandQuestionnaireTaskStatus(taskData),
                 LandRegistry = LandRegistryTaskStatus(taskData),
                 SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
@@ -477,6 +478,16 @@ namespace Dfe.Complete.Models
             return (!string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyReceptionToSixYears) &&
                  !string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademySevenToElevenYears) &&
                  !string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus LAConfirmsPayrollDeadlineTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (!taskData.LAPayrollDeadline.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.LAPayrollDeadline.HasValue)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
