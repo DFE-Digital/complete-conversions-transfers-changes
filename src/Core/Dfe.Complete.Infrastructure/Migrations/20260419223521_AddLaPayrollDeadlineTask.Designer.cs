@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260419223521_AddLaPayrollDeadlineTask")]
+    partial class AddLaPayrollDeadlineTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,10 +218,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("complete_notification_of_change_tell_local_authority");
 
-                    b.Property<bool?>("ConfirmDBSChecks")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_dbs_checks");
-
                     b.Property<DateOnly?>("ConfirmDateAcademyOpenedDateOpened")
                         .HasColumnType("date")
                         .HasColumnName("confirm_date_academy_opened_date_opened");
@@ -376,10 +375,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("master_funding_agreement_signed_secretary_state");
 
-                    b.Property<int?>("NurseryArrangement")
-                        .HasColumnType("int")
-                        .HasColumnName("nursery_arrangement");
-
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_email");
@@ -395,18 +390,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseSaveLease")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
-
-                    b.Property<bool?>("PostDecisionActionsAcademyOrderUploaded")
-                        .HasColumnType("bit")
-                        .HasColumnName("post_decision_actions_academy_order_uploaded");
-
-                    b.Property<bool?>("PostDecisionActionsApplicationUploaded")
-                        .HasColumnType("bit")
-                        .HasColumnName("post_decision_actions_application_uploaded");
-
-                    b.Property<bool?>("PostDecisionActionsLaProformaUploaded")
-                        .HasColumnType("bit")
-                        .HasColumnName("post_decision_actions_la_proforma_uploaded");
 
                     b.Property<bool?>("ProposedCapacityOfTheAcademyNotApplicable")
                         .HasColumnType("bit")
@@ -534,14 +517,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("stakeholder_kick_off_setup_meeting");
 
-                    b.Property<bool?>("StatutoryConsultationComplete")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_complete  ");
-
-                    b.Property<bool?>("StatutoryConsultationNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("statutory_consultation_not_applicable");
-
                     b.Property<bool?>("SubleasesCleared")
                         .HasColumnType("bit")
                         .HasColumnName("subleases_cleared");
@@ -633,10 +608,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("TrustModificationOrderSentLegal")
                         .HasColumnType("bit")
                         .HasColumnName("trust_modification_order_sent_legal");
-
-                    b.Property<bool?>("TupeConsultationCompleted")
-                        .HasColumnType("bit")
-                        .HasColumnName("tupe_consultation_completed");
 
                     b.Property<bool?>("UpdateEsfaUpdate")
                         .HasColumnType("bit")

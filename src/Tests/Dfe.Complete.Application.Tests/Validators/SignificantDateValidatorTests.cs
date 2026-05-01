@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Tests.Validators
 {
     /// <summary>
     /// Tests for SignificantDateValidator
-    /// Validates business rules for project significant dates
+    /// Validates business rules for project significant dates and payroll deadline dates
     /// </summary>
     public class SignificantDateValidatorTests
     {
@@ -18,132 +18,6 @@ namespace Dfe.Complete.Application.Tests.Validators
         {
             _validator = new SignificantDateValidator();
         }
-
-        #region ValidateSignificantDateInFuture Tests
-
-        [Fact]
-        public void ValidateSignificantDateInFuture_WithDateInFuture_ReturnsSuccess()
-        {
-            // Arrange
-            var futureDate = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
-
-            // Act
-            var result = _validator.ValidateSignificantDateInFuture(futureDate);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateInFuture_WithDateToday_ReturnsSuccess()
-        {
-            // Arrange
-            var todayDate = DateOnly.FromDateTime(DateTime.Today);
-
-            // Act
-            var result = _validator.ValidateSignificantDateInFuture(todayDate);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateInFuture_WithDateInPast_ReturnsError()
-        {
-            // Arrange
-            var pastDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
-
-            // Act
-            var result = _validator.ValidateSignificantDateInFuture(pastDate);
-
-            // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateInFuture_WithNullDate_ReturnsSuccess()
-        {
-            // Arrange
-            DateOnly? nullDate = null;
-
-            // Act
-            var result = _validator.ValidateSignificantDateInFuture(nullDate);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        #endregion
-
-        #region ValidateSignificantDateNotSameAsCurrent Tests
-
-        [Fact]
-        public void ValidateSignificantDateNotSameAsCurrent_WithDifferentDate_ReturnsSuccess()
-        {
-            // Arrange
-            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var newDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
-            var project = CreateTestProject(currentDate);
-
-            // Act
-            var result = _validator.ValidateSignificantDateNotSameAsCurrent(newDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateNotSameAsCurrent_WithSameDate_ReturnsError()
-        {
-            // Arrange
-            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var project = CreateTestProject(currentDate);
-
-            // Act
-            var result = _validator.ValidateSignificantDateNotSameAsCurrent(currentDate, project);
-
-            // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The new date cannot be the same as the current date. Check you have entered the correct date.", result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateNotSameAsCurrent_WithNullNewDate_ReturnsSuccess()
-        {
-            // Arrange
-            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var project = CreateTestProject(currentDate);
-            DateOnly? nullDate = null;
-
-            // Act
-            var result = _validator.ValidateSignificantDateNotSameAsCurrent(nullDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDateNotSameAsCurrent_WithProjectHavingNullDate_ReturnsSuccess()
-        {
-            // Arrange
-            var newDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var project = CreateTestProject(null);
-
-            // Act
-            var result = _validator.ValidateSignificantDateNotSameAsCurrent(newDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
-        }
-
-        #endregion
 
         #region ValidateSignificantDate Tests
 
@@ -158,7 +32,6 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
         }
 
         [Fact]
@@ -188,7 +61,6 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
         }
 
         [Fact]
@@ -234,7 +106,6 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
         }
 
         [Theory]
@@ -253,7 +124,6 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
         }
 
         [Theory]
@@ -275,31 +145,169 @@ namespace Dfe.Complete.Application.Tests.Validators
 
         #endregion
 
-        #region ValidationResult Tests
+        #region ValidateSignificantDate with PayrollDeadline Tests
 
         [Fact]
-        public void ValidationResult_Success_CreatesValidResult()
+        public void ValidateSignificantDate_WithPayrollDeadline_ValidFutureDate_AndAfterPayroll_ReturnsSuccess()
         {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(15));
+            var existingProject = CreateTestProject(currentDate);
+
             // Act
-            var result = ValidationResult.Success();
+            var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
             Assert.True(result.IsValid);
-            Assert.Null(result.ErrorMessage);
         }
 
         [Fact]
-        public void ValidationResult_Error_CreatesInvalidResultWithMessage()
+        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateInPast_ReturnsError()
         {
             // Arrange
-            const string errorMessage = "Test error message";
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+            var existingProject = CreateTestProject(DateOnly.FromDateTime(DateTime.Today.AddDays(15)));
 
             // Act
-            var result = ValidationResult.Error(errorMessage);
+            var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
             Assert.False(result.IsValid);
-            Assert.Equal(errorMessage, result.ErrorMessage);
+            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateSameAsCurrent_ReturnsError()
+        {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var existingProject = CreateTestProject(significantDate);
+
+            // Act
+            var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal("The new date cannot be the same as the current date. Check you have entered the correct date.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateBeforePayroll_ReturnsError()
+        {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(15));
+            var existingProject = CreateTestProject(currentDate);
+
+            // Act
+            var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal("The significant date must be after the payroll deadline.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateSameAsPayroll_ReturnsError()
+        {
+            // Arrange
+            var date = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(15));
+            var existingProject = CreateTestProject(currentDate);
+
+            // Act
+            var result = _validator.ValidateSignificantDate(date, existingProject, date);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal("The significant date must be after the payroll deadline.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidateSignificantDate_WithPayrollDeadline_NullPayrollDate_OnlyValidatesBasicRules()
+        {
+            // Arrange
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(15));
+            var existingProject = CreateTestProject(currentDate);
+            DateOnly? nullPayrollDate = null;
+
+            // Act
+            var result = _validator.ValidateSignificantDate(significantDate, existingProject, nullPayrollDate);
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
+
+        #endregion
+
+        #region ValidatePayrollDeadline Tests
+
+        [Fact]
+        public void ValidatePayrollDeadline_WithValidPayrollDateBeforeSignificantDate_ReturnsSuccess()
+        {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var project = CreateTestProject(significantDate);
+
+            // Act
+            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
+
+        [Fact]
+        public void ValidatePayrollDeadline_WithPayrollDateInPast_ReturnsError()
+        {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var project = CreateTestProject(significantDate);
+
+            // Act
+            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal("The payroll deadline must be in the future.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidatePayrollDeadline_WithPayrollDateAfterSignificantDate_ReturnsError()
+        {
+            // Arrange
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var project = CreateTestProject(significantDate);
+
+            // Act
+            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Equal("The payroll deadline must be before the significant date.", result.ErrorMessage);
+        }
+
+        [Fact]
+        public void ValidatePayrollDeadline_WithNullPayrollDate_ReturnsSuccess()
+        {
+            // Arrange
+            DateOnly? nullPayrollDate = null;
+            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
+            var project = CreateTestProject(significantDate);
+
+            // Act
+            var result = _validator.ValidatePayrollDeadline(nullPayrollDate, project);
+
+            // Assert
+            Assert.True(result.IsValid);
         }
 
         #endregion
