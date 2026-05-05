@@ -40,9 +40,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 15),
                 new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 16),
                 new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 17),
-                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 18)
+                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 18),
+                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 19)
             };
-
 
             if (conversionTaskList.ShowProcessConversionSupportGrant)
             {
