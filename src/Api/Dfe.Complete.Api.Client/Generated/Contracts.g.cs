@@ -5956,11 +5956,11 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SupplementalFundingAgreementSigned { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementDraftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementDraftSaved { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SupplementalFundingAgreementSaved { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? SupplementalFundingAgreementSent { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; } = default!;
@@ -6563,11 +6563,11 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Cleared { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Sent { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("draftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DraftSaved { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Signed { get; set; } = default!;
