@@ -65,7 +65,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? SupplementalFundingAgreementSaved { get; set; }
 
+    // 277812 - field preserved for historical data but no longer used in the application
     public bool? SupplementalFundingAgreementSent { get; set; }
+
+    public bool? SupplementalFundingAgreementDraftSaved { get; set; }
 
     public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
@@ -242,6 +245,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? ReceiveGrantPaymentCertificateCheckCertificate { get; set; }
 
     public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
+
+    public DateOnly? LAPayrollDeadline { get; set; }
 
     public string? RiskProtectionArrangementReason { get; set; }
 

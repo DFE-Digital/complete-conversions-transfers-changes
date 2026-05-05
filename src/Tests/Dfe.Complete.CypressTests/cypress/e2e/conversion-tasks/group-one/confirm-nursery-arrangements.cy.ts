@@ -1,63 +1,64 @@
 import { Logger } from "cypress/common/logger";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
-import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
+import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const taskPath = "confirm_nursery_arrangement";
 
 describe("Conversion tasks - Confirm nursery arrangements", () => {
-    let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
+    let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
-        ConversionTasksGroupTwoSetup.setupProjects();
-        setup = ConversionTasksGroupTwoSetup.getSetup();
+        ConversionTasksGroupOneSetup.setupProjects();
+        setup = ConversionTasksGroupOneSetup.getSetup();
     });
 
     beforeEach(() => {
-        ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
+        ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
     it("for initial status should have all checkboxes unticked", () => {
-
-        const checkboxLabels = ["Not applicable", "A direct provision", "Subsidiary Company of the Trust", "An independent provider", "A children's centre"];
-        checkboxLabels.forEach(label => {
-            taskPage
-                .hasCheckboxLabel(label)
-                .isUnticked();
+        const checkboxLabels = [
+            "Not applicable",
+            "A direct provision",
+            "Subsidiary Company of the Trust",
+            "An independent provider",
+            "A children's centre",
+        ];
+        checkboxLabels.forEach((label) => {
+            taskPage.hasCheckboxLabel(label).isUnticked();
         });
     });
 
     it("for not applicable it should submit the form and persist selection", () => {
-
         Logger.log(`Select Not applicable`);
-        taskPage
-            .hasCheckboxLabel("Not applicable")
-            .tick()
-            .saveAndReturn();
-        taskListPage.hasTaskStatusNotApplicable("Confirm academy nursery arrangement").selectTask("Confirm academy nursery arrangement");
+        taskPage.hasCheckboxLabel("Not applicable").tick().saveAndReturn();
+        taskListPage
+            .hasTaskStatusNotApplicable("Confirm academy nursery arrangement")
+            .selectTask("Confirm academy nursery arrangement");
 
         Logger.log(`Confirm the input for Not applicable has persisted`);
-        taskPage
-            .hasCheckboxLabel("Not applicable")
-            .isTicked();
+        taskPage.hasCheckboxLabel("Not applicable").isTicked();
     });
 
     it("should submit the form and persist selection", () => {
-        const checkboxLabels = ["A direct provision", "Subsidiary Company of the Trust", "An independent provider", "A children's centre"];
+        const checkboxLabels = [
+            "A direct provision",
+            "Subsidiary Company of the Trust",
+            "An independent provider",
+            "A children's centre",
+        ];
 
-        checkboxLabels.forEach(label => {
+        checkboxLabels.forEach((label) => {
             Logger.log(`Select ${label}`);
-            taskPage
-                .hasCheckboxLabel(label)
-                .tick()
-                .saveAndReturn();
-            taskListPage.hasTaskStatusCompleted("Confirm academy nursery arrangement").selectTask("Confirm academy nursery arrangement");
+            taskPage.hasCheckboxLabel(label).tick().saveAndReturn();
+            taskListPage
+                .hasTaskStatusCompleted("Confirm academy nursery arrangement")
+                .selectTask("Confirm academy nursery arrangement");
 
             Logger.log(`Confirm the input for ${label} has persisted`);
-            taskPage
-                .hasCheckboxLabel(label)
-                .isTicked();
+            taskPage.hasCheckboxLabel(label).isTicked();
         });
     });
 

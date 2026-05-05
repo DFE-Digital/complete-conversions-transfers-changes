@@ -551,6 +551,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.LandRegistryCleared).HasColumnName("land_registry_cleared");
         projectConfiguration.Property(e => e.LandRegistryReceived).HasColumnName("land_registry_received");
         projectConfiguration.Property(e => e.LandRegistrySaved).HasColumnName("land_registry_saved");
+        projectConfiguration.Property(e => e.LAPayrollDeadline).HasColumnName("la_payroll_deadline");
         projectConfiguration.Property(e => e.MasterFundingAgreementCleared).HasColumnName("master_funding_agreement_cleared");
         projectConfiguration.Property(e => e.MasterFundingAgreementNotApplicable).HasColumnName("master_funding_agreement_not_applicable");
         projectConfiguration.Property(e => e.MasterFundingAgreementReceived).HasColumnName("master_funding_agreement_received");
@@ -624,6 +625,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.SupplementalFundingAgreementCleared).HasColumnName("supplemental_funding_agreement_cleared");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementReceived).HasColumnName("supplemental_funding_agreement_received");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSaved).HasColumnName("supplemental_funding_agreement_saved");
+        projectConfiguration.Property(e => e.SupplementalFundingAgreementDraftSaved).HasColumnName("supplemental_funding_agreement_draft_saved");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSent).HasColumnName("supplemental_funding_agreement_sent");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSigned).HasColumnName("supplemental_funding_agreement_signed");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSignedSecretaryState).HasColumnName("supplemental_funding_agreement_signed_secretary_state");

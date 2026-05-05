@@ -282,9 +282,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.ProjectType = ProjectType.Conversion;
             command.Cleared = true;
             command.Saved = false;
+            command.DraftSaved = true;
             command.Received = true;
             command.Signed = true;
-            command.Sent = false;
             command.SignedSecretaryState = true;
 
             // Act
@@ -297,7 +297,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.False(existingTaskData.SupplementalFundingAgreementSent);
+            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
             Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
             Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
         }
