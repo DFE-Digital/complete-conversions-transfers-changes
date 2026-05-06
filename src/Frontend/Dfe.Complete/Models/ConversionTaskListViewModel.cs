@@ -417,17 +417,16 @@ namespace Dfe.Complete.Models
                (!taskData.SupplementalFundingAgreementCleared.HasValue || taskData.SupplementalFundingAgreementCleared == false) &&
                (!taskData.SupplementalFundingAgreementSaved.HasValue || taskData.SupplementalFundingAgreementSaved == false) &&
                (!taskData.SupplementalFundingAgreementSigned.HasValue || taskData.SupplementalFundingAgreementSigned == false) &&
+               (!taskData.SupplementalFundingAgreementSent.HasValue || taskData.SupplementalFundingAgreementSent == false) &&
                (!taskData.SupplementalFundingAgreementSignedSecretaryState.HasValue || taskData.SupplementalFundingAgreementSignedSecretaryState == false))
             {
-                return !taskData.SupplementalFundingAgreementDraftSaved.HasValue || taskData.SupplementalFundingAgreementDraftSaved == false
-                ? TaskListStatus.NotStarted
-                : TaskListStatus.InProgress;
+                return TaskListStatus.NotStarted;
             }
-
             return (taskData.SupplementalFundingAgreementCleared == true &&
                taskData.SupplementalFundingAgreementReceived == true &&
                taskData.SupplementalFundingAgreementSaved == true &&
                taskData.SupplementalFundingAgreementSigned == true &&
+               taskData.SupplementalFundingAgreementSent == true &&
                taskData.SupplementalFundingAgreementSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }

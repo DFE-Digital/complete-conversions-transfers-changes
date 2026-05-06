@@ -578,10 +578,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("supplemental_funding_agreement_cleared");
 
-                    b.Property<bool?>("SupplementalFundingAgreementDraftSaved")
-                        .HasColumnType("bit")
-                        .HasColumnName("supplemental_funding_agreement_draft_saved");
-
                     b.Property<bool?>("SupplementalFundingAgreementReceived")
                         .HasColumnType("bit")
                         .HasColumnName("supplemental_funding_agreement_received");
