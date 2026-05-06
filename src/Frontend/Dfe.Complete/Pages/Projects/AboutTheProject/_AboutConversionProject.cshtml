@@ -96,7 +96,7 @@
                         <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>
                             @Model.Establishment.Name<br />
-                            <external-link href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn">View the school's information in GIAS (opens in new tab)</external-link>
+                            <external-link class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn">View the school's information in GIAS (opens in new tab)</external-link>
                         </govuk-summary-list-row-value>
                     </govuk-summary-list-row>
                     <govuk-summary-list-row>
@@ -147,7 +147,7 @@
                     <govuk-summary-list-row>
                         <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>
-                            <external-link href="@Model.Project.EstablishmentSharepointLink">View the school SharePoint folder (opens in new tab)</external-link>
+                            <external-link class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">View the school SharePoint folder (opens in new tab)</external-link>
                         </govuk-summary-list-row-value>
                         @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
@@ -173,7 +173,7 @@
                             <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
                                 @Model.Academy.Name<br />
-                                <external-link href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Academy.Urn?.Value">View the school's information in GIAS (opens in new tab)</external-link>
+                                <external-link class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Academy.Urn?.Value">View the school's information in GIAS (opens in new tab)</external-link>
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
@@ -209,7 +209,7 @@
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                <external-link href="@Model.Project.EstablishmentSharepointLink">View the academy SharePoint folder (opens in new tab)</external-link>
+                                <external-link class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">View the academy SharePoint folder (opens in new tab)</external-link>
                             </govuk-summary-list-row-value>
                             @if(Model.UserHasEditAccess()) {
                                 <govuk-summary-list-row-actions>

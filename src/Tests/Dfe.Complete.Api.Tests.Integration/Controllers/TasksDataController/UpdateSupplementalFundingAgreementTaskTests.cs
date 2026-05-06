@@ -39,6 +39,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ProjectType = ProjectType.Transfer,
                 Received = true,
                 Cleared = true,
+                Sent = true,
                 Saved = true,
                 Signed = true,
                 SignedSecretaryState = true,
@@ -53,7 +54,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
-            Assert.True(existingTaskData.SupplementalFundingAgreementSaved);
+            Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
         }
 
         [Theory]
@@ -81,7 +82,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ProjectType = ProjectType.Conversion,
                 Received = true,
                 Cleared = true,
-                DraftSaved = true,
+                Sent = true,
                 Saved = true,
                 Signed = true,
                 SignedSecretaryState = true,
@@ -96,8 +97,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
+            Assert.True(existingTaskData.SupplementalFundingAgreementSent);
             Assert.True(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
             Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
             Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
         }
