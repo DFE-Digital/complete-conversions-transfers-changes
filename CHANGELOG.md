@@ -21,7 +21,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ---
 
-## [1.45.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-07.15146) - 2026-05-07
+## [1.45.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-07.1514) - 2026-05-07
 
 ### Added
 - [266928](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266928) - new "Post decision actions" task for conversion projects to verify application forms, academy orders and LA proformas have been uploaded to Sharepoint
