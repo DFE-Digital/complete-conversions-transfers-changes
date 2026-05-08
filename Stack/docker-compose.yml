@@ -13,6 +13,21 @@ services:
       interval: 2s
       retries: 10
     restart: always
+    
+   completeDb.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest@sha256:46e454273ee7f971f804cfc367b2f0aeaafd258f65b77d34ac6acca85fcb8bc9
+    volumes:
+      - ./init:/initdb.d
+    networks:
+      - local-dev
+    depends_on:
+      complete.sqldb:
+        condition: service_healthy
+    command: >
+      bash -c '
+      /opt/mssql-tools18/bin/sqlcmd -S complete.sqldb -U sa -P ${DATABASE_PASSWORD} -C -d master -i initdb.d/init-sqldatabase.sql;
+      echo "All done!";
+      '
 
    complete.redis:
     container_name: complete.redis
