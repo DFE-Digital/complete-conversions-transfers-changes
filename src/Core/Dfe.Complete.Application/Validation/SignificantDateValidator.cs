@@ -77,7 +77,7 @@ public class SignificantDateValidator : ISignificantDateValidator
     {
         if (payrollDeadline.HasValue && payrollDeadline.Value.ToDateTime(new TimeOnly()) < DateTime.Today)
         {
-            return ValidationResult.Error("The payroll deadline must be in the future.");
+            return ValidationResult.Error("Payroll deadline must be in the future.");
         }
 
         return ValidationResult.Success();
@@ -87,7 +87,7 @@ public class SignificantDateValidator : ISignificantDateValidator
     {
         if (payrollDeadline.HasValue && significantDate.HasValue && payrollDeadline >= significantDate.Value)
         {
-            return ValidationResult.Error("The payroll deadline must be before the significant date.");
+            return ValidationResult.Error("Payroll deadline must be before the significant date.");
         }
 
         return ValidationResult.Success();

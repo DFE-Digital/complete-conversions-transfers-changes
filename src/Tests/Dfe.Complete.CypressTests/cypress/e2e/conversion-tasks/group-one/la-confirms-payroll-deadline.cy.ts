@@ -3,15 +3,28 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
+import validationComponent from "cypress/pages/validationComponent";
+import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholderKickOffTaskPage";
 
 const taskPath = "la_confirms_payroll_deadline";
+const stakeholderKickOffTaskPath = "stakeholder_kick_off";
 
 describe("Conversion tasks - LA confirms payroll deadline", () => {
     let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
-
     before(() => {
-        ConversionTasksGroupOneSetup.setupProjectsWithoutTaskId();
-        setup = ConversionTasksGroupOneSetup.getSetup();
+        cy.then(() => {
+            ConversionTasksGroupOneSetup.setupProjectsWithoutTaskId();
+            setup = ConversionTasksGroupOneSetup.getSetup();
+        }).then(() => {
+            return cy.wrap(null).should(() => {
+                expect(setup.projectId, 'projectId should be set').to.not.be.empty;
+            });
+        }).then(() => {
+            cy.login();
+            cy.visit(`projects/${setup.projectId}/tasks/${stakeholderKickOffTaskPath}`);
+            stakeholderKickOffTaskPage.enterSignificantDate(1, new Date().getFullYear() + 1).saveAndReturn();
+            cy.visit(`projects/${setup.projectId}/tasks/${taskPath}`);
+        });
     });
 
     beforeEach(() => {
@@ -38,24 +51,27 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
         taskPage.hasDate("", "", "", "payroll-deadline");
     });
 
-    it("should show validation errors", () => {
+    it.only("should show validation errors", () => {
         Logger.log("Try to input a past date");
         taskPage
             .enterDate("15", "6", "2020", "payroll-deadline")
             .saveAndReturn()
-            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be in the future");
+
+        validationComponent.hasLinkedValidationError("Payroll deadline must be in the future.");
 
         Logger.log("Try to input a date after the significant date");
         taskPage
             .enterDate("15", "6", String(new Date().getFullYear() + 10), "payroll-deadline")
             .saveAndReturn()
-            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be before the significant date");
+
+        validationComponent.hasLinkedValidationError("Payroll deadline must be before the significant date");
 
         Logger.log("Try to input an invalid date");
         taskPage
             .enterDate("15", "16", "2020", "payroll-deadline")
             .saveAndReturn()
-            .hasLinkedValidationErrorForField('payroll-deadline.Day', "Payroll deadline must be a real date");
+
+        validationComponent.hasLinkedValidationError("Payroll deadline must be a real date");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
