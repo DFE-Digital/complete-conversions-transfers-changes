@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+- [280987](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280987), [280959](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280959) - allow LA payroll deadline date to be in the past
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-11.1520...main) for everything awaiting release
 
 ---
