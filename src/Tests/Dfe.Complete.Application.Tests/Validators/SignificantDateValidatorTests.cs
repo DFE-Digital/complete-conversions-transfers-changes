@@ -276,7 +276,7 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.False(result.IsValid);
-            Assert.Equal("The payroll deadline must be in the future.", result.ErrorMessage);
+            Assert.Equal("Payroll deadline must be in the future.", result.ErrorMessage);
         }
 
         [Fact]
@@ -292,7 +292,7 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.False(result.IsValid);
-            Assert.Equal("The payroll deadline must be before the significant date.", result.ErrorMessage);
+            Assert.Equal("Payroll deadline must be before the significant date.", result.ErrorMessage);
         }
 
         [Fact]
