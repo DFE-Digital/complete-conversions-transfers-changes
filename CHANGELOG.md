@@ -16,10 +16,14 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-07.1514...main) for everything awaiting release
+
+---
+
+## [1.45.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-11.1520) - 2026-05-11
+
 ### Fixed
 - [280797](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280797), [280395](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280395) - can enter the same date as the existing one when confirming the significant date
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-07.1514...main) for everything awaiting release
 
 ---
 
