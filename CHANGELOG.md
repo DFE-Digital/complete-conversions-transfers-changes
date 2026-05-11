@@ -16,6 +16,8 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Fixed
+- [280797](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280797), [280395](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280395) - can enter the same date as the existing one when confirming the significant date
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-07.1514...main) for everything awaiting release
 
