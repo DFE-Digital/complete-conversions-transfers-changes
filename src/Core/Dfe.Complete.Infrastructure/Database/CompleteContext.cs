@@ -559,6 +559,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.MasterFundingAgreementSigned).HasColumnName("master_funding_agreement_signed");
         projectConfiguration.Property(e => e.MasterFundingAgreementSignedSecretaryState).HasColumnName("master_funding_agreement_signed_secretary_state");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseEmail).HasColumnName("one_hundred_and_twenty_five_year_lease_email");
+        projectConfiguration.Property(e => e.TupeConsultationCompleted).HasColumnName("tupe_consultation_completed");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseNotApplicable).HasColumnName("one_hundred_and_twenty_five_year_lease_not_applicable");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseReceive).HasColumnName("one_hundred_and_twenty_five_year_lease_receive");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseSaveLease).HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");

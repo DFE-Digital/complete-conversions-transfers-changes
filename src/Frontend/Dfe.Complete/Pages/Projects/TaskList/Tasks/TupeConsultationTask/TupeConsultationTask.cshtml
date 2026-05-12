@@ -1,0 +1,33 @@
+@page "/projects/{projectId}/tasks/tupe_consultation"
+@using Dfe.Complete.Utils;
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.TupeConsultationTask.TupeConsultationTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+
+@section TaskSection { 
+    <div class="govuk-hint">
+        <p>TUPE (Transfer of Undertakings [Protection of Employment]) is a legal process that transfers employees, and all other employee liabilities, to the new employer. It ensures employees' length of service is continued into the new business and their terms and conditions of employment remain the same.</p>
+        
+        <p>As part of TUPE, all staff and unions must be consulted by the current (outgoing) employer. The Academy must seek professional advice on all aspects of the TUPE process.</p>
+        
+        <p>DfE requires confirmation that the TUPE consultation has been completed.</p>
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="completed" id="completed" asp-for="@Model.Completed" value="true" name="completed" checked="@Model.Completed">
+                    <b>Confirm that TUPE consultation and any associated issues are being managed.</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

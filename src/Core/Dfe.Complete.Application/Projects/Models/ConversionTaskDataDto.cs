@@ -143,6 +143,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
+        public bool? TupeConsultationCompleted { get; set; }
+
         public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }

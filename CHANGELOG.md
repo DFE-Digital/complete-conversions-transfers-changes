@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
 - [266928](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266928) - new "Post decision actions" task for conversion projects to verify application forms, academy orders and LA proformas have been uploaded to Sharepoint
 - [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
 - [275380](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275380) - added dbs checks to the task list
+- [275287](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275287) - add new "TUPE Consultation" task to conversion project task list
 
 ### Changed 
 - use API user secrets before appsettings
