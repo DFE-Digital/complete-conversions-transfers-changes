@@ -7265,6 +7265,7 @@
           "confirm_nursery_arrangement",
           "post_decision_actions",
           "tupe_consultation",
+          "la_confirms_payroll_deadline",
           "confirm_dbs_checks"
         ],
         "enum": [
