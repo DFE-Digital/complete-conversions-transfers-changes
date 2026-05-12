@@ -551,6 +551,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.LandRegistryCleared).HasColumnName("land_registry_cleared");
         projectConfiguration.Property(e => e.LandRegistryReceived).HasColumnName("land_registry_received");
         projectConfiguration.Property(e => e.LandRegistrySaved).HasColumnName("land_registry_saved");
+        projectConfiguration.Property(e => e.LAPayrollDeadline).HasColumnName("la_payroll_deadline");
         projectConfiguration.Property(e => e.MasterFundingAgreementCleared).HasColumnName("master_funding_agreement_cleared");
         projectConfiguration.Property(e => e.MasterFundingAgreementNotApplicable).HasColumnName("master_funding_agreement_not_applicable");
         projectConfiguration.Property(e => e.MasterFundingAgreementReceived).HasColumnName("master_funding_agreement_received");

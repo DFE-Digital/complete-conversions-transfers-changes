@@ -219,5 +219,17 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal("Enter a postcode", ValidationConstants.LocalAuthorityPostcodeRequired);
         }
 
+        [Fact]
+        public void PayrollDateIsPast_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Payroll deadline must be in the future", ValidationConstants.PayrollDateIsPast);
+        }
+
+        [Fact]
+        public void PayrollDateAfterSignificantDate_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Payroll deadline must be before the significant date", ValidationConstants.PayrollDateAfterSignificantDate);
+        }
+
     }
 }

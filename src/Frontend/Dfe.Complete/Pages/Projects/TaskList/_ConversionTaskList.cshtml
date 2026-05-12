@@ -1,69 +1,11 @@
 ﻿@using Dfe.Complete.Constants
-@using Dfe.Complete.Domain.Enums
-@using Dfe.Complete.TagHelpers
-@using Dfe.Complete.Utils;
+@using Dfe.Complete.Pages.Projects.TaskList
+@using Dfe.Complete.Pages.Projects.TaskList.Tasks
 
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @inject Dfe.Complete.Services.IProjectPermissionService projectPermissionService;
 @{
-    var confirmDateAcademyOpenedTitle = NoteTaskIdentifier.ConfirmAcademyOpenedDate.ToDisplayDescription();
-
-    var projectKickoffTasks = new List<TaskListItemViewModel>
-    {
-        new TaskListItemViewModel("Post decision actions", Model.TaskLink("post_decision_actions"), Model.ConversionTaskList.PostDecisionActions),
-        new TaskListItemViewModel("Handover with regional delivery officer", Model.TaskLink("handover"), Model.ConversionTaskList.HandoverWithRegionalDeliveryOfficer),
-        new TaskListItemViewModel("External stakeholder kick-off", Model.TaskLink("stakeholder_kick_off"), Model.ConversionTaskList.ExternalStakeHolderKickoff),
-        new TaskListItemViewModel("Confirm the academy's risk protection arrangements", Model.TaskLink("risk_protection_arrangement"), Model.ConversionTaskList.ConfirmAcademyRiskProtectionArrangements),
-        new TaskListItemViewModel("Check accuracy of high needs places information", Model.TaskLink("check_accuracy_of_higher_needs"), Model.ConversionTaskList.CheckAccuracyOfHigherNeeds),
-        new TaskListItemViewModel("Complete a notification of changes to funded high needs places form", Model.TaskLink("complete_notification_of_change"), Model.ConversionTaskList.CompleteNotificationOfChange),
-        new TaskListItemViewModel("Confirm statutory consultation is complete and any issues are being managed", Model.TaskLink("confirm_statutory_consultation"), Model.ConversionTaskList.ConfirmStatutoryConsultation),
-        new TaskListItemViewModel("Confirm and process the sponsored support grant", Model.TaskLink("sponsored_support_grant"), Model.ConversionTaskList.ConfirmAndProcessSponsoredSupportGrant),
-        new TaskListItemViewModel("Confirm academy nursery arrangement", Model.TaskLink("confirm_nursery_arrangement"), Model.ConversionTaskList.ConfirmNurseryArrangement),
-        new TaskListItemViewModel("TUPE Consultation", Model.TaskLink("tupe_consultation"), Model.ConversionTaskList.TupeConsultation),
-        new TaskListItemViewModel("Confirm the academy name", Model.TaskLink("academy_details"), Model.ConversionTaskList.ConfirmAcademyName),
-        new TaskListItemViewModel("Confirm the headteacher's details", Model.TaskLink("confirm_headteacher_contact"), Model.ConversionTaskList.ConfirmHeadTeacherDetails),
-        new TaskListItemViewModel("DBS checks", Model.TaskLink("confirm_dbs_checks"), Model.ConversionTaskList.ConfirmDbsChecks),
-        new TaskListItemViewModel("Confirm the chair of governors' details", Model.TaskLink("confirm_chair_of_governors_contact"), Model.ConversionTaskList.ConfirmChairOfGovernorsDetails),
-        new TaskListItemViewModel("Confirm the incoming trust CEO's details", Model.TaskLink("confirm_incoming_trust_ceo_contact"), Model.ConversionTaskList.ConfirmIncomingTrustCeoDetails),
-        new TaskListItemViewModel("Confirm the main contact", Model.TaskLink("main_contact"), Model.ConversionTaskList.ConfirmMainContact),
-        new TaskListItemViewModel("Confirm the proposed capacity of the academy", Model.TaskLink("proposed_capacity_of_the_academy"), Model.ConversionTaskList.ConfirmProposedCapacityOfTheAcademy)
-    };
-
-    if (Model.ConversionTaskList.ShowProcessConversionSupportGrant)
-    {
-        projectKickoffTasks.Insert(5, new TaskListItemViewModel("Process conversion support grant", Model.TaskLink("conversion_grant"), Model.ConversionTaskList.ProcessConversionSupportGrant));
-    }
-
-    var legalDocumentsTasks = new[]
-    {
-        new TaskListItemViewModel("Land questionnaire", Model.TaskLink("land_questionnaire"), Model.ConversionTaskList.LandQuestionnaire),
-        new TaskListItemViewModel("Land registry title plans", Model.TaskLink("land_registry"), Model.ConversionTaskList.LandRegistry),
-        new TaskListItemViewModel("Supplemental funding agreement", Model.TaskLink("supplemental_funding_agreement"), Model.ConversionTaskList.SupplementalFundingAgreement),
-        new TaskListItemViewModel("Church supplemental agreement", Model.TaskLink("church_supplemental_agreement"), Model.ConversionTaskList.ChurchSupplementalAgreement),
-        new TaskListItemViewModel("Master funding agreement", Model.TaskLink("master_funding_agreement"), Model.ConversionTaskList.MasterFundingAgreement),
-        new TaskListItemViewModel("Articles of association", Model.TaskLink("articles_of_association"), Model.ConversionTaskList.ArticlesOfAssociation),
-        new TaskListItemViewModel("Deed of variation", Model.TaskLink("deed_of_variation"), Model.ConversionTaskList.DeedOfVariation),
-        new TaskListItemViewModel("Trust modification order", Model.TaskLink("trust_modification_order"), Model.ConversionTaskList.TrustModificationOrder),
-        new TaskListItemViewModel("Direction to transfer", Model.TaskLink("direction_to_transfer"), Model.ConversionTaskList.DirectionToTransfer),
-        new TaskListItemViewModel("125 year lease", Model.TaskLink("one_hundred_and_twenty_five_year_lease"), Model.ConversionTaskList.OneHundredAndTwentyFiveYearLease),
-        new TaskListItemViewModel("Subleases", Model.TaskLink("subleases"), Model.ConversionTaskList.Tubleases),
-        new TaskListItemViewModel("Tenancy at will", Model.TaskLink("tenancy_at_will"), Model.ConversionTaskList.TenancyAtWill),
-        new TaskListItemViewModel("Commercial transfer agreement", Model.TaskLink("commercial_transfer_agreement"), Model.ConversionTaskList.CommercialTransferAgreement)
-    };
-
-    var getReadyForOpeningTasks = new[]
-    {
-        new TaskListItemViewModel("Confirm the school has completed all actions", Model.TaskLink("school_completed"), Model.ConversionTaskList.ConfirmTheSchoolHasCompletedAllActions),
-        new TaskListItemViewModel("Confirm all conditions have been met", Model.TaskLink("conditions_met"), Model.ConversionTaskList.ConfirmAllConditionsHaveBeenMet),
-        new TaskListItemViewModel("Share the information about opening", Model.TaskLink("share_information"), Model.ConversionTaskList.ShareTheInformationAboutOpening)
-    };
-
-    var afterOpeningTasks = new[]
-    {
-        new TaskListItemViewModel(confirmDateAcademyOpenedTitle, Model.TaskLink("confirm_date_academy_opened"), Model.ConversionTaskList.ConfirmDateAcademyOpened),
-        new TaskListItemViewModel("Redact and send documents", Model.TaskLink("redact_and_send"), Model.ConversionTaskList.RedactAndSendDocuments),
-        new TaskListItemViewModel("Receive declaration of expenditure certificate", Model.TaskLink("receive_grant_payment_certificate"), Model.ConversionTaskList.ProjectReceiveDeclarationOfExpenditureCertificate)
-    };
+    var conversionTasks = ConversionTasks.BuildTaskList(Model.ConversionTaskList, Model.ProjectId);
 }
 
 <div class="govuk-grid-row">
@@ -111,7 +53,7 @@
                             Project kick-off
                         </h3>
                         <ul class="app-task-list__items">
-                            @foreach (var task in projectKickoffTasks)
+                            @foreach (var task in conversionTasks.ProjectKickoffTasks)
                             {
                                 <partial name="Shared/_TaskListItem" model="task" />
                             }
@@ -122,7 +64,7 @@
                             Clear and sign legal documents
                         </h3>
                         <ul class="app-task-list__items">
-                            @foreach (var task in legalDocumentsTasks)
+                            @foreach (var task in conversionTasks.LegalDocumentsTasks)
                             {
                                 <partial name="Shared/_TaskListItem" model="task" />
                             }
@@ -133,7 +75,7 @@
                             Get ready for opening
                         </h3>
                         <ul class="app-task-list__items">
-                            @foreach (var task in getReadyForOpeningTasks)
+                            @foreach (var task in conversionTasks.ReadyForOpeningTasks)
                             {
                                 <partial name="Shared/_TaskListItem" model="task" />
                             }
@@ -144,7 +86,7 @@
                             After opening
                         </h3>
                         <ul class="app-task-list__items">
-                            @foreach (var task in afterOpeningTasks)
+                            @foreach (var task in conversionTasks.AfterOpeningTasks)
                             {
                                 <partial name="Shared/_TaskListItem" model="task" />
                             }

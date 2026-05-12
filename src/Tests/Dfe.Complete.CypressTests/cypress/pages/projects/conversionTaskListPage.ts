@@ -24,6 +24,7 @@ class ConversionTaskListPage {
             "Confirm the incoming trust CEO's details",
             "Confirm the main contact",
             "Confirm the proposed capacity of the academy",
+            "LA confirms payroll deadline (LA)",
         ],
         legalDocuments: [
             "Land questionnaire",

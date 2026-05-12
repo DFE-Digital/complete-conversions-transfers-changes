@@ -16,23 +16,38 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-11.1520...main) for everything awaiting release
+
+---
+
+## [1.45.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-11.1520) - 2026-05-11
+
+### Fixed
+- [280797](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280797), [280395](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280395) - can enter the same date as the existing one when confirming the significant date
+
+---
+
+## [1.45.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-07.1514) - 2026-05-07
+
 ### Added
 - [266928](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266928) - new "Post decision actions" task for conversion projects to verify application forms, academy orders and LA proformas have been uploaded to Sharepoint
 - [256058](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/256058) - ConversionSupportGrant task now hides when "Not Applicable" is ticked
 - [275380](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275380) - added dbs checks to the task list
 - [275287](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275287) - add new "TUPE Consultation" task to conversion project task list
+- [275398](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275398) - Add new task "LA confirms payroll deadline (LA)" to project kick-off task list
+- [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
+- [254700](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254700) - Add new task Confirm academy nursery arrangement
 
 ### Changed 
 - use API user secrets before appsettings
 - [274907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/274907) - add new "set expectations around declaring budget changes" question to external stakeholder kickoff task
-- [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capaticy task info
+- [275393](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275393) - change wording on proposed academy capacity task info
 - [253776](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253776) - update guidance wording on external stakeholder kickoff task
-- [254704](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/254704) - Add statutory consultation confirmation task for conversion projects
+- [277866](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277866) - Task ordering - tech changes
+- [253922](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253922) - update wording of Confirm & process sponsored grant payment
 
 ### Security
 - [275939](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/275939) - Issue #18/19 remove unnecessary query param from "HelpRedactingDocuments" link
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-04-08.1456...main) for everything awaiting release
 
 ---
 
@@ -816,12 +831,12 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - New route `/projects/team/unassigned`
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
-### Changed  
-- Sort all projects by region list alphabetically
+### Changed
+ - Sort all projects by region list alphabetically
 
-### Fixed  
-- Note FK Ids are now required
-- Separated created and assigned users in project creation
+### Fixed
+ - Note FK Ids are now required
+ - Separated created and assigned users in project creation
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...production-2025-05-22.290) for everything in the release
 
