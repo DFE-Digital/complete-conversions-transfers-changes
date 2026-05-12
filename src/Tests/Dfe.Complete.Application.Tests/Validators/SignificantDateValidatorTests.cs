@@ -264,7 +264,7 @@ namespace Dfe.Complete.Application.Tests.Validators
         }
 
         [Fact]
-        public void ValidatePayrollDeadline_WithPayrollDateInPast_ReturnsError()
+        public void ValidatePayrollDeadline_WithPayrollDateInPast_ReturnsSuccess()
         {
             // Arrange
             var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
@@ -275,8 +275,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidatePayrollDeadline(payrollDate, project);
 
             // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The payroll deadline must be in the future.", result.ErrorMessage);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -292,7 +291,7 @@ namespace Dfe.Complete.Application.Tests.Validators
 
             // Assert
             Assert.False(result.IsValid);
-            Assert.Equal("The payroll deadline must be before the significant date.", result.ErrorMessage);
+            Assert.Equal("Payroll deadline must be before the significant date.", result.ErrorMessage);
         }
 
         [Fact]

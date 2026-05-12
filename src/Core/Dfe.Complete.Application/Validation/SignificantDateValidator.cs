@@ -59,10 +59,6 @@ public class SignificantDateValidator : ISignificantDateValidator
 
     public ValidationResult ValidatePayrollDeadline(DateOnly? payrollDeadline, ProjectDto project)
     {
-        var futureValidation = ValidatePayrollDeadlineInFuture(payrollDeadline);
-        if (!futureValidation.IsValid)
-            return futureValidation;
-
         if (project.SignificantDateProvisional != true)
         {
             var beforeSignificantDateValidation = ValidatePayrollDeadlineBeforeSignificantDate(payrollDeadline, project.SignificantDate);
@@ -73,21 +69,11 @@ public class SignificantDateValidator : ISignificantDateValidator
         return ValidationResult.Success();
     }
 
-    private static ValidationResult ValidatePayrollDeadlineInFuture(DateOnly? payrollDeadline)
-    {
-        if (payrollDeadline.HasValue && payrollDeadline.Value.ToDateTime(new TimeOnly()) < DateTime.Today)
-        {
-            return ValidationResult.Error("The payroll deadline must be in the future.");
-        }
-
-        return ValidationResult.Success();
-    }
-
     private static ValidationResult ValidatePayrollDeadlineBeforeSignificantDate(DateOnly? payrollDeadline, DateOnly? significantDate)
     {
         if (payrollDeadline.HasValue && significantDate.HasValue && payrollDeadline >= significantDate.Value)
         {
-            return ValidationResult.Error("The payroll deadline must be before the significant date.");
+            return ValidationResult.Error("Payroll deadline must be before the significant date.");
         }
 
         return ValidationResult.Success();
