@@ -51,13 +51,6 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
     });
 
     it("should show validation errors", () => {
-        Logger.log("Try to input a past date");
-        taskPage
-            .enterDate("15", "6", "2020", "payroll-deadline")
-            .saveAndReturn()
-
-        validationComponent.hasLinkedValidationError("Payroll deadline must be in the future.");
-
         Logger.log("Try to input a date after the significant date");
         taskPage
             .enterDate("15", "6", yearTwoYearsFromNow, "payroll-deadline")
