@@ -16,10 +16,15 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-13.1533...main) for everything awaiting release
+
+---
+
+## [1.46.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-13.1533) - 2026-05-13
+
 ### Changed
 - [280987](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280987), [280959](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280959) - allow LA payroll deadline date to be in the past
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-11.1520...main) for everything awaiting release
+-[266674](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266674) - Dotnet 10 upgrade
 
 ---
 
