@@ -51,8 +51,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<IHandoverProjectService, HandoverProjectService>();
 
-            services.AddBackgroundService();
-
             return services;
         }
     }
