@@ -80,7 +80,7 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c
         env:
           CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
           CYPRESS_api: ${{ secrets.CYPRESS_API_ENDPOINT }}
@@ -149,7 +149,7 @@ jobs:
           cache-dependency-path: '${{ env.WORKING_DIRECTORY }}/package-lock.json'
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm ci --ignore-scripts || npm install --ignore-scripts
 
       - name: Download all test results
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
