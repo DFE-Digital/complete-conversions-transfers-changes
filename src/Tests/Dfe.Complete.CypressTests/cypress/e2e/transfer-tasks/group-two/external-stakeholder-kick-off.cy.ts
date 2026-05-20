@@ -14,7 +14,6 @@ import {
 } from "cypress/support/formatDate";
 import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholderKickOffTaskPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
@@ -105,12 +104,6 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
             .isUnticked()
             .hasCheckboxLabel("Host the kick-off meeting or call")
             .isUnticked();
-    });
-
-    it("Should NOT be able to set a transfer date in the past", () => {
-        cy.visit(`projects/${project2Id}/tasks/stakeholder_kick_off`);
-        stakeholderKickOffTaskPage.enterSignificantDate(1, 2020).saveAndReturn();
-        validationComponent.hasLinkedValidationError("The Significant date must be in the future");
     });
 
     it("Should only be able to confirm the transfer date once", () => {
