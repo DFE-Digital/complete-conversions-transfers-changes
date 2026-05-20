@@ -35,7 +35,7 @@ namespace Dfe.Complete.Application.Tests.Validators
         }
 
         [Fact]
-        public void ValidateSignificantDate_WithPastDate_ReturnsError()
+        public void ValidateSignificantDate_WithPastDate_ReturnsSuccess()
         {
             // Arrange
             var pastDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
@@ -44,8 +44,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(pastDate);
 
             // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
+            Assert.True(result.IsValid);
         }
 
         [Fact]
@@ -76,22 +75,6 @@ namespace Dfe.Complete.Application.Tests.Validators
             // Assert
             Assert.False(result.IsValid);
             Assert.Equal("The new date cannot be the same as the current date. Check you have entered the correct date.", result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidateSignificantDate_WithPastDate_ReturnsErrorRegardlessOfExistingProject()
-        {
-            // Arrange
-            var pastDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
-            var currentDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var existingProject = CreateTestProject(currentDate);
-
-            // Act
-            var result = _validator.ValidateSignificantDate(pastDate, existingProject);
-
-            // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
         }
 
         [Fact]
@@ -130,7 +113,7 @@ namespace Dfe.Complete.Application.Tests.Validators
         [InlineData(-1)] // Yesterday
         [InlineData(-30)] // Last month
         [InlineData(-365)] // Last year
-        public void ValidateSignificantDate_WithVariousPastDates_ReturnsError(int daysInPast)
+        public void ValidateSignificantDate_WithVariousPastDates_ReturnsSuccess(int daysInPast)
         {
             // Arrange
             var pastDate = DateOnly.FromDateTime(DateTime.Today.AddDays(daysInPast));
@@ -139,8 +122,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(pastDate);
 
             // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
+            Assert.True(result.IsValid);
         }
 
         #endregion
@@ -164,10 +146,10 @@ namespace Dfe.Complete.Application.Tests.Validators
         }
 
         [Fact]
-        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateInPast_ReturnsError()
+        public void ValidateSignificantDate_WithPayrollDeadline_SignificantDateInPast_ReturnsSuccess()
         {
             // Arrange
-            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
+            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-5));
             var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
             var existingProject = CreateTestProject(DateOnly.FromDateTime(DateTime.Today.AddDays(15)));
 
@@ -175,8 +157,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             var result = _validator.ValidateSignificantDate(significantDate, existingProject, payrollDate);
 
             // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("The Significant date must be in the future.", result.ErrorMessage);
+            Assert.True(result.IsValid);
         }
 
         [Fact]

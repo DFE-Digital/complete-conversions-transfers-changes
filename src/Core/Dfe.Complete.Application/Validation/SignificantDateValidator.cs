@@ -13,11 +13,6 @@ public class SignificantDateValidator : ISignificantDateValidator
 {
     public ValidationResult ValidateSignificantDate(DateOnly? significantDate, ProjectDto? existingProject = null, DateOnly? payrollDeadline = null)
     {
-        // Basic future date validation
-        var futureValidation = ValidateSignificantDateInFuture(significantDate);
-        if (!futureValidation.IsValid)
-            return futureValidation;
-
         // If we have an existing project, check it's not the same as current date
         if (existingProject != null)
         {

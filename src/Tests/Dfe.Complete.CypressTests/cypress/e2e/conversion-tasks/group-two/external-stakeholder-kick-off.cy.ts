@@ -16,7 +16,6 @@ import {
 } from "cypress/support/formatDate";
 import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholderKickOffTaskPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import validationComponent from "cypress/pages/validationComponent";
 import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
 import { urnPool } from "cypress/constants/testUrns";
 
@@ -107,12 +106,6 @@ describe("Conversion tasks - External stakeholder kick off", () => {
         TaskHelperConversions.updateExternalStakeholderKickOff(setup.projectId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("External stakeholder kick-off");
-    });
-
-    it("Should NOT be able to set a conversion date in the past", () => {
-        cy.visit(`projects/${project2Id}/tasks/${taskPath}`);
-        stakeholderKickOffTaskPage.enterSignificantDate(1, 2020).saveAndReturn();
-        validationComponent.hasLinkedValidationError("The Significant date must be in the future");
     });
 
     it("Should only be able to confirm the conversion date once", () => {
