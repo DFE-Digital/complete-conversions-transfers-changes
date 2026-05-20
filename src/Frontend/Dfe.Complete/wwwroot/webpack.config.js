@@ -10,8 +10,15 @@ module.exports = {
 		new CopyWebpackPlugin({
 			patterns: [
 				{
-					from: 'src/assets/images/govuk-crest.svg',
-					to: 'assets/images/govuk-crest.svg'
+
+					from: '*.{png,svg,ico}',
+					to: path.join(__dirname, 'assets/images'),
+					context: 'node_modules/govuk-frontend/dist/govuk/assets/rebrand/images'
+				},
+				{
+					from: 'manifest.json',
+					to: path.join(__dirname, 'assets/images'),
+					context: 'node_modules/govuk-frontend/dist/govuk/assets/rebrand'
 				}
 			]
 		})
