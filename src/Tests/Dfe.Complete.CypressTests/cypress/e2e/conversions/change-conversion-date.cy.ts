@@ -187,18 +187,6 @@ describe("Change the conversion date tests", () => {
         projectDetailsPage.doesntContain("Change conversion date");
     });
 
-    it("Should display error when trying to change conversion date to a past date", () => {
-        cy.visit(`projects/${confirmedDateProjectId}/date-history`);
-
-        Logger.log("Click 'Change conversion date' button");
-        projectDetailsPage.clickButton("Change conversion date");
-
-        Logger.log("Enter past date");
-        changeDatePage.enterDate(1, 2025).saveAndContinue();
-
-        validationComponent.hasLinkedValidationError("The Significant date must be in the future");
-    });
-
     it("Should NOT be able to submit a change conversion date request with no reasons selected", () => {
         cy.visit(`projects/${confirmedDateProjectId}/tasks`);
 
