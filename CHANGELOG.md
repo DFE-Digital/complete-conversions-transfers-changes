@@ -23,7 +23,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - [282791](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282791) - Removed future date requirement on significant date
-- [282791](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282060) - Tech debt - Sonar security hotspots
+- [282060](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282060) - Tech debt - Sonar security hotspots
   
 ---
 
