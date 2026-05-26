@@ -1,4 +1,3 @@
-@using Dfe.Complete.Constants
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask.DeedOfVariationTaskModel
 
@@ -53,24 +52,29 @@
                                    checked="@Model.Cleared">
                 <b>Cleared</b>
             </govuk-checkboxes-item>
+            <govuk-checkboxes-item id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
+                <b>Draft saved in school's SharePoint folder</b>
+            </govuk-checkboxes-item>
             <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed"
                                    checked="@Model.Signed">
                 <b>Signed by school or trust</b>
             </govuk-checkboxes-item>
-            <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved"
-                                   checked="@Model.Saved">
-                <b>Saved in the school's SharePoint folder</b>
-            </govuk-checkboxes-item>
-            <govuk-checkboxes-item id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
-                <b>Sent to team leader or deputy director</b>
-            </govuk-checkboxes-item>
             <govuk-checkboxes-item id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true"
                                    name="signed_secretary_state" checked="@Model.SignedSecretaryState">
-                <b>Document signed on behalf of the Secretary of State</b>
-            </govuk-checkboxes-item>
-        </govuk-checkboxes-fieldset>
-    </govuk-checkboxes>
-    @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
-</form>
+                <b>Signed and sealed on behalf of SoS</b>
+                <govuk-checkboxes-item-hint>
+                    <p>The Secretary of State, or somebody with the <external-link
+                        href="@_configuration["ExternalLinks:SOSAuthorisedSignatories"]">authority to act on their
+                        behalf</external-link> must sign the deed of variation.</p>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved"
+                                       checked="@Model.Saved">
+                    <b>Final version saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
 
                 
