@@ -530,6 +530,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.DeedOfVariationCleared).HasColumnName("deed_of_variation_cleared");
         projectConfiguration.Property(e => e.DeedOfVariationNotApplicable).HasColumnName("deed_of_variation_not_applicable");
         projectConfiguration.Property(e => e.DeedOfVariationReceived).HasColumnName("deed_of_variation_received");
+        projectConfiguration.Property(e => e.DeedOfVariationDraftSaved).HasColumnName("deed_of_variation_draft_saved");
         projectConfiguration.Property(e => e.DeedOfVariationSaved).HasColumnName("deed_of_variation_saved");
         projectConfiguration.Property(e => e.DeedOfVariationSent).HasColumnName("deed_of_variation_sent");
         projectConfiguration.Property(e => e.DeedOfVariationSigned).HasColumnName("deed_of_variation_signed");

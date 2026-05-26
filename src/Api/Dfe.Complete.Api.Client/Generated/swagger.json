@@ -8873,7 +8873,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "deedOfVariationSigned": {
+          "deedOfVariationDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -9421,6 +9421,10 @@
             "nullable": true
           },
           "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "draftSaved": {
             "type": "boolean",
             "nullable": true
           }
