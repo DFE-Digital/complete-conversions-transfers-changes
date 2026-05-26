@@ -32,6 +32,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
         [BindProperty(Name = "signed_secretary_state")]
         public bool? SignedSecretaryState { get; set; }
 
+        [BindProperty(Name = "draft_saved")]
+        public bool? DraftSaved { get; set; }
+
+
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         [BindProperty]
@@ -62,14 +66,14 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
                 Cleared = ConversionTaskData.DeedOfVariationCleared;
                 Sent = ConversionTaskData.DeedOfVariationSent;
                 Saved = ConversionTaskData.DeedOfVariationSaved;
-                Signed = ConversionTaskData.DeedOfVariationSigned;
+                DraftSaved = ConversionTaskData.DeedOfVariationDraftSaved;
                 SignedSecretaryState = ConversionTaskData.DeedOfVariationSignedSecretaryState;
             }
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable));
+            await Sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable, DraftSaved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

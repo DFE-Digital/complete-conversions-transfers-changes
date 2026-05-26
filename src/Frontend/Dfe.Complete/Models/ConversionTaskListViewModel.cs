@@ -391,7 +391,7 @@ namespace Dfe.Complete.Models
             if ((!taskData.DeedOfVariationReceived.HasValue || taskData.DeedOfVariationReceived == false) &&
                (!taskData.DeedOfVariationCleared.HasValue || taskData.DeedOfVariationCleared == false) &&
                (!taskData.DeedOfVariationSaved.HasValue || taskData.DeedOfVariationSaved == false) &&
-               (!taskData.DeedOfVariationSigned.HasValue || taskData.DeedOfVariationSigned == false) &&
+               (!taskData.DeedOfVariationDraftSaved.HasValue || taskData.DeedOfVariationDraftSaved == false) &&
                (!taskData.DeedOfVariationSent.HasValue || taskData.DeedOfVariationSent == false) &&
                (!taskData.DeedOfVariationSignedSecretaryState.HasValue || taskData.DeedOfVariationSignedSecretaryState == false) &&
                (!taskData.DeedOfVariationNotApplicable.HasValue || taskData.DeedOfVariationNotApplicable == false))
@@ -405,7 +405,7 @@ namespace Dfe.Complete.Models
             return (taskData.DeedOfVariationReceived == true &&
                taskData.DeedOfVariationCleared == true &&
                taskData.DeedOfVariationSaved == true &&
-               taskData.DeedOfVariationSigned == true &&
+               taskData.DeedOfVariationDraftSaved == true &&
                taskData.DeedOfVariationSent == true &&
                taskData.DeedOfVariationSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
