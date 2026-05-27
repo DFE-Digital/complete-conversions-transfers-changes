@@ -26,23 +26,20 @@
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
         <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Check and clear the direction to transfer</h2>
+            <h2 class="govuk-heading-l">Check and clear the direction to transfer
+                <span class="govuk-caption-m">Select all that apply</span>
+            </h2>
             <div class="govuk-hint">
-                <p>Make sure information in the direction to transfer is correct and compare it against the model document.</p>
-                <p>Once checked and cleared, you must send the direction to transfer to SOPU (Schools Operational Practice Unit) at <a href="mailto:@_configuration["Emails:SchoolsOperationalPracticeUnit"]">@_configuration["Emails:SchoolsOperationalPracticeUnit"]</a> for signing.</p>
-                <p>This must be sent to them by the deadline they set in their monthly email. This is at the same time as you send the single worksheet.</p>
+                <p>
+                    Make sure information in the direction to transfer is correct and compare it against the <external-link href="@_configuration["ExternalLinks:DirectionToTransferModelDocuments"]">model document</external-link>.
+                    Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected, otherwise we do not expect any deviations to the model. You'll need to contact the <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">Schools Operational Practise Unit (opens in new tab) </external-link> about changes to clause text.
+                </p>
+                <p>
+                    Once checked and cleared, you must send the direction to transfer to SOPU (Schools Operational Practice Unit) at <a href="mailto:@_configuration["Emails:SchoolsOperationalPracticeUnit"]">@_configuration["Emails:SchoolsOperationalPracticeUnit"]</a> for signing.
+                    This must be sent to them by the deadline they set in their monthly email.
+                </p>
             </div>
-
-            <govuk-details data-module="govuk-details" class="govuk-details">
-                <govuk-details-summary>
-                    <span class="govuk-details__summary-text">Help checking for changes</span>
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>You need to <external-link href="@_configuration["ExternalLinks:DirectionToTransferModelDocuments"]">compare the direction to transfer against the model documents</external-link> to check for any changes.</p>
-                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-                    <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team</external-link> about any changes to clause text.</p>
-                </govuk-details-text>
-            </govuk-details>
+                        
         </div>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
