@@ -19,7 +19,7 @@ public static class DatabaseSeederCli
     public static async Task<int> ExecuteAsync(string[] args, IServiceProvider serviceProvider)
     {
         var logger = serviceProvider.GetRequiredService<ILogger<DatabaseSeeder>>();
-        
+
         // Check environment first
         var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
         if (!environment.IsDevelopment())
@@ -27,10 +27,9 @@ public static class DatabaseSeederCli
             logger.LogError("Database seeding is only allowed in Development environment. Current environment: {Environment}", environment.EnvironmentName);
             return 1;
         }
-        
+
         try
         {
-            var force = args.Contains("--force") || args.Contains("-f");
             var helpRequested = args.Contains("--help") || args.Contains("-h") || args.Contains("-?");
 
             if (helpRequested)
@@ -39,8 +38,8 @@ public static class DatabaseSeederCli
                 return 0;
             }
 
-            logger.LogInformation("Starting database seeding for development environment. Force: {Force}", force);
-            await serviceProvider.SeedDatabaseAsync(force);
+            logger.LogInformation("Starting database seeding for development environment.");
+            await serviceProvider.SeedDatabaseAsync();
             logger.LogInformation("Database seeding completed successfully!");
             return 0;
         }
@@ -53,17 +52,15 @@ public static class DatabaseSeederCli
 
     private static void ShowHelp(ILogger logger)
     {
-        var helpText = @"Database Seeding Utility for Dfe.Complete (Development Only)
+                var helpText = @"Database Seeding Utility for Dfe.Complete (Development Only)
 
 Usage: dotnet run [options]
 
 Options:
-  -f, --force     Force seeding (clears existing data)
-  -h, --help      Show this help message
+    -h, --help      Show this help message
 
-Examples:
-  dotnet run -- seed-db
-  dotnet run -- seed-db --force
+Example:
+    dotnet run -- seed-db
 
 Note: Seeding is only available in Development environment";
         
