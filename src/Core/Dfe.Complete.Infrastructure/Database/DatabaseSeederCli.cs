@@ -67,33 +67,4 @@ Note: Seeding is only available in Development environment";
         logger.LogInformation("{HelpText}", helpText);
     }
 
-    /// <summary>
-    /// Simple seeding method for development environment only
-    /// </summary>
-    /// <param name="serviceProvider">Service provider for dependency injection</param>
-    public static async Task SeedForDevelopmentAsync(IServiceProvider serviceProvider)
-    {
-        var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
-        var logger = serviceProvider.GetRequiredService<ILogger<DatabaseSeeder>>();
-        
-        if (!environment.IsDevelopment())
-        {
-            logger.LogWarning("Development seeding skipped. Current environment: {Environment}", environment.EnvironmentName);
-            return;
-        }
-        
-        try
-        {
-            logger.LogInformation("Seeding database for development environment...");
-            
-            await serviceProvider.SeedDatabaseAsync(force: false);
-            
-            logger.LogInformation("Development database seeding completed!");
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Development database seeding failed for environment: {Environment}", environment.EnvironmentName);
-            throw new InvalidOperationException("Development database seeding operation failed. See inner exception for details.", ex);
-        }
-    }
 }
