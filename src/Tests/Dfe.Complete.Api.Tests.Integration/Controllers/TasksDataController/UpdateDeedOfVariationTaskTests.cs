@@ -54,7 +54,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.True(existingTaskData.DeedOfVariationCleared);
-            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationSent);
             Assert.True(existingTaskData.DeedOfVariationSaved);
             Assert.True(existingTaskData.DeedOfVariationSigned);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
@@ -85,7 +85,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ProjectType = ProjectType.Conversion,
                 Received = true,
                 Cleared = true,
-                Sent = true,
+                Signed = true,
                 Saved = true,
                 DraftSaved = true,
                 SignedSecretaryState = true,
