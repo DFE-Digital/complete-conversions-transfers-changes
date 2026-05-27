@@ -429,7 +429,7 @@ namespace Dfe.Complete.Tests.Models
                 DeedOfVariationReceived = received,
                 DeedOfVariationCleared = cleared,
                 DeedOfVariationSaved = saved,
-                DeedOfVariationSigned = signed,
+                DeedOfVariationDraftSaved = signed,
                 DeedOfVariationSent = sent,
                 DeedOfVariationSignedSecretaryState = signedSecretaryState,
                 DeedOfVariationNotApplicable = notApplicable

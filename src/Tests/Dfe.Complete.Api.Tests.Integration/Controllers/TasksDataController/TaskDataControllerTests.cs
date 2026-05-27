@@ -162,7 +162,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.Cleared = true;
             command.Saved = false;
             command.Received = true;
-            command.Signed = true;
+            command.DraftSaved = true;
             command.Sent = false;
             command.SignedSecretaryState = true;
 
@@ -177,7 +177,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.False(existingTaskData.DeedOfVariationSaved);
             Assert.False(existingTaskData.DeedOfVariationSent);
-            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationDraftSaved);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
         }
         [Theory]

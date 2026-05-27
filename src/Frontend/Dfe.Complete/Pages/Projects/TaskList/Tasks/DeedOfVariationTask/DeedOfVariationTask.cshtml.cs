@@ -64,9 +64,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
                 NotApplicable = ConversionTaskData.DeedOfVariationNotApplicable;
                 Received = ConversionTaskData.DeedOfVariationReceived;
                 Cleared = ConversionTaskData.DeedOfVariationCleared;
-                Sent = ConversionTaskData.DeedOfVariationSent;
                 Saved = ConversionTaskData.DeedOfVariationSaved;
                 DraftSaved = ConversionTaskData.DeedOfVariationDraftSaved;
+                Signed = ConversionTaskData.DeedOfVariationSigned;
                 SignedSecretaryState = ConversionTaskData.DeedOfVariationSignedSecretaryState;
             }
             return Page();

@@ -87,7 +87,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Cleared = true,
                 Sent = true,
                 Saved = true,
-                Signed = true,
+                DraftSaved = true,
                 SignedSecretaryState = true,
             };
 
@@ -102,7 +102,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedOfVariationCleared);
             Assert.True(existingTaskData.DeedOfVariationSent);
             Assert.True(existingTaskData.DeedOfVariationSaved);
-            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationDraftSaved);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
             Assert.Null(existingTaskData.DeedOfVariationNotApplicable);
         }
@@ -134,7 +134,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Cleared = true,
                 Sent = true,
                 Saved = true,
-                Signed = true,
+                DraftSaved = true,
                 SignedSecretaryState = true,
                 NotApplicable = true
             };
@@ -150,7 +150,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.DeedOfVariationCleared);
             Assert.Null(existingTaskData.DeedOfVariationSent);
             Assert.Null(existingTaskData.DeedOfVariationSaved);
-            Assert.Null(existingTaskData.DeedOfVariationSigned);
+            Assert.Null(existingTaskData.DeedOfVariationDraftSaved);
             Assert.Null(existingTaskData.DeedOfVariationSignedSecretaryState);
             Assert.True(existingTaskData.DeedOfVariationNotApplicable);
         }

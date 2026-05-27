@@ -52,14 +52,14 @@
                                    checked="@Model.Cleared">
                 <b>Cleared</b>
             </govuk-checkboxes-item>
-            <govuk-checkboxes-item id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
+            <govuk-checkboxes-item data-cy="draft_saved" id="draft_saved" asp-for="@Model.DraftSaved" value="true" name="draft_saved" checked="@Model.DraftSaved">
                 <b>Draft saved in school's SharePoint folder</b>
             </govuk-checkboxes-item>
-            <govuk-checkboxes-item data-cy="draft_saved" id="draft_saved" asp-for="@Model.DraftSaved" value="true" name="draft_saved"
-                                   checked="@Model.DraftSaved">
+            <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed"
+                                   checked="@Model.Signed">
                 <b>Signed by school or trust</b>
             </govuk-checkboxes-item>
-            <govuk-checkboxes-item id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true"
+            <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true"
                                    name="signed_secretary_state" checked="@Model.SignedSecretaryState">
                 <b>Signed and sealed on behalf of SoS</b>
                 <govuk-checkboxes-item-hint>

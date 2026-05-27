@@ -50,7 +50,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeedOfVariationSaved = request.NotApplicable == true ? null : request.Saved;
             tasksData.DeedOfVariationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.DeedOfVariationReceived = request.NotApplicable == true ? null : request.Received;
-            tasksData.DeedOfVariationSent = request.NotApplicable == true ? null : request.Sent;
+            tasksData.DeedOfVariationSigned = request.NotApplicable == true ? null : request.Signed;
             tasksData.DeedOfVariationDraftSaved = request.NotApplicable == true ? null : request.DraftSaved;
             tasksData.DeedOfVariationSignedSecretaryState = request.NotApplicable == true ? null : request.SignedSecretaryState;
             tasksData.DeedOfVariationNotApplicable = request.NotApplicable;

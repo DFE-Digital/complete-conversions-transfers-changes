@@ -107,12 +107,12 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? DeedOfVariationCleared { get; set; }
 
-    [Obsolete("278434 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? DeedOfVariationSigned { get; set; }
     public bool? DeedOfVariationDraftSaved { get; set; }
 
     public bool? DeedOfVariationSaved { get; set; }
 
+    [Obsolete("278434 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? DeedOfVariationSent { get; set; }
 
     public bool? DeedOfVariationSignedSecretaryState { get; set; }
