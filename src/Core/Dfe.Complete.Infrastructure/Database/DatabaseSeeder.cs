@@ -28,98 +28,55 @@ public class DatabaseSeeder
         {
             _logger.LogInformation("Starting database seeding...");
 
-            if (force)
-            {
-                _logger.LogWarning("Force seeding enabled - clearing existing data");
-                Console.WriteLine("Force seeding enabled - clearing existing data");
-                await ClearExistingDataAsync();
-            }
-
-            Console.WriteLine("Seeding reference data...");
-            await SeedDaoRevocationReasonsAsync();
-            Console.WriteLine("Seeding reference data...");
-            await SeedSignificantDateHistoryReasonsAsync();
-            Console.WriteLine("Seeding reference data...");
-            await SeedLocalAuthoritiesAsync();
-            Console.WriteLine("Seeding reference data...");
-            await SeedUsersAsync();
-            Console.WriteLine("Seeding reference data...");
-            await SeedProjectDataAsync();
-            Console.WriteLine("Seeding reference data..."); 
-            
-            _logger.LogInformation("Database seeding completed successfully");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
-            throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
-        }
-    }
-
-    private async Task ClearExistingDataAsync()
-    {
-        _logger.LogInformation("Clearing existing data using raw SQL to handle all tables...");
-        
-        try
-        {
-            // Disable foreign key constraints temporarily (SQL Server syntax)
-            await _context.Database.ExecuteSqlRawAsync("EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'");
-            
-            // Clear all tables that might have data (including unmapped ones like projectstest)
-            var tablesToClear = new[]
-            {
-                "[complete].[significant_date_histories]",
-                "[complete].[notes]", 
-                "[complete].[conversion_tasks_data]",
-                "[complete].[transfer_tasks_data]",
-                "[complete].[projects]",
-                "[complete].[dao_revocations]",
-                "[complete].[key_contacts]", 
-                "[complete].[contacts]",
-                "[complete].[project_groups]",
-                "[complete].[users]",
-                "[complete].[gias_groups]",
-                "[complete].[gias_establishments]",
-                "[complete].[significant_date_history_reasons]",
-                "[complete].[dao_revocation_reasons]",
-                "[complete].[local_authorities]" // Clear this last
-            };
-
-            foreach (var table in tablesToClear)
-            {
-                try
-                {
-                    Console.WriteLine($"Clearing table {table}...");
-                    await _context.Database.ExecuteSqlRawAsync($"DELETE FROM {table}");
-                    _logger.LogDebug("Cleared table {Table}", table);
-                }
-                catch (Exception tableEx)
-                {
-                    // Log but continue - table might not exist or be empty
-                    _logger.LogWarning("Could not clear table {Table}: {Error}", table, tableEx.Message);
-                }
-            }
-
-            // Re-enable foreign key constraints (SQL Server syntax)
-            Console.WriteLine("Re-enabling foreign key constraints...");
-            await _context.Database.ExecuteSqlRawAsync("EXEC sp_MSforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'");
-            Console.WriteLine("Finished clearing existing data.");
-            _logger.LogInformation("Successfully cleared all existing data using raw SQL");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error occurred while clearing existing data: " + ex.Message);
-            // Try to re-enable constraints even if clearing failed
             try
             {
-                await _context.Database.ExecuteSqlRawAsync("EXEC sp_MSforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL'");
+                _logger.LogInformation("Starting database seeding...");
+                if (force)
+                {
+                    _logger.LogWarning("Force seeding enabled - clearing existing data");
+                    await ClearExistingDataAsync();
+                }
+
+                await SeedDaoRevocationReasonsAsync();
+                await SeedSignificantDateHistoryReasonsAsync();
+                await SeedLocalAuthoritiesAsync();
+                await SeedUsersAsync();
+                await SeedProjectDataAsync();
+
+                _logger.LogInformation("Database seeding completed successfully");
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore errors when trying to restore constraints
+                _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
+                throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
             }
-            
-            _logger.LogError(ex, "Failed to clear existing data using raw SQL");
+    {
+        _logger.LogInformation("Clearing existing data using ORM...");
+        try
+        {
+            // Remove all data from tables in correct order to avoid FK issues
+            _context.SignificantDateHistories.RemoveRange(_context.SignificantDateHistories);
+            _context.Notes.RemoveRange(_context.Notes);
+            _context.ConversionTasksData.RemoveRange(_context.ConversionTasksData);
+            _context.TransferTasksData.RemoveRange(_context.TransferTasksData);
+            _context.Projects.RemoveRange(_context.Projects);
+            _context.DaoRevocations.RemoveRange(_context.DaoRevocations);
+            _context.KeyContacts.RemoveRange(_context.KeyContacts);
+            _context.Contacts.RemoveRange(_context.Contacts);
+            _context.ProjectGroups.RemoveRange(_context.ProjectGroups);
+            _context.Users.RemoveRange(_context.Users);
+            _context.GiasGroups.RemoveRange(_context.GiasGroups);
+            _context.GiasEstablishments.RemoveRange(_context.GiasEstablishments);
+            _context.SignificantDateHistoryReasons.RemoveRange(_context.SignificantDateHistoryReasons);
+            _context.DaoRevocationReasons.RemoveRange(_context.DaoRevocationReasons);
+            _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
+
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Successfully cleared all existing data using ORM");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to clear existing data using ORM");
             throw new InvalidOperationException("Failed to clear existing data. Database might have additional constraints or tables not handled by the seeder.", ex);
         }
     }

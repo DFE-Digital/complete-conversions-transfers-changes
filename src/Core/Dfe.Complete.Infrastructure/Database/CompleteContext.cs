@@ -404,12 +404,6 @@ public partial class CompleteContext : DbContext
             .HasMany(c => c.ProjectAssignedTos)
             .WithOne(e => e.AssignedTo)
             .HasForeignKey(e => e.AssignedToId);
-
-        projectConfiguration
-            .HasIndex(e => e.EntraUserObjectId)
-            .IsUnique()
-            .HasDatabaseName("UQ_users_entra_user_object_id")
-            .HasFilter("[entra_user_object_id] IS NOT NULL");
     }
 
     private static void ConfigureContact(EntityTypeBuilder<Contact> projectConfiguration)
