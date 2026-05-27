@@ -392,7 +392,7 @@ namespace Dfe.Complete.Models
                (!taskData.DeedOfVariationCleared.HasValue || taskData.DeedOfVariationCleared == false) &&
                (!taskData.DeedOfVariationSaved.HasValue || taskData.DeedOfVariationSaved == false) &&
                (!taskData.DeedOfVariationDraftSaved.HasValue || taskData.DeedOfVariationDraftSaved == false) &&
-               (!taskData.DeedOfVariationSent.HasValue || taskData.DeedOfVariationSent == false) &&
+               (!taskData.DeedOfVariationSigned.HasValue || taskData.DeedOfVariationSigned == false) &&
                (!taskData.DeedOfVariationSignedSecretaryState.HasValue || taskData.DeedOfVariationSignedSecretaryState == false) &&
                (!taskData.DeedOfVariationNotApplicable.HasValue || taskData.DeedOfVariationNotApplicable == false))
             {
@@ -406,7 +406,7 @@ namespace Dfe.Complete.Models
                taskData.DeedOfVariationCleared == true &&
                taskData.DeedOfVariationSaved == true &&
                taskData.DeedOfVariationDraftSaved == true &&
-               taskData.DeedOfVariationSent == true &&
+               taskData.DeedOfVariationSigned == true &&
                taskData.DeedOfVariationSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }

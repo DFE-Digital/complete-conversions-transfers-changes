@@ -54,7 +54,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.True(existingTaskData.DeedOfVariationCleared);
-            Assert.True(existingTaskData.DeedOfVariationSent);
+            Assert.True(existingTaskData.DeedOfVariationSigned);
             Assert.True(existingTaskData.DeedOfVariationSaved);
             Assert.True(existingTaskData.DeedOfVariationSigned);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
@@ -100,7 +100,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.True(existingTaskData.DeedOfVariationCleared);
-            Assert.True(existingTaskData.DeedOfVariationSent);
+            Assert.True(existingTaskData.DeedOfVariationSigned);
             Assert.True(existingTaskData.DeedOfVariationSaved);
             Assert.True(existingTaskData.DeedOfVariationDraftSaved);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
@@ -148,7 +148,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.Null(existingTaskData.DeedOfVariationReceived);
             Assert.Null(existingTaskData.DeedOfVariationCleared);
-            Assert.Null(existingTaskData.DeedOfVariationSent);
+            Assert.Null(existingTaskData.DeedOfVariationSigned);
             Assert.Null(existingTaskData.DeedOfVariationSaved);
             Assert.Null(existingTaskData.DeedOfVariationDraftSaved);
             Assert.Null(existingTaskData.DeedOfVariationSignedSecretaryState);

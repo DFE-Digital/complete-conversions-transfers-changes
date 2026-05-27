@@ -420,7 +420,7 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
         public void DeedOfVariationTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? draftSaved, bool? signed,
             bool? signedSecretaryState, bool? notApplicable, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -429,8 +429,8 @@ namespace Dfe.Complete.Tests.Models
                 DeedOfVariationReceived = received,
                 DeedOfVariationCleared = cleared,
                 DeedOfVariationSaved = saved,
-                DeedOfVariationDraftSaved = signed,
-                DeedOfVariationSent = sent,
+                DeedOfVariationDraftSaved = draftSaved,
+                DeedOfVariationSigned = signed,
                 DeedOfVariationSignedSecretaryState = signedSecretaryState,
                 DeedOfVariationNotApplicable = notApplicable
             };
