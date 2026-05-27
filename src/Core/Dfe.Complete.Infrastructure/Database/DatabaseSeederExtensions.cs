@@ -36,13 +36,7 @@ public static class DatabaseSeederExtensions
             // Ensure database exists
             await context.Database.EnsureCreatedAsync();
 
-            if (await seeder.IsSeededAsync())
-            {
-                logger.LogInformation("Database is already seeded. Skipping.");
-                return;
-            }
-
-            // Seed all data for development
+            // Seed all data for development (idempotent)
             await seeder.SeedAsync();
         }
         catch (Exception ex)
@@ -78,11 +72,7 @@ public static class DatabaseSeederExtensions
         var seeder = new DatabaseSeeder(context, logger);
 
         await context.Database.EnsureCreatedAsync();
-        if (await seeder.IsSeededAsync())
-        {
-            logger.LogInformation("Database is already seeded. Skipping.");
-            return;
-        }
+        // Seed all data for development (idempotent)
         await seeder.SeedAsync();
     }
 
