@@ -27,7 +27,8 @@ public static class DatabaseSeederExtensions
         
         var context = services.GetRequiredService<CompleteContext>();
         var logger = services.GetRequiredService<ILogger<DatabaseSeeder>>();
-        var seeder = new DatabaseSeeder(context, logger);
+        var configuration = services.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>();
+        var seeder = new DatabaseSeeder(context, logger, configuration);
 
         await context.Database.EnsureCreatedAsync();
         // Seed all data for development (idempotent)
