@@ -213,17 +213,4 @@ public class DatabaseSeeder
         
         _logger.LogInformation("Project data seeding completed");
     }
-
-    /// <summary>
-    /// Checks if the database has been seeded with reference and project data
-    /// </summary>
-    public async Task<bool> IsSeededAsync()
-    {
-        var hasReasons = await _context.DaoRevocationReasons.AnyAsync();
-        var hasLocalAuthorities = await _context.LocalAuthorities.AnyAsync();
-        var hasUsers = await _context.Users.AnyAsync();
-        var hasProjectGroups = await _context.ProjectGroups.AnyAsync();
-        
-        return hasReasons && hasLocalAuthorities && hasUsers && hasProjectGroups;
-    }
 }
