@@ -13,7 +13,7 @@ public static class DatabaseSeederExtensions
     /// </summary>
     /// <param name="host">The application host</param>
     /// <param name="force">If true, will clear existing data before seeding</param>
-    public static async Task SeedDatabaseAsync(this IHost host, bool force = false)
+    public static async Task SeedDatabaseAsync(this IHost host)
     {
         using var scope = host.Services.CreateScope();
         var services = scope.ServiceProvider;
@@ -36,15 +36,14 @@ public static class DatabaseSeederExtensions
             // Ensure database exists
             await context.Database.EnsureCreatedAsync();
 
-            // Check if already seeded (unless forcing)
-            if (!force && await seeder.IsSeededAsync())
+            if (await seeder.IsSeededAsync())
             {
-                logger.LogInformation("Database is already seeded. Use force=true to re-seed.");
+                logger.LogInformation("Database is already seeded. Skipping.");
                 return;
             }
 
             // Seed all data for development
-            await seeder.SeedAsync(force);
+            await seeder.SeedAsync();
         }
         catch (Exception ex)
         {
@@ -59,7 +58,7 @@ public static class DatabaseSeederExtensions
     /// </summary>
     /// <param name="serviceProvider">The service provider</param>
     /// <param name="force">If true, will clear existing data before seeding</param>
-    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider, bool force = false)
+    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
         var services = scope.ServiceProvider;
@@ -79,12 +78,12 @@ public static class DatabaseSeederExtensions
         var seeder = new DatabaseSeeder(context, logger);
 
         await context.Database.EnsureCreatedAsync();
-        if (!force && await seeder.IsSeededAsync())
+        if (await seeder.IsSeededAsync())
         {
-            logger.LogInformation("Database is already seeded. Use force=true to re-seed.");
+            logger.LogInformation("Database is already seeded. Skipping.");
             return;
         }
-        await seeder.SeedAsync(force);
+        await seeder.SeedAsync();
     }
 
     /// <summary>

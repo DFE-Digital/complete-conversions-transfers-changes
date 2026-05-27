@@ -21,63 +21,22 @@ public class DatabaseSeeder
     /// <summary>
     /// Seeds the database with all reference and sample data for development
     /// </summary>
-    /// <param name="force">If true, will delete existing data and re-seed. Use with caution.</param>
-    public async Task SeedAsync(bool force = false)
+    public async Task SeedAsync()
     {
         try
         {
             _logger.LogInformation("Starting database seeding...");
-
-            try
-            {
-                _logger.LogInformation("Starting database seeding...");
-                if (force)
-                {
-                    _logger.LogWarning("Force seeding enabled - clearing existing data");
-                    await ClearExistingDataAsync();
-                }
-
-                await SeedDaoRevocationReasonsAsync();
-                await SeedSignificantDateHistoryReasonsAsync();
-                await SeedLocalAuthoritiesAsync();
-                await SeedUsersAsync();
-                await SeedProjectDataAsync();
-
-                _logger.LogInformation("Database seeding completed successfully");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
-                throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
-            }
-    {
-        _logger.LogInformation("Clearing existing data using ORM...");
-        try
-        {
-            // Remove all data from tables in correct order to avoid FK issues
-            _context.SignificantDateHistories.RemoveRange(_context.SignificantDateHistories);
-            _context.Notes.RemoveRange(_context.Notes);
-            _context.ConversionTasksData.RemoveRange(_context.ConversionTasksData);
-            _context.TransferTasksData.RemoveRange(_context.TransferTasksData);
-            _context.Projects.RemoveRange(_context.Projects);
-            _context.DaoRevocations.RemoveRange(_context.DaoRevocations);
-            _context.KeyContacts.RemoveRange(_context.KeyContacts);
-            _context.Contacts.RemoveRange(_context.Contacts);
-            _context.ProjectGroups.RemoveRange(_context.ProjectGroups);
-            _context.Users.RemoveRange(_context.Users);
-            _context.GiasGroups.RemoveRange(_context.GiasGroups);
-            _context.GiasEstablishments.RemoveRange(_context.GiasEstablishments);
-            _context.SignificantDateHistoryReasons.RemoveRange(_context.SignificantDateHistoryReasons);
-            _context.DaoRevocationReasons.RemoveRange(_context.DaoRevocationReasons);
-            _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
-
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Successfully cleared all existing data using ORM");
+            await SeedDaoRevocationReasonsAsync();
+            await SeedSignificantDateHistoryReasonsAsync();
+            await SeedLocalAuthoritiesAsync();
+            await SeedUsersAsync();
+            await SeedProjectDataAsync();
+            _logger.LogInformation("Database seeding completed successfully");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to clear existing data using ORM");
-            throw new InvalidOperationException("Failed to clear existing data. Database might have additional constraints or tables not handled by the seeder.", ex);
+            _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
+            throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
         }
     }
 
