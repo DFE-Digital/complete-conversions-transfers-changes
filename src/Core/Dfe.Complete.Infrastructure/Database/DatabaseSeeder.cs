@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace Dfe.Complete.Infrastructure.Database;
 
@@ -11,11 +12,13 @@ public class DatabaseSeeder
 {
     private readonly CompleteContext _context;
     private readonly ILogger<DatabaseSeeder> _logger;
+    private readonly IConfiguration _configuration;
 
-    public DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> logger)
+    public DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> logger, IConfiguration configuration)
     {
         _context = context;
         _logger = logger;
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -134,15 +137,8 @@ public class DatabaseSeeder
 
     private async Task SeedUsersAsync()
     {
-        if (await _context.Users.AnyAsync())
-        {
-            _logger.LogInformation("Users already seeded, skipping...");
-            return;
-        }
-
-        _logger.LogInformation("Seeding default users...");
-
-        var users = new List<User>
+        // Always ensure default users exist (idempotent)
+        var defaultUsers = new List<User>
         {
             new()
             {
@@ -182,10 +178,97 @@ public class DatabaseSeeder
             }
         };
 
-        await _context.Users.AddRangeAsync(users);
+        foreach (var user in defaultUsers)
+        {
+            if (!await _context.Users.AnyAsync(u => u.Email == user.Email))
+            {
+                await _context.Users.AddAsync(user);
+            }
+        }
         await _context.SaveChangesAsync();
-        
-        _logger.LogInformation("Seeded {Count} default users", users.Count);
+        _logger.LogInformation("Seeded default users if missing");
+
+        // Local developer user seeding using user secrets
+        await SeedLocalDeveloperUsersAsync();
+
+    }
+
+    /// <summary>
+    /// Seeds local developer users from user secrets (LocalSeed:UserEmails)
+    /// </summary>
+    private async Task SeedLocalDeveloperUsersAsync()
+    {
+        // Only run if DB is local/dev
+        var connStr = _context.Database.GetConnectionString();
+        if (string.IsNullOrEmpty(connStr) || !(connStr.Contains("localhost") || connStr.Contains("127.0.0.1") || connStr.Contains("localdb", StringComparison.OrdinalIgnoreCase)))
+        {
+            _logger.LogInformation("Skipping local developer user seeding: not a local DB connection");
+            return;
+        }
+
+        // Try to get user secrets via configuration
+        var emailsRaw = _configuration["LocalSeed:UserEmails"];
+        if (string.IsNullOrWhiteSpace(emailsRaw))
+        {
+            _logger.LogInformation("No LocalSeed:UserEmails secret set");
+            return;
+        }
+
+        var emails = emailsRaw.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(e => e.ToLowerInvariant())
+            .Distinct()
+            .ToList();
+
+        var validEmails = new List<(string Email, string First, string Last)>();
+        foreach (var email in emails)
+        {
+            // Validate format: firstname.lastname@education.gov.uk
+            if (!email.EndsWith("@education.gov.uk"))
+            {
+                _logger.LogWarning("Skipping invalid email (wrong domain): {Email}", email);
+                continue;
+            }
+            var local = email[..^"@education.gov.uk".Length];
+            var parts = local.Split('.');
+            if (parts.Length != 2 || string.IsNullOrWhiteSpace(parts[0]) || string.IsNullOrWhiteSpace(parts[1]))
+            {
+                _logger.LogWarning("Skipping invalid email (not firstname.lastname): {Email}", email);
+                continue;
+            }
+            var first = Capitalize(parts[0]);
+            var last = Capitalize(parts[1]);
+            validEmails.Add((Email: email, First: first, Last: last));
+        }
+
+        int seeded = 0;
+        foreach (var (email, first, last) in validEmails)
+        {
+            if (!await _context.Users.AnyAsync(u => u.Email == email))
+            {
+                var user = new User
+                {
+                    Id = new UserId(Guid.NewGuid()),
+                    Email = email,
+                    FirstName = first,
+                    LastName = last,
+                    Team = ProjectTeam.London.ToDescription(),
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Users.AddAsync(user);
+                seeded++;
+            }
+        }
+        if (seeded > 0)
+        {
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Seeded {Count} local developer users from user secrets", seeded);
+        }
+        else
+        {
+            _logger.LogInformation("No new local developer users to seed");
+        }
+
+        static string Capitalize(string s) => string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s[1..];
     }
 
     /// <summary>

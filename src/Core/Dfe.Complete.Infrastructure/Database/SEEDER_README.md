@@ -2,165 +2,91 @@
 
 ## Overview
 
-The DatabaseSeeder provides a comprehensive solution for initializing the Dfe.Complete database with all necessary data for development environments only.
+The DatabaseSeeder provides a comprehensive solution for initializing the Dfe.Complete database with all necessary data for development environments only. It is:
+- **CLI-only** (run via the API project)
+- **Idempotent** (safe to run multiple times)
+- **Development/local DB only** (will not run on production or remote DBs)
+- **Supports local developer user seeding via user secrets**
 
-**Important**: This is a class library. To run seeding commands, use the API project (`src/Api/Dfe.Complete.Api`) which references this Infrastructure project.
+**Important:** To run seeding commands, use the API project (`src/Api/Dfe.Complete.Api`) which references this Infrastructure project.
 
-## Components
+## What Gets Seeded
 
-### 1. DatabaseSeeder.cs
-Core seeding logic that handles all data needed for development:
-- DAO revocation reasons
-- Significant date history reasons  
-- Local authorities (basic set)
-- Default system users
-- Project data
+- DAO revocation reasons (6 standard reasons)
+- Significant date history reasons (7 standard reasons)
+- Local authorities (18 major UK local authorities)
+- Default system users (4 regional delivery officers)
+- Local developer users (from user secrets, see below)
+- Basic project groups for development
 
-### 2. DatabaseSeederExtensions.cs
-Extension methods for easy integration with ASP.NET Core applications:
-- `SeedDatabaseAsync()` - Seeds database from IHost
-- `AddDatabaseSeeder()` - Registers seeder services
-- `SeedDatabaseAsync(IServiceProvider)` - Seeds using service provider
+## How to Run the Seeder
 
-### 3. DatabaseSeederCli.cs
-Command-line interface for development seeding operations. Called from the API project via Program.cs.
+### Command Line Usage
 
-## Integration Examples
+Run from the API project root (not Infrastructure project):
 
-### In Program.cs (Development Auto-Seeding)
+```bash
+cd src/Api/Dfe.Complete.Api
+
+dotnet run -- seed-db
+
+dotnet run -- seed-db --help
+```
+
+Or from the solution root:
+
+```bash
+dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
+```
+
+### Integration in Program.cs
+
+Add to your **API project's Program.cs** (src/Api/Dfe.Complete.Api/Program.cs):
 
 ```csharp
 // Add to service registration
 builder.Services.AddDatabaseSeeder();
 
-// Add after app.Build() but before app.Run()
 var app = builder.Build();
 
 // Handle command line seeding arguments
 if (args.Length > 0 && args[0] == "seed-db")
 {
-    try
-    {
-        var exitCode = await DatabaseSeederCli.ExecuteAsync(args.Skip(1).ToArray(), app.Services);
-        Environment.Exit(exitCode);
-    }
-    catch (Exception ex)
-    {
-        var logger = app.Services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Command line seeding failed");
-        Environment.Exit(1);
-    }
-}
-
-// Auto-seed in development only  
-if (app.Environment.IsDevelopment())
-{
-    await app.SeedDatabaseAsync(force: false);
+    var exitCode = await DatabaseSeederCli.ExecuteAsync(args.Skip(1).ToArray(), app.Services);
+    Environment.Exit(exitCode);
 }
 
 await app.RunAsync();
 ```
 
-### Command Line Usage
+## Local Developer User Seeding
 
-**Run from the API project root (not Infrastructure project):**
+You can seed custom local developer users using user secrets. This is only allowed against a local database (connection string must contain `localhost`, `127.0.0.1`, or `localdb`).
 
-```bash
-# Navigate to API project directory
-cd src/Api/Dfe.Complete.Api
-
-# Basic seeding (development only)
-dotnet run -- seed-db
-
-# Force re-seed (development only)
-dotnet run -- seed-db --force
-
-# Show help
-dotnet run -- seed-db --help
-```
-
-**Or from solution root:**
+**Set your local developer emails (semicolon-separated):**
 
 ```bash
-# Basic seeding
-dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
-
-# Force re-seed  
-dotnet run --project src/Api/Dfe.Complete.Api -- seed-db --force
+dotnet user-secrets set "LocalSeed:UserEmails" "alice.smith@education.gov.uk;bob.jones@education.gov.uk"
 ```
 
-### Programmatic Usage
+- Only emails in the format `firstname.lastname@education.gov.uk` are accepted.
+- First and last names are derived from the email.
+- Duplicates and invalid formats are ignored.
+- **Never commit real user emails to source control.**
 
-```csharp
-// Direct usage in a service or controller (development only)
-public async Task SeedDatabase()
-{
-    await _serviceProvider.SeedDatabaseAsync(force: false);
-}
-
-// Or use the extension method approach
-public async Task SeedDatabaseViaExtension(WebApplication app, string[] args)
-{
-    await app.ConfigureDatabaseSeedingAsync(args);
-}
-```
+When you run the seeder, these users will be added if they do not already exist.
 
 ## Safety Features
 
-- **Development only**: Only runs in Development environment
-- **Idempotent**: Can be run multiple times safely
-- **Comprehensive logging**: Tracks all seeding operations
-- **Force protection**: Prevents accidental data loss unless explicitly requested
-## Data Seeded
-
-### All Development Data
-- DAO revocation reasons (6 standard reasons)
-- Significant date history reasons (7 standard reasons)  
-- Local authorities (18 major UK local authorities)
-- Default system users (4 regional delivery officers)
-- Basic project groups for development
+- **Development only:** Only runs in Development environment
+- **Idempotent:** Can be run multiple times safely
+- **Comprehensive logging:** Tracks all seeding operations
+- **Local DB guard:** Local developer user seeding only runs on local DBs
 
 ## Notes
 
-- **Development only**: Seeding is completely disabled for non-development environments
 - External dependencies (GIAS establishments, trusts by UKPRN/URN) are not included per requirements
 - Local authorities use a representative sample of major UK authorities
 - User emails use placeholder domains (@education.gov.uk)
 - All data uses proper domain value objects and follows existing patterns
 - All-or-nothing approach: no separate sample data option
-
-## Quick Integration
-
-Add to your **API project's Program.cs** (src/Api/Dfe.Complete.Api/Program.cs):
-
-```csharp
-using Dfe.Complete.Api.Extensions; // Add this using statement
-
-// ... existing imports and builder configuration ...
-
-// Add to service registration (with other builder.Services calls)
-builder.Services.AddDatabaseSeeding();
-
-var app = builder.Build();
-
-// ... existing middleware configuration ...
-
-// Add before app.RunAsync() - handles both CLI and auto-seeding
-await app.ConfigureDatabaseSeedingAsync(args);
-
-await app.RunAsync();
-```
-
-The extension method automatically handles:
-- Command line seeding arguments (`seed-db`, `--force`, `--help`)
-- Auto-seeding on startup (development environment only)
-- Proper error handling and logging
-
-## Command Line Usage
-```bash
-# From solution root - Basic development seeding
-dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
-
-# From solution root - Force re-seed (development only) 
-dotnet run --project src/Api/Dfe.Complete.Api -- seed-db --force
-```
