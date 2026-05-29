@@ -1,3 +1,29 @@
+# Quickstart
+
+- **Set your connection string in user secrets:**
+    ```bash
+    dotnet user-secrets set "ConnectionStrings:DefaultConnection" "<your-connection-string>"
+    ```
+
+- **Apply migrations:**
+    ```bash
+    dotnet ef database update -p src/Core/Dfe.Complete.Infrastructure -s src/Api/Dfe.Complete.Api
+    ```
+
+- **Run the seeder:**
+    ```bash
+    dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
+    ```
+    - To reset all seed data before seeding:
+        ```bash
+        dotnet run --project src/Api/Dfe.Complete.Api -- seed-db --force
+        ```
+
+- **Local developer users:**  
+    To add your own test users, set the following secret:
+    ```bash
+    dotnet user-secrets set "LocalSeed:UserEmails" "alice.smith@education.gov.uk;bob.jones@education.gov.uk"
+    ```
 # Database Seeder Usage Guide
 
 ## Overview

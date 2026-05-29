@@ -19,7 +19,7 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
     /// <summary>
     /// Seeds the database with all reference and sample data for development
     /// </summary>
-    public async Task SeedAsync()
+    public async Task SeedAsync(bool force = false)
     {
         // Only run if DB is local/dev
         var connStr = _context.Database.GetConnectionString();
@@ -31,6 +31,12 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         }
         try
         {
+            if (force)
+            {
+                Console.WriteLine("[Seeder] Force/reset flag detected. Deleting all seed data tables...");
+                _logger.LogInformation("Force/reset flag detected. Deleting all seed data tables...");
+                await DeleteSeedDataAsync();
+            }
             Console.WriteLine("[Seeder] Starting database seeding...");
             _logger.LogInformation("Starting database seeding...");
 
@@ -50,6 +56,23 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
             throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
         }
+    }
+
+    private async Task DeleteSeedDataAsync()
+    {
+        // Delete in the specified order using EF
+        _context.TransferTasksData.RemoveRange(_context.TransferTasksData);
+        _context.ConversionTasksData.RemoveRange(_context.ConversionTasksData);
+        _context.ProjectGroups.RemoveRange(_context.ProjectGroups);
+        _context.GiasEstablishments.RemoveRange(_context.GiasEstablishments);
+        _context.KeyContacts.RemoveRange(_context.KeyContacts);
+        _context.SignificantDateHistoryReasons.RemoveRange(_context.SignificantDateHistoryReasons);
+        _context.Projects.RemoveRange(_context.Projects);
+        _context.Users.RemoveRange(_context.Users);
+        _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
+        await _context.SaveChangesAsync();
+        Console.WriteLine("[Seeder] All seed data tables deleted.");
+        _logger.LogInformation("All seed data tables deleted.");
     }
 
     private async Task SeedSignificantDateHistoryReasonsAsync()
