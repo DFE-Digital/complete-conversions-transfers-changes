@@ -8,20 +8,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace Dfe.Complete.Infrastructure.Database;
 
-public class DatabaseSeeder
+public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> logger, IConfiguration configuration)
 {
-    private readonly CompleteContext _context;
-    private readonly ILogger<DatabaseSeeder> _logger;
-    private readonly IConfiguration _configuration;
+    private readonly CompleteContext _context = context;
+    private readonly ILogger<DatabaseSeeder> _logger = logger;
+    private readonly IConfiguration _configuration = configuration;
 
     private static DateTime Now => DateTime.UtcNow;
-
-    public DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> logger, IConfiguration configuration)
-    {
-        _context = context;
-        _logger = logger;
-        _configuration = configuration;
-    }
 
     /// <summary>
     /// Seeds the database with all reference and sample data for development
@@ -83,7 +76,7 @@ public class DatabaseSeeder
 
         await _context.DaoRevocationReasons.AddRangeAsync(reasons);
         await _context.SaveChangesAsync();
-        
+
         _logger.LogInformation("Seeded {Count} DAO revocation reasons", reasons.Count);
     }
 
@@ -114,7 +107,7 @@ public class DatabaseSeeder
 
         await _context.SignificantDateHistoryReasons.AddRangeAsync(reasons);
         await _context.SaveChangesAsync();
-        
+
         _logger.LogInformation("Seeded {Count} significant date history reasons", reasons.Count);
     }
 
@@ -410,9 +403,9 @@ public class DatabaseSeeder
         return (projects, tasks);
     }
 
-private static IReadOnlyList<User> DefaultUsers =>
-    [
-        CreateUser("Joyce", "Byers", "joyce.byers@education.gov.uk", ProjectTeam.London),
+    private static IReadOnlyList<User> DefaultUsers =>
+        [
+            CreateUser("Joyce", "Byers", "joyce.byers@education.gov.uk", ProjectTeam.London),
         CreateUser("Jim", "Hopper", "jim.hopper@education.gov.uk", ProjectTeam.London),
         CreateUser("Mike", "Wheeler", "mike.wheeler@education.gov.uk", ProjectTeam.London),
         CreateUser("Jane", "Hopper", "jane.hopper11@education.gov.uk", ProjectTeam.London),
@@ -440,11 +433,11 @@ private static IReadOnlyList<User> DefaultUsers =>
         CreateUser("Henry", "Creel", "henry.creel@education.gov.uk", ProjectTeam.NorthEast),
         CreateUser("Holly", "Wheeler", "holly.wheeler@education.gov.uk", ProjectTeam.NorthEast),
     ];
-    
 
-        private static IReadOnlyList<LocalAuthority> LocalAuthorities =>
-        [
-            LocalAuthority.Create(NewLocalAuthorityId(), "Birmingham City Council", "301", CreateAddress("1 Main Street", "Birmingham", "West Midlands", "B1 1AA"), Now),
+
+    private static IReadOnlyList<LocalAuthority> LocalAuthorities =>
+    [
+        LocalAuthority.Create(NewLocalAuthorityId(), "Birmingham City Council", "301", CreateAddress("1 Main Street", "Birmingham", "West Midlands", "B1 1AA"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Hawkins Council", "901", CreateAddress("1 Hopper Lane", "Hawkins", "Indiana", "HW1 1AA"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Lenora Hills Council", "902", CreateAddress("22 Roller Rink Road", "Lenora Hills", "California", "LH2 2BB"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Roane County Council", "903", CreateAddress("4 Byers Street", "Roane County", "Indiana", "RC3 3CC"), Now),
@@ -465,12 +458,12 @@ private static IReadOnlyList<User> DefaultUsers =>
             LocalAuthority.Create(NewLocalAuthorityId(), "Amity Island Council", "918", CreateAddress("2 Shark View", "Amity Island", "Massachusetts", "AI1 8RR"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Bedrock Council", "919", CreateAddress("1 Quarry Road", "Bedrock", "Stone County", "BR1 9SS"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Bikini Bottom Council", "920", CreateAddress("124 Conch Street", "Bikini Bottom", "Pacific Ocean", "BB2 0TT"), Now)
-        ];
-    
-    public static IReadOnlyList<Ukprn> Ukprns =>[new Ukprn(10031575), new Ukprn(10034759), new Ukprn(10037395), new Ukprn(10039603), new Ukprn(10042780), new Ukprn(10034858), new Ukprn(10046414), new Ukprn(10054033), new Ukprn(10054313), new Ukprn(10055361)];
+    ];
+
+    public static IReadOnlyList<Ukprn> Ukprns => [new Ukprn(10031575), new Ukprn(10034759), new Ukprn(10037395), new Ukprn(10039603), new Ukprn(10042780), new Ukprn(10034858), new Ukprn(10046414), new Ukprn(10054033), new Ukprn(10054313), new Ukprn(10055361)];
 
     public static IReadOnlyList<Urn> Urns => [new Urn(100003), new Urn(100021), new Urn(100111), new Urn(100112), new Urn(100179), new Urn(100230), new Urn(100254), new Urn(100268), new Urn(100277), new Urn(100279), new Urn(100285), new Urn(100347), new Urn(100502), new Urn(100642), new Urn(100727), new Urn(100731), new Urn(100732), new Urn(100734), new Urn(100742), new Urn(100752), new Urn(100830), new Urn(100833), new Urn(100852), new Urn(100897), new Urn(100936), new Urn(100950), new Urn(100978), new Urn(101133), new Urn(101259), new Urn(101275)];
-    
+
     public static List<Region> Regions => EnumExtensions.ToList<Region>();
 
     private static User CreateUser(
