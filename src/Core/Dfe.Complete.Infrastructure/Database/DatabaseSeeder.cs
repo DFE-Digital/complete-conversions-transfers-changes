@@ -38,8 +38,8 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             await SeedUsersAsync();
             await SeedLocalAuthoritiesAsync();
             await SeedSignificantDateHistoryReasonsAsync();
-            await SeedProjectsAsync();
             await SeedGiasEstablishmentsAsync();
+            await SeedProjectsAsync();
 
             Console.WriteLine("[Seeder] Database seeding completed successfully");
             _logger.LogInformation("Database seeding completed successfully");
