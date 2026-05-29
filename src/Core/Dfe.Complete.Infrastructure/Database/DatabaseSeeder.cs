@@ -40,12 +40,14 @@ public class DatabaseSeeder
         {
             Console.WriteLine("[Seeder] Starting database seeding...");
             _logger.LogInformation("Starting database seeding...");
+
+            // The order of seeding matters due to foreign key relationships, so we seed in a specific sequence. Each method is idempotent and checks for existing data before seeding.
             await SeedUsersAsync();
             await SeedLocalAuthoritiesAsync();
             await SeedSignificantDateHistoryReasonsAsync();
-            // await SeedContactsAsync();
             await SeedProjectsAsync();
-            // await SeedAllEntitiesAsync();
+            await SeedGiasEstablishmentsAsync();
+
             Console.WriteLine("[Seeder] Database seeding completed successfully");
             _logger.LogInformation("Database seeding completed successfully");
         }
@@ -131,6 +133,40 @@ public class DatabaseSeeder
         await _context.LocalAuthorities.AddRangeAsync(LocalAuthorities);
         await _context.SaveChangesAsync();
         _logger.LogInformation("Seeded {Count} local authorities", LocalAuthorities.Count);
+    }
+
+    private async Task SeedGiasEstablishmentsAsync()
+    {
+        if (await _context.GiasEstablishments.AnyAsync())
+        {
+            Console.WriteLine("[Seeder] GIAS establishments already seeded, skipping...");
+            _logger.LogInformation("GIAS establishments already seeded, skipping...");
+            return;
+        }
+
+        Console.WriteLine("[Seeder] Seeding GIAS establishments...");
+        _logger.LogInformation("Seeding GIAS establishments...");
+
+        var giasEstablishments = new List<GiasEstablishment>();
+        for (var i = 0; i < Math.Min(Ukprns.Count, Urns.Count); i++)
+        {
+            var localAuthority = RandomFromList(LocalAuthorities);
+
+            giasEstablishments.Add(new GiasEstablishment
+            {
+                Id = new GiasEstablishmentId(Guid.NewGuid()),
+                Ukprn = Ukprns[i],
+                Urn = Urns[i],
+                Name = $"School of {localAuthority.Name.Replace("Council", "").Trim()}",
+                LocalAuthorityName = localAuthority.Name,
+                LocalAuthorityCode = localAuthority.Code,
+
+                CreatedAt = Now
+            });
+        }
+        await _context.GiasEstablishments.AddRangeAsync(giasEstablishments);
+        await _context.SaveChangesAsync();
+        _logger.LogInformation("Seeded {Count} GIAS establishments", giasEstablishments.Count);
     }
 
     private async Task SeedUsersAsync()
@@ -228,8 +264,12 @@ public class DatabaseSeeder
         Console.WriteLine("[Seeder] Seeding project data...");
         _logger.LogInformation("Seeding project data...");
 
-        var (projectGroup, conversionProjects, conversionTasks) = SetupConversionProjects();
-        var (transferProjects, transferTasks) = SetupTransferProjects();
+        // Fetch users and local authorities from the database for correct IDs
+        var users = await _context.Users.ToListAsync();
+        var localAuthorities = await _context.LocalAuthorities.ToListAsync();
+
+        var (projectGroup, conversionProjects, conversionTasks) = SetupConversionProjects(users, localAuthorities);
+        var (transferProjects, transferTasks) = SetupTransferProjects(users, localAuthorities);
 
         var allProjects = conversionProjects.Concat(transferProjects).ToList();
         var keyContacts = allProjects
@@ -242,17 +282,18 @@ public class DatabaseSeeder
             })
             .ToList();
 
-        await _context.ConversionTasksData.AddRangeAsync(conversionTasks);
-        await _context.TransferTasksData.AddRangeAsync(transferTasks);
-        await _context.ProjectGroups.AddAsync(projectGroup);
-        await _context.Projects.AddRangeAsync(allProjects);
-        await _context.KeyContacts.AddRangeAsync(keyContacts);
+        _context.ConversionTasksData.AddRange(conversionTasks);
+        _context.TransferTasksData.AddRange(transferTasks);
+        _context.ProjectGroups.Add(projectGroup);
+        _context.Projects.AddRange(allProjects);
+        _context.KeyContacts.AddRange(keyContacts);
 
         try
         {
             await _context.SaveChangesAsync();
         }
-        catch (Exception ex)        {
+        catch (Exception ex)
+        {
             Console.WriteLine($"[Seeder] ERROR seeding projects: {ex.Message}\n{ex}");
             _logger.LogError(ex, "Error occurred while seeding projects");
             throw;
@@ -262,7 +303,7 @@ public class DatabaseSeeder
         _logger.LogInformation("Project data seeding completed");
     }
 
-    private static (ProjectGroup, List<Project>, List<ConversionTasksData>) SetupConversionProjects()
+    private static (ProjectGroup, List<Project>, List<ConversionTasksData>) SetupConversionProjects(List<User> users, List<LocalAuthority> localAuthorities)
     {
         var projectGroup = new ProjectGroup
         {
@@ -280,8 +321,11 @@ public class DatabaseSeeder
             // Create task entity
             var taskListItem = new ConversionTasksData(new TaskDataId(Guid.NewGuid()), Now, Now);
 
-            // Create project entity
-            var localAuthority = RandomFromList(LocalAuthorities);
+            var localAuthority = RandomFromList(localAuthorities);
+            var createdByUser = RandomFromList(users);
+            var assignedToUser = RandomFromList(users);
+            var caseworkerUser = RandomFromList(users);
+
             var conversion =
                 Project.CreateConversionProject(new CreateConversionProjectParams(
                 new ProjectId(Guid.NewGuid()),
@@ -294,30 +338,29 @@ public class DatabaseSeeder
                 DateOnly.FromDateTime(Now.AddDays(-(i + 10))),
                 i % 3 == 0 ? "Advisory board conditions" : null,
                 i % Ukprns.Count == 0 ? projectGroup.Id : null,
-                RandomFromList(DefaultUsers).Id,
+                createdByUser.Id,
                 localAuthority.Id.Value
             ));
 
             conversion.AssignedAt = new DateTimeOffset(Now.AddDays(-i)).DateTime;
-            conversion.AssignedToId = RandomFromList(DefaultUsers).Id;
-            conversion.CaseworkerId = RandomFromList(DefaultUsers).Id;
+            conversion.AssignedToId = assignedToUser.Id;
+            conversion.CaseworkerId = caseworkerUser.Id;
 
             if (i >= 10)
             {
                 conversion.NewTrustReferenceNumber = $"TR{10000 + i}";
-                var randomUser = RandomFromList(DefaultUsers);
-                conversion.NewTrustName = $"The {randomUser.FirstName} {randomUser.LastName} Trust";
+                conversion.NewTrustName = $"The {assignedToUser.FirstName} {caseworkerUser.LastName} Trust";
                 conversion.IncomingTrustUkprn = null;
             }
 
             if (i < 7 || i > 12) conversion.State = ProjectState.Active;
-            projects.Add(conversion);            
+            projects.Add(conversion);
             tasks.Add(taskListItem);
         }
         return (projectGroup, projects, tasks);
     }
 
-    private static (List<Project>, List<TransferTasksData>) SetupTransferProjects()
+    private static (List<Project>, List<TransferTasksData>) SetupTransferProjects(List<User> users, List<LocalAuthority> localAuthorities)
     {
         List<Project> projects = [];
         List<TransferTasksData> tasks = [];
@@ -326,8 +369,12 @@ public class DatabaseSeeder
             // Create task entity
             var taskListItem = new TransferTasksData(new TaskDataId(Guid.NewGuid()), Now, Now, false, false, false);
 
+            var localAuthority = RandomFromList(localAuthorities);
+            var createdByUser = RandomFromList(users);
+            var assignedToUser = RandomFromList(users);
+            var caseworkerUser = RandomFromList(users);
+
             // Create project entity
-            var localAuthority = RandomFromList(LocalAuthorities);
             var transfer =
                 Project.CreateTransferProject(new CreateTransferProjectParams(
                 new ProjectId(Guid.NewGuid()),
@@ -340,25 +387,24 @@ public class DatabaseSeeder
                 DateOnly.FromDateTime(Now.AddDays(-(i + 10))),
                 i % 3 == 0 ? "Advisory board conditions" : null,
                 null,
-                RandomFromList(DefaultUsers).Id,
+                createdByUser.Id,
                 localAuthority.Id.Value
             ));
 
             transfer.AssignedAt = new DateTimeOffset(Now.AddDays(-i)).DateTime;
-            transfer.AssignedToId = RandomFromList(DefaultUsers).Id;
-            transfer.CaseworkerId = RandomFromList(DefaultUsers).Id;
+            transfer.AssignedToId = assignedToUser.Id;
+            transfer.CaseworkerId = caseworkerUser.Id;
 
             if (i >= 25)
             {
                 transfer.NewTrustReferenceNumber = $"TR{10000 + i}";
-                var randomUser = RandomFromList(DefaultUsers);
-                transfer.NewTrustName = $"The {randomUser.FirstName} {randomUser.LastName} Trust";
+                transfer.NewTrustName = $"The {assignedToUser.FirstName} {caseworkerUser.LastName} Trust";
                 transfer.IncomingTrustUkprn = null;
             }
 
             if (i < 22 || i > 27) transfer.State = ProjectState.Active;
-            projects.Add(transfer);   
-            tasks.Add(taskListItem);         
+            projects.Add(transfer);
+            tasks.Add(taskListItem);
         }
 
         return (projects, tasks);
