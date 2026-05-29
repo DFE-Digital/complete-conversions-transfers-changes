@@ -52,34 +52,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         }
     }
 
-    private async Task SeedDaoRevocationReasonsAsync()
-    {
-        if (await _context.DaoRevocationReasons.AnyAsync())
-        {
-            Console.WriteLine("[Seeder] DAO revocation reasons already seeded, skipping...");
-            _logger.LogInformation("DAO revocation reasons already seeded, skipping...");
-            return;
-        }
-
-        Console.WriteLine("[Seeder] Seeding DAO revocation reasons...");
-        _logger.LogInformation("Seeding DAO revocation reasons...");
-
-        var reasons = new List<DaoRevocationReason>
-        {
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Financial concerns" },
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Governance issues" },
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Educational performance" },
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Safeguarding concerns" },
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Compliance failures" },
-            new() { Id = new DaoRevocationReasonId(Guid.NewGuid()), ReasonType = "Other" }
-        };
-
-        await _context.DaoRevocationReasons.AddRangeAsync(reasons);
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation("Seeded {Count} DAO revocation reasons", reasons.Count);
-    }
-
     private async Task SeedSignificantDateHistoryReasonsAsync()
     {
         if (await _context.SignificantDateHistoryReasons.AnyAsync())
@@ -141,16 +113,16 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         _logger.LogInformation("Seeding GIAS establishments...");
 
         var giasEstablishments = new List<GiasEstablishment>();
-        for (var i = 0; i < Math.Min(Ukprns.Count, Urns.Count); i++)
+        for (var i = 0; i < Urns.Count; i++)
         {
             var localAuthority = RandomFromList(LocalAuthorities);
 
             giasEstablishments.Add(new GiasEstablishment
             {
                 Id = new GiasEstablishmentId(Guid.NewGuid()),
-                Ukprn = Ukprns[i],
+                Ukprn = Ukprns[i % Ukprns.Count],
                 Urn = Urns[i],
-                Name = $"School of {localAuthority.Name.Replace("Council", "").Trim()}",
+                Name = EstablishmentNames[i % EstablishmentNames.Count],
                 LocalAuthorityName = localAuthority.Name,
                 LocalAuthorityCode = localAuthority.Code,
 
@@ -403,9 +375,8 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         return (projects, tasks);
     }
 
-    private static IReadOnlyList<User> DefaultUsers =>
-        [
-            CreateUser("Joyce", "Byers", "joyce.byers@education.gov.uk", ProjectTeam.London),
+    private static IReadOnlyList<User> DefaultUsers => [
+        CreateUser("Joyce", "Byers", "joyce.byers@education.gov.uk", ProjectTeam.London),
         CreateUser("Jim", "Hopper", "jim.hopper@education.gov.uk", ProjectTeam.London),
         CreateUser("Mike", "Wheeler", "mike.wheeler@education.gov.uk", ProjectTeam.London),
         CreateUser("Jane", "Hopper", "jane.hopper11@education.gov.uk", ProjectTeam.London),
@@ -434,35 +405,36 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         CreateUser("Holly", "Wheeler", "holly.wheeler@education.gov.uk", ProjectTeam.NorthEast),
     ];
 
-
     private static IReadOnlyList<LocalAuthority> LocalAuthorities =>
     [
         LocalAuthority.Create(NewLocalAuthorityId(), "Birmingham City Council", "301", CreateAddress("1 Main Street", "Birmingham", "West Midlands", "B1 1AA"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Hawkins Council", "901", CreateAddress("1 Hopper Lane", "Hawkins", "Indiana", "HW1 1AA"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Lenora Hills Council", "902", CreateAddress("22 Roller Rink Road", "Lenora Hills", "California", "LH2 2BB"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Roane County Council", "903", CreateAddress("4 Byers Street", "Roane County", "Indiana", "RC3 3CC"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Starcourt District Council", "904", CreateAddress("45 Starcourt Mall", "Hawkins", "Indiana", "SD4 4DD"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Mirkwood Borough Council", "905", CreateAddress("12 Mirkwood Drive", "Hawkins", "Indiana", "MB5 5EE"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Lovers Lake Council", "906", CreateAddress("7 Lakeside Avenue", "Lovers Lake", "Indiana", "LL6 6FF"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Forest Hills Council", "907", CreateAddress("18 Forest Hills Park", "Hawkins", "Indiana", "FH7 7GG"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Pennhurst District Council", "908", CreateAddress("3 Pennhurst Road", "Kerley County", "Indiana", "PD8 8HH"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Sunnydale Borough Council", "909", CreateAddress("99 Hellmouth Road", "Sunnydale", "California", "SB9 9II"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Pawnee City Council", "910", CreateAddress("100 Parks Department Way", "Pawnee", "Indiana", "PC1 0JJ"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Springfield Council", "911", CreateAddress("742 Evergreen Terrace", "Springfield", "Unknown", "SC1 1KK"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Hill Valley Council", "912", CreateAddress("88 Clock Tower Square", "Hill Valley", "California", "HV1 2LL"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Twin Peaks Council", "913", CreateAddress("315 Black Lodge Road", "Twin Peaks", "Washington", "TP1 3MM"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Stars Hollow Council", "914", CreateAddress("5 Dragonfly Avenue", "Stars Hollow", "Connecticut", "SH1 4NN"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Riverdale Council", "915", CreateAddress("12 Pop Tate Street", "Riverdale", "New York", "RD1 5OO"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Greendale Council", "916", CreateAddress("101 Community College Road", "Greendale", "Colorado", "GD1 6PP"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Smallville Council", "917", CreateAddress("33 Kent Farm Road", "Smallville", "Kansas", "SV1 7QQ"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Amity Island Council", "918", CreateAddress("2 Shark View", "Amity Island", "Massachusetts", "AI1 8RR"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Bedrock Council", "919", CreateAddress("1 Quarry Road", "Bedrock", "Stone County", "BR1 9SS"), Now),
-            LocalAuthority.Create(NewLocalAuthorityId(), "Bikini Bottom Council", "920", CreateAddress("124 Conch Street", "Bikini Bottom", "Pacific Ocean", "BB2 0TT"), Now)
+        LocalAuthority.Create(NewLocalAuthorityId(), "Hawkins Council", "901", CreateAddress("1 Hopper Lane", "Hawkins", "Indiana", "HW1 1AA"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Lenora Hills Council", "902", CreateAddress("22 Roller Rink Road", "Lenora Hills", "California", "LH2 2BB"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Roane County Council", "903", CreateAddress("4 Byers Street", "Roane County", "Indiana", "RC3 3CC"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Starcourt District Council", "904", CreateAddress("45 Starcourt Mall", "Hawkins", "Indiana", "SD4 4DD"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Mirkwood Borough Council", "905", CreateAddress("12 Mirkwood Drive", "Hawkins", "Indiana", "MB5 5EE"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Lovers Lake Council", "906", CreateAddress("7 Lakeside Avenue", "Lovers Lake", "Indiana", "LL6 6FF"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Forest Hills Council", "907", CreateAddress("18 Forest Hills Park", "Hawkins", "Indiana", "FH7 7GG"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Pennhurst District Council", "908", CreateAddress("3 Pennhurst Road", "Kerley County", "Indiana", "PD8 8HH"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Sunnydale Borough Council", "909", CreateAddress("99 Hellmouth Road", "Sunnydale", "California", "SB9 9II"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Pawnee City Council", "910", CreateAddress("100 Parks Department Way", "Pawnee", "Indiana", "PC1 0JJ"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Springfield Council", "911", CreateAddress("742 Evergreen Terrace", "Springfield", "Unknown", "SC1 1KK"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Hill Valley Council", "912", CreateAddress("88 Clock Tower Square", "Hill Valley", "California", "HV1 2LL"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Twin Peaks Council", "913", CreateAddress("315 Black Lodge Road", "Twin Peaks", "Washington", "TP1 3MM"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Stars Hollow Council", "914", CreateAddress("5 Dragonfly Avenue", "Stars Hollow", "Connecticut", "SH1 4NN"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Riverdale Council", "915", CreateAddress("12 Pop Tate Street", "Riverdale", "New York", "RD1 5OO"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Greendale Council", "916", CreateAddress("101 Community College Road", "Greendale", "Colorado", "GD1 6PP"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Smallville Council", "917", CreateAddress("33 Kent Farm Road", "Smallville", "Kansas", "SV1 7QQ"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Amity Island Council", "918", CreateAddress("2 Shark View", "Amity Island", "Massachusetts", "AI1 8RR"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Bedrock Council", "919", CreateAddress("1 Quarry Road", "Bedrock", "Stone County", "BR1 9SS"), Now),
+        LocalAuthority.Create(NewLocalAuthorityId(), "Bikini Bottom Council", "920", CreateAddress("124 Conch Street", "Bikini Bottom", "Pacific Ocean", "BB2 0TT"), Now)
     ];
 
     public static IReadOnlyList<Ukprn> Ukprns => [new Ukprn(10031575), new Ukprn(10034759), new Ukprn(10037395), new Ukprn(10039603), new Ukprn(10042780), new Ukprn(10034858), new Ukprn(10046414), new Ukprn(10054033), new Ukprn(10054313), new Ukprn(10055361)];
 
-    public static IReadOnlyList<Urn> Urns => [new Urn(100003), new Urn(100021), new Urn(100111), new Urn(100112), new Urn(100179), new Urn(100230), new Urn(100254), new Urn(100268), new Urn(100277), new Urn(100279), new Urn(100285), new Urn(100347), new Urn(100502), new Urn(100642), new Urn(100727), new Urn(100731), new Urn(100732), new Urn(100734), new Urn(100742), new Urn(100752), new Urn(100830), new Urn(100833), new Urn(100852), new Urn(100897), new Urn(100936), new Urn(100950), new Urn(100978), new Urn(101133), new Urn(101259), new Urn(101275)];
+    public static IReadOnlyList<Urn> Urns => [ new Urn(100006), new Urn(100127), new Urn(100129), new Urn(100204), new Urn(100283), new Urn(100352), new Urn(100468), new Urn(102041), new Urn(102776), new Urn(103748), new Urn(103835), new Urn(103839), new Urn(103844), new Urn(103847), new Urn(103886), new Urn(103888), new Urn(104801), new Urn(105601), new Urn(105603), new Urn(105944), new Urn(106859), new Urn(106982), new Urn(107778), new Urn(107780), new Urn(107781), new Urn(107786), new Urn(107793), new Urn(107794), new Urn(108410), new Urn(108590)];
+    
+    public static IReadOnlyList<string> EstablishmentNames => ["Heath School", "Gordon Primary School", "Haimo Primary School", "King's Oak School", "The Skinners' Company's School for Girls", "St Peter's Primary School", "Colebrooke School", "Latymer All Saints CofE Primary School", "Little Ilford School", "Davenport Lodge School", "Church of the Ascension CofE Primary School", "Oldswinford C of E Primary School", "St Chad's Catholic Primary School", "Halesowen CofE Primary School", "Batmans Hill Nursery School", "Batmans Hill Unit", "St Peter's CofE Primary School", "Abbey College Manchester", "Bollin Cross School", "St Philip's CofE Primary School", "Aston Fence Junior and Infant School", "Abbey Lane Primary School", "Spen Valley High School", "Whitcliffe Mount School", "Gomersal Church of England Voluntary Controlled Middle School", "Huddersfield Grammar School", "Islamia Girls' High School", "Madni Academy", "Kingsmeadow Community School", "Coquet Park First School"];
 
     public static List<Region> Regions => EnumExtensions.ToList<Region>();
 
