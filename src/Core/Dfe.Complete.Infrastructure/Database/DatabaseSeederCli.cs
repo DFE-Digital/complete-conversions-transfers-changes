@@ -24,13 +24,14 @@ public static class DatabaseSeederCli
         var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
         if (!environment.IsDevelopment())
         {
-            logger.LogError("Database seeding is only allowed in Development environment. Current environment: {Environment}", environment.EnvironmentName);
+            logger.LogError("Database seeding is only allowed in local Development environment. Current environment: {Environment}", environment.EnvironmentName);
             return 1;
         }
 
         try
         {
             var helpRequested = args.Contains("--help") || args.Contains("-h") || args.Contains("-?");
+            var forceRequested = args.Contains("--force") || args.Contains("-f");
 
             if (helpRequested)
             {
@@ -38,9 +39,15 @@ public static class DatabaseSeederCli
                 return 0;
             }
 
-            logger.LogInformation("Starting database seeding for development environment.");
-            await serviceProvider.SeedDatabaseAsync();
-            logger.LogInformation("Database seeding completed successfully!");
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Starting database seeding for development environment. Force: {Force}", forceRequested);
+            }
+            await serviceProvider.SeedDatabaseAsync(forceRequested);
+            if (logger.IsEnabled(LogLevel.Information))
+            {
+                logger.LogInformation("Database seeding completed successfully!");
+            }
             return 0;
         }
         catch (Exception ex)
@@ -52,18 +59,19 @@ public static class DatabaseSeederCli
 
     private static void ShowHelp(ILogger logger)
     {
-                var helpText = @"Database Seeding Utility for Dfe.Complete (Development Only)
+        var helpText = @"Database Seeding Utility for Dfe.Complete (Development Only)
 
-Usage: dotnet run [options]
+Usage: dotnet run -- seed-db [options]
 
 Options:
     -h, --help      Show this help message
+    -f, --force     Reset all seed data before seeding (idempotent, safe for dev)
 
-Example:
+Examples:
     dotnet run -- seed-db
+    dotnet run -- seed-db --force
 
 Note: Seeding is only available in Development environment";
-        
         logger.LogInformation("{HelpText}", helpText);
     }
 

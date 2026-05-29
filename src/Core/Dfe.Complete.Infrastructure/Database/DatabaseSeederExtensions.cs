@@ -10,13 +10,13 @@ public static class DatabaseSeederExtensions
     /// Seeds the database using a scoped context (development only)
     /// </summary>
     /// <param name="serviceProvider">The service provider</param>
-    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider)
+    public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider, bool force = false)
     {
         using var scope = serviceProvider.CreateScope();
         var services = scope.ServiceProvider;
-        
+
         var environment = services.GetRequiredService<IHostEnvironment>();
-        
+
         // Only allow seeding in development environment
         if (!environment.IsDevelopment())
         {
@@ -24,7 +24,7 @@ public static class DatabaseSeederExtensions
             catchLogger.LogWarning("Database seeding is only allowed in Development environment. Current: {Environment}", environment.EnvironmentName);
             return;
         }
-        
+
         var context = services.GetRequiredService<CompleteContext>();
         var logger = services.GetRequiredService<ILogger<DatabaseSeeder>>();
         var configuration = services.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>();
@@ -32,7 +32,7 @@ public static class DatabaseSeederExtensions
 
         await context.Database.EnsureCreatedAsync();
         // Seed all data for development (idempotent)
-        await seeder.SeedAsync();
+        await seeder.SeedAsync(force);
     }
 
     /// <summary>
