@@ -229,5 +229,6 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? CommercialTransferAgreementQuestionsReceived { get; set; }
 
         public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
+        public bool? CommercialTransferAgreementUnamended { get; set; }
     }
 }

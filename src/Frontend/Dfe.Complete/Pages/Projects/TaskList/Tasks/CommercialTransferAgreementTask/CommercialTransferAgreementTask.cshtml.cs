@@ -12,6 +12,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
     public class CommercialTransferAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<CommercialTransferAgreementTaskModel> logger, IProjectPermissionService projectPermissionService)
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.CommercialTransferAgreement, projectPermissionService)
     {
+        [BindProperty(Name = "unamended")]
+        public bool? Unamended { get; set; }
+
         [BindProperty(Name = "agreed")]
         public bool? Agreed { get; set; }
 
@@ -45,6 +48,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
 
             if (Project.Type == ProjectType.Transfer)
             {
+                Unamended = TransferTaskData.CommercialTransferAgreementUnamended;
                 Agreed = TransferTaskData.CommercialTransferAgreementConfirmAgreed;
                 Signed = TransferTaskData.CommercialTransferAgreementConfirmSigned;
                 Saved = TransferTaskData.CommercialTransferAgreementSaveConfirmationEmails;
@@ -53,6 +57,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
             }
             else
             {
+                Unamended = ConversionTaskData.CommercialTransferAgreementUnamended;
                 Agreed = ConversionTaskData.CommercialTransferAgreementAgreed;
                 Signed = ConversionTaskData.CommercialTransferAgreementSigned;
                 Saved = ConversionTaskData.CommercialTransferAgreementSaved;
@@ -64,7 +69,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));
+            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Unamended, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

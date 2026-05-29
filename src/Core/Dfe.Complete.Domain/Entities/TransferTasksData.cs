@@ -231,6 +231,8 @@ public class TransferTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
+    public bool? CommercialTransferAgreementUnamended { get; set; }
+
     private TransferTasksData() { }
 
     public TransferTasksData(

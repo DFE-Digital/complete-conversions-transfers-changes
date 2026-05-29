@@ -274,6 +274,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? PostDecisionActionsLaProformaUploaded { get; set; }
 
+    public bool? CommercialTransferAgreementUnamended { get; set; }
+
     private ConversionTasksData() { }
 
     public ConversionTasksData(
