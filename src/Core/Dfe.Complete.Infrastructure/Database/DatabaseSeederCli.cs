@@ -24,7 +24,9 @@ public static class DatabaseSeederCli
         var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
         if (!environment.IsDevelopment())
         {
-            logger.LogError("Database seeding is only allowed in local Development environment. Current environment: {Environment}", environment.EnvironmentName);
+            var msg = $"Database seeding is only allowed in local Development environment. Current environment: {environment.EnvironmentName}";
+            logger.LogError(msg);
+            Console.WriteLine(msg);
             return 1;
         }
 
@@ -39,20 +41,28 @@ public static class DatabaseSeederCli
                 return 0;
             }
 
+            var startMsg = $"Starting database seeding for development environment. Force: {forceRequested}";
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("Starting database seeding for development environment. Force: {Force}", forceRequested);
+                logger.LogInformation(startMsg);
             }
+            Console.WriteLine(startMsg);
+
             await serviceProvider.SeedDatabaseAsync(forceRequested);
+
+            var doneMsg = "Database seeding completed successfully!";
             if (logger.IsEnabled(LogLevel.Information))
             {
-                logger.LogInformation("Database seeding completed successfully!");
+                logger.LogInformation(doneMsg);
             }
+            Console.WriteLine(doneMsg);
             return 0;
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Database seeding failed in {Environment} environment", environment.EnvironmentName);
+            var errMsg = $"Database seeding failed in {environment.EnvironmentName} environment: {ex.Message}";
+            logger.LogError(ex, errMsg);
+            Console.WriteLine(errMsg);
             return 1;
         }
     }
@@ -73,6 +83,7 @@ Examples:
 
 Note: Seeding is only available in Development environment";
         logger.LogInformation("{HelpText}", helpText);
+        Console.WriteLine(helpText);
     }
 
 }
