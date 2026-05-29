@@ -13,8 +13,6 @@ public class DatabaseSeeder
     private readonly CompleteContext _context;
     private readonly ILogger<DatabaseSeeder> _logger;
     private readonly IConfiguration _configuration;
-    private readonly List<User> _defaultUsers;
-    private readonly List<LocalAuthority> _localAuthorities;
 
     private static DateTime Now => DateTime.UtcNow;
 
@@ -23,8 +21,6 @@ public class DatabaseSeeder
         _context = context;
         _logger = logger;
         _configuration = configuration;
-        _defaultUsers = InitialiseUsers();
-        _localAuthorities = InitialiseLocalAuthorities();
     }
 
     /// <summary>
@@ -132,16 +128,16 @@ public class DatabaseSeeder
         Console.WriteLine("[Seeder] Seeding local authorities...");
         _logger.LogInformation("Seeding local authorities...");
 
-        await _context.LocalAuthorities.AddRangeAsync(_localAuthorities);
+        await _context.LocalAuthorities.AddRangeAsync(LocalAuthorities);
         await _context.SaveChangesAsync();
-        _logger.LogInformation("Seeded {Count} local authorities", _localAuthorities.Count);
+        _logger.LogInformation("Seeded {Count} local authorities", LocalAuthorities.Count);
     }
 
     private async Task SeedUsersAsync()
     {
         Console.WriteLine("[Seeder] Seeding default users...");
         // Always ensure default users exist (idempotent)
-        foreach (var user in _defaultUsers)
+        foreach (var user in DefaultUsers)
         {
             if (!await _context.Users.AnyAsync(u => u.Email == user.Email))
             {
@@ -156,9 +152,6 @@ public class DatabaseSeeder
         await SeedLocalDeveloperUsersAsync();
     }
 
-    /// <summary>
-    /// Seeds local developer users from user secrets (LocalSeed:UserEmails)
-    /// </summary>
     private async Task SeedLocalDeveloperUsersAsync()
     {
         // Try to get user secrets via configuration
@@ -269,7 +262,7 @@ public class DatabaseSeeder
         _logger.LogInformation("Project data seeding completed");
     }
 
-    private (ProjectGroup, List<Project>, List<ConversionTasksData>) SetupConversionProjects()
+    private static (ProjectGroup, List<Project>, List<ConversionTasksData>) SetupConversionProjects()
     {
         var projectGroup = new ProjectGroup
         {
@@ -288,7 +281,7 @@ public class DatabaseSeeder
             var taskListItem = new ConversionTasksData(new TaskDataId(Guid.NewGuid()), Now, Now);
 
             // Create project entity
-            var localAuthority = RandomFromList(_localAuthorities);
+            var localAuthority = RandomFromList(LocalAuthorities);
             var conversion =
                 Project.CreateConversionProject(new CreateConversionProjectParams(
                 new ProjectId(Guid.NewGuid()),
@@ -301,18 +294,18 @@ public class DatabaseSeeder
                 DateOnly.FromDateTime(Now.AddDays(-(i + 10))),
                 i % 3 == 0 ? "Advisory board conditions" : null,
                 i % Ukprns.Count == 0 ? projectGroup.Id : null,
-                RandomFromList(_defaultUsers).Id,
+                RandomFromList(DefaultUsers).Id,
                 localAuthority.Id.Value
             ));
 
             conversion.AssignedAt = new DateTimeOffset(Now.AddDays(-i)).DateTime;
-            conversion.AssignedToId = RandomFromList(_defaultUsers).Id;
-            conversion.CaseworkerId = RandomFromList(_defaultUsers).Id;
+            conversion.AssignedToId = RandomFromList(DefaultUsers).Id;
+            conversion.CaseworkerId = RandomFromList(DefaultUsers).Id;
 
             if (i >= 10)
             {
                 conversion.NewTrustReferenceNumber = $"TR{10000 + i}";
-                var randomUser = RandomFromList(_defaultUsers);
+                var randomUser = RandomFromList(DefaultUsers);
                 conversion.NewTrustName = $"The {randomUser.FirstName} {randomUser.LastName} Trust";
                 conversion.IncomingTrustUkprn = null;
             }
@@ -324,7 +317,7 @@ public class DatabaseSeeder
         return (projectGroup, projects, tasks);
     }
 
-    private (List<Project>, List<TransferTasksData>) SetupTransferProjects()
+    private static (List<Project>, List<TransferTasksData>) SetupTransferProjects()
     {
         List<Project> projects = [];
         List<TransferTasksData> tasks = [];
@@ -334,7 +327,7 @@ public class DatabaseSeeder
             var taskListItem = new TransferTasksData(new TaskDataId(Guid.NewGuid()), Now, Now, false, false, false);
 
             // Create project entity
-            var localAuthority = RandomFromList(_localAuthorities);
+            var localAuthority = RandomFromList(LocalAuthorities);
             var transfer =
                 Project.CreateTransferProject(new CreateTransferProjectParams(
                 new ProjectId(Guid.NewGuid()),
@@ -347,18 +340,18 @@ public class DatabaseSeeder
                 DateOnly.FromDateTime(Now.AddDays(-(i + 10))),
                 i % 3 == 0 ? "Advisory board conditions" : null,
                 null,
-                RandomFromList(_defaultUsers).Id,
+                RandomFromList(DefaultUsers).Id,
                 localAuthority.Id.Value
             ));
 
             transfer.AssignedAt = new DateTimeOffset(Now.AddDays(-i)).DateTime;
-            transfer.AssignedToId = RandomFromList(_defaultUsers).Id;
-            transfer.CaseworkerId = RandomFromList(_defaultUsers).Id;
+            transfer.AssignedToId = RandomFromList(DefaultUsers).Id;
+            transfer.CaseworkerId = RandomFromList(DefaultUsers).Id;
 
             if (i >= 25)
             {
                 transfer.NewTrustReferenceNumber = $"TR{10000 + i}";
-                var randomUser = RandomFromList(_defaultUsers);
+                var randomUser = RandomFromList(DefaultUsers);
                 transfer.NewTrustName = $"The {randomUser.FirstName} {randomUser.LastName} Trust";
                 transfer.IncomingTrustUkprn = null;
             }
@@ -371,7 +364,7 @@ public class DatabaseSeeder
         return (projects, tasks);
     }
 
-private static List<User> InitialiseUsers() =>
+private static IReadOnlyList<User> DefaultUsers =>
     [
         CreateUser("Joyce", "Byers", "joyce.byers@education.gov.uk", ProjectTeam.London),
         CreateUser("Jim", "Hopper", "jim.hopper@education.gov.uk", ProjectTeam.London),
@@ -403,7 +396,7 @@ private static List<User> InitialiseUsers() =>
     ];
     
 
-        private static List<LocalAuthority> InitialiseLocalAuthorities() =>
+        private static IReadOnlyList<LocalAuthority> LocalAuthorities =>
         [
             LocalAuthority.Create(NewLocalAuthorityId(), "Birmingham City Council", "301", CreateAddress("1 Main Street", "Birmingham", "West Midlands", "B1 1AA"), Now),
             LocalAuthority.Create(NewLocalAuthorityId(), "Hawkins Council", "901", CreateAddress("1 Hopper Lane", "Hawkins", "Indiana", "HW1 1AA"), Now),
