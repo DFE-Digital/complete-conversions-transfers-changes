@@ -55,6 +55,7 @@ export class TaskHelper {
             questionsReceived: false,
             questionsChecked: false,
             saved: false,
+            unamended: false,
         };
 
         switch (status) {
@@ -73,6 +74,7 @@ export class TaskHelper {
                     questionsReceived: true,
                     questionsChecked: true,
                     saved: true,
+                    unamended: true,
                 });
 
             default:

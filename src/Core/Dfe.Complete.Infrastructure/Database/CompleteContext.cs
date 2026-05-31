@@ -643,6 +643,7 @@ public partial class CompleteContext : DbContext
             .HasColumnName("updated_at");
         projectConfiguration.Property(e => e.NurseryArrangement).HasColumnName("nursery_arrangement");
         projectConfiguration.Property(e => e.ConfirmDBSChecks).HasColumnName("confirm_dbs_checks");
+        projectConfiguration.Property(e => e.CommercialTransferAgreementUnamended).HasColumnName("transfer_agreement_unamended");        
     }
 
     private static void ConfigureTransferTasksData(EntityTypeBuilder<TransferTasksData> projectConfiguration)
@@ -798,6 +799,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
+        projectConfiguration.Property(e => e.CommercialTransferAgreementUnamended).HasColumnName("transfer_agreement_unamended");        
     }
 
     private static void ConfigureDaoRevocation(EntityTypeBuilder<DaoRevocation> projectConfiguration)

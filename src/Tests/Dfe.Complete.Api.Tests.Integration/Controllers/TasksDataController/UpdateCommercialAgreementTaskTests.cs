@@ -42,6 +42,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 QuestionsReceived = true,
                 QuestionsChecked = true,
                 Saved = true,
+                Unamended = true,
             };
 
             // Act
@@ -56,6 +57,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
             Assert.True(existingTaskData.CommercialTransferAgreementSaveConfirmationEmails);
+            Assert.True(existingTaskData.CommercialTransferAgreementUnamended);
         }
 
         [Theory]
@@ -86,6 +88,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 QuestionsReceived = true,
                 QuestionsChecked = true,
                 Saved = true,
+                Unamended = true,
             };
 
             // Act
@@ -100,6 +103,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
             Assert.True(existingTaskData.CommercialTransferAgreementSaved);
+            Assert.True(existingTaskData.CommercialTransferAgreementUnamended);
         }
 
         [Theory]

@@ -8671,6 +8671,10 @@
           "commercialTransferAgreementQuestionsChecked": {
             "type": "boolean",
             "nullable": true
+          },
+          "commercialTransferAgreementUnamended": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -9219,6 +9223,10 @@
           "postDecisionActionsLaProformaUploaded": {
             "type": "boolean",
             "nullable": true
+          },
+          "commercialTransferAgreementUnamended": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -9765,6 +9773,10 @@
                 "$ref": "#/components/schemas/ProjectType"
               }
             ]
+          },
+          "unamended": {
+            "type": "boolean",
+            "nullable": true
           },
           "agreed": {
             "type": "boolean",

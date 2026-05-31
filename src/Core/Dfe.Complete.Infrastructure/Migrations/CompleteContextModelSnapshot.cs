@@ -17,7 +17,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.21")
+                .HasAnnotation("ProductVersion", "10.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -198,6 +198,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false)
                         .HasColumnName("commercial_transfer_agreement_signed");
+
+                    b.Property<bool?>("CommercialTransferAgreementUnamended")
+                        .HasColumnType("bit")
+                        .HasColumnName("transfer_agreement_unamended");
 
                     b.Property<bool?>("CompleteNotificationOfChangeCheckDocument")
                         .HasColumnType("bit")
@@ -1514,6 +1518,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("CommercialTransferAgreementSaveConfirmationEmails")
                         .HasColumnType("bit")
                         .HasColumnName("commercial_transfer_agreement_save_confirmation_emails");
+
+                    b.Property<bool?>("CommercialTransferAgreementUnamended")
+                        .HasColumnType("bit")
+                        .HasColumnName("transfer_agreement_unamended");
 
                     b.Property<bool?>("ConditionsMetBaselineSheetApproved")
                         .HasColumnType("bit")
