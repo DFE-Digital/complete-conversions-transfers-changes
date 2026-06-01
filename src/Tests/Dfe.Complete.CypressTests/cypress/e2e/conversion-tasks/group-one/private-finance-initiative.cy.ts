@@ -33,7 +33,7 @@ describe("Conversion tasks - Private finance initiative", () => {
             .tick()
             .hasCheckboxLabel("Signed by all stakeholders")
             .tick()
-            .hasCheckboxLabel("Final version saved in SharePoint folder")
+            .hasCheckboxLabel("Final version saved in school and trust's SharePoint folder")
             .tick()
             .saveAndReturn();
 
@@ -52,7 +52,7 @@ describe("Conversion tasks - Private finance initiative", () => {
             .isTicked()
             .hasCheckboxLabel("Signed by all stakeholders")
             .isTicked()
-            .hasCheckboxLabel("Final version saved in SharePoint folder")
+            .hasCheckboxLabel("Final version saved in school and trust's SharePoint folder")
             .isTicked();
     });
 

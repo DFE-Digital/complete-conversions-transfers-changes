@@ -129,14 +129,15 @@ interface UpdateTrustModificationOrderTaskRequest {
 
 interface UpdatePrivateFinanceInitiativeTaskRequest {
     taskDataId: TaskDataId;
-    notApplicable?: boolean;
-    supplementaryFundingAgreementPfiClausesInserted?: boolean;
-    masterFundingAgreementPfiClausesInserted?: boolean;
-    received?: boolean;
-    cleared?: boolean;
-    draftSavedInTrustSharepointFolder?: boolean;
-    signedByAllStakeholders?: boolean;
-    finalVersionSavedInSchoolAndTrustSharepointFolder?: boolean;
+    notApplicable?: boolean | null;
+    supplementaryFundingAgreementPfiClausesInserted?: boolean | null;
+    masterFundingAgreementPfiClausesInserted?: boolean | null;
+    received?: boolean | null;
+    documentsSentToSOPUForClearance?: boolean | null;
+    cleared?: boolean | null;
+    draftSaved?: boolean | null;
+    signedByAllStakeholders?: boolean | null;
+    finalVersionSavedInSharepointFolder?: boolean | null;
 }
 
 class TaskApiConversions extends TaskApi {

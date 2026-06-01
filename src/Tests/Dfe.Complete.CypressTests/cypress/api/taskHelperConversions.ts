@@ -498,14 +498,15 @@ class TaskHelperConversions extends TaskHelper {
     updatePrivateFinanceInitiative(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            notApplicable: false,
-            supplementaryFundingAgreementPfiClausesInserted: false,
-            masterFundingAgreementPfiClausesInserted: false,
-            received: false,
-            cleared: false,
-            draftSavedInTrustSharepointFolder: false,
-            signedByAllStakeholders: false,
-            finalVersionSavedInSchoolAndTrustSharepointFolder: false,
+            notApplicable: null,
+            supplementaryFundingAgreementPfiClausesInserted: null,
+            masterFundingAgreementPfiClausesInserted: null,
+            received: null,
+            documentsSentToSOPUForClearance: null,
+            cleared: null,
+            draftSaved: null,
+            signedByAllStakeholders: null,
+            finalVersionSavedInSharepointFolder: null,
         };
 
         switch (status) {
@@ -528,10 +529,11 @@ class TaskHelperConversions extends TaskHelper {
                     supplementaryFundingAgreementPfiClausesInserted: true,
                     masterFundingAgreementPfiClausesInserted: true,
                     received: true,
+                    documentsSentToSOPUForClearance: true,
                     cleared: true,
-                    draftSavedInTrustSharepointFolder: true,
+                    draftSaved: true,
                     signedByAllStakeholders: true,
-                    finalVersionSavedInSchoolAndTrustSharepointFolder: true,
+                    finalVersionSavedInSharepointFolder: true
                 });
 
             default:
