@@ -41,8 +41,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 16),
                 new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 17),
                 new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 18),
-                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 19),
-                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 20)
+                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 19)
             };
 
             if (conversionTaskList.ShowProcessConversionSupportGrant)
@@ -70,7 +69,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 10),
                 new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 11),
                 new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 12),
-                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13)
+                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13),
+                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 14)
             };
 
             return legalDocumentsTasks;
