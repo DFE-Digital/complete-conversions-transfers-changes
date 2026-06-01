@@ -637,6 +637,15 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.TrustModificationOrderReceived).HasColumnName("trust_modification_order_received");
         projectConfiguration.Property(e => e.TrustModificationOrderSaved).HasColumnName("trust_modification_order_saved");
         projectConfiguration.Property(e => e.TrustModificationOrderSentLegal).HasColumnName("trust_modification_order_sent_legal");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeNotApplicable).HasColumnName("private_finance_initiative_not_applicable");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted).HasColumnName("private_finance_initiative_supplementary_funding_agreement_pfi_clauses_inserted");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted).HasColumnName("private_finance_initiative_master_funding_agreement_pfi_clauses_inserted");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeReceived).HasColumnName("private_finance_initiative_received");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeDocumentsSentToSOPUForClearance).HasColumnName("private_finance_initiative_documents_sent_to_sopu_for_clearance");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeCleared).HasColumnName("private_finance_initiative_cleared");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder).HasColumnName("private_finance_initiative_draft_saved_in_trust_sharepoint_folder");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeSignedByAllStakeholders).HasColumnName("private_finance_initiative_signed_by_all_stakeholders");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder).HasColumnName("private_finance_initiative_final_version_saved_in_sharepoint_folder");
         projectConfiguration.Property(e => e.UpdateEsfaUpdate).HasColumnName("update_esfa_update");
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)

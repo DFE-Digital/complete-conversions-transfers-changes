@@ -17,6 +17,9 @@ Security in case of vulnerabilities.
 ## Unreleased
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 
+### Added
+- [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
+
 ---
 
 ## [1.46.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-21.1562) - 2026-05-21

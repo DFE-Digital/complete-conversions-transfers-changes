@@ -25,6 +25,7 @@ class ConversionTaskListPage {
             "Confirm the main contact",
             "Confirm the proposed capacity of the academy",
             "LA confirms payroll deadline (LA)",
+            "Private finance initiative",
         ],
         legalDocuments: [
             "Land questionnaire",

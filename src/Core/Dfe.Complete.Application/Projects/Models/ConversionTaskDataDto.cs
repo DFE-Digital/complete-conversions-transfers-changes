@@ -119,6 +119,25 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? TrustModificationOrderSaved { get; set; }
 
+        public bool? PrivateFinanceInitiativeNotApplicable { get; set; }
+
+        public bool? PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeReceived { get; set; }
+
+        public bool? PrivateFinanceInitiativeDocumentsSentToSOPUForClearance { get; set; }
+
+        public bool? PrivateFinanceInitiativeCleared { get; set; }
+
+        public bool? PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder { get; set; }
+
+        public bool? PrivateFinanceInitiativeSignedByAllStakeholders { get; set; }
+        
+        public bool? PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder { get; set; }
+        
+
         public bool? DirectionToTransferReceived { get; set; }
 
         public bool? DirectionToTransferCleared { get; set; }

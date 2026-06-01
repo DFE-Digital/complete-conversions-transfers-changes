@@ -1262,6 +1262,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateLAConfirmsPayrollDeadlineTaskAsync(UpdateLAConfirmsPayrollDeadlineTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Update the private finance initiative task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Private finance initiative task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePrivateFinanceInitiativeTaskAsync(UpdatePrivateFinanceInitiativeTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the private finance initiative task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Private finance initiative task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdatePrivateFinanceInitiativeTaskAsync(UpdatePrivateFinanceInitiativeTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -4396,6 +4413,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmDBSChecks")]
         ConfirmDBSChecks = 54,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"PrivateFinanceInitiative")]
+        PrivateFinanceInitiative = 55,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6049,6 +6069,33 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("trustModificationOrderSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TrustModificationOrderSaved { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeMasterFundingAgreementPfiClausesInserted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeDocumentsSentToSOPUForClearance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeDocumentsSentToSOPUForClearance { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeDraftSavedInTrustSharepointFolder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeSignedByAllStakeholders", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeSignedByAllStakeholders { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("privateFinanceInitiativeFinalVersionSavedInSharepointFolder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("directionToTransferReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DirectionToTransferReceived { get; set; } = default!;
 
@@ -6856,6 +6903,54 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLAConfirmsPayrollDeadlineTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdatePrivateFinanceInitiativeTaskCommand
+    {
+
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementaryFundingAgreementPfiClausesInserted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementaryFundingAgreementPfiClausesInserted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementPfiClausesInserted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementPfiClausesInserted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("documentsSentToSOPUForClearance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DocumentsSentToSOPUForClearance { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("draftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DraftSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedByAllStakeHolders", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedByAllStakeHolders { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("finalVersionSavedInSharepointFolder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FinalVersionSavedInSharepointFolder { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdatePrivateFinanceInitiativeTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdatePrivateFinanceInitiativeTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
     }
