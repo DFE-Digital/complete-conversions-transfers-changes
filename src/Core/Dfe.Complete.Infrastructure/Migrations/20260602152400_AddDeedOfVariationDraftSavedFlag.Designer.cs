@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260526150918_AddDeedOfVariationDraftSavedFlag")]
+    [Migration("20260602152400_AddDeedOfVariationDraftSavedFlag")]
     partial class AddDeedOfVariationDraftSavedFlag
     {
         /// <inheritdoc />
