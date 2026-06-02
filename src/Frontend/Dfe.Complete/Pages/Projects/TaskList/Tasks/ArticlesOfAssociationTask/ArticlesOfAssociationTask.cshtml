@@ -9,22 +9,15 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>You must update the articles of association if any of the following statements are true:</p>
+        <p>Articles of Association set out the rules and regulations governing the trust’s operation and governance structure. 
+            Articles of Association will be required for a new MAT forming OR if an existing trust is updating outdates articles.
+        </p>
+        <p>You must also update the articles of association if any of the following statements are true:</p>
         <ul>
-            <li>the trust currently uses a version from February 2016 or earlier</li>
-            <li>a different type of academy is joining the trust. For example, a faith @(Model.Type == ProjectType.Conversion? "school":"academy") joining a trust containing only community academies</li>
-            <li>it is a condition of the decision</li>
+            <li>The trust currently uses a version from February 2016 or earlier</li>
+            <li>A different type of academy is joining the trust. For example, a faith @(Model.Type == ProjectType.Conversion? "school":"academy") joining a trust containing only community academies</li>
+            <li>It is a condition of the decision for the conversion</li>
         </ul>
-        <p>You do not always need to update the articles but it is strongly advised, even when not required.</p>
-        <govuk-details>
-            <govuk-details-summary> 
-                <span class="govuk-details__summary-text">Partially updating articles of association</span>
-            </govuk-details-summary>
-            <govuk-details-text>
-                <p>Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.</p>
-                <p>They can choose to just add the missing clauses in their existing articles.</p>
-            </govuk-details-text>
-        </govuk-details>
     </div>
 }
 @section TaskSection { 
