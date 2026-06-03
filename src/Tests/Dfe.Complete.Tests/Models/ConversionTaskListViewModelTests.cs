@@ -356,18 +356,18 @@ namespace Dfe.Complete.Tests.Models
 
             Assert.Equal(expectedStatus, result.ChurchSupplementalAgreement);
         }
+
         [Theory]
-        [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(true, true, true, true, true, true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, true, null, TaskListStatus.InProgress)]
-        [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, true, null, null, TaskListStatus.InProgress)]
+        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
         public void ArticlesOfAssociationTaskStatus_ShouldReturn_CorrectStatus(
             bool? received,
             bool? cleared,
             bool? signed,
             bool? saved,
-            bool? sent,
             bool? notApplicable,
             TaskListStatus expectedStatus)
         {
@@ -379,7 +379,6 @@ namespace Dfe.Complete.Tests.Models
                 ArticlesOfAssociationSigned = signed,
                 ArticlesOfAssociationSaved = saved,
                 ArticlesOfAssociationNotApplicable = notApplicable,
-                ArticlesOfAssociationSent = sent
             };
 
             var project = new ProjectDto();
