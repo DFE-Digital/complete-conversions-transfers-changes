@@ -1,7 +1,11 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration _configuration 
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreementTask.ChurchSupplementalAgreementTaskModel
 
-
+<div class="govuk-hint">
+    <p>A draft CFA must be cleared by the DfE conversion lead prior to signature by all parties.</p>
+    <p>You can <external-link data-cy="convert-to-academy-model-doc-link" href="@_configuration["ExternalLinks:ConvertToAcademyModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
+    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected, otherwise we do not expect any deviations to the model. You'll need to <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit (opens in new tab)</external-link> about changes to clause text.</p>
+</div>
 <govuk-checkboxes name="options">
     <govuk-checkboxes-fieldset>
         <govuk-checkboxes-fieldset-legend>
@@ -14,18 +18,8 @@
 <div class="govuk-form-group">
     <h2 class="govuk-heading-l">Check and clear the church supplemental agreement</h2>
     <div class="govuk-hint">
-        <p>You can <external-link data-cy="convert-to-academy-model-doc-link" href="@_configuration["ExternalLinks:ConvertToAcademyModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
+        Select all that apply
     </div>
-
-    <govuk-details data-module="govuk-details" class="govuk-details">
-        <govuk-details-summary>
-            <span class="govuk-details__summary-text">Help checking for changes</span>
-        </govuk-details-summary>
-        <govuk-details-text>
-            <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-            <p>You'll need to <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
-        </govuk-details-text>
-    </govuk-details>
 </div>
 <govuk-checkboxes name="options">
     <govuk-checkboxes-fieldset>
