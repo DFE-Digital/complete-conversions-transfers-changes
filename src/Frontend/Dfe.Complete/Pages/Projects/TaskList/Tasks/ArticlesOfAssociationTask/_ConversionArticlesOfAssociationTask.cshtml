@@ -31,18 +31,24 @@
             </govuk-checkboxes-item>
             <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
                 <b>Cleared</b>
-            </govuk-checkboxes-item>
-            <govuk-checkboxes-item data-cy="@nameof(Model.Sent)" id="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
-                <b>Sent cleared version to trust's solicitors</b>
+                <govuk-checkboxes-item-hint>
+                    <p>
+                        As academy trust are limited companies, a MAT must be registered with Companies House once the Articles of Association have been cleared by the DfE conversion lead.
+                        If updating Articles of Association for an existing trust, these should be filed with Companies House.
+                    </p>
+                </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
-                <b>Checked with solicitors that incoming trust have signed the articles</b>
+                <b>Solicitor confirms trust has signed articles and been registered with Companies House</b>
                 <govuk-checkboxes-item-hint>
-                    <p>It can be helpful to check the <external-link href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]">Companies House website</external-link> to make sure the signed articles have been uploaded</p>
+                    <p>
+                        It can be helpful to check the <external-link href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]">Companies House website</external-link> to make sure the signed/updated articles have been uploaded.
+                        It can sometimes take a while for the new versions to be updated, in this scenario, just accept the solicitor's confirmation.
+                    </p>
                 </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
-                <b>Saved copy of articles in the school and trust's SharePoint folders</b>
+                <b>Saved copy of signed articles in the trust's SharePoint folder</b>
             </govuk-checkboxes-item> 
         </govuk-checkboxes-fieldset>
     </govuk-checkboxes>
