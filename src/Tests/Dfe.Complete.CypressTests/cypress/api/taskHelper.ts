@@ -11,7 +11,6 @@ export class TaskHelper {
             notApplicable: false,
             cleared: false,
             received: false,
-            sent: false,
             signed: false,
             saved: false,
         };
@@ -36,7 +35,6 @@ export class TaskHelper {
                     notApplicable: false,
                     cleared: true,
                     received: true,
-                    sent: true,
                     signed: true,
                     saved: true,
                 });
