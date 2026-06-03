@@ -35,20 +35,13 @@
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
         <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Check and clear the articles of association</h2>
             <div class="govuk-hint">
-                <p>You can use the <external-link href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]">academy governance guidance</external-link> to help you check and clear the articles of association.</p>
+                <p>You can use the <external-link href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]">academy governance guidance</external-link> to help you check and clear the articles of association.
+                Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion ? "a school" : "an academy" ) or trust, and remove or add optional clauses, are expected. Otherwise, we do not expect any deviations from the model.
+                You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit</external-link> about changes to the clause text.</p>
+                <p>We do not encourage partial updates to include missing clauses in their existing articles. Our preferred option is they adopt the latest versions.</p>
             </div>
-
-            <govuk-details data-module="govuk-details" class="govuk-details">
-                <govuk-details-summary>
-                    <span class="govuk-details__summary-text">Help checking for changes</span>
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion ? "a school" : "an academy" ) or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-                    <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team</external-link> about changes to clause text.</p>
-                </govuk-details-text>
-            </govuk-details>
+            <h2 class="govuk-heading-l">Check and clear the Articles of Association</h2>
         </div>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
