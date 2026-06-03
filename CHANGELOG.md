@@ -17,6 +17,10 @@ Security in case of vulnerabilities.
 ## Unreleased
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 
+### Changed
+- [277812](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277812) - Update wording on supplemental funding agreement conversion tasks
+- [277849](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277849) - Update wording on articles of association conversion tasks
+
 ---
 
 ## [1.46.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-21.1562) - 2026-05-21
