@@ -58,10 +58,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? SupplementalFundingAgreementCleared { get; set; }
 
         public bool? SupplementalFundingAgreementSigned { get; set; }
-
+        public bool? SupplementalFundingAgreementDraftSaved { get; set; }
         public bool? SupplementalFundingAgreementSaved { get; set; }
-
-        public bool? SupplementalFundingAgreementSent { get; set; }
 
         public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
