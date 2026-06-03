@@ -530,8 +530,7 @@ namespace Dfe.Complete.Models
                (!taskData.ArticlesOfAssociationCleared.HasValue || taskData.ArticlesOfAssociationCleared == false) &&
                (!taskData.ArticlesOfAssociationSigned.HasValue || taskData.ArticlesOfAssociationSigned == false) &&
                (!taskData.ArticlesOfAssociationSaved.HasValue || taskData.ArticlesOfAssociationSaved == false) &&
-               (!taskData.ArticlesOfAssociationNotApplicable.HasValue || taskData.ArticlesOfAssociationNotApplicable == false) &&
-               (!taskData.ArticlesOfAssociationSent.HasValue || taskData.ArticlesOfAssociationSent == false))
+               (!taskData.ArticlesOfAssociationNotApplicable.HasValue || taskData.ArticlesOfAssociationNotApplicable == false))
             {
                 return TaskListStatus.NotStarted;
             }
@@ -542,8 +541,7 @@ namespace Dfe.Complete.Models
             return (taskData.ArticlesOfAssociationReceived == true &&
                taskData.ArticlesOfAssociationCleared == true &&
                taskData.ArticlesOfAssociationSigned == true &&
-               taskData.ArticlesOfAssociationSaved == true &&
-               taskData.ArticlesOfAssociationSent == true)
+               taskData.ArticlesOfAssociationSaved == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
