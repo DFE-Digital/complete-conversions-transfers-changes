@@ -526,22 +526,23 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ArticlesOfAssociationTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.ArticlesOfAssociationReceived.HasValue || taskData.ArticlesOfAssociationReceived == false) &&
-               (!taskData.ArticlesOfAssociationCleared.HasValue || taskData.ArticlesOfAssociationCleared == false) &&
-               (!taskData.ArticlesOfAssociationSigned.HasValue || taskData.ArticlesOfAssociationSigned == false) &&
-               (!taskData.ArticlesOfAssociationSaved.HasValue || taskData.ArticlesOfAssociationSaved == false) &&
-               (!taskData.ArticlesOfAssociationNotApplicable.HasValue || taskData.ArticlesOfAssociationNotApplicable == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
             if (taskData.ArticlesOfAssociationNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
-            return (taskData.ArticlesOfAssociationReceived == true &&
-               taskData.ArticlesOfAssociationCleared == true &&
-               taskData.ArticlesOfAssociationSigned == true &&
-               taskData.ArticlesOfAssociationSaved == true)
+
+            if (taskData.ArticlesOfAssociationReceived is not true &&
+                taskData.ArticlesOfAssociationCleared is not true &&
+                taskData.ArticlesOfAssociationSigned is not true &&
+                taskData.ArticlesOfAssociationSaved is not true)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return (taskData.ArticlesOfAssociationReceived is true &&
+               taskData.ArticlesOfAssociationCleared is true &&
+               taskData.ArticlesOfAssociationSigned is true &&
+               taskData.ArticlesOfAssociationSaved is true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -564,7 +565,7 @@ namespace Dfe.Complete.Models
         }
         private static TaskListStatus ConfirmAcademyNameTaskStatus(ConversionTaskDataDto taskData)
         {
-            return (string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
+            return string.IsNullOrWhiteSpace(taskData.AcademyDetailsName)
                 ? TaskListStatus.NotStarted : TaskListStatus.Completed;
         }
 
