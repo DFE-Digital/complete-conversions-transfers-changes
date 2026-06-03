@@ -52,7 +52,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.ArticlesOfAssociationNotApplicable = request.NotApplicable;
             tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.Received;
-            tasksData.ArticlesOfAssociationSent = request.NotApplicable == true ? null : request.Sent;
             tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.Signed;
             tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.Saved;
 

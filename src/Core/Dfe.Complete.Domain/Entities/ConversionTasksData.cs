@@ -250,6 +250,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public string? RiskProtectionArrangementReason { get; set; }
 
+    [Obsolete("277849 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? ArticlesOfAssociationSent { get; set; }
 
     public bool? CommercialTransferAgreementAgreed { get; set; }
