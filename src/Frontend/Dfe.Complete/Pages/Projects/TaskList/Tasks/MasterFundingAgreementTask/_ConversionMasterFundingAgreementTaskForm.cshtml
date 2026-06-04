@@ -38,7 +38,7 @@
             <govuk-checkboxes-item id="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" data-cy="signed-by-secretary-of-state" asp-for="@Model.SignedOnBehalfOfSeceratyOfState" value="true" name="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" checked="@Model.SignedOnBehalfOfSeceratyOfState">
                 <b>Signed and sealed on behalf of SoS</b>
                 <govuk-checkboxes-hint>
-                    <p>The Secretary of State, or somebody with the <external-link href="@_configuration["ExternalLinks:AuthorisedSignatoriesForSoS"]">authority to act on their behalf</external-link>, must sign the supplemental funding agreement.</p>
+                    <p>The Secretary of State, or somebody with the <external-link href="@_configuration["ExternalLinks:SOSAuthorisedSignatories"]">authority to act on their behalf</external-link>, must sign the supplemental funding agreement.</p>
                 </govuk-checkboxes-hint>
             </govuk-checkboxes-item>
             
