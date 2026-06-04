@@ -3,15 +3,13 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
 namespace Dfe.Complete.Infrastructure.Database;
 
-public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> logger, IConfiguration configuration)
+public class DatabaseSeeder(CompleteContext context, IConfiguration configuration)
 {
     private readonly CompleteContext _context = context;
-    private readonly ILogger<DatabaseSeeder> _logger = logger;
     private readonly IConfiguration _configuration = configuration;
 
     private static DateTime Now => DateTime.UtcNow;
@@ -26,7 +24,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (string.IsNullOrEmpty(connStr) || !(connStr.Contains("localhost") || connStr.Contains("127.0.0.1") || connStr.Contains("localdb", StringComparison.OrdinalIgnoreCase)))
         {
             Console.WriteLine("[Seeder] Skipping all seeding: not a local DB connection");
-            _logger.LogInformation("Skipping all seeding: not a local DB connection");
             return;
         }
         try
@@ -34,11 +31,9 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             if (force)
             {
                 Console.WriteLine("[Seeder] Force/reset flag detected. Deleting all seed data tables...");
-                _logger.LogInformation("Force/reset flag detected. Deleting all seed data tables...");
                 await DeleteSeedDataAsync();
             }
             Console.WriteLine("[Seeder] Starting database seeding...");
-            _logger.LogInformation("Starting database seeding...");
 
             // The order of seeding matters due to foreign key relationships, so we seed in a specific sequence. Each method is idempotent and checks for existing data before seeding.
             await SeedUsersAsync();
@@ -48,12 +43,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             await SeedProjectsAsync();
 
             Console.WriteLine("[Seeder] Database seeding completed successfully");
-            _logger.LogInformation("Database seeding completed successfully");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"[Seeder] ERROR: {ex.Message}\n{ex}");
-            _logger.LogError(ex, "Database seeding failed during {Phase}", "initialization");
             throw new InvalidOperationException("Database seeding operation failed. See inner exception for details.", ex);
         }
     }
@@ -72,7 +65,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
         await _context.SaveChangesAsync();
         Console.WriteLine("[Seeder] All seed data tables deleted.");
-        _logger.LogInformation("All seed data tables deleted.");
     }
 
     private async Task SeedSignificantDateHistoryReasonsAsync()
@@ -80,12 +72,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (await _context.SignificantDateHistoryReasons.AnyAsync())
         {
             Console.WriteLine("[Seeder] Significant date history reasons already seeded, skipping...");
-            _logger.LogInformation("Significant date history reasons already seeded, skipping...");
             return;
         }
 
         Console.WriteLine("[Seeder] Seeding significant date history reasons...");
-        _logger.LogInformation("Seeding significant date history reasons...");
 
         var reasons = new List<SignificantDateHistoryReason>
         {
@@ -102,8 +92,7 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
 
         await _context.SignificantDateHistoryReasons.AddRangeAsync(reasons);
         await _context.SaveChangesAsync();
-
-        _logger.LogInformation("Seeded {Count} significant date history reasons", reasons.Count);
+        Console.WriteLine($"[Seeder] Seeded {reasons.Count} significant date history reasons");
     }
 
     private async Task SeedLocalAuthoritiesAsync()
@@ -111,16 +100,14 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (await _context.LocalAuthorities.AnyAsync())
         {
             Console.WriteLine("[Seeder] Local authorities already seeded, skipping...");
-            _logger.LogInformation("Local authorities already seeded, skipping...");
             return;
         }
 
         Console.WriteLine("[Seeder] Seeding local authorities...");
-        _logger.LogInformation("Seeding local authorities...");
 
         await _context.LocalAuthorities.AddRangeAsync(LocalAuthorities);
         await _context.SaveChangesAsync();
-        _logger.LogInformation("Seeded {Count} local authorities", LocalAuthorities.Count);
+        Console.WriteLine($"[Seeder] Seeded {LocalAuthorities.Count} local authorities");
     }
 
     private async Task SeedGiasEstablishmentsAsync()
@@ -128,12 +115,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (await _context.GiasEstablishments.AnyAsync())
         {
             Console.WriteLine("[Seeder] GIAS establishments already seeded, skipping...");
-            _logger.LogInformation("GIAS establishments already seeded, skipping...");
             return;
         }
 
         Console.WriteLine("[Seeder] Seeding GIAS establishments...");
-        _logger.LogInformation("Seeding GIAS establishments...");
 
         var giasEstablishments = new List<GiasEstablishment>();
         for (var i = 0; i < Urns.Count; i++)
@@ -154,7 +139,7 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         }
         await _context.GiasEstablishments.AddRangeAsync(giasEstablishments);
         await _context.SaveChangesAsync();
-        _logger.LogInformation("Seeded {Count} GIAS establishments", giasEstablishments.Count);
+        Console.WriteLine($"[Seeder] Seeded {giasEstablishments.Count} GIAS establishments");
     }
 
     private async Task SeedUsersAsync()
@@ -169,7 +154,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             }
         }
         await _context.SaveChangesAsync();
-        _logger.LogInformation("Seeded default users if missing");
         Console.WriteLine("[Seeder] Seeded default users if missing");
 
         // Local developer user seeding using user secrets
@@ -183,7 +167,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (string.IsNullOrWhiteSpace(emailsRaw))
         {
             Console.WriteLine("[Seeder] No LocalSeed:UserEmails secret set");
-            _logger.LogInformation("No LocalSeed:UserEmails secret set");
             return;
         }
 
@@ -199,7 +182,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             if (!email.EndsWith("@education.gov.uk"))
             {
                 Console.WriteLine($"[Seeder] Skipping invalid email (wrong domain): {email}");
-                _logger.LogWarning("Skipping invalid email (wrong domain): {Email}", email);
                 continue;
             }
             var local = email[..^"@education.gov.uk".Length];
@@ -207,7 +189,6 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
             if (parts.Length != 2 || string.IsNullOrWhiteSpace(parts[0]) || string.IsNullOrWhiteSpace(parts[1]))
             {
                 Console.WriteLine($"[Seeder] Skipping invalid email (not firstname.lastname): {email}");
-                _logger.LogWarning("Skipping invalid email (not firstname.lastname): {Email}", email);
                 continue;
             }
             var first = Capitalize(parts[0]);
@@ -229,12 +210,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         {
             await _context.SaveChangesAsync();
             Console.WriteLine($"[Seeder] Seeded {seeded} local developer users from user secrets");
-            _logger.LogInformation("Seeded {Count} local developer users from user secrets", seeded);
         }
         else
         {
             Console.WriteLine("[Seeder] No new local developer users to seed");
-            _logger.LogInformation("No new local developer users to seed");
         }
 
         static string Capitalize(string s) => string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s[1..];
@@ -245,12 +224,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         if (await _context.ProjectGroups.AnyAsync())
         {
             Console.WriteLine("[Seeder] Project groups already exist, skipping project data seeding...");
-            _logger.LogInformation("Project groups already exist, skipping project data seeding...");
             return;
         }
 
         Console.WriteLine("[Seeder] Seeding project data...");
-        _logger.LogInformation("Seeding project data...");
 
         // Fetch users and local authorities from the database for correct IDs
         var users = await _context.Users.ToListAsync();
@@ -283,12 +260,10 @@ public class DatabaseSeeder(CompleteContext context, ILogger<DatabaseSeeder> log
         catch (Exception ex)
         {
             Console.WriteLine($"[Seeder] ERROR seeding projects: {ex.Message}\n{ex}");
-            _logger.LogError(ex, "Error occurred while seeding projects");
             throw;
         }
 
         Console.WriteLine("[Seeder] Project data seeding completed");
-        _logger.LogInformation("Project data seeding completed");
     }
 
     private static (ProjectGroup, List<Project>, List<ConversionTasksData>) SetupConversionProjects(List<User> users, List<LocalAuthority> localAuthorities)

@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Infrastructure.Database;
 
@@ -20,15 +19,13 @@ public static class DatabaseSeederExtensions
         // Only allow seeding in development environment
         if (!environment.IsDevelopment())
         {
-            var catchLogger = services.GetRequiredService<ILogger<DatabaseSeeder>>();
-            catchLogger.LogWarning("Database seeding is only allowed in Development environment. Current: {Environment}", environment.EnvironmentName);
+            Console.WriteLine($"Database seeding is only allowed in Development environment. Current: {environment.EnvironmentName}");
             return;
         }
 
         var context = services.GetRequiredService<CompleteContext>();
-        var logger = services.GetRequiredService<ILogger<DatabaseSeeder>>();
         var configuration = services.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>();
-        var seeder = new DatabaseSeeder(context, logger, configuration);
+        var seeder = new DatabaseSeeder(context, configuration);
 
         await context.Database.EnsureCreatedAsync();
         // Seed all data for development (idempotent)

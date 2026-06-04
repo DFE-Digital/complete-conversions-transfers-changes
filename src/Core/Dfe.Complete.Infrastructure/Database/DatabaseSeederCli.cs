@@ -1,7 +1,5 @@
-using Dfe.Complete.Infrastructure.Database;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Infrastructure.Database;
 
@@ -18,15 +16,11 @@ public static class DatabaseSeederCli
     /// <param name="serviceProvider">Service provider for dependency injection</param>
     public static async Task<int> ExecuteAsync(string[] args, IServiceProvider serviceProvider)
     {
-        var logger = serviceProvider.GetRequiredService<ILogger<DatabaseSeeder>>();
-
         // Check environment first
         var environment = serviceProvider.GetRequiredService<IHostEnvironment>();
         if (!environment.IsDevelopment())
         {
-            var msg = $"Database seeding is only allowed in local Development environment. Current environment: {environment.EnvironmentName}";
-            logger.LogError(msg);
-            Console.WriteLine(msg);
+            Console.WriteLine($"Database seeding is only allowed in local Development environment. Current environment: {environment.EnvironmentName}");
             return 1;
         }
 
@@ -37,37 +31,25 @@ public static class DatabaseSeederCli
 
             if (helpRequested)
             {
-                ShowHelp(logger);
+                ShowHelp();
                 return 0;
             }
 
-            var startMsg = $"Starting database seeding for development environment. Force: {forceRequested}";
-            if (logger.IsEnabled(LogLevel.Information))
-            {
-                logger.LogInformation(startMsg);
-            }
-            Console.WriteLine(startMsg);
+            Console.WriteLine($"Starting database seeding for development environment. Force: {forceRequested}");
 
             await serviceProvider.SeedDatabaseAsync(forceRequested);
 
-            var doneMsg = "Database seeding completed successfully!";
-            if (logger.IsEnabled(LogLevel.Information))
-            {
-                logger.LogInformation(doneMsg);
-            }
-            Console.WriteLine(doneMsg);
+            Console.WriteLine("Database seeding completed successfully!");
             return 0;
         }
         catch (Exception ex)
         {
-            var errMsg = $"Database seeding failed in {environment.EnvironmentName} environment: {ex.Message}";
-            logger.LogError(ex, errMsg);
-            Console.WriteLine(errMsg);
+            Console.WriteLine($"Database seeding failed in {environment.EnvironmentName} environment: {ex.Message}");
             return 1;
         }
     }
 
-    private static void ShowHelp(ILogger logger)
+    private static void ShowHelp()
     {
         var helpText = @"Database Seeding Utility for Dfe.Complete (Development Only)
 
@@ -82,7 +64,6 @@ Examples:
     dotnet run -- seed-db --force
 
 Note: Seeding is only available in Development environment";
-        logger.LogInformation("{HelpText}", helpText);
         Console.WriteLine(helpText);
     }
 
