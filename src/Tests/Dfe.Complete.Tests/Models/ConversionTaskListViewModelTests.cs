@@ -657,6 +657,7 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(true, true, true, true, true, true, true, false, TaskListStatus.Completed)]
         [InlineData(null, null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, true, true, true, true, false, TaskListStatus.Completed)]
         public void PrivateFinanceInitiativeTaskStatus_ShouldReturn_CorrectStatus(
             bool? supplementaryFundingAgreementPfiClausesInserted,
             bool? masterFundingAgreementPfiClausesInserted,

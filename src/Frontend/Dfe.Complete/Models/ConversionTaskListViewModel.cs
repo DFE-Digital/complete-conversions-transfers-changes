@@ -513,8 +513,8 @@ namespace Dfe.Complete.Models
 
             return taskData is
             {
-                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted: true,
-                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted: true,
+                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted: true or false,
+                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted: true or false,
                 PrivateFinanceInitiativeReceived: true, 
                 PrivateFinanceInitiativeCleared: true,
                 PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder: true,
