@@ -5974,17 +5974,17 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ChurchSupplementalAgreementCleared { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? ChurchSupplementalAgreementSigned { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedTrust { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ChurchSupplementalAgreementSignedDiocese { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? ChurchSupplementalAgreementSaved { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementDraftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementDraftSaved { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? ChurchSupplementalAgreementSent { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementFinalSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementFinalSaved { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; } = default!;

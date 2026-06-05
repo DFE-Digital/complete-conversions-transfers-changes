@@ -8805,7 +8805,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSigned": {
+          "churchSupplementalAgreementSignedTrust": {
             "type": "boolean",
             "nullable": true
           },
@@ -8813,11 +8813,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSaved": {
+          "churchSupplementalAgreementDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSent": {
+          "churchSupplementalAgreementFinalSaved": {
             "type": "boolean",
             "nullable": true
           },
