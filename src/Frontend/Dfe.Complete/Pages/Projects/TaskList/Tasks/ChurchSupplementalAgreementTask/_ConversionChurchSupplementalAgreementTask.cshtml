@@ -16,7 +16,7 @@
     </govuk-checkboxes-fieldset>
 </govuk-checkboxes>
 <div class="govuk-form-group">
-    <h2 class="govuk-heading-l">Check and clear the church supplemental agreement</h2>
+    <h2 class="govuk-heading-m">Check and clear the church supplemental agreement</h2>
     <div class="govuk-hint">
         Select all that apply
     </div>
@@ -31,38 +31,22 @@
         <govuk-checkboxes-item idata-cy="@nameof(Model.Cleared)" d="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
             <b>Cleared</b>
         </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+            <b>Draft saved in the school’s SharePoint folder</b>
+        </govuk-checkboxes-item>
         <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
-            <b>Signed by school or trust</b>
+            <b>Signed by trust</b>
         </govuk-checkboxes-item>
         <govuk-checkboxes-item data-cy="@nameof(Model.SignedByDiocese)" id="@nameof(Model.SignedByDiocese)" asp-for="@Model.SignedByDiocese" value="true" name="@nameof(Model.SignedByDiocese)" checked="@Model.SignedByDiocese">
-            <b>Signed by diocese</b> 
-        </govuk-checkboxes-item>
-        <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
-            <b>Saved in the school's SharePoint folder</b>
-        </govuk-checkboxes-item>
-    </govuk-checkboxes-fieldset>
-</govuk-checkboxes>
-<div class="govuk-form-group">
-    <h2 class="govuk-heading-l">Signed by the Secretary of State</h2>
-    <govuk-details data-module="govuk-details" class="govuk-details">
-        <govuk-details-summary>
-            <span class="govuk-details__summary-text">How to sign the Church Supplemental Agreement</span>
-        </govuk-details-summary>
-        <govuk-details-text>
-            <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the church supplemental agreement.</p>
-            <p>Usually this is your team leader or the deputy director.</p>
-        </govuk-details-text>
-    </govuk-details>
-</div>
-<govuk-checkboxes name="options">
-    <govuk-checkboxes-fieldset>
-        <govuk-checkboxes-fieldset-legend>
-        </govuk-checkboxes-fieldset-legend>
-        <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="@nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
-            <b>Sent to team leader or deputy director</b>
+            <b>Signed by Diocesan authority and/or trustee</b> 
         </govuk-checkboxes-item>
         <govuk-checkboxes-item data-cy="@nameof(Model.SignedBySecretaryState)" id="@nameof(Model.SignedBySecretaryState)" asp-for="@Model.SignedBySecretaryState" value="true" name="@nameof(Model.SignedBySecretaryState)" checked="@Model.SignedBySecretaryState">
-            <b>Document signed on behalf of the Secretary of State</b>
+            <b>Signed and sealed on behalf of SoS</b>
+            <!-- Insert link -->
+            <p class="govuk-hint">The Secretary of State, or somebody with the <external-link data-cy="church-supplemental-agreement-authorised-signatories" href="@_configuration["ExternalLinks:ChurchSupplementalAgreementAuthorisedSignatories"]">authority to act on their behalf</external-link>, must sign the supplemental funding agreement.</p>
         </govuk-checkboxes-item> 
+        <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="@nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
+            <b>Final version saved in school’s SharePoint folder</b>
+        </govuk-checkboxes-item>
     </govuk-checkboxes-fieldset>
 </govuk-checkboxes>

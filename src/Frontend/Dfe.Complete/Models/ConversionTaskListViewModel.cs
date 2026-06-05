@@ -516,7 +516,6 @@ namespace Dfe.Complete.Models
             return (taskData.ChurchSupplementalAgreementReceived == true &&
                 taskData.ChurchSupplementalAgreementCleared == true &&
                 taskData.ChurchSupplementalAgreementSigned == true &&
-                taskData.ChurchSupplementalAgreementSaved == true &&
                 taskData.ChurchSupplementalAgreementSent == true &&
                 taskData.ChurchSupplementalAgreementSignedDiocese == true &&
                 taskData.ChurchSupplementalAgreementSignedSecretaryState == true)
