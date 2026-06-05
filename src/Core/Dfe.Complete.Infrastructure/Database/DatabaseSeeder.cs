@@ -457,9 +457,5 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
 
     private static LocalAuthorityId NewLocalAuthorityId() => new(Guid.NewGuid());
 
-    private static T RandomFromList<T>(IReadOnlyList<T> list)
-    {
-        var rand = new Random();
-        return list[rand.Next(0, list.Count)];
-    }
+    private static T RandomFromList<T>(IReadOnlyList<T> list) => list[Random.Shared.Next(0, list.Count)];
 }
