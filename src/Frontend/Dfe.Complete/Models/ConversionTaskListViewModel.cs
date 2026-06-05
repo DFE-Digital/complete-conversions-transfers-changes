@@ -21,6 +21,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmMainContact { get; set; }
         public TaskListStatus ConfirmProposedCapacityOfTheAcademy { get; set; }
         public TaskListStatus LAConfirmsPayrollDeadline { get; set; }
+        public TaskListStatus PrivateFinanceInitiative { get; set; }
         public TaskListStatus LandQuestionnaire { get; set; }
         public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
@@ -67,6 +68,7 @@ namespace Dfe.Complete.Models
                 ConfirmMainContact = ConfirmMainContactTaskStatus(project),
                 ConfirmProposedCapacityOfTheAcademy = ConfirmProposedCapacityOfTheAcademyTaskStatus(taskData),
                 LAConfirmsPayrollDeadline = LAConfirmsPayrollDeadlineTaskStatus(taskData),
+                PrivateFinanceInitiative = PrivateFinanceInitiativeTaskStatus(taskData),
                 LandQuestionnaire = LandQuestionnaireTaskStatus(taskData),
                 LandRegistry = LandRegistryTaskStatus(taskData),
                 SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
@@ -489,6 +491,39 @@ namespace Dfe.Complete.Models
             }
             return (taskData.LAPayrollDeadline.HasValue)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus PrivateFinanceInitiativeTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((taskData.PrivateFinanceInitiativeNotApplicable is null or false) &&
+                !taskData.PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted.HasValue &&
+                !taskData.PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted.HasValue &&
+                (taskData.PrivateFinanceInitiativeReceived is null or false) &&
+                (taskData.PrivateFinanceInitiativeCleared is null or false) &&
+                (taskData.PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder is null or false) &&
+                (taskData.PrivateFinanceInitiativeSignedByAllStakeholders is null or false) &&
+                (taskData.PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder is null or false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            if (taskData.PrivateFinanceInitiativeNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+
+            return taskData is
+            {
+                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted: true or false,
+                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted: true or false,
+                PrivateFinanceInitiativeReceived: true, 
+                PrivateFinanceInitiativeCleared: true,
+                PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder: true,
+                PrivateFinanceInitiativeSignedByAllStakeholders: true,
+                PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder: true
+            }
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmMainContactTaskStatus(ProjectDto project)
