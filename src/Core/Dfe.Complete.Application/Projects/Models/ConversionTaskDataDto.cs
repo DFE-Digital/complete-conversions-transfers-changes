@@ -105,7 +105,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? DeedOfVariationSaved { get; set; }
 
-        public bool? DeedOfVariationSent { get; set; }
+        public bool? DeedOfVariationDraftSaved { get; set; }
 
         public bool? DeedOfVariationSignedSecretaryState { get; set; }
 

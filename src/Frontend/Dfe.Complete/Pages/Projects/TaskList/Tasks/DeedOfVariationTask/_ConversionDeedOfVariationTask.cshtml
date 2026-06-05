@@ -1,0 +1,80 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask.DeedOfVariationTaskModel
+
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>You’ll only need to complete and clear a deed of variation if there are changes to any existing funding
+            agreements. Not required for new MATs forming.</p>
+        </div>
+    }
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable"
+                                       value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Check and clear the deed of variation
+        </h2>
+        <div class="govuk-hint">
+            <p>
+                You can <external-link href="@_configuration["ExternalLinks:DeedOfVariationLink"]">
+                find the right deed of
+                variation to use (opens in new tab)
+            </external-link> on the guidance site.
+            Changes that personalise the model documents to a school or trust, and remove or add optional clauses are
+            expected,
+            otherwise we do not expect any deviations to the model. You'll need to
+            <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">
+                contact the Schools Operational Practice Unit
+            </external-link> about changes to clause text.
+        </p>
+    </div>
+
+    <govuk-checkboxes name="options">
+        <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend>
+            </govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-item data-cy="received" id="received" asp-for="@Model.Received" value="true"
+                                   name="received" checked="@Model.Received">
+                <b>Received</b>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared"
+                                   checked="@Model.Cleared">
+                <b>Cleared</b>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="draft_saved" id="draft_saved" asp-for="@Model.DraftSaved" value="true" name="draft_saved" checked="@Model.DraftSaved">
+                <b>Draft saved in school's SharePoint folder</b>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed"
+                                   checked="@Model.Signed">
+                <b>Signed by school or trust</b>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true"
+                                   name="signed_secretary_state" checked="@Model.SignedSecretaryState">
+                <b>Signed and sealed on behalf of SoS</b>
+                <govuk-checkboxes-item-hint>
+                    <p>The Secretary of State, or somebody with the <external-link
+                        href="@_configuration["ExternalLinks:SOSAuthorisedSignatories"]">authority to act on their
+                        behalf</external-link> must sign the deed of variation.</p>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved"
+                                       checked="@Model.Saved">
+                    <b>Final version saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+
+                
