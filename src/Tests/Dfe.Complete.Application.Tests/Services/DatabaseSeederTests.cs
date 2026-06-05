@@ -131,7 +131,7 @@ public sealed class DatabaseSeederTests : IDisposable
         }
     }
 
-    private async Task<CompleteContext> CreateContextAsync(string connectionString)
+    private static async Task<CompleteContext> CreateContextAsync(string connectionString)
     {
         var options = new DbContextOptionsBuilder<CompleteContext>()
             .UseSqlite(connectionString)
