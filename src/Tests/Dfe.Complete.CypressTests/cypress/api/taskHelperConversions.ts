@@ -494,6 +494,52 @@ class TaskHelperConversions extends TaskHelper {
 
         return taskApiConversions.updateTupeConsultationTask(defaultBody);
     }
+
+    updatePrivateFinanceInitiative(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: null,
+            supplementaryFundingAgreementPfiClausesInserted: null,
+            masterFundingAgreementPfiClausesInserted: null,
+            received: null,
+            documentsSentToSOPUForClearance: null,
+            cleared: null,
+            draftSaved: null,
+            signedByAllStakeholders: null,
+            finalVersionSavedInSharepointFolder: null,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApiConversions.updatePrivateFinanceInitiativeTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApiConversions.updatePrivateFinanceInitiativeTask({
+                    ...defaultBody,
+                    supplementaryFundingAgreementPfiClausesInserted: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updatePrivateFinanceInitiativeTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    supplementaryFundingAgreementPfiClausesInserted: true,
+                    masterFundingAgreementPfiClausesInserted: true,
+                    received: true,
+                    documentsSentToSOPUForClearance: true,
+                    cleared: true,
+                    draftSaved: true,
+                    signedByAllStakeholders: true,
+                    finalVersionSavedInSharepointFolder: true
+                });
+
+            default:
+                return taskApiConversions.updatePrivateFinanceInitiativeTask(defaultBody);
+        }
+    }
 }
 
 const taskHelperConversions = new TaskHelperConversions();
