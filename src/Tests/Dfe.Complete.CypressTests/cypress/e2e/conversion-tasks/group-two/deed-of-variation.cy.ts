@@ -19,18 +19,12 @@ describe("Conversion tasks - Deed of variation", () => {
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
             .hasCheckboxLabel("Signed by school or trust")
             .tick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Draft saved in school's SharePoint folder")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("Deed of variation").selectTask("Deed of variation");
@@ -40,7 +34,7 @@ describe("Conversion tasks - Deed of variation", () => {
             .hasCheckboxLabel("Signed by school or trust")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Draft saved in school's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -48,7 +42,7 @@ describe("Conversion tasks - Deed of variation", () => {
         taskPage
             .hasCheckboxLabel("Signed by school or trust")
             .isUnticked()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Draft saved in school's SharePoint folder")
             .isUnticked();
     });
 

@@ -6031,8 +6031,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("deedOfVariationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DeedOfVariationSaved { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("deedOfVariationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DeedOfVariationSent { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("deedOfVariationDraftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationDraftSaved { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("deedOfVariationSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? DeedOfVariationSignedSecretaryState { get; set; } = default!;
@@ -6488,6 +6488,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("draftSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DraftSaved { get; set; } = default!;
 
         public string ToJson()
         {
