@@ -45,12 +45,12 @@
 }
 
 @section TaskSection {
-@if (isConversion)
-{
-    @await Html.PartialAsync("_ConversionMasterFundingAgreementTaskForm", Model)
-}
-else
-{
-    @await Html.PartialAsync("_TransferMasterFundingAgreementTaskForm", Model)
-}
+    @if (isConversion)
+    {
+        @await Html.PartialAsync("_ConversionMasterFundingAgreementTaskForm", Model)
+    }
+    else
+    {
+        @await Html.PartialAsync("_TransferMasterFundingAgreementTaskForm", Model)
+    }
 }
