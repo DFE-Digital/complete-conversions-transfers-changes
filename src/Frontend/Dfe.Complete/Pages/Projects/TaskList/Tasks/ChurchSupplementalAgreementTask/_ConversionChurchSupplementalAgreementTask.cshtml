@@ -42,8 +42,9 @@
         </govuk-checkboxes-item>
         <govuk-checkboxes-item data-cy="@nameof(Model.SignedBySecretaryState)" id="@nameof(Model.SignedBySecretaryState)" asp-for="@Model.SignedBySecretaryState" value="true" name="@nameof(Model.SignedBySecretaryState)" checked="@Model.SignedBySecretaryState">
             <b>Signed and sealed on behalf of SoS</b>
-            <!-- Insert link -->
-            <p class="govuk-hint">The Secretary of State, or somebody with the <external-link data-cy="church-supplemental-agreement-authorised-signatories" href="@_configuration["ExternalLinks:ChurchSupplementalAgreementAuthorisedSignatories"]">authority to act on their behalf</external-link>, must sign the supplemental funding agreement.</p>
+            <govuk-character-hint>
+                <p>The Secretary of State, or somebody with the <external-link data-cy="church-supplemental-agreement-authorised-signatories" href="@_configuration["ExternalLinks:ChurchSupplementalAgreementAuthorisedSignatories"]">authority to act on their behalf</external-link>, must sign the supplemental funding agreement.</p>
+            </govuk-character-hint>
         </govuk-checkboxes-item> 
         <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="@nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
             <b>Final version saved in school’s SharePoint folder</b>

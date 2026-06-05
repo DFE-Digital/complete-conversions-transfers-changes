@@ -500,12 +500,12 @@ namespace Dfe.Complete.Models
         {
             if ((!taskData.ChurchSupplementalAgreementReceived.HasValue || taskData.ChurchSupplementalAgreementReceived == false) &&
                 (!taskData.ChurchSupplementalAgreementCleared.HasValue || taskData.ChurchSupplementalAgreementCleared == false) &&
-                (!taskData.ChurchSupplementalAgreementSigned.HasValue || taskData.ChurchSupplementalAgreementSigned == false) &&
-                (!taskData.ChurchSupplementalAgreementSaved.HasValue || taskData.ChurchSupplementalAgreementSaved == false) &&
+                (!taskData.ChurchSupplementalAgreementSignedTrust.HasValue || taskData.ChurchSupplementalAgreementSignedTrust == false) &&
+                (!taskData.ChurchSupplementalAgreementDraftSaved.HasValue || taskData.ChurchSupplementalAgreementDraftSaved == false) &&
                 (!taskData.ChurchSupplementalAgreementNotApplicable.HasValue || taskData.ChurchSupplementalAgreementNotApplicable == false) &&
                 (!taskData.ChurchSupplementalAgreementSignedDiocese.HasValue || taskData.ChurchSupplementalAgreementSignedDiocese == false) &&
                 (!taskData.ChurchSupplementalAgreementSignedSecretaryState.HasValue || taskData.ChurchSupplementalAgreementSignedSecretaryState == false) &&
-                (!taskData.ChurchSupplementalAgreementSent.HasValue || taskData.ChurchSupplementalAgreementSent == false))
+                (!taskData.ChurchSupplementalAgreementFinalSaved.HasValue || taskData.ChurchSupplementalAgreementFinalSaved == false))
             {
                 return TaskListStatus.NotStarted;
             }
@@ -515,8 +515,8 @@ namespace Dfe.Complete.Models
             }
             return (taskData.ChurchSupplementalAgreementReceived == true &&
                 taskData.ChurchSupplementalAgreementCleared == true &&
-                taskData.ChurchSupplementalAgreementSigned == true &&
-                taskData.ChurchSupplementalAgreementSent == true &&
+                taskData.ChurchSupplementalAgreementSignedTrust == true &&
+                taskData.ChurchSupplementalAgreementFinalSaved == true &&
                 taskData.ChurchSupplementalAgreementSignedDiocese == true &&
                 taskData.ChurchSupplementalAgreementSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;

@@ -69,13 +69,13 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? ChurchSupplementalAgreementCleared { get; set; }
 
-        public bool? ChurchSupplementalAgreementSigned { get; set; }
+        public bool? ChurchSupplementalAgreementSignedTrust { get; set; }
 
         public bool? ChurchSupplementalAgreementSignedDiocese { get; set; }
 
-        public bool? ChurchSupplementalAgreementSaved { get; set; }
+        public bool? ChurchSupplementalAgreementDraftSaved { get; set; }
 
-        public bool? ChurchSupplementalAgreementSent { get; set; }
+        public bool? ChurchSupplementalAgreementFinalSaved { get; set; }
 
         public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; }
 
