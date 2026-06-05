@@ -26,7 +26,8 @@
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
-                    Clear any changed subleases
+                    Clear and confirm sublease changes
+                    <span class="govuk-caption-m">Select all that apply</span>
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
                     <b>Received</b>
@@ -34,27 +35,20 @@
                 <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
-                    <b>Signed by school or trust</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
-                    <b>Saved in school's Sharepoint folder</b>
-                </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-                    Confirm any subleases have been signed
-                </govuk-checkboxes-fieldset-legend> 
                 <govuk-checkboxes-item data-cy="@nameof(Model.EmailSigned)" id="@nameof(Model.EmailSigned)" asp-for="@Model.EmailSigned" value="true" name="@nameof(Model.EmailSigned)" checked="@Model.EmailSigned">
                     <b>Email the school to ask if all relevant parties have agreed and signed any subleases</b>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="@nameof(Model.ReceiveSigned)" id="@nameof(Model.ReceiveSigned)" asp-for="@Model.ReceiveSigned" value="true" name="@nameof(Model.ReceiveSigned)" checked="@Model.ReceiveSigned">
                     <b>Receive email from the school confirming all relevant parties have agreed and signed any subleases</b>
                 </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
+                    <b>Save a copy of the confirmation email in the School's SharePoint folder</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                    <b>Save copy of signed sublease in school's SharePoint folder</b>
+                </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="@nameof(Model.SaveSigned)" id="@nameof(Model.SaveSigned)" asp-for="@Model.SaveSigned" value="true" name="@nameof(Model.SaveSigned)" checked="@Model.SaveSigned">
-                    <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
+                    <b>Issue sub-lease consent letter and save copy in school's SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
