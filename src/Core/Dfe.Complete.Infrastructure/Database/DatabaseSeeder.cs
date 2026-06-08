@@ -124,6 +124,7 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
         for (var i = 0; i < Urns.Count; i++)
         {
             var localAuthority = RandomFromList(LocalAuthorities);
+            Region? region = RandomFromList(Regions);
 
             giasEstablishments.Add(new GiasEstablishment
             {
@@ -133,6 +134,7 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
                 Name = EstablishmentNames[i % EstablishmentNames.Count],
                 LocalAuthorityName = localAuthority.Name,
                 LocalAuthorityCode = localAuthority.Code,
+                RegionCode = region.GetCharValue(),
 
                 CreatedAt = Now
             });
@@ -146,7 +148,7 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
     {
         Console.WriteLine("[Seeder] Seeding default users...");
         // Always ensure default users exist (idempotent)
-        foreach (var user in DefaultUsers)
+        foreach (var user in DefaultUsers.Concat(CypressUsers))
         {
             if (!await _context.Users.AnyAsync(u => u.Email == user.Email))
             {
@@ -403,6 +405,17 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
         CreateUser("Holly", "Wheeler", "holly.wheeler@education.gov.uk", ProjectTeam.NorthEast),
     ];
 
+    private static IReadOnlyList<User> CypressUsers => [
+        CreateCypressUser("B62A3AC5-2C54-4E85-8A83-DE9199D0BCCE", "business-support", ProjectTeam.BusinessSupport, false, "BS"),
+        CreateCypressUser("9353003F-3359-4684-A696-5A96CDAB43E2", "data-consumers", ProjectTeam.DataConsumers, false, "DC"),
+        CreateCypressUser("A7FC973C-893A-472B-89F0-5CEE72C70C80", "rcs-team-leader", ProjectTeam.RegionalCaseWorkerServices, true, "RCS-TL"),
+        CreateCypressUser("FD190446-DAFB-4ED7-8FB5-1AB473DDD114", "rdo-london", ProjectTeam.London, false, "RDO"),
+        CreateCypressUser("B0DFB912-F806-4FC2-837F-FBE2F1779789", "rdo-team-leader", ProjectTeam.London, true, "RDO-TL"),
+        CreateCypressUser("C8371E6E-FD7F-42F7-8E38-F58E7308962E", "regional-casework-services", ProjectTeam.RegionalCaseWorkerServices, false, "RCS"),
+        CreateCypressUser("65F5A723-101D-4E29-B5C3-3A704D229477", "service-support", ProjectTeam.ServiceSupport, false, "SS"),
+        CreateCypressUser("C29AF147-F2F5-4D30-B8A5-C68BF83A148A", "testuser", ProjectTeam.London, false, null),
+    ];
+
     private static IReadOnlyList<LocalAuthority> LocalAuthorities =>
     [
         LocalAuthority.Create(NewLocalAuthorityId(), "Birmingham City Council", "301", CreateAddress("1 Main Street", "Birmingham", "West Midlands", "B1 1AA"), Now),
@@ -452,6 +465,22 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
             CreatedAt = Now
         };
     }
+
+    private static User CreateCypressUser(
+        string id,
+        string name,
+        ProjectTeam team,
+        bool manageTeam,
+        string? entraSuffix) => new()
+        {
+            Id = new UserId(new Guid(id)),
+            FirstName = "cypress",
+            LastName = name,
+            Email = $"cypress.{name.ToLowerInvariant()}@education.gov.uk",
+            Team = team.ToDescription(),
+            ManageTeam = manageTeam,
+            EntraUserObjectId = $"TEST-AD-ID{(entraSuffix != null ? "-" + entraSuffix : string.Empty)}",
+        };
 
     private static AddressDetails CreateAddress(string address1, string town, string county, string postcode) => new(address1, null, null, town, county, postcode);
 
