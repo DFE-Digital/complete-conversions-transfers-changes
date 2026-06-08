@@ -35,15 +35,15 @@ public sealed class DatabaseSeederTests : IDisposable
 
         await sut.SeedAsync();
 
-        Assert.Equal(22, await context.Users.CountAsync());
+        Assert.Equal(30, await context.Users.CountAsync());
         Assert.Equal(21, await context.LocalAuthorities.CountAsync());
         Assert.Equal(9, await context.SignificantDateHistoryReasons.CountAsync());
-        Assert.Equal(30, await context.GiasEstablishments.CountAsync());
-        Assert.Equal(30, await context.Projects.CountAsync());
+        Assert.Equal(57, await context.GiasEstablishments.CountAsync());
+        Assert.Equal(57, await context.Projects.CountAsync());
         Assert.Equal(15, await context.ConversionTasksData.CountAsync());
-        Assert.Equal(15, await context.TransferTasksData.CountAsync());
+        Assert.Equal(42, await context.TransferTasksData.CountAsync());
         Assert.Equal(1, await context.ProjectGroups.CountAsync());
-        Assert.Equal(30, await context.KeyContacts.CountAsync());
+        Assert.Equal(57, await context.KeyContacts.CountAsync());
     }
 
     [Fact]
@@ -63,10 +63,10 @@ public sealed class DatabaseSeederTests : IDisposable
             var secondRun = new DatabaseSeeder(secondContext, configuration);
             await secondRun.SeedAsync();
 
-            Assert.Equal(22, await secondContext.Users.CountAsync());
+            Assert.Equal(30, await secondContext.Users.CountAsync());
             Assert.Equal(21, await secondContext.LocalAuthorities.CountAsync());
             Assert.Equal(9, await secondContext.SignificantDateHistoryReasons.CountAsync());
-            Assert.Equal(30, await secondContext.Projects.CountAsync());
+            Assert.Equal(57, await secondContext.Projects.CountAsync());
         }
     }
 
@@ -92,9 +92,9 @@ public sealed class DatabaseSeederTests : IDisposable
             var secondProjectGroupId = (await secondContext.ProjectGroups.SingleAsync()).Id.Value;
 
             Assert.NotEqual(firstProjectGroupId, secondProjectGroupId);
-            Assert.Equal(30, await secondContext.Projects.CountAsync());
+            Assert.Equal(57, await secondContext.Projects.CountAsync());
             Assert.Equal(15, await secondContext.ConversionTasksData.CountAsync());
-            Assert.Equal(15, await secondContext.TransferTasksData.CountAsync());
+            Assert.Equal(42, await secondContext.TransferTasksData.CountAsync());
         }
     }
 
@@ -112,7 +112,7 @@ public sealed class DatabaseSeederTests : IDisposable
 
         await sut.SeedAsync();
 
-        Assert.Equal(23, await context.Users.CountAsync());
+        Assert.Equal(31, await context.Users.CountAsync());
         Assert.Equal(1, await context.Users.CountAsync(u => u.Email == "new.person@education.gov.uk"));
     }
 
