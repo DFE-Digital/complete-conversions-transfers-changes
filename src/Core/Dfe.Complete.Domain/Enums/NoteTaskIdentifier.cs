@@ -224,4 +224,8 @@ public enum NoteTaskIdentifier
     [Description("confirm_dbs_checks")]
     [DisplayDescription("DBS checks")]
     ConfirmDBSChecks = 56,
+
+    [Description("private_finance_initiative")]
+    [DisplayDescription("Private finance initiative")]
+    PrivateFinanceInitiative = 57,
 }
