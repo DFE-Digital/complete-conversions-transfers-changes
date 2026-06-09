@@ -59,6 +59,7 @@ interface UpdateDeedOfVariationTaskRequest {
     saved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
+    draftSaved?: boolean;
 }
 
 interface UpdateExternalStakeholderKickOffTaskRequest {
@@ -124,8 +125,8 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     projectType?: ProjectType;
     received?: boolean;
     cleared?: boolean;
-    sent?: boolean;
     saved?: boolean;
+    draftSaved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
 }

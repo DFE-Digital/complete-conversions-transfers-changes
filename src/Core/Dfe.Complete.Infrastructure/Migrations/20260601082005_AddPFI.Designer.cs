@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260601082005_AddPFI")]
+    partial class AddPFI
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,14 +144,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_cleared");
 
-                    b.Property<bool?>("ChurchSupplementalAgreementDraftSaved")
-                        .HasColumnType("bit")
-                        .HasColumnName("church_supplemental_agreement_draft_saved");
-
-                    b.Property<bool?>("ChurchSupplementalAgreementFinalSaved")
-                        .HasColumnType("bit")
-                        .HasColumnName("church_supplemental_agreement_final_saved");
-
                     b.Property<bool?>("ChurchSupplementalAgreementNotApplicable")
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_not_applicable");
@@ -157,6 +152,18 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_received");
 
+                    b.Property<bool?>("ChurchSupplementalAgreementSaved")
+                        .HasColumnType("bit")
+                        .HasColumnName("church_supplemental_agreement_saved");
+
+                    b.Property<bool?>("ChurchSupplementalAgreementSent")
+                        .HasColumnType("bit")
+                        .HasColumnName("church_supplemental_agreement_sent");
+
+                    b.Property<bool?>("ChurchSupplementalAgreementSigned")
+                        .HasColumnType("bit")
+                        .HasColumnName("church_supplemental_agreement_signed");
+
                     b.Property<bool?>("ChurchSupplementalAgreementSignedDiocese")
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_signed_diocese");
@@ -164,10 +171,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("ChurchSupplementalAgreementSignedSecretaryState")
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_signed_secretary_state");
-
-                    b.Property<bool?>("ChurchSupplementalAgreementSignedTrust")
-                        .HasColumnType("bit")
-                        .HasColumnName("church_supplemental_agreement_signed_trust");
 
                     b.Property<bool?>("CommercialTransferAgreementAgreed")
                         .ValueGeneratedOnAdd()
@@ -251,10 +254,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("DeedOfVariationCleared")
                         .HasColumnType("bit")
                         .HasColumnName("deed_of_variation_cleared");
-
-                    b.Property<bool?>("DeedOfVariationDraftSaved")
-                        .HasColumnType("bit")
-                        .HasColumnName("deed_of_variation_draft_saved");
 
                     b.Property<bool?>("DeedOfVariationNotApplicable")
                         .HasColumnType("bit")
@@ -617,10 +616,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("SupplementalFundingAgreementCleared")
                         .HasColumnType("bit")
                         .HasColumnName("supplemental_funding_agreement_cleared");
-
-                    b.Property<bool?>("SupplementalFundingAgreementDraftSaved")
-                        .HasColumnType("bit")
-                        .HasColumnName("supplemental_funding_agreement_draft_saved");
 
                     b.Property<bool?>("SupplementalFundingAgreementReceived")
                         .HasColumnType("bit")

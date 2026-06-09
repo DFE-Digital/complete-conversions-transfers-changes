@@ -58,10 +58,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? SupplementalFundingAgreementCleared { get; set; }
 
         public bool? SupplementalFundingAgreementSigned { get; set; }
-
+        public bool? SupplementalFundingAgreementDraftSaved { get; set; }
         public bool? SupplementalFundingAgreementSaved { get; set; }
-
-        public bool? SupplementalFundingAgreementSent { get; set; }
 
         public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
@@ -107,7 +105,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? DeedOfVariationSaved { get; set; }
 
-        public bool? DeedOfVariationSent { get; set; }
+        public bool? DeedOfVariationDraftSaved { get; set; }
 
         public bool? DeedOfVariationSignedSecretaryState { get; set; }
 
@@ -118,6 +116,25 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? TrustModificationOrderCleared { get; set; }
 
         public bool? TrustModificationOrderSaved { get; set; }
+
+        public bool? PrivateFinanceInitiativeNotApplicable { get; set; }
+
+        public bool? PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeReceived { get; set; }
+
+        public bool? PrivateFinanceInitiativeDocumentsSentToSOPUForClearance { get; set; }
+
+        public bool? PrivateFinanceInitiativeCleared { get; set; }
+
+        public bool? PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder { get; set; }
+
+        public bool? PrivateFinanceInitiativeSignedByAllStakeholders { get; set; }
+        
+        public bool? PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder { get; set; }
+        
 
         public bool? DirectionToTransferReceived { get; set; }
 

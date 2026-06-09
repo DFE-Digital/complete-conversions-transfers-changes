@@ -421,7 +421,7 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
         public void DeedOfVariationTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? draftSaved, bool? signed,
             bool? signedSecretaryState, bool? notApplicable, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -430,8 +430,8 @@ namespace Dfe.Complete.Tests.Models
                 DeedOfVariationReceived = received,
                 DeedOfVariationCleared = cleared,
                 DeedOfVariationSaved = saved,
+                DeedOfVariationDraftSaved = draftSaved,
                 DeedOfVariationSigned = signed,
-                DeedOfVariationSent = sent,
                 DeedOfVariationSignedSecretaryState = signedSecretaryState,
                 DeedOfVariationNotApplicable = notApplicable
             };
@@ -444,9 +444,11 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
         [InlineData(true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, false, true, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, true, false, TaskListStatus.InProgress)]
         [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
         public void SupplementalFundingAgreementTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? signed, bool? draftSaved,
             bool? signedSecretaryState, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -456,7 +458,7 @@ namespace Dfe.Complete.Tests.Models
                 SupplementalFundingAgreementCleared = cleared,
                 SupplementalFundingAgreementSaved = saved,
                 SupplementalFundingAgreementSigned = signed,
-                SupplementalFundingAgreementSent = sent,
+                SupplementalFundingAgreementDraftSaved = draftSaved,
                 SupplementalFundingAgreementSignedSecretaryState = signedSecretaryState
             };
 
@@ -650,6 +652,43 @@ namespace Dfe.Complete.Tests.Models
             var result = ConversionTaskListViewModel.Create(taskData, project, null);
 
             Assert.Equal(expectedStatus, result.TrustModificationOrder);
+        }
+
+        [Theory]
+        [InlineData(null, null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(null, null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, true, true, true, true, false, TaskListStatus.Completed)]
+        public void PrivateFinanceInitiativeTaskStatus_ShouldReturn_CorrectStatus(
+            bool? supplementaryFundingAgreementPfiClausesInserted,
+            bool? masterFundingAgreementPfiClausesInserted,
+            bool? received,
+            bool? cleared,
+            bool? draftSavedInTrustSharepointFolder,
+            bool? signedByAllStakeholders,
+            bool? finalVersionSavedInSchoolAndTrustSharepointFolder,
+            bool? notApplicable,
+            TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                PrivateFinanceInitiativeNotApplicable = notApplicable,
+                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted = supplementaryFundingAgreementPfiClausesInserted,
+                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted = masterFundingAgreementPfiClausesInserted,
+                PrivateFinanceInitiativeReceived = received,
+                PrivateFinanceInitiativeCleared = cleared,
+                PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder = draftSavedInTrustSharepointFolder,
+                PrivateFinanceInitiativeSignedByAllStakeholders = signedByAllStakeholders,
+                PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder = finalVersionSavedInSchoolAndTrustSharepointFolder
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.PrivateFinanceInitiative);
         }
 
         [Theory]
