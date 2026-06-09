@@ -799,7 +799,6 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
-        projectConfiguration.Property(e => e.CommercialTransferAgreementUnamended).HasColumnName("transfer_agreement_unamended");        
     }
 
     private static void ConfigureDaoRevocation(EntityTypeBuilder<DaoRevocation> projectConfiguration)

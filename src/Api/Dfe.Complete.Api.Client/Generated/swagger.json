@@ -8671,10 +8671,6 @@
           "commercialTransferAgreementQuestionsChecked": {
             "type": "boolean",
             "nullable": true
-          },
-          "commercialTransferAgreementUnamended": {
-            "type": "boolean",
-            "nullable": true
           }
         }
       },

@@ -5860,9 +5860,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("commercialTransferAgreementQuestionsChecked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CommercialTransferAgreementQuestionsChecked { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementUnamended", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? CommercialTransferAgreementUnamended { get; set; } = default!;
-
         public string ToJson()
         {
 

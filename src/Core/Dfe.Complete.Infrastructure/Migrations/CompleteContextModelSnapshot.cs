@@ -199,10 +199,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("commercial_transfer_agreement_signed");
 
-                    b.Property<bool?>("CommercialTransferAgreementUnamended")
-                        .HasColumnType("bit")
-                        .HasColumnName("transfer_agreement_unamended");
-
                     b.Property<bool?>("CompleteNotificationOfChangeCheckDocument")
                         .HasColumnType("bit")
                         .HasColumnName("complete_notification_of_change_check_document");
@@ -1518,10 +1514,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("CommercialTransferAgreementSaveConfirmationEmails")
                         .HasColumnType("bit")
                         .HasColumnName("commercial_transfer_agreement_save_confirmation_emails");
-
-                    b.Property<bool?>("CommercialTransferAgreementUnamended")
-                        .HasColumnType("bit")
-                        .HasColumnName("transfer_agreement_unamended");
 
                     b.Property<bool?>("ConditionsMetBaselineSheetApproved")
                         .HasColumnType("bit")
