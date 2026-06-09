@@ -11,6 +11,21 @@
     <div class="govuk-hint">
         <p>The trust modification order is only needed if there are restrictions on the title deeds that need resolving.</p>
         <p>The land questionnaire will show if one is needed for this project. You can also check with the solicitors dealing with land issues.</p>
+        
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">When to use a trust modification order</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>A trust modification order is used when a voluntary or foundation school's land is held by a trust or foundation that is not a diocese.</p> 
+                <p>A trust modification order is likely to be needed if the school is a:</p>
+                <ul> 
+                    <li>voluntary-controlled school</li> 
+                    <li>voluntary-aided school</li>
+                    <li>foundation school</li>
+                </ul>                
+            </govuk-details-text>
+        </govuk-details>
     </div>
 }
 @section TaskSection {
@@ -30,25 +45,8 @@
             Clear and sign the trust modification order
         </h2>
         <div class="govuk-hint">
-            <p>If one is needed, send the draft trust modification order and a copy of the original deed to SOPU (Schools Operational Practice Unit) at <a data-cy="finance-report-mail-to-link" href="mailto:@_configuration["Emails:AcademyDeliveryOperations"]">@_configuration["Emails:AcademyDeliveryOperations"]</a>. If necessary, they will send it to the Legal Adviser's Office for clearing.</p>
-            <p>It can take several weeks to hear back from SOPU.</p>
-            <p>You only need to send the cleared trust modification order to Academy Operations for signing.</p>
-            <p>This must be sent to them by the deadline they set in their monthly email. This is at the same time as you send the single worksheet.</p>
+            <p>If one is needed, send the draft trust modification order and a copy of the original deed to SOPU (Schools Operational Practise Unit) at <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit</external-link> who will send the Legal Adviser's Office (LAO) for clearing. It can several weeks to hear back from LAO.</p>
         </div>
-        <govuk-details>
-            <govuk-details-summary>
-                <span class="govuk-details__summary-text">When to use a trust modification order</span>
-            </govuk-details-summary>
-            <govuk-details-text>
-                <p>A trust modification order is used when a voluntary or foundation school's land is held by a trust or foundation that is not a diocese.</p> 
-                <p>A trust modification order is likely to be needed if the school is a:</p>
-                <ul> 
-                    <li>voluntary-controlled school</li> 
-                    <li>voluntary-aided school</li>
-                    <li>foundation school</li>
-                </ul>                
-            </govuk-details-text>
-        </govuk-details>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
@@ -57,13 +55,20 @@
                     <b>Received</b>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="sent-checkbox" id="@nameof(Model.Sent)" asp-for="@Model.Sent" value="true" name="@nameof(Model.Sent)" checked="@Model.Sent">
-                    <b>Sent to policy team for clearing</b>
+                    <b>Sent to SOPU for LAO clearance</b>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="cleared-checkbox" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
-                    <b>Sent to Academy Operations team mailbox for signing</b>
+                    <b>Sent to Academy Operations mailbox for signing</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>
+                            Send the LAO cleared trust modification order to Academy Operations for signing 
+                            <a data-cy="finance-report-mail-to-link" href="mailto:@_configuration["Emails:AcademyDeliveryOperations"]">@_configuration["Emails:AcademyDeliveryOperations"]</a>.
+                            This must be sent to them by the deadline they set in their monthly email.
+                        </p>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="saved-checkbox" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
-                    <b>Saved in the school's SharePoint folder</b>
+                    <b>Final version saved in school’s SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
