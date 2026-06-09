@@ -52,9 +52,11 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="unamended" asp-for="@Model.Unamended" value="true" name="unamended" checked="@Model.Unamended" data-cy="unamended-checkbox">
-                    <b>Confirm if the DfE model has been used unamended</b>
-                </govuk-checkboxes-item>
+                @if (!isProjectTypeTransfer){
+                    <govuk-checkboxes-item id="unamended" asp-for="@Model.Unamended" value="true" name="unamended" checked="@Model.Unamended" data-cy="unamended-checkbox">
+                        <b>Confirm if the DfE model has been used unamended</b>
+                    </govuk-checkboxes-item>
+                }
                 <govuk-checkboxes-item id="questionsreceived" asp-for="@Model.QuestionsReceived" value="true" name="questionsreceived" checked="@Model.QuestionsReceived" data-cy="questions-received-checkbox">
                     <b>Receive solicitor responses to assurance questions</b>
                 </govuk-checkboxes-item>

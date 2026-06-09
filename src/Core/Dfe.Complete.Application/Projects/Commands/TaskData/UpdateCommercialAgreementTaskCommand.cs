@@ -59,7 +59,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.TransferTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
 
-            tasksData.CommercialTransferAgreementUnamended = request.Unamended;
             tasksData.CommercialTransferAgreementConfirmAgreed = request.Agreed;
             tasksData.CommercialTransferAgreementSaveConfirmationEmails = request.Saved;
             tasksData.CommercialTransferAgreementConfirmSigned = request.Signed;

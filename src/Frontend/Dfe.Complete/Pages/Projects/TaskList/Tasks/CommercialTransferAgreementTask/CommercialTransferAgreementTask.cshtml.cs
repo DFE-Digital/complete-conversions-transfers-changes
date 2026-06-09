@@ -48,7 +48,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
 
             if (Project.Type == ProjectType.Transfer)
             {
-                Unamended = TransferTaskData.CommercialTransferAgreementUnamended;
                 Agreed = TransferTaskData.CommercialTransferAgreementConfirmAgreed;
                 Signed = TransferTaskData.CommercialTransferAgreementConfirmSigned;
                 Saved = TransferTaskData.CommercialTransferAgreementSaveConfirmationEmails;
