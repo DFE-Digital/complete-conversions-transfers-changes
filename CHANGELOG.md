@@ -17,6 +17,15 @@ Security in case of vulnerabilities.
 ## Unreleased
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 
+
+### Added
+- [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
+- [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
+---
+
+### Changed
+- [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
+
 ---
 
 ### Changed

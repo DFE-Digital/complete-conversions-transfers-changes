@@ -15,8 +15,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         [Required] ProjectType? ProjectType,
         bool? Received,
         bool? Cleared,
-        bool? Sent,
         bool? Saved,
+        bool? DraftSaved,
         bool? Signed,
         bool? SignedSecretaryState) : IRequest<Result<bool>>;
 
@@ -45,9 +45,9 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
 
             tasksData.SupplementalFundingAgreementSaved = request.Saved;
+            tasksData.SupplementalFundingAgreementDraftSaved = request.DraftSaved;
             tasksData.SupplementalFundingAgreementCleared = request.Cleared;
             tasksData.SupplementalFundingAgreementReceived = request.Received;
-            tasksData.SupplementalFundingAgreementSent = request.Sent;
             tasksData.SupplementalFundingAgreementSigned = request.Signed;
             tasksData.SupplementalFundingAgreementSignedSecretaryState = request.SignedSecretaryState;
 
