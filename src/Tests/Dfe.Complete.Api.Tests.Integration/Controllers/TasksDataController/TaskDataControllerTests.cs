@@ -766,10 +766,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
             Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedTrust);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
-            Assert.False(existingTaskData.ChurchSupplementalAgreementSaved);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementDraftSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementFinalSaved);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
         }
         [Theory]
