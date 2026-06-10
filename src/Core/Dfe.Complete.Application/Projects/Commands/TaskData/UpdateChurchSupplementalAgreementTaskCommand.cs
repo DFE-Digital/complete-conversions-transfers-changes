@@ -51,10 +51,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ChurchSupplementalAgreementNotApplicable = request.NotApplicable;
             tasksData.ChurchSupplementalAgreementReceived = request.NotApplicable == true ? null : request.Received;
             tasksData.ChurchSupplementalAgreementCleared = request.NotApplicable == true ? null : request.Cleared;
-            tasksData.ChurchSupplementalAgreementSigned = request.NotApplicable == true ? null : request.Signed;
+            tasksData.ChurchSupplementalAgreementSignedTrust = request.NotApplicable == true ? null : request.Signed;
             tasksData.ChurchSupplementalAgreementSignedDiocese = request.NotApplicable == true ? null : request.SignedByDiocese;
-            tasksData.ChurchSupplementalAgreementSaved = request.NotApplicable == true ? null : request.Saved;
-            tasksData.ChurchSupplementalAgreementSent = request.NotApplicable == true ? null : request.SentOrSaved;
+            tasksData.ChurchSupplementalAgreementDraftSaved = request.NotApplicable == true ? null : request.Saved;
+            tasksData.ChurchSupplementalAgreementFinalSaved = request.NotApplicable == true ? null : request.SentOrSaved;
             tasksData.ChurchSupplementalAgreementSignedSecretaryState = request.NotApplicable == true ? null : request.SignedBySecretaryState;
 
 

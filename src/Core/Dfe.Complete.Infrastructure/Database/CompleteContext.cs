@@ -494,9 +494,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementCleared).HasColumnName("church_supplemental_agreement_cleared");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementNotApplicable).HasColumnName("church_supplemental_agreement_not_applicable");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementReceived).HasColumnName("church_supplemental_agreement_received");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSaved).HasColumnName("church_supplemental_agreement_saved");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSent).HasColumnName("church_supplemental_agreement_sent");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSigned).HasColumnName("church_supplemental_agreement_signed");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementDraftSaved).HasColumnName("church_supplemental_agreement_draft_saved");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementFinalSaved).HasColumnName("church_supplemental_agreement_final_saved");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedTrust).HasColumnName("church_supplemental_agreement_signed_trust");
+
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedDiocese).HasColumnName("church_supplemental_agreement_signed_diocese");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedSecretaryState).HasColumnName("church_supplemental_agreement_signed_secretary_state");
         projectConfiguration.Property(e => e.CommercialTransferAgreementAgreed)
