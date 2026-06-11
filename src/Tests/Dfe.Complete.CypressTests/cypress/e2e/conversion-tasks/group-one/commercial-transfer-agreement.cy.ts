@@ -19,14 +19,6 @@ describe("Conversion tasks - Commercial transfer agreement", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    // it("should expand and collapse guidance details", () => {
-    //     taskPage
-    //         .clickDropdown("How to check and assure the commercial transfer agreement")
-    //         .hasDropdownContent(
-    //             "You can read guidance about how use check and assure the agreement (opens in new tab) on SharePoint.",
-    //         );
-    // });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
