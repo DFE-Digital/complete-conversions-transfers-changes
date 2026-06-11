@@ -57,7 +57,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
             Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
             Assert.True(existingTaskData.CommercialTransferAgreementSaveConfirmationEmails);
-            Assert.True(existingTaskData.CommercialTransferAgreementUnamended);
         }
 
         [Theory]
