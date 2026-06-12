@@ -23,14 +23,12 @@
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
-        <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Clear and confirm third party leases</h2>
-        </div>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-fieldset-legend class="govuk-fieldset__legend--m">
+                    Clear and confirm third party leases
+                    <span class="govuk-caption-m">Select all that apply</span>
                 </govuk-checkboxes-fieldset-legend>
-
                 <govuk-checkboxes-item id="@(nameof(Model.Email))" data-cy="@(nameof(Model.Email))" asp-for="@Model.Email" value="true" name="@(nameof(Model.Email))" checked="@Model.Email">
                     <b>Email the solicitors to ask if all relevant parties have agreed and signed the lease</b>
                 </govuk-checkboxes-item>
@@ -42,7 +40,6 @@
                 <govuk-checkboxes-item id="@(nameof(Model.Save))" data-cy="@(nameof(Model.Save))" asp-for="@Model.Save" value="true" name="@(nameof(Model.Save))" checked="@Model.Save">
                     <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
                 </govuk-checkboxes-item>
-
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
 
