@@ -97,6 +97,14 @@ interface UpdateSubleasesTaskRequest {
     receiveSigned?: boolean;
 }
 
+interface UpdateThirdPartyLeasesTaskRequest {
+    taskDataId: { value: string };
+    notApplicable: boolean;
+    email: boolean;
+    receive: boolean;
+    save: boolean;
+}
+
 interface UpdateTenancyAtWillTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -195,6 +203,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateSubleasesTask(requestBody: UpdateSubleasesTaskRequest) {
         return this.taskDataBaseRequest<void>("Subleases", requestBody);
+    }
+
+    public updateThirdPartyLeasesTask(requestBody: UpdateThirdPartyLeasesTaskRequest) {
+        return this.taskDataBaseRequest<void>("ThirdPartyLeases", requestBody);
     }
 
     public updateTenancyAtWillTask(requestBody: UpdateTenancyAtWillTaskRequest) {

@@ -864,6 +864,25 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Updating the third party leases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ThirdPartyLeases")]
+        [SwaggerResponse(204, "Updated the third party leases task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateThirdPartyLeasesTaskAsync(
+            [FromBody] UpdateThirdPartyLeasesTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updating the tenancy at will task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>

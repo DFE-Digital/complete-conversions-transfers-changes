@@ -4071,6 +4071,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ThirdPartyLeases": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the third party leases task data for conversion project.",
+        "operationId": "TasksData_UpdateThirdPartyLeasesTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateThirdPartyLeasesTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the third party leases task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/TenancyAtWill": {
       "patch": {
         "tags": [
@@ -10523,6 +10556,31 @@
             "nullable": true
           },
           "receiveSigned": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateThirdPartyLeasesTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "email": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "save": {
             "type": "boolean",
             "nullable": true
           }
