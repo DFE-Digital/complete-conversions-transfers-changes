@@ -34,6 +34,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus OneHundredAndTwentyFiveYearLease { get; set; }
         public TaskListStatus Tubleases { get; set; }
         public TaskListStatus TenancyAtWill { get; set; }
+        public TaskListStatus ThirdPartyLeases { get; set; }
         public TaskListStatus CommercialTransferAgreement { get; set; }
         public TaskListStatus ConfirmTheSchoolHasCompletedAllActions { get; set; }
         public TaskListStatus ConfirmAllConditionsHaveBeenMet { get; set; }
@@ -79,6 +80,7 @@ namespace Dfe.Complete.Models
                 OneHundredAndTwentyFiveYearLease = OneHundredAndTwentyFiveYearLeaseTaskStatus(taskData),
                 Tubleases = TubleasesTaskStatus(taskData),
                 TenancyAtWill = TenancyAtWillTaskStatus(taskData),
+                ThirdPartyLeases = ThirdPartyLeasesTaskStatus(taskData),
                 CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
                 ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskData),
                 ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project),
@@ -318,6 +320,25 @@ namespace Dfe.Complete.Models
             return (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease == true &&
                taskData.OneHundredAndTwentyFiveYearLeaseEmail == true &&
                taskData.OneHundredAndTwentyFiveYearLeaseReceive == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ThirdPartyLeasesTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.ThirdPartyLeasesSave.HasValue || taskData.ThirdPartyLeasesSave == false) &&
+               (!taskData.ThirdPartyLeasesEmail.HasValue || taskData.ThirdPartyLeasesEmail == false) &&
+               (!taskData.ThirdPartyLeasesReceive.HasValue || taskData.ThirdPartyLeasesReceive == false) &&
+               (!taskData.ThirdPartyLeasesNotApplicable.HasValue || taskData.ThirdPartyLeasesNotApplicable == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.ThirdPartyLeasesNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.ThirdPartyLeasesSave == true &&
+               taskData.ThirdPartyLeasesEmail == true &&
+               taskData.ThirdPartyLeasesReceive == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 

@@ -7243,7 +7243,8 @@
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
           "ConfirmDBSChecks",
-          "PrivateFinanceInitiative"
+          "PrivateFinanceInitiative",
+          "ThirdPartyLeases"
         ],
         "x-enum-descriptions": [
           "handover",
@@ -7301,7 +7302,8 @@
           "tupe_consultation",
           "la_confirms_payroll_deadline",
           "confirm_dbs_checks",
-          "private_finance_initiative"
+          "private_finance_initiative",
+          "third_party_leases"
         ],
         "enum": [
           "Handover",
@@ -7359,7 +7361,8 @@
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
           "ConfirmDBSChecks",
-          "PrivateFinanceInitiative"
+          "PrivateFinanceInitiative",
+          "ThirdPartyLeases"
         ]
       },
       "CreateNoteCommand": {
@@ -9037,6 +9040,18 @@
             "type": "boolean",
             "nullable": true
           },
+          "thirdPartyLeasesEmail": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesReceive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesSave": {
+            "type": "boolean",
+            "nullable": true
+          },
           "subleasesReceived": {
             "type": "boolean",
             "nullable": true
@@ -9106,6 +9121,10 @@
             "nullable": true
           },
           "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesNotApplicable": {
             "type": "boolean",
             "nullable": true
           },

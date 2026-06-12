@@ -4416,6 +4416,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"PrivateFinanceInitiative")]
         PrivateFinanceInitiative = 55,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ThirdPartyLeases")]
+        ThirdPartyLeases = 56,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6141,6 +6144,15 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseSaveLease", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesReceive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesReceive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesSave", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesSave { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("subleasesReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SubleasesReceived { get; set; } = default!;
 
@@ -6194,6 +6206,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesNotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("subleasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SubleasesNotApplicable { get; set; } = default!;

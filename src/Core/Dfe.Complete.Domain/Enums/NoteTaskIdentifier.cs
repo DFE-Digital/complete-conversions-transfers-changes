@@ -228,4 +228,8 @@ public enum NoteTaskIdentifier
     [Description("private_finance_initiative")]
     [DisplayDescription("Private finance initiative")]
     PrivateFinanceInitiative = 57,
+
+    [Description("third_party_leases")]
+    [DisplayDescription("Third party leases")]
+    ThirdPartyLeases = 58,
 }
