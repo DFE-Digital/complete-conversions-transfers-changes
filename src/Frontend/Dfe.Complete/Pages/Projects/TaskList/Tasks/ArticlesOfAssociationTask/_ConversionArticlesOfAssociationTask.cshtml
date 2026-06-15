@@ -1,0 +1,57 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask.ArticlesOfAssociationTaskModel
+
+<form method="post">
+    <input type="hidden" asp-for="TasksDataId" />
+    <input type="hidden" asp-for="Type" />
+    <govuk-checkboxes name="options">
+        <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend>
+            </govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" data-cy="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                <b>Not applicable</b>
+            </govuk-checkboxes-item>
+        </govuk-checkboxes-fieldset>
+    </govuk-checkboxes>
+    <div class="govuk-form-group">
+        <div class="govuk-hint">
+            <p>You can use the <external-link href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]">academy governance guidance</external-link> to help you check and clear the articles of association.
+            Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. Otherwise, we do not expect any deviations from the model.
+            You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit</external-link> about changes to the clause text.</p>
+            <p>We do not encourage partial updates to include missing clauses in their existing articles. Our preferred option is they adopt the latest versions.</p>
+        </div>
+        <h2 class="govuk-heading-l">Check and clear the Articles of Association</h2>
+    </div>
+    <govuk-checkboxes name="options">
+        <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend>
+            </govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                <b>Received</b> 
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                <b>Cleared</b>
+                <govuk-checkboxes-item-hint>
+                    <p>
+                        As academy trust are limited companies, a MAT must be registered with Companies House once the Articles of Association have been cleared by the DfE conversion lead.
+                        If updating Articles of Association for an existing trust, these should be filed with Companies House.
+                    </p>
+                </govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
+                <b>Solicitor confirms trust has signed articles and been registered with Companies House</b>
+                <govuk-checkboxes-item-hint>
+                    <p>
+                        It can be helpful to check the <external-link href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]">Companies House website</external-link> to make sure the signed/updated articles have been uploaded.
+                        It can sometimes take a while for the new versions to be updated, in this scenario, just accept the solicitor's confirmation.
+                    </p>
+                </govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                <b>Saved copy of signed articles in the trust's SharePoint folder</b>
+            </govuk-checkboxes-item> 
+        </govuk-checkboxes-fieldset>
+    </govuk-checkboxes>
+    @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+</form>
+

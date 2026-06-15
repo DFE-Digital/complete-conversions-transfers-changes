@@ -367,7 +367,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
             Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
             Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
         }
 
         [Theory]

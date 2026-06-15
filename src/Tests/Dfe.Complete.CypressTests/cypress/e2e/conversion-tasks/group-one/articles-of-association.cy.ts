@@ -20,16 +20,6 @@ describe("Conversion tasks - Articles of association", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("Partially updating articles of association")
-            .hasDropdownContent(
-                "Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.",
-            )
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select the 'Received' checkbox and save");
         taskPage.hasCheckboxLabel("Received").tick().saveAndReturn();
