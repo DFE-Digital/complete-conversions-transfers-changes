@@ -162,8 +162,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.Cleared = true;
             command.Saved = false;
             command.Received = true;
-            command.Signed = true;
-            command.Sent = false;
+            command.DraftSaved = true;
+            command.Signed = false;
             command.SignedSecretaryState = true;
 
             // Act
@@ -176,8 +176,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedOfVariationCleared);
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.False(existingTaskData.DeedOfVariationSaved);
-            Assert.False(existingTaskData.DeedOfVariationSent);
-            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.False(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationDraftSaved);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
         }
         [Theory]
@@ -765,10 +765,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
             Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedTrust);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
-            Assert.False(existingTaskData.ChurchSupplementalAgreementSaved);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementDraftSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementFinalSaved);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
         }
         [Theory]

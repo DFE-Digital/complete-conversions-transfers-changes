@@ -3147,6 +3147,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/PrivateFinanceInitiative": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the private finance initiative task for conversion project.",
+        "operationId": "TasksData_UpdatePrivateFinanceInitiativeTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePrivateFinanceInitiativeTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Private finance initiative task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ChurchSupplementalAgreement": {
       "patch": {
         "tags": [
@@ -7209,7 +7242,8 @@
           "PostDecisionActions",
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
-          "ConfirmDBSChecks"
+          "ConfirmDBSChecks",
+          "PrivateFinanceInitiative"
         ],
         "x-enum-descriptions": [
           "handover",
@@ -7266,7 +7300,8 @@
           "post_decision_actions",
           "tupe_consultation",
           "la_confirms_payroll_deadline",
-          "confirm_dbs_checks"
+          "confirm_dbs_checks",
+          "private_finance_initiative"
         ],
         "enum": [
           "Handover",
@@ -7323,7 +7358,8 @@
           "PostDecisionActions",
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
-          "ConfirmDBSChecks"
+          "ConfirmDBSChecks",
+          "PrivateFinanceInitiative"
         ]
       },
       "CreateNoteCommand": {
@@ -8805,7 +8841,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSigned": {
+          "churchSupplementalAgreementSignedTrust": {
             "type": "boolean",
             "nullable": true
           },
@@ -8813,11 +8849,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSaved": {
+          "churchSupplementalAgreementDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSent": {
+          "churchSupplementalAgreementFinalSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -8881,7 +8917,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "deedOfVariationSent": {
+          "deedOfVariationDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -8902,6 +8938,42 @@
             "nullable": true
           },
           "trustModificationOrderSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeMasterFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeDocumentsSentToSOPUForClearance": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeDraftSavedInTrustSharepointFolder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeSignedByAllStakeholders": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeFinalVersionSavedInSharepointFolder": {
             "type": "boolean",
             "nullable": true
           },
@@ -9423,6 +9495,10 @@
           "notApplicable": {
             "type": "boolean",
             "nullable": true
+          },
+          "draftSaved": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -9698,6 +9774,51 @@
           "payrollDeadline": {
             "type": "string",
             "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "UpdatePrivateFinanceInitiativeTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementaryFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "documentsSentToSOPUForClearance": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "draftSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByAllStakeHolders": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "finalVersionSavedInSharepointFolder": {
+            "type": "boolean",
             "nullable": true
           }
         }

@@ -59,6 +59,7 @@ interface UpdateDeedOfVariationTaskRequest {
     saved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
+    draftSaved?: boolean;
 }
 
 interface UpdateExternalStakeholderKickOffTaskRequest {

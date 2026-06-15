@@ -127,6 +127,19 @@ interface UpdateTrustModificationOrderTaskRequest {
     saved?: boolean;
 }
 
+interface UpdatePrivateFinanceInitiativeTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean | null;
+    supplementaryFundingAgreementPfiClausesInserted?: boolean | null;
+    masterFundingAgreementPfiClausesInserted?: boolean | null;
+    received?: boolean | null;
+    documentsSentToSOPUForClearance?: boolean | null;
+    cleared?: boolean | null;
+    draftSaved?: boolean | null;
+    signedByAllStakeholders?: boolean | null;
+    finalVersionSavedInSharepointFolder?: boolean | null;
+}
+
 class TaskApiConversions extends TaskApi {
     public updateCheckAccuracyOfHigherNeedsTask(requestBody: UpdateCheckAccuracyOfHigherNeedsTaskRequest) {
         return this.taskDataBaseRequest<void>("CheckAccuracyOfHigherNeeds", requestBody);
@@ -198,6 +211,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateTupeConsultationTask(requestBody: UpdateTupeConsultationTaskRequest) {
         return this.taskDataBaseRequest<void>("TupeConsultation", requestBody);
+    }
+
+    public updatePrivateFinanceInitiativeTask(requestBody: UpdatePrivateFinanceInitiativeTaskRequest) {
+        return this.taskDataBaseRequest<void>("PrivateFinanceInitiative", requestBody);
     }
 }
 

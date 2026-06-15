@@ -326,6 +326,25 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Update the private finance initiative task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/PrivateFinanceInitiative")]
+        [SwaggerResponse(204, "Private finance initiative task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdatePrivateFinanceInitiativeTaskAsync(
+            [FromBody] UpdatePrivateFinanceInitiativeTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
 
         /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
