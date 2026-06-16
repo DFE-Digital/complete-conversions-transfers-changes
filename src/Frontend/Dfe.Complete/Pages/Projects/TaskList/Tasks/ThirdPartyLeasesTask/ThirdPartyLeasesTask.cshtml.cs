@@ -21,8 +21,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ThirdPartyLeasesTask
         [BindProperty(Name = "email")]
         public bool? Email { get; set; }
 
-        [BindProperty(Name = "receive")]
-        public bool? Receive { get; set; }
+        [BindProperty(Name = "received")]
+        public bool? Received { get; set; }
 
         [BindProperty(Name = "save")]
         public bool? Save { get; set; }
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ThirdPartyLeasesTask
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = ConversionTaskData.ThirdPartyLeasesNotApplicable;
             Email = ConversionTaskData.ThirdPartyLeasesEmail;
-            Receive = ConversionTaskData.ThirdPartyLeasesReceive;
+            Received = ConversionTaskData.ThirdPartyLeasesReceive;
             Save = ConversionTaskData.ThirdPartyLeasesSave;
             return Page();
         }
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ThirdPartyLeasesTask
                     new TaskDataId(TasksDataId.GetValueOrDefault())!, 
                     NotApplicable, 
                     Email, 
-                    Receive, 
+                    Received, 
                     Save
                 )
             );
