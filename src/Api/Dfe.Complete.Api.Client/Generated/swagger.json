@@ -3749,7 +3749,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "summary": "Updating the chair of governors' task data for conversion project.",
         "operationId": "TasksData_UpdateChairOfGovernorsTask",
         "requestBody": {
           "x-name": "request",
@@ -3766,7 +3766,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the chair of governors’ task successfully."
+            "description": "Updated the chair of governors' task successfully."
           },
           "400": {
             "description": "Invalid request data."

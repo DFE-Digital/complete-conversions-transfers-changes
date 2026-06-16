@@ -15,19 +15,25 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased
+
+### Changed
+ - [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 
-### Added
-- [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
----
+### Changed
+- [277812](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277812) - Update wording on supplemental funding agreement conversion tasks
+- [277849](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277849) - Update wording on articles of association conversion tasks
+- [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
 
 ### Added
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
 - [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
----
+- [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
 
-### Changed
-- [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
+### Changes
+- [278436](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/278436) - Transfer modification order content changes
+---
 
 ---
 

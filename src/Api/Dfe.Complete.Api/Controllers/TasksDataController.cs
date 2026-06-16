@@ -677,14 +677,14 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
-        /// Updating the chair of governors’ task data for conversion project.
+        /// Updating the chair of governors' task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/ConfirmChairOfGovernors")]
-        [SwaggerResponse(204, "Updated the chair of governors’ task successfully.")]
+        [SwaggerResponse(204, "Updated the chair of governors' task successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateChairOfGovernorsTaskAsync(

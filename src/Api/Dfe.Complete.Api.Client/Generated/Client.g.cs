@@ -10257,10 +10257,10 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Updating the chair of governors’ task data for conversion project.
+        /// Updating the chair of governors' task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <returns>Updated the chair of governors' task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request)
         {
@@ -10269,10 +10269,10 @@ namespace Dfe.Complete.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Updating the chair of governors’ task data for conversion project.
+        /// Updating the chair of governors' task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <returns>Updated the chair of governors' task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request, System.Threading.CancellationToken cancellationToken)
         {
