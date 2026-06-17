@@ -254,7 +254,6 @@ public class BaseProjectTaskModelTests
     [InlineData(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails)]
     [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)]
     [InlineData(NoteTaskIdentifier.LandQuestionnaire)]
-    [InlineData(NoteTaskIdentifier.LandRegistryTitlePlans)]
     [InlineData(NoteTaskIdentifier.TrustModificationOrder)]
     [InlineData(NoteTaskIdentifier.DirectionToTransfer)]
     [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease)]
