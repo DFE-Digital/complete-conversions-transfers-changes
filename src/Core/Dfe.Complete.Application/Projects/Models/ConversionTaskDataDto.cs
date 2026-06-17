@@ -295,6 +295,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? PostDecisionActionsLaProformaUploaded { get; set; }
 
+        public bool? CommercialTransferAgreementUnamended { get; set; }
+
 
     }
 }

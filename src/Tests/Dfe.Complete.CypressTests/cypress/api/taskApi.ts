@@ -34,6 +34,7 @@ interface UpdateCommercialTransferAgreementTaskRequest {
     questionsReceived?: boolean;
     questionsChecked?: boolean;
     saved?: boolean;
+    unamended?: boolean;
 }
 
 interface UpdateChurchSupplementalAgreementTaskRequest {

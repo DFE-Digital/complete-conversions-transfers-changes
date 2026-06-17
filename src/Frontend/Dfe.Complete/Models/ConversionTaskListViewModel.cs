@@ -242,7 +242,8 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus CommercialTransferAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.CommercialTransferAgreementAgreed.HasValue || taskData.CommercialTransferAgreementAgreed == false) &&
+            if ((!taskData.CommercialTransferAgreementUnamended.HasValue || taskData.CommercialTransferAgreementUnamended == false) &&
+                (!taskData.CommercialTransferAgreementAgreed.HasValue || taskData.CommercialTransferAgreementAgreed == false) &&
                (!taskData.CommercialTransferAgreementSigned.HasValue || taskData.CommercialTransferAgreementSigned == false) &&
                (!taskData.CommercialTransferAgreementSaved.HasValue || taskData.CommercialTransferAgreementSaved == false) &&
                (!taskData.CommercialTransferAgreementQuestionsChecked.HasValue || taskData.CommercialTransferAgreementQuestionsChecked == false) &&
@@ -250,7 +251,8 @@ namespace Dfe.Complete.Models
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.CommercialTransferAgreementAgreed == true &&
+            return (taskData.CommercialTransferAgreementUnamended == true &&
+                taskData.CommercialTransferAgreementAgreed == true &&
                 taskData.CommercialTransferAgreementSigned == true &&
                 taskData.CommercialTransferAgreementSaved == true &&
                 taskData.CommercialTransferAgreementQuestionsChecked == true &&

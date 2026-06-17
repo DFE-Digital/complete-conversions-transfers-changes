@@ -18,51 +18,38 @@
         {
             <p>It might not be agreed and signed until the final month before the academy is transferred.</p>
         }
+        @if(!isProjectTypeTransfer)
+        {
+            <p>
+                The Commercial Transfer Agreement (CTA) records the contracts and staff transferring from a local authority-maintained school to an academy. It is a tri-partite agreement between the academy trust, converting school’s governing body and the local authority.
+            </p>
+            <p>
+                We expect the majority of warranty/guarantee transfers for building works to be part of the CTA. If they do not form part of the CTA, then the transfer would be completed via a separate DoN.
+            </p>
+            <p>
+                We do not expect any deviations to the model, but if changes have been proposed, the DO should request additional information on the rationale for these changes and forward any queries to SOPU via <external-link data-cy="commercial-transfer-agreement-contact-policy-team-link", href="@_configuration["ExternalLinks:ContactPolicyTeam"]" class="govuk-link">contact the Schools Operational Practise Unit (opens in new tab)</external-link>. You can <external-link data-cy="commercial-transfer-agreement-guidance-doc-link"  href="@_configuration["ExternalLinks:CommercialTransferAgreementGuidance"]" class="govuk-link">read guidance about how use check and assure the agreement (opens in new tab)</external-link> on the guidance site.
+            </p>
+        }
     </div>
 }
 @section TaskSection {   
-
-    <govuk-details>
-        <govuk-details-summary>
-            How to check and assure the commercial transfer agreement
-        </govuk-details-summary>
-        <govuk-details-text>
-            <p>You can <external-link data-cy="commercial-transfer-agreement-guidance-doc-link"  href="@_configuration["ExternalLinks:CommercialTransferAgreementGuidance"]" class="govuk-link">read guidance about how use check and assure the agreement (opens in new tab)</external-link> on SharePoint.</p>
-        </govuk-details-text>
-    </govuk-details>
-
-
+    @if (isProjectTypeTransfer)
+    {
+        <govuk-details>
+            <govuk-details-summary>
+                How to check and assure the commercial transfer agreement
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>You can <external-link data-cy="commercial-transfer-agreement-guidance-doc-link"  href="@_configuration["ExternalLinks:CommercialTransferAgreementGuidance"]" class="govuk-link">read guidance about how use check and assure the agreement (opens in new tab)</external-link> on SharePoint.</p>
+            </govuk-details-text>
+        </govuk-details>
+    }
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
         <input type="hidden" asp-for="Type" />
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="agreed" asp-for="@Model.Agreed" value="true" name="agreed" checked="@Model.Agreed" data-cy="agreed-checkbox">
-                    <b>Confirm commercial transfer agreement is agreed</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed" data-cy="signed-checkbox">
-                    <b>Confirm commercial transfer agreement is signed</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="questionsreceived" asp-for="@Model.QuestionsReceived" value="true" name="questionsreceived" checked="@Model.QuestionsReceived" data-cy="questions-received-checkbox">
-                    <b>Receive solicitor responses to assurance questions</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="questionschecked" asp-for="@Model.QuestionsChecked" value="true" name="questionschecked" checked="@Model.QuestionsChecked" data-cy="questions-checked-checkbox">
-                    <b>Check solicitor responses to assurance questions</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved" data-cy="saved-checkbox">
-                    @if (isProjectTypeTransfer)
-                    {
-                        <b>Save a copy of the confirmation emails in the academy SharePoint folder</b>
-                    }
-                    else
-                    {
-                        <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
-                    }
-                </govuk-checkboxes-item>                              
-            </govuk-checkboxes-fieldset> 
-        </govuk-checkboxes>         
+       @await Html.PartialAsync(isProjectTypeTransfer
+            ? "_TransferCommercialTransferAgreementTask"
+            : "_ConversionCommercialTransferAgreementTask", Model)
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 } 

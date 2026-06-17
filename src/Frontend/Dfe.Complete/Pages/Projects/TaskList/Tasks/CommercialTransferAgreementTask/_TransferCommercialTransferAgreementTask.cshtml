@@ -1,0 +1,23 @@
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreementTask.CommercialTransferAgreementTaskModel
+
+<govuk-checkboxes name="options">
+    <govuk-checkboxes-fieldset>
+        <govuk-checkboxes-fieldset-legend>
+        </govuk-checkboxes-fieldset-legend>
+        <govuk-checkboxes-item id="agreed" asp-for="@Model.Agreed" value="true" name="agreed" checked="@Model.Agreed" data-cy="agreed-checkbox">
+            <b>Confirm commercial transfer agreement is agreed</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed" data-cy="signed-checkbox">
+            <b>Confirm commercial transfer agreement is signed</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item id="questionsreceived" asp-for="@Model.QuestionsReceived" value="true" name="questionsreceived" checked="@Model.QuestionsReceived" data-cy="questions-received-checkbox">
+            <b>Receive solicitor responses to assurance questions</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item id="questionschecked" asp-for="@Model.QuestionsChecked" value="true" name="questionschecked" checked="@Model.QuestionsChecked" data-cy="questions-checked-checkbox">
+            <b>Check solicitor responses to assurance questions</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved" data-cy="saved-checkbox">
+            <b>Save a copy of the confirmation emails in the academy SharePoint folder</b>
+        </govuk-checkboxes-item>
+    </govuk-checkboxes-fieldset>
+</govuk-checkboxes>
