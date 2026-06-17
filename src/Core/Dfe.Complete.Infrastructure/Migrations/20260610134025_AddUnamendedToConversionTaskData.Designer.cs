@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260610134025_AddUnamendedToConversionTaskData")]
+    partial class AddUnamendedToConversionTaskData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -661,22 +664,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("TenancyAtWillSaveSigned")
                         .HasColumnType("bit")
                         .HasColumnName("tenancy_at_will_save_signed");
-
-                    b.Property<bool?>("ThirdPartyLeasesEmail")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_email");
-
-                    b.Property<bool?>("ThirdPartyLeasesNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_not_applicable");
-
-                    b.Property<bool?>("ThirdPartyLeasesReceive")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_receive");
-
-                    b.Property<bool?>("ThirdPartyLeasesSave")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_save");
 
                     b.Property<bool?>("TrustModificationOrderCleared")
                         .HasColumnType("bit")

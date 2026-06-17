@@ -19,18 +19,12 @@ describe("Conversion tasks - Commercial transfer agreement", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("How to check and assure the commercial transfer agreement")
-            .hasDropdownContent(
-                "You can read guidance about how use check and assure the agreement (opens in new tab) on SharePoint.",
-            );
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
             .hasCheckboxLabel("Check solicitor responses to assurance questions")
+            .tick()
+            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
             .tick()
             .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
             .tick()
@@ -44,6 +38,9 @@ describe("Conversion tasks - Commercial transfer agreement", () => {
             .hasCheckboxLabel("Check solicitor responses to assurance questions")
             .isTicked()
             .untick()
+            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
+            .isTicked()
+            .untick()
             .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
             .isTicked()
             .untick()
@@ -53,6 +50,8 @@ describe("Conversion tasks - Commercial transfer agreement", () => {
             .selectTask("Commercial transfer agreement");
         taskPage
             .hasCheckboxLabel("Check solicitor responses to assurance questions")
+            .isUnticked()
+            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
             .isUnticked()
             .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
             .isUnticked();

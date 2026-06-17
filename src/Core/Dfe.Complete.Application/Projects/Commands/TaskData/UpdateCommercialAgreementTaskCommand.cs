@@ -13,6 +13,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     public record UpdateCommercialAgreementTaskCommand(
         TaskDataId TaskDataId,
         [Required] ProjectType? ProjectType,
+        bool? Unamended,
         bool? Agreed,
         bool? Signed,
         bool? QuestionsReceived,
@@ -43,6 +44,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
 
+            tasksData.CommercialTransferAgreementUnamended = request.Unamended;
             tasksData.CommercialTransferAgreementAgreed = request.Agreed;
             tasksData.CommercialTransferAgreementSaved = request.Saved;
             tasksData.CommercialTransferAgreementSigned = request.Signed;

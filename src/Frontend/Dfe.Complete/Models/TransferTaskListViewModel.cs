@@ -215,7 +215,8 @@ namespace Dfe.Complete.Models
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.CommercialTransferAgreementConfirmAgreed == true &&
+            return (
+               taskData.CommercialTransferAgreementConfirmAgreed == true &&
                taskData.CommercialTransferAgreementConfirmSigned == true &&
                taskData.CommercialTransferAgreementQuestionsChecked == true &&
                taskData.CommercialTransferAgreementQuestionsReceived == true &&
