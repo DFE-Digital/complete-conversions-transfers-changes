@@ -160,6 +160,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
+        public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; }
+
         public bool? TupeConsultationCompleted { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
@@ -205,8 +207,6 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? DirectionToTransferNotApplicable { get; set; }
 
         public bool? MasterFundingAgreementNotApplicable { get; set; }
-
-        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
 
         public bool? ThirdPartyLeasesNotApplicable { get; set; }
         public bool? SubleasesNotApplicable { get; set; }

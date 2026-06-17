@@ -178,6 +178,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }
 
+    public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; }
+
     public bool? ThirdPartyLeasesEmail { get; set; }
 
     public bool? ThirdPartyLeasesReceive { get; set; }
@@ -218,10 +220,11 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? MasterFundingAgreementNotApplicable { get; set; }
 
+    [Obsolete("279037 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
 
     public bool? ThirdPartyLeasesNotApplicable { get; set; }
-    
+
     public bool? SubleasesNotApplicable { get; set; }
 
     public bool? TenancyAtWillNotApplicable { get; set; }
@@ -293,9 +296,9 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
     public bool? ConfirmDBSChecks { get; set; }
-    
+
     public NurseryArrangementOption? NurseryArrangement { get; set; }
-    
+
     public bool? StatutoryConsultationNotApplicable { get; set; }
 
     public bool? StatutoryConsultationComplete { get; set; }

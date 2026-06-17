@@ -6152,6 +6152,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseConfirmModel", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("tupeConsultationCompleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TupeConsultationCompleted { get; set; } = default!;
 
@@ -6220,9 +6223,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("masterFundingAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? MasterFundingAgreementNotApplicable { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("thirdPartyLeasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ThirdPartyLeasesNotApplicable { get; set; } = default!;
@@ -8053,8 +8053,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? NotApplicable { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("confirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Confirm { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Email { get; set; } = default!;

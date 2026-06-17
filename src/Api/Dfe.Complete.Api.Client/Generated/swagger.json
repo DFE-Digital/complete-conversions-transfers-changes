@@ -9061,6 +9061,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "oneHundredAndTwentyFiveYearLeaseConfirmModel": {
+            "type": "boolean",
+            "nullable": true
+          },
           "tupeConsultationCompleted": {
             "type": "boolean",
             "nullable": true
@@ -9150,10 +9154,6 @@
             "nullable": true
           },
           "masterFundingAgreementNotApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
             "type": "boolean",
             "nullable": true
           },
@@ -10718,7 +10718,7 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "notApplicable": {
+          "confirm": {
             "type": "boolean",
             "nullable": true
           },

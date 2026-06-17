@@ -209,17 +209,12 @@ class TaskHelperConversions extends TaskHelper {
     updateOneHundredAndTwentyFiveYearLease(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            notApplicable: false,
+            confirm: false,
             email: false,
             receive: false,
             save: false,
         };
         switch (status) {
-            case "notApplicable":
-                return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
-                    ...defaultBody,
-                    notApplicable: true,
-                });
 
             case "inProgress":
                 return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
@@ -230,7 +225,7 @@ class TaskHelperConversions extends TaskHelper {
             case "completed":
                 return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
                     taskDataId: { value: taskDataId },
-                    notApplicable: false,
+                    confirm: true,
                     email: true,
                     receive: true,
                     save: true,
