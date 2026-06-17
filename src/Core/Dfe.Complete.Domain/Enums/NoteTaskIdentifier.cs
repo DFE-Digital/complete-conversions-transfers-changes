@@ -66,7 +66,7 @@ public enum NoteTaskIdentifier
     ReceiveGrantPaymentCertificate = 15,
 
     [Description("confirm_date_academy_opened")]
-    [DisplayDescription("Confirm the academy open date")]
+    [DisplayDescription("Confirm date academy opened")]
     ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]
@@ -228,4 +228,8 @@ public enum NoteTaskIdentifier
     [Description("private_finance_initiative")]
     [DisplayDescription("Private finance initiative")]
     PrivateFinanceInitiative = 57,
+
+    [Description("third_party_leases")]
+    [DisplayDescription("Third party leases")]
+    ThirdPartyLeases = 58,
 }

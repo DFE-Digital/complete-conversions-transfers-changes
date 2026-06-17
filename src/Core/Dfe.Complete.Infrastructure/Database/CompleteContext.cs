@@ -566,6 +566,12 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseNotApplicable).HasColumnName("one_hundred_and_twenty_five_year_lease_not_applicable");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseReceive).HasColumnName("one_hundred_and_twenty_five_year_lease_receive");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseSaveLease).HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
+        
+        projectConfiguration.Property(e => e.ThirdPartyLeasesEmail).HasColumnName("third_party_leases_email");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesReceive).HasColumnName("third_party_leases_receive");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesSave).HasColumnName("third_party_leases_save");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesNotApplicable).HasColumnName("third_party_leases_not_applicable");
+
         projectConfiguration.Property(e => e.PostDecisionActionsAcademyOrderUploaded).HasColumnName("post_decision_actions_academy_order_uploaded");
         projectConfiguration.Property(e => e.PostDecisionActionsApplicationUploaded).HasColumnName("post_decision_actions_application_uploaded");
         projectConfiguration.Property(e => e.PostDecisionActionsLaProformaUploaded).HasColumnName("post_decision_actions_la_proforma_uploaded");

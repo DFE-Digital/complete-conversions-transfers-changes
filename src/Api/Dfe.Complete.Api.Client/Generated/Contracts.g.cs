@@ -1738,6 +1738,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateSubleasesTaskAsync(UpdateSubleasesTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updating the third party leases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the third party leases task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateThirdPartyLeasesTaskAsync(UpdateThirdPartyLeasesTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the third party leases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the third party leases task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateThirdPartyLeasesTaskAsync(UpdateThirdPartyLeasesTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updating the tenancy at will task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -4416,6 +4433,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"PrivateFinanceInitiative")]
         PrivateFinanceInitiative = 55,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ThirdPartyLeases")]
+        ThirdPartyLeases = 56,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6141,6 +6161,15 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseSaveLease", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesReceive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesReceive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesSave", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesSave { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("subleasesReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SubleasesReceived { get; set; } = default!;
 
@@ -6194,6 +6223,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("thirdPartyLeasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ThirdPartyLeasesNotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("subleasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SubleasesNotApplicable { get; set; } = default!;
@@ -7843,6 +7875,39 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSubleasesTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateThirdPartyLeasesTaskCommand
+    {
+
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Receive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("save", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Save { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateThirdPartyLeasesTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateThirdPartyLeasesTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
     }

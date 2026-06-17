@@ -355,6 +355,33 @@ class TaskHelperConversions extends TaskHelper {
         }
     }
 
+    updateThirdPartyLeases(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            email: false,
+            receive: false,
+            save: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApiConversions.updateThirdPartyLeasesTask({ ...defaultBody, notApplicable: true });
+            case "inProgress":
+                return taskApiConversions.updateThirdPartyLeasesTask({ ...defaultBody, email: true });
+            case "completed":
+                return taskApiConversions.updateThirdPartyLeasesTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    email: true,
+                    receive: true,
+                    save: true,
+                });
+            default:
+                return taskApiConversions.updateThirdPartyLeasesTask(defaultBody);
+        }
+    } 
+
     updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
