@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoMapper.Internal;
 using Dfe.AcademiesApi.Client;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.AcademiesApi.Client.Security;
@@ -52,7 +53,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                         services.AddAuthentication("TestScheme")
                             .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", options => { });
 
-                        services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapping>(); });
+                        services.AddAutoMapper(cfg =>
+                        {
+                            cfg.Internal().ForAllMaps((_, mapping) => mapping.MaxDepth(64));
+                            cfg.AddProfile<AutoMapping>();
+                        });
 
                         // Register mock email sender BEFORE infrastructure services
                         // This will be overridden by AddNotifyEmailServices, so we need to remove and re-add after
