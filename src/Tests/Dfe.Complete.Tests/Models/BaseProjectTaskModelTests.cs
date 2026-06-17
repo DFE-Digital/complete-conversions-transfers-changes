@@ -259,6 +259,7 @@ public class BaseProjectTaskModelTests
     [InlineData(NoteTaskIdentifier.DirectionToTransfer)]
     [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease)]
     [InlineData(NoteTaskIdentifier.Subleases)]
+    [InlineData(NoteTaskIdentifier.ThirdPartyLeases)]
     [InlineData(NoteTaskIdentifier.TenancyAtWill)]
     [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions)]
     [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening)]

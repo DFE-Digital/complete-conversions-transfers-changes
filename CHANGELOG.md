@@ -30,6 +30,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
 - [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
+- [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
 
 ### Changes
 - [278436](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/278436) - Transfer modification order content changes

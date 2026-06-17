@@ -68,9 +68,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 9),
                 new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 10),
                 new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 11),
-                new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 12),
-                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13),
-                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 14)
+                new("Third party leases", taskLinkBuilder.Build("third_party_leases"), conversionTaskList.ThirdPartyLeases, 12),
+                new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 13),
+                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 14),
+                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 15)
             };
 
             return legalDocumentsTasks;
