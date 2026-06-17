@@ -6,7 +6,7 @@ import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSet
 
 const taskPath = "confirm_date_academy_opened";
 
-describe("Conversion tasks - Confirm the academy open date", () => {
+describe("Conversion tasks - Confirm date academy opened", () => {
     let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
@@ -22,14 +22,14 @@ describe("Conversion tasks - Confirm the academy open date", () => {
         Logger.log("Input the date and save");
         taskPage.enterDate("10", "10", "2024", "opened-date").saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Confirm the academy open date")
-            .selectTask("Confirm the academy open date");
+            .hasTaskStatusCompleted("Confirm date academy opened")
+            .selectTask("Confirm date academy opened");
 
         Logger.log("Confirm date persists and clear date");
         taskPage.hasDate("10", "10", "2024", "opened-date").enterDate("", "", "", "opened-date").saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Confirm the academy open date")
-            .selectTask("Confirm the academy open date");
+            .hasTaskStatusNotStarted("Confirm date academy opened")
+            .selectTask("Confirm date academy opened");
         taskPage.hasDate("", "", "", "opened-date");
     });
 
