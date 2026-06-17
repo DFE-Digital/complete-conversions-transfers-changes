@@ -95,6 +95,7 @@
         public const string ProjectDirectionToTransferTask = ProjectTaskList + "/direction_to_transfer";
         public const string ProjectOneHundredAndTwentyFiveYearLeaseTask = ProjectTaskList + "/one_hundred_and_twenty_five_year_lease";
         public const string ProjectSubleasesTask = ProjectTaskList + "/subleases";
+        public const string ProjectThirdPartyLeasesTask = ProjectTaskList + "/third_party_leases";
         public const string ProjectTenancyAtWillTask = ProjectTaskList + "/tenancy_at_will";
         public const string ProjectCommercialTransferAgreementTask = ProjectTaskList + "/commercial_transfer_agreement";
         public const string ProjectConfirmTheSchoolHasCompletedAllActionsTask = ProjectTaskList + "/school_completed";

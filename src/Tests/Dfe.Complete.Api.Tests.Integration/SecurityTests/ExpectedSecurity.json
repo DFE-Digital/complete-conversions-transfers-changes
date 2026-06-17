@@ -512,6 +512,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateThirdPartyLeasesTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateTenancyAtWillTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },

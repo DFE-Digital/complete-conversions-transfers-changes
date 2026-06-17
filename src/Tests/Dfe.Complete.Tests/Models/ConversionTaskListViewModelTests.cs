@@ -586,6 +586,29 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(true, true, true, false, TaskListStatus.Completed)]
         [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        public void ThirdPartyLeasesTaskStatus_ShouldReturn_CorrectStatus(
+            bool? save, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                ThirdPartyLeasesSave = save,
+                ThirdPartyLeasesEmail = email,
+                ThirdPartyLeasesReceive = receive,
+                ThirdPartyLeasesNotApplicable = notApplicable
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.ThirdPartyLeases);
+        }
+        [Theory]
+        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
         public void OneHundredAndTwentyFiveYearLeaseTaskStatus_ShouldReturn_CorrectStatus(
             bool? saveLease, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
         {

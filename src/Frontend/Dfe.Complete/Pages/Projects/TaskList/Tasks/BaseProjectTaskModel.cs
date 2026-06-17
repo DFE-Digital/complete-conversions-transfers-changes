@@ -53,6 +53,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
        NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease,
        NoteTaskIdentifier.Subleases,
        NoteTaskIdentifier.TenancyAtWill,
+       NoteTaskIdentifier.ThirdPartyLeases,
        NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions,       
        NoteTaskIdentifier.ShareInformationAboutOpening,
        NoteTaskIdentifier.ConfirmAcademyOpenedDate,

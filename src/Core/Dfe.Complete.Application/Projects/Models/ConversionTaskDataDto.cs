@@ -165,6 +165,12 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }
+        
+        public bool? ThirdPartyLeasesEmail { get; set; }
+
+        public bool? ThirdPartyLeasesReceive { get; set; }
+
+        public bool? ThirdPartyLeasesSave { get; set; }
 
         public bool? SubleasesReceived { get; set; }
 
@@ -202,6 +208,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
 
+        public bool? ThirdPartyLeasesNotApplicable { get; set; }
         public bool? SubleasesNotApplicable { get; set; }
 
         public bool? TenancyAtWillNotApplicable { get; set; }
