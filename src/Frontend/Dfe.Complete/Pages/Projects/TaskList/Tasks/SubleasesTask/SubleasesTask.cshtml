@@ -1,5 +1,7 @@
 ﻿@page "/projects/{projectId}/tasks/subleases"
 @using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask.SubleasesTaskModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -8,7 +10,11 @@
 
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>When schools convert, sometimes there are existing land arrangements that are covered by subleases. You will need to clear any subleases that have changed.</p>
+        <p>
+            When schools convert, sometimes there are existing land arrangements that are covered by subleases. You will need to clear any new subleases.
+            Pre-existing subleases that are transferring to the trust under the same terms do not need to be cleared.
+            For further guidance, you can use the <external-link href="@_configuration["RGSubleasesInternalGuidance"]">Regions group internal guidance</external-link> and see an example of a <external-link href="@_configuration["SubleaseApprovalLetter"]">sublease approval letter</external-link>.
+        </p>
     </div>
 }
 @section TaskSection {
