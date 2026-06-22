@@ -66,7 +66,7 @@ interface UpdateLandQuestionnaireTaskRequest {
 
 interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
     taskDataId: TaskDataId;
-    notApplicable?: boolean;
+    confirm?: boolean;
     email?: boolean;
     receive?: boolean;
     save?: boolean;

@@ -1,4 +1,5 @@
 ﻿@page "/projects/{projectId}/tasks/one_hundred_and_twenty_five_year_lease"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYearLeaseTask.OneHundredAndTwentyFiveYearLeaseTaskModel
 @{
@@ -7,29 +8,28 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>The 125 year lease is the most common way for land to be transferred between the local authority and the trust.</p>
+        <p>The 125 year lease is the most common way for land to be transferred between the local authority and the trust. We do not expect any deviations to the model, but if changes have been proposed, the DO should request additional information on the rationale for these changes and forward any queries to SOPU via <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit</external-link>.</p>
     </div>
 }
 @section TaskSection {
 
     <form method="post">
         <input type="hidden" asp-for="TasksDataId"/>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
-                    <b>Not applicable</b>
-                </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
+
         <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Confirm the 125 year lease has been signed</h2>
+            <h2 class="govuk-heading-m">Confirm the 125 year lease has been signed</h2>
+            <div class="govuk-hint">
+                Select all that apply
+            </div>
         </div>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
+                
+                <govuk-checkboxes-item id="@(nameof(Model.Confirm))" data-cy="@(nameof(Model.Confirm))" asp-for="@Model.Confirm" value="true" name="@(nameof(Model.Confirm))" checked="@Model.Confirm">
+                    <b>Confirm if the model DfE 125 year lease been used unamended</b>
+                </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Email))" data-cy="@(nameof(Model.Email))" asp-for="@Model.Email" value="true" name="@(nameof(Model.Email))" checked="@Model.Email">
                     <b>Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease</b>
@@ -40,7 +40,7 @@
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Save))" data-cy="@(nameof(Model.Save))" asp-for="@Model.Save" value="true" name="@(nameof(Model.Save))" checked="@Model.Save">
-                    <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
+                    <b>Save a copy of the confirmation email in the school’s SharePoint folder</b>
                 </govuk-checkboxes-item>
 
             </govuk-checkboxes-fieldset>
