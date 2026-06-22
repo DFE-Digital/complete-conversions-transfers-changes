@@ -1,6 +1,8 @@
 import BasePage from "cypress/pages/basePage";
 
 export class TaskPage extends BasePage {
+    private readonly sectionAlias = "task-section";
+
     // information dropdowns
     clickDropdown(summaryText: string) {
         cy.contains("summary", summaryText).click();
@@ -14,7 +16,9 @@ export class TaskPage extends BasePage {
 
     // options
     hasCheckboxLabel(text: string) {
-        cy.contains("label", text).should("exist");
+        cy.get(`@${this.sectionAlias}`).then(($section) => {
+            cy.wrap($section).contains("label", text).should("exist");
+        });
         cy.wrap(text).as("label");
         return this;
     }
@@ -111,11 +115,14 @@ export class TaskPage extends BasePage {
 
     private performLabelContainerAction(action: () => void) {
         cy.get("@label").then((label) => {
-            cy.contains("label", String(label))
-                .parent()
-                .within(() => {
-                    action();
-                });
+            cy.get(`@${this.sectionAlias}`).then(($section) => {
+                cy.wrap($section)
+                    .contains("label", String(label))
+                    .parent()
+                    .within(() => {
+                        action();
+                    });
+            });
         });
     }
 
@@ -126,6 +133,13 @@ export class TaskPage extends BasePage {
 
     pageHasGuidance(content: string) {
         cy.contains(content).should("be.visible");
+        return this;
+    }
+
+    getFormGroupByLegend(legendText: string) {
+        cy.contains(".govuk-fieldset__legend", legendText)
+            .closest(".govuk-form-group")
+            .as(this.sectionAlias);
         return this;
     }
 }

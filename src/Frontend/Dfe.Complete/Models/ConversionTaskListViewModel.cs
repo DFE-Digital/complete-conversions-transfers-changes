@@ -23,7 +23,6 @@ namespace Dfe.Complete.Models
         public TaskListStatus LAConfirmsPayrollDeadline { get; set; }
         public TaskListStatus PrivateFinanceInitiative { get; set; }
         public TaskListStatus LandQuestionnaire { get; set; }
-        public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
         public TaskListStatus ChurchSupplementalAgreement { get; set; }
         public TaskListStatus MasterFundingAgreement { get; set; }
@@ -71,7 +70,6 @@ namespace Dfe.Complete.Models
                 LAConfirmsPayrollDeadline = LAConfirmsPayrollDeadlineTaskStatus(taskData),
                 PrivateFinanceInitiative = PrivateFinanceInitiativeTaskStatus(taskData),
                 LandQuestionnaire = LandQuestionnaireTaskStatus(taskData),
-                LandRegistry = LandRegistryTaskStatus(taskData),
                 SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
                 MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskData),
                 DeedOfVariation = DeedOfVariationTaskStatus(taskData),
@@ -457,33 +455,25 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus LandRegistryTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if ((!taskData.LandRegistryReceived.HasValue || taskData.LandRegistryReceived == false) &&
-               (!taskData.LandRegistryCleared.HasValue || taskData.LandRegistryCleared == false) &&
-               (!taskData.LandRegistrySaved.HasValue || taskData.LandRegistrySaved == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.LandRegistryReceived == true &&
-                taskData.LandRegistryCleared == true &&
-                taskData.LandRegistrySaved == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
-
         private static TaskListStatus LandQuestionnaireTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.LandQuestionnaireReceived.HasValue || taskData.LandQuestionnaireReceived == false) &&
                (!taskData.LandQuestionnaireCleared.HasValue || taskData.LandQuestionnaireCleared == false) &&
                (!taskData.LandQuestionnaireSigned.HasValue || taskData.LandQuestionnaireSigned == false) &&
-               (!taskData.LandQuestionnaireSaved.HasValue || taskData.LandQuestionnaireSaved == false))
+               (!taskData.LandQuestionnaireSaved.HasValue || taskData.LandQuestionnaireSaved == false) &&
+               (!taskData.LandRegistryReceived.HasValue || taskData.LandRegistryReceived == false) &&
+               (!taskData.LandRegistryCleared.HasValue || taskData.LandRegistryCleared == false) &&
+               (!taskData.LandRegistrySaved.HasValue || taskData.LandRegistrySaved == false))
             {
                 return TaskListStatus.NotStarted;
             }
             return (taskData.LandQuestionnaireReceived == true &&
                taskData.LandQuestionnaireCleared == true &&
                taskData.LandQuestionnaireSigned == true &&
-               taskData.LandQuestionnaireSaved == true)
+               taskData.LandQuestionnaireSaved == true &&
+               taskData.LandRegistryReceived == true &&
+               taskData.LandRegistryCleared == true &&
+               taskData.LandRegistrySaved == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 

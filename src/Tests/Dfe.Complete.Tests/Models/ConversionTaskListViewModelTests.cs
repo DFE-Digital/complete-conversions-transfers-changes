@@ -467,40 +467,30 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.SupplementalFundingAgreement);
         }
         [Theory]
-        [InlineData(false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, TaskListStatus.InProgress)]
-        public void LandRegistryTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, TaskListStatus expectedStatus)
-        {
-            var taskData = new ConversionTaskDataDto
-            {
-                Id = new TaskDataId(Guid.NewGuid()),
-                LandRegistryReceived = received,
-                LandRegistryCleared = cleared,
-                LandRegistrySaved = saved
-            };
-
-            var project = new ProjectDto();
-            var result = ConversionTaskListViewModel.Create(taskData, project, null);
-
-            Assert.Equal(expectedStatus, result.LandRegistry);
-        }
-
-        [Theory]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, false, false, TaskListStatus.InProgress)]
         public void LandQuestionnaireTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? signed, bool? saved, TaskListStatus expectedStatus)
+            bool? questionnaireReceived,
+            bool? questionnaireCleared,
+            bool? questionnaireSigned,
+            bool? questionnaireSaved,
+            bool? registryReceived,
+            bool? registryCleared,
+            bool? registrySaved,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                LandQuestionnaireReceived = received,
-                LandQuestionnaireCleared = cleared,
-                LandQuestionnaireSigned = signed,
-                LandQuestionnaireSaved = saved
+                LandQuestionnaireReceived = questionnaireReceived,
+                LandQuestionnaireCleared = questionnaireCleared,
+                LandQuestionnaireSigned = questionnaireSigned,
+                LandQuestionnaireSaved = questionnaireSaved,
+                LandRegistryReceived = registryReceived,
+                LandRegistryCleared = registryCleared,
+                LandRegistrySaved = registrySaved
             };
 
             var project = new ProjectDto();

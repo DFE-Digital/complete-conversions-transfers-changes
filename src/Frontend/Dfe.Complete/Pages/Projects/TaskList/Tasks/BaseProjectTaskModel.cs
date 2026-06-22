@@ -47,7 +47,6 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
        NoteTaskIdentifier.ConfirmChairOfGovernorsDetails,
        NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy,
        NoteTaskIdentifier.LandQuestionnaire,
-       NoteTaskIdentifier.LandRegistryTitlePlans,
        NoteTaskIdentifier.TrustModificationOrder,
        NoteTaskIdentifier.DirectionToTransfer,
        NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease,

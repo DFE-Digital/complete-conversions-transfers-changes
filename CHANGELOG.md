@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Changed
  - [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
+ - [277534](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277534) - Merge conversion tasks "Land questionnaire" and "Land registry title plans" into "Land questionnaire(s) and land registry plans" with merged page/handler updates
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 

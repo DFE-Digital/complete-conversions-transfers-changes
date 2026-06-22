@@ -75,7 +75,6 @@
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kick_off";
         public const string ProjectConfirmStatutoryConsultationTask = ProjectTaskList + "/confirm_statutory_consultation";
         public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
-        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
         public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
         public const string ProjectRiskProtectionArrangementTask = ProjectTaskList + "/risk_protection_arrangement";
         public const string ProjectRiskProtectionArrangementPolicyTask = ProjectTaskList + "/rpa_policy";
