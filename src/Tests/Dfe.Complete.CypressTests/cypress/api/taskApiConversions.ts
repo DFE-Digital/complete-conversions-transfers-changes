@@ -55,17 +55,13 @@ interface UpdateDirectionToTransferTaskRequest {
 
 interface UpdateLandQuestionnaireTaskRequest {
     taskDataId: TaskDataId;
-    received?: boolean;
-    cleared?: boolean;
-    signed?: boolean;
-    saved?: boolean;
-}
-
-interface UpdateLandRegistryTitlePlansTaskRequest {
-    taskDataId: TaskDataId;
-    received?: boolean;
-    cleared?: boolean;
-    saved?: boolean;
+    landQuestionnaireReceived?: boolean;
+    landQuestionnaireCleared?: boolean;
+    landQuestionnaireSigned?: boolean;
+    landQuestionnaireSaved?: boolean;
+    landRegistryTitlePlansReceived?: boolean;
+    landRegistryTitlePlansCleared?: boolean;
+    landRegistryTitlePlansSaved?: boolean;
 }
 
 interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
@@ -187,10 +183,6 @@ class TaskApiConversions extends TaskApi {
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
         return this.taskDataBaseRequest<void>("LandQuestionnaire", requestBody);
-    }
-
-    public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
-        return this.taskDataBaseRequest<void>("LandRegistryTitlePlans", requestBody);
     }
 
     public updateOneHundredAndTwentyFiveYearLeaseTask(requestBody: UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest) {

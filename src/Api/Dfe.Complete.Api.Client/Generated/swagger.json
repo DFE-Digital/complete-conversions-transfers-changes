@@ -3284,7 +3284,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm conversion project's land questionnaire task updated successfully.",
+        "summary": "Confirm conversion project's  land questionnaire and land registry plans task updated successfully.",
         "operationId": "TasksData_UpdateLandQuestionnaireTask",
         "requestBody": {
           "x-name": "request",
@@ -3301,40 +3301,7 @@
         },
         "responses": {
           "204": {
-            "description": "Confirm conversion project's land questionnaire task updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
-          }
-        }
-      }
-    },
-    "/v1/TasksData/TaskData/LandRegistryTitlePlans": {
-      "patch": {
-        "tags": [
-          "TasksData"
-        ],
-        "summary": "Updaing the land registry title plans task data for transfer project.",
-        "operationId": "TasksData_UpdateLandRegistryTitlePlansTask",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateLandRegistryTitlePlansTaskCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "The land registry title plans task updated successfully."
+            "description": "Confirm conversion project's land questionnaire and land registry plans task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -7223,7 +7190,6 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -7282,7 +7248,6 @@
         "x-enum-descriptions": [
           "handover",
           "land_questionnaire",
-          "land_registry",
           "stakeholder_kick_off",
           "supplemental_funding_agreement",
           "articles_of_association",
@@ -7341,7 +7306,6 @@
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -9988,40 +9952,31 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "received": {
+          "landQuestionnaireReceived": {
             "type": "boolean",
             "nullable": true
           },
-          "cleared": {
+          "landQuestionnaireCleared": {
             "type": "boolean",
             "nullable": true
           },
-          "signed": {
+          "landQuestionnaireSigned": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateLandRegistryTitlePlansTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "received": {
+          "landQuestionnaireSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "cleared": {
+          "landRegistryTitlePlansReceived": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
+          "landRegistryTitlePlansCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landRegistryTitlePlansSaved": {
             "type": "boolean",
             "nullable": true
           }
