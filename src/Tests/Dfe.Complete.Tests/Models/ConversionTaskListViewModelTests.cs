@@ -596,11 +596,13 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
         [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, TaskListStatus.Completed)]
         [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, true, TaskListStatus.InProgress)]
         public void OneHundredAndTwentyFiveYearLeaseTaskStatus_ShouldReturn_CorrectStatus(
-            bool? saveLease, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
+            bool? saveLease, bool? email, bool? receive, bool? confirmModel, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
@@ -608,7 +610,7 @@ namespace Dfe.Complete.Tests.Models
                 OneHundredAndTwentyFiveYearLeaseSaveLease = saveLease,
                 OneHundredAndTwentyFiveYearLeaseEmail = email,
                 OneHundredAndTwentyFiveYearLeaseReceive = receive,
-                OneHundredAndTwentyFiveYearLeaseNotApplicable = notApplicable
+                OneHundredAndTwentyFiveYearLeaseConfirmModel = confirmModel
             };
 
             var project = new ProjectDto();

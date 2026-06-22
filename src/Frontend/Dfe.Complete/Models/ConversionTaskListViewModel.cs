@@ -306,21 +306,21 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus OneHundredAndTwentyFiveYearLeaseTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.OneHundredAndTwentyFiveYearLeaseSaveLease.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseSaveLease == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseEmail.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseEmail == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseReceive.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseReceive == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable == false))
+            if (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease is null or false &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseEmail is null or false) &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseReceive is null or false) &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseConfirmModel is null or false))
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable == true)
+
+            return taskData is
             {
-                return TaskListStatus.NotApplicable;
+                OneHundredAndTwentyFiveYearLeaseSaveLease: true, OneHundredAndTwentyFiveYearLeaseEmail: true,
+                OneHundredAndTwentyFiveYearLeaseReceive: true, OneHundredAndTwentyFiveYearLeaseConfirmModel: true
             }
-            return (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease == true &&
-               taskData.OneHundredAndTwentyFiveYearLeaseEmail == true &&
-               taskData.OneHundredAndTwentyFiveYearLeaseReceive == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ThirdPartyLeasesTaskStatus(ConversionTaskDataDto taskData)
