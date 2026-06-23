@@ -33,15 +33,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("Confirm and process the sponsored support grant", taskLinkBuilder.Build("sponsored_support_grant"), conversionTaskList.ConfirmAndProcessSponsoredSupportGrant, 8),
                 new("Confirm academy nursery arrangement", taskLinkBuilder.Build("confirm_nursery_arrangement"), conversionTaskList.ConfirmNurseryArrangement, 9),
                 new("Confirm statutory consultation is complete and any issues are being managed", taskLinkBuilder.Build("confirm_statutory_consultation"), conversionTaskList.ConfirmStatutoryConsultation, 10),
-                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 11),
-                new("Confirm the academy name", taskLinkBuilder.Build("academy_details"), conversionTaskList.ConfirmAcademyName, 12),
-                new("Confirm the headteacher's details", taskLinkBuilder.Build("confirm_headteacher_contact"), conversionTaskList.ConfirmHeadTeacherDetails, 13),
-                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 14),
-                new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 15),
-                new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 16),
-                new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 17),
-                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 18),
-                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 19)
+                new("Confirm the academy name", taskLinkBuilder.Build("academy_details"), conversionTaskList.ConfirmAcademyName, 11),
+                new("Confirm the headteacher's details", taskLinkBuilder.Build("confirm_headteacher_contact"), conversionTaskList.ConfirmHeadTeacherDetails, 12),
+                new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 13),
+                new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 14),
+                new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 15),
+                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 16),
+                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 17)
             };
 
             if (conversionTaskList.ShowProcessConversionSupportGrant)
@@ -82,7 +80,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             {
                 new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 1),
                 new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 2),
-                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3)
+                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3),
+                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 4),
+                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 5)
             };
 
             return readyForOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();
