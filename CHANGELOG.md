@@ -17,6 +17,11 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Changed
+- [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
+
+---
+
+### Changed
  - [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
  - [277534](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277534) - Merge conversion tasks "Land questionnaire" and "Land registry title plans" into "Land questionnaire(s) and land registry plans" with merged page/handler updates
 
