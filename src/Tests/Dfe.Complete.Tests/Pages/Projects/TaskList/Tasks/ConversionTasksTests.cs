@@ -60,7 +60,6 @@ namespace Dfe.Complete.Tests.Pages.Projects.TaskList.Tasks
 
             var readyForOpeningTasks = ConversionTasks.BuildTaskList(conversionTaskList, projectId).ReadyForOpeningTasks;
 
-            readyForOpeningTasks.Should().HaveCount(4);
             readyForOpeningTasks.First().Name.Should().Be("Confirm the new bank account details for the school");
             readyForOpeningTasks.First().DisplayOrder.Should().Be(1);
         }

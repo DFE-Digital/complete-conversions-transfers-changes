@@ -1330,7 +1330,7 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateMainContactTaskAsync(UpdateMainContactTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Confirm conversion project's  land questionnaire and land registry plans task updated successfully.
+        /// Confirm conversion project's land questionnaire and land registry plans task updated successfully.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Confirm conversion project's land questionnaire and land registry plans task updated successfully.</returns>
@@ -1339,7 +1339,7 @@ namespace Dfe.Complete.Client.Contracts
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm conversion project's  land questionnaire and land registry plans task updated successfully.
+        /// Confirm conversion project's land questionnaire and land registry plans task updated successfully.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Confirm conversion project's land questionnaire and land registry plans task updated successfully.</returns>
@@ -4431,10 +4431,10 @@ namespace Dfe.Complete.Client.Contracts
         PrivateFinanceInitiative = 54,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ThirdPartyLeases")]
-        ThirdPartyLeases = 56,
+        ThirdPartyLeases = 55,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolBankDetails")]
-        ConfirmSchoolBankDetails = 57,
+        ConfirmSchoolBankDetails = 56,
 
     }
 

@@ -8865,7 +8865,7 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Confirm conversion project's  land questionnaire and land registry plans task updated successfully.
+        /// Confirm conversion project's land questionnaire and land registry plans task updated successfully.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Confirm conversion project's land questionnaire and land registry plans task updated successfully.</returns>
@@ -8877,7 +8877,7 @@ namespace Dfe.Complete.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm conversion project's  land questionnaire and land registry plans task updated successfully.
+        /// Confirm conversion project's land questionnaire and land registry plans task updated successfully.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Confirm conversion project's land questionnaire and land registry plans task updated successfully.</returns>
