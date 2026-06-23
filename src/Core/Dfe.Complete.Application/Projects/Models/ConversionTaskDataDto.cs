@@ -148,6 +148,10 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? SchoolCompletedSaved { get; set; }
 
+        public bool? ConfirmSchoolBankDetailsSent { get; set; }
+
+        public bool? ConfirmSchoolBankDetailsSubmitted { get; set; }
+
         public bool? RedactAndSendRedact { get; set; }
 
         public bool? RedactAndSendSaveRedaction { get; set; }

@@ -51,5 +51,18 @@ namespace Dfe.Complete.Tests.Pages.Projects.TaskList.Tasks
             result.Should().NotContain(x => x.Name == "Process conversion support grant");
             result.Should().OnlyHaveUniqueItems(x => x.DisplayOrder);
         }
+
+        [Fact]
+        public void GetReadyForOpeningTasks_ShouldPlaceConfirmSchoolBankDetailsFirst()
+        {
+            var conversionTaskList = new ConversionTaskListViewModel();
+            var projectId = "project-123";
+
+            var readyForOpeningTasks = ConversionTasks.BuildTaskList(conversionTaskList, projectId).ReadyForOpeningTasks;
+
+            readyForOpeningTasks.Should().HaveCount(4);
+            readyForOpeningTasks.First().Name.Should().Be("Confirm the new bank account details for the school");
+            readyForOpeningTasks.First().DisplayOrder.Should().Be(1);
+        }
     }
 }

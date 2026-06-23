@@ -98,6 +98,7 @@
         public const string ProjectThirdPartyLeasesTask = ProjectTaskList + "/third_party_leases";
         public const string ProjectTenancyAtWillTask = ProjectTaskList + "/tenancy_at_will";
         public const string ProjectCommercialTransferAgreementTask = ProjectTaskList + "/commercial_transfer_agreement";
+        public const string ProjectConfirmSchoolBankDetailsTask = ProjectTaskList + "/confirm_school_bank_details";
         public const string ProjectConfirmTheSchoolHasCompletedAllActionsTask = ProjectTaskList + "/school_completed";
         public const string ProjectConfirmAllConditionsHaveBeenMetTask = ProjectTaskList + "/conditions_met";
         public const string ProjectShareTheInformationAboutOpeningTask = ProjectTaskList + "/share_information";

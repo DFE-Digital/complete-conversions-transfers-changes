@@ -772,6 +772,25 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Update the confirmation of new school bank details task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmSchoolBankDetails")]
+        [SwaggerResponse(204, "Update confirm school bank details task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmSchoolBankDetailsTaskAsync(
+            [FromBody] UpdateConfirmSchoolBankDetailsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Update the confirmation the school has completed all actions task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>

@@ -37,6 +37,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ThirdPartyLeases { get; set; }
         public TaskListStatus CommercialTransferAgreement { get; set; }
         public TaskListStatus ConfirmTheSchoolHasCompletedAllActions { get; set; }
+        public TaskListStatus ConfirmSchoolBankDetails { get; set; }
         public TaskListStatus ConfirmAllConditionsHaveBeenMet { get; set; }
         public TaskListStatus ShareTheInformationAboutOpening { get; set; }
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
@@ -83,6 +84,7 @@ namespace Dfe.Complete.Models
                 ThirdPartyLeases = ThirdPartyLeasesTaskStatus(taskData),
                 CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
                 ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskData),
+                ConfirmSchoolBankDetails = ConfirmSchoolBankDetailsTaskStatus(taskData),
                 ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project),
                 ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
@@ -232,6 +234,20 @@ namespace Dfe.Complete.Models
             return (taskData.SchoolCompletedEmailed == true &&
                 taskData.SchoolCompletedSaved == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmSchoolBankDetailsTaskStatus(ConversionTaskDataDto taskData)
+        {
+
+            if (taskData.ConfirmSchoolBankDetailsSent is null or false &&
+                (taskData.ConfirmSchoolBankDetailsSubmitted is null or false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return taskData is { ConfirmSchoolBankDetailsSent: true, ConfirmSchoolBankDetailsSubmitted: true }
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ProjectDto project)

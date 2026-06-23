@@ -604,6 +604,8 @@ public partial class CompleteContext : DbContext
             .HasColumnName("risk_protection_arrangement_reason");
         projectConfiguration.Property(e => e.SchoolCompletedEmailed).HasColumnName("school_completed_emailed");
         projectConfiguration.Property(e => e.SchoolCompletedSaved).HasColumnName("school_completed_saved");
+        projectConfiguration.Property(e => e.ConfirmSchoolBankDetailsSent).HasColumnName("confirm_school_bank_details_sent");
+        projectConfiguration.Property(e => e.ConfirmSchoolBankDetailsSubmitted).HasColumnName("confirm_school_bank_details_submitted");
         projectConfiguration.Property(e => e.ShareInformationEmail).HasColumnName("share_information_email");
         projectConfiguration.Property(e => e.SponsoredSupportGrantInformTrust).HasColumnName("sponsored_support_grant_inform_trust");
         projectConfiguration.Property(e => e.SponsoredSupportGrantNotApplicable).HasColumnName("sponsored_support_grant_not_applicable");

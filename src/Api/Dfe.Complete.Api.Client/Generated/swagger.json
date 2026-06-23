@@ -3909,6 +3909,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmSchoolBankDetails": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the confirmation of new school bank details task data for conversion project.",
+        "operationId": "TasksData_UpdateConfirmSchoolBankDetailsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSchoolBankDetailsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Update confirm school bank details task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/UpdateConfirmSchoolHasCompletedAllActions": {
       "patch": {
         "tags": [
@@ -7277,7 +7310,8 @@
           "LAConfirmsPayrollDeadline",
           "ConfirmDBSChecks",
           "PrivateFinanceInitiative",
-          "ThirdPartyLeases"
+          "ThirdPartyLeases",
+          "ConfirmSchoolBankDetails"
         ],
         "x-enum-descriptions": [
           "handover",
@@ -7336,7 +7370,8 @@
           "la_confirms_payroll_deadline",
           "confirm_dbs_checks",
           "private_finance_initiative",
-          "third_party_leases"
+          "third_party_leases",
+          "confirm_school_bank_details"
         ],
         "enum": [
           "Handover",
@@ -7395,7 +7430,8 @@
           "LAConfirmsPayrollDeadline",
           "ConfirmDBSChecks",
           "PrivateFinanceInitiative",
-          "ThirdPartyLeases"
+          "ThirdPartyLeases",
+          "ConfirmSchoolBankDetails"
         ]
       },
       "CreateNoteCommand": {
@@ -9037,6 +9073,14 @@
             "type": "boolean",
             "nullable": true
           },
+          "confirmSchoolBankDetailsSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmSchoolBankDetailsSubmitted": {
+            "type": "boolean",
+            "nullable": true
+          },
           "redactAndSendRedact": {
             "type": "boolean",
             "nullable": true
@@ -10451,6 +10495,23 @@
             "nullable": true
           },
           "sent": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmSchoolBankDetailsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "submitted": {
             "type": "boolean",
             "nullable": true
           }

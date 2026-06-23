@@ -751,6 +751,31 @@ namespace Dfe.Complete.Tests.Models
 
             Assert.Equal(expectedStatus, result.ConfirmTheSchoolHasCompletedAllActions);
         }
+
+        [Theory]
+        [InlineData(null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
+        [InlineData(true, true, TaskListStatus.Completed)]
+        public void ConfirmSchoolBankDetailsTaskStatus_ShouldReturn_CorrectStatus(
+            bool? submitted,
+            bool? sent,
+            TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                ConfirmSchoolBankDetailsSubmitted = submitted,
+                ConfirmSchoolBankDetailsSent = sent
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.ConfirmSchoolBankDetails);
+        }
+
         [Theory]
         [InlineData(null, TaskListStatus.NotStarted)]
         [InlineData(false, TaskListStatus.NotStarted)]

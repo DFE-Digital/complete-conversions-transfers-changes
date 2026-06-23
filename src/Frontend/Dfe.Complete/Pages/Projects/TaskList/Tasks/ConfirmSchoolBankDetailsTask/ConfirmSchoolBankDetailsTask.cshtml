@@ -1,0 +1,40 @@
+@page "/projects/{projectId}/tasks/confirm_school_bank_details"
+@using Dfe.Complete.Utils;
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolBankDetailsTask.ConfirmSchoolBankDetailsTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>For the converting school to receive GAG payments, the academy trust must submit the school's new bank account details via the DFE online submission form by the published deadline.</p>
+        <p>Converted academies receive GAG payment on the 6th working day of the conversion month.</p>
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+
+        <h2 class="govuk-heading-m">Confirm school has completed all actions
+            <span class="govuk-caption-m">Select all that apply</span>
+        </h2>
+
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Sent))" data-cy="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
+                    <b>Request confirmation that the school's bank account details have been sent to the DfE using the automated form by the published deadline.</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Submitted))" data-cy="@(nameof(Model.Submitted))" asp-for="@Model.Submitted" value="true" name="@(nameof(Model.Submitted))" checked="@Model.Submitted">
+                    <b>Received confirmation that the school bank details have been submitted.</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

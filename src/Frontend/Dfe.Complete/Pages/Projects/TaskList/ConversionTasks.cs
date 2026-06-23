@@ -81,9 +81,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             var readyForOpeningTasks = new List<TaskListItemViewModel>
             {
-                new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 1),
-                new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 2),
-                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3)
+                new("Confirm the new bank account details for the school", taskLinkBuilder.Build("confirm_school_bank_details"), conversionTaskList.ConfirmSchoolBankDetails, 1),
+                new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 2),
+                new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 3),
+                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 4)
             };
 
             return readyForOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();

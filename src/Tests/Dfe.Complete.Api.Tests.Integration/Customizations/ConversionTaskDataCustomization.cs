@@ -98,6 +98,8 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.RiskProtectionArrangementReason, fixture.Create<string>())
             .With(x => x.SchoolCompletedEmailed, false)
             .With(x => x.SchoolCompletedSaved, false)
+            .With(x => x.ConfirmSchoolBankDetailsSubmitted, false)
+            .With(x => x.ConfirmSchoolBankDetailsSent, false)
             .With(x => x.ShareInformationEmail, false)
             .With(x => x.SponsoredSupportGrantInformTrust, false)
             .With(x => x.SponsoredSupportGrantNotApplicable, false)
