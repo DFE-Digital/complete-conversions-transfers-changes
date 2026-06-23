@@ -20,42 +20,47 @@ describe("Conversion tasks - 125 year lease", () => {
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select some checkboxes and save");
+        
+        Logger.log("Select checkboxes and save");
+
         taskPage
-            .hasCheckboxLabel(
-                "Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease",
-            )
-            .tick()
-            .hasCheckboxLabel(
-                "Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease",
-            )
+            .hasCheckboxLabel("Confirm if the model DfE 125 year lease been used unamended")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("125 year lease").selectTask("125 year lease");
 
-        Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel(
-                "Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease",
-            )
+            .hasCheckboxLabel("Confirm if the model DfE 125 year lease been used unamended")
+            .tick()
+            .hasCheckboxLabel("Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease")
+            .tick()
+            .hasCheckboxLabel("Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease")
+            .tick()
+            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .tick()
+            .saveAndReturn();
+
+        taskListPage.hasTaskStatusCompleted("125 year lease").selectTask("125 year lease");
+
+
+        Logger.log("Unselect all checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Confirm if the model DfE 125 year lease been used unamended")
             .isTicked()
             .untick()
-            .hasCheckboxLabel(
-                "Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease",
-            )
+            .hasCheckboxLabel("Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("125 year lease").selectTask("125 year lease");
-        taskPage
-            .hasCheckboxLabel(
-                "Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease",
-            )
-            .isUnticked()
-            .hasCheckboxLabel(
-                "Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease",
-            )
-            .isUnticked();
+
+        taskListPage.hasTaskStatusNotStarted("125 year lease");
+
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
@@ -65,9 +70,6 @@ describe("Conversion tasks - 125 year lease", () => {
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("125 year lease");
 
-        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(setup.taskId, "notApplicable");
-        cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("125 year lease");
 
         TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(setup.taskId, "inProgress");
         cy.reload();

@@ -82,6 +82,7 @@ public class ConversionTaskDataCustomization : ICustomization
             .With(x => x.OneHundredAndTwentyFiveYearLeaseNotApplicable, false)
             .With(x => x.OneHundredAndTwentyFiveYearLeaseReceive, false)
             .With(x => x.OneHundredAndTwentyFiveYearLeaseSaveLease, false)
+            .With(x => x.OneHundredAndTwentyFiveYearLeaseConfirmModel, false)
             .With(x => x.ProposedCapacityOfTheAcademyNotApplicable, false)
             .With(x => x.ProposedCapacityOfTheAcademyReceptionToSixYears, fixture.Create<string>())
             .With(x => x.ProposedCapacityOfTheAcademySevenToElevenYears, fixture.Create<string>())

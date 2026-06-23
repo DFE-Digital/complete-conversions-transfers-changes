@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260617124745_125YearLeaseAddConfirmModel")]
+    partial class _125YearLeaseAddConfirmModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,10 +202,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("commercial_transfer_agreement_signed");
 
-                    b.Property<bool?>("CommercialTransferAgreementUnamended")
-                        .HasColumnType("bit")
-                        .HasColumnName("transfer_agreement_unamended");
-
                     b.Property<bool?>("CompleteNotificationOfChangeCheckDocument")
                         .HasColumnType("bit")
                         .HasColumnName("complete_notification_of_change_check_document");
@@ -226,14 +225,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<DateOnly?>("ConfirmDateAcademyOpenedDateOpened")
                         .HasColumnType("date")
                         .HasColumnName("confirm_date_academy_opened_date_opened");
-
-                    b.Property<bool?>("ConfirmSchoolBankDetailsSent")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_school_bank_details_sent");
-
-                    b.Property<bool?>("ConfirmSchoolBankDetailsSubmitted")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_school_bank_details_submitted");
 
                     b.Property<bool?>("ConversionGrantCheckVendorAccount")
                         .HasColumnType("bit")
@@ -673,22 +664,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("TenancyAtWillSaveSigned")
                         .HasColumnType("bit")
                         .HasColumnName("tenancy_at_will_save_signed");
-
-                    b.Property<bool?>("ThirdPartyLeasesEmail")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_email");
-
-                    b.Property<bool?>("ThirdPartyLeasesNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_not_applicable");
-
-                    b.Property<bool?>("ThirdPartyLeasesReceive")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_receive");
-
-                    b.Property<bool?>("ThirdPartyLeasesSave")
-                        .HasColumnType("bit")
-                        .HasColumnName("third_party_leases_save");
 
                     b.Property<bool?>("TrustModificationOrderCleared")
                         .HasColumnType("bit")

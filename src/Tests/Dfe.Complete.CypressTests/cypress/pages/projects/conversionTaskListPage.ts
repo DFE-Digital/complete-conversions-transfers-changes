@@ -28,8 +28,7 @@ class ConversionTaskListPage {
             "Private finance initiative",
         ],
         legalDocuments: [
-            "Land questionnaire",
-            "Land registry title plans",
+            "Land questionnaire(s) and land registry plans",
             "Supplemental funding agreement",
             "Church supplemental agreement",
             "Master funding agreement",

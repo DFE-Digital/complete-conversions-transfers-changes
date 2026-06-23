@@ -467,40 +467,30 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.SupplementalFundingAgreement);
         }
         [Theory]
-        [InlineData(false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, TaskListStatus.InProgress)]
-        public void LandRegistryTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, TaskListStatus expectedStatus)
-        {
-            var taskData = new ConversionTaskDataDto
-            {
-                Id = new TaskDataId(Guid.NewGuid()),
-                LandRegistryReceived = received,
-                LandRegistryCleared = cleared,
-                LandRegistrySaved = saved
-            };
-
-            var project = new ProjectDto();
-            var result = ConversionTaskListViewModel.Create(taskData, project, null);
-
-            Assert.Equal(expectedStatus, result.LandRegistry);
-        }
-
-        [Theory]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, false, false, TaskListStatus.InProgress)]
         public void LandQuestionnaireTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? signed, bool? saved, TaskListStatus expectedStatus)
+            bool? questionnaireReceived,
+            bool? questionnaireCleared,
+            bool? questionnaireSigned,
+            bool? questionnaireSaved,
+            bool? registryReceived,
+            bool? registryCleared,
+            bool? registrySaved,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                LandQuestionnaireReceived = received,
-                LandQuestionnaireCleared = cleared,
-                LandQuestionnaireSigned = signed,
-                LandQuestionnaireSaved = saved
+                LandQuestionnaireReceived = questionnaireReceived,
+                LandQuestionnaireCleared = questionnaireCleared,
+                LandQuestionnaireSigned = questionnaireSigned,
+                LandQuestionnaireSaved = questionnaireSaved,
+                LandRegistryReceived = registryReceived,
+                LandRegistryCleared = registryCleared,
+                LandRegistrySaved = registrySaved
             };
 
             var project = new ProjectDto();
@@ -606,11 +596,13 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
         [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, TaskListStatus.Completed)]
         [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, true, TaskListStatus.InProgress)]
         public void OneHundredAndTwentyFiveYearLeaseTaskStatus_ShouldReturn_CorrectStatus(
-            bool? saveLease, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
+            bool? saveLease, bool? email, bool? receive, bool? confirmModel, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
@@ -618,7 +610,7 @@ namespace Dfe.Complete.Tests.Models
                 OneHundredAndTwentyFiveYearLeaseSaveLease = saveLease,
                 OneHundredAndTwentyFiveYearLeaseEmail = email,
                 OneHundredAndTwentyFiveYearLeaseReceive = receive,
-                OneHundredAndTwentyFiveYearLeaseNotApplicable = notApplicable
+                OneHundredAndTwentyFiveYearLeaseConfirmModel = confirmModel
             };
 
             var project = new ProjectDto();

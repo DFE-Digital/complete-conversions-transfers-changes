@@ -7,8 +7,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
     {
         [Theory]
         [InlineData(NoteTaskIdentifier.Handover, "handover", "Handover with regional delivery officer")]
-        [InlineData(NoteTaskIdentifier.LandQuestionnaire, "land_questionnaire", "Land questionnaire")]
-        [InlineData(NoteTaskIdentifier.LandRegistryTitlePlans, "land_registry", "Land registry title plans")]
+        [InlineData(NoteTaskIdentifier.LandQuestionnaire, "land_questionnaire", "Land questionnaire(s) and land registry plans")]
         [InlineData(NoteTaskIdentifier.StakeholderKickoff, "stakeholder_kick_off", "External stakeholder kick-off")]
         [InlineData(NoteTaskIdentifier.SupplementalFundingAgreement, "supplemental_funding_agreement", "Supplemental funding agreement")]
         [InlineData(NoteTaskIdentifier.ArticleOfAssociation, "articles_of_association", "Articles of association")]
