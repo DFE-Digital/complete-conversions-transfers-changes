@@ -16,7 +16,7 @@ export class TaskPage extends BasePage {
 
     // options
     hasCheckboxLabel(text: string) {
-        cy.get(`@${this.sectionAlias}`).then(($section) => {
+        cy.get(this.sectionAlias).then(($section) => {
             cy.wrap($section).contains("label", text).should("exist");
         });
         cy.wrap(text).as("label");
@@ -115,7 +115,7 @@ export class TaskPage extends BasePage {
 
     private performLabelContainerAction(action: () => void) {
         cy.get("@label").then((label) => {
-            cy.get(`@${this.sectionAlias}`).then(($section) => {
+            cy.get(this.sectionAlias).then(($section) => {
                 cy.wrap($section)
                     .contains("label", String(label))
                     .parent()
