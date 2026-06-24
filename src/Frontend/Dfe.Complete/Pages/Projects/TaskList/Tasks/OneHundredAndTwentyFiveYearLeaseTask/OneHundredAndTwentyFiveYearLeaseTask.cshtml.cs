@@ -15,8 +15,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
         [BindProperty]
         public Guid? TasksDataId { get; set; }
 
-        [BindProperty(Name = "notapplicable")]
-        public bool? NotApplicable { get; set; }
+        [BindProperty(Name = "confirm")]
+        public bool? Confirm { get; set; }
 
         [BindProperty(Name = "email")]
         public bool? Email { get; set; }
@@ -36,7 +36,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
 
             TasksDataId = Project.TasksDataId?.Value;
 
-            NotApplicable = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseNotApplicable;
+            Confirm = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseConfirmModel;
             Email = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseEmail;
             Receive = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseReceive;
             Save = ConversionTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease;
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYear
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Email, Receive, Save));
+            await Sender.Send(new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Confirm, Email, Receive, Save));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

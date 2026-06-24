@@ -153,25 +153,31 @@ class TaskHelperConversions extends TaskHelper {
     updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            received: false,
-            cleared: false,
-            signed: false,
-            saved: false,
+            landQuestionnaireReceived: false,
+            landQuestionnaireCleared: false,
+            landQuestionnaireSigned: false,
+            landQuestionnaireSaved: false,
+            landRegistryTitlePlansReceived: false,
+            landRegistryTitlePlansCleared: false,
+            landRegistryTitlePlansSaved: false,
         };
         switch (status) {
             case "inProgress":
                 return taskApiConversions.updateLandQuestionnaireTask({
                     ...defaultBody,
-                    received: true,
+                    landQuestionnaireReceived: true,
                 });
 
             case "completed":
                 return taskApiConversions.updateLandQuestionnaireTask({
                     taskDataId: { value: taskDataId },
-                    received: true,
-                    cleared: true,
-                    signed: true,
-                    saved: true,
+                    landQuestionnaireReceived: true,
+                    landQuestionnaireCleared: true,
+                    landQuestionnaireSigned: true,
+                    landQuestionnaireSaved: true,
+                    landRegistryTitlePlansReceived: true,
+                    landRegistryTitlePlansCleared: true,
+                    landRegistryTitlePlansSaved: true,
                 });
 
             default:
@@ -179,47 +185,15 @@ class TaskHelperConversions extends TaskHelper {
         }
     }
 
-    updateLandRegistryTitlePlans(taskDataId: string, status: TaskStatus) {
-        const defaultBody = {
-            taskDataId: { value: taskDataId },
-            received: false,
-            cleared: false,
-            saved: false,
-        };
-        switch (status) {
-            case "inProgress":
-                return taskApiConversions.updateLandRegistryTitlePlansTask({
-                    ...defaultBody,
-                    received: true,
-                });
-
-            case "completed":
-                return taskApiConversions.updateLandRegistryTitlePlansTask({
-                    taskDataId: { value: taskDataId },
-                    received: true,
-                    cleared: true,
-                    saved: true,
-                });
-
-            default:
-                return taskApiConversions.updateLandRegistryTitlePlansTask(defaultBody);
-        }
-    }
-
     updateOneHundredAndTwentyFiveYearLease(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            notApplicable: false,
+            confirm: false,
             email: false,
             receive: false,
             save: false,
         };
         switch (status) {
-            case "notApplicable":
-                return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
-                    ...defaultBody,
-                    notApplicable: true,
-                });
 
             case "inProgress":
                 return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
@@ -230,7 +204,7 @@ class TaskHelperConversions extends TaskHelper {
             case "completed":
                 return taskApiConversions.updateOneHundredAndTwentyFiveYearLeaseTask({
                     taskDataId: { value: taskDataId },
-                    notApplicable: false,
+                    confirm: true,
                     email: true,
                     receive: true,
                     save: true,

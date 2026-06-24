@@ -10,12 +10,8 @@ public enum NoteTaskIdentifier
     Handover = 1,
 
     [Description("land_questionnaire")]
-    [DisplayDescription("Land questionnaire")]
+    [DisplayDescription("Land questionnaire(s) and land registry plans")]
     LandQuestionnaire = 2,
-
-    [Description("land_registry")]
-    [DisplayDescription("Land registry title plans")]
-    LandRegistryTitlePlans = 3,
 
     [Description("stakeholder_kick_off")]
     [DisplayDescription("External stakeholder kick-off")]

@@ -57,21 +57,20 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             var legalDocumentsTasks = new List<TaskListItemViewModel>
             {
-                new("Land questionnaire", taskLinkBuilder.Build("land_questionnaire"), conversionTaskList.LandQuestionnaire, 1),
-                new("Land registry title plans", taskLinkBuilder.Build("land_registry"), conversionTaskList.LandRegistry, 2),
-                new("Supplemental funding agreement", taskLinkBuilder.Build("supplemental_funding_agreement"), conversionTaskList.SupplementalFundingAgreement, 3),
-                new("Church supplemental agreement", taskLinkBuilder.Build("church_supplemental_agreement"), conversionTaskList.ChurchSupplementalAgreement, 4),
-                new("Master funding agreement", taskLinkBuilder.Build("master_funding_agreement"), conversionTaskList.MasterFundingAgreement, 5),
-                new("Articles of association", taskLinkBuilder.Build("articles_of_association"), conversionTaskList.ArticlesOfAssociation, 6),
-                new("Deed of variation", taskLinkBuilder.Build("deed_of_variation"), conversionTaskList.DeedOfVariation, 7),
-                new("Trust modification order", taskLinkBuilder.Build("trust_modification_order"), conversionTaskList.TrustModificationOrder, 8),
-                new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 9),
-                new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 10),
-                new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 11),
-                new("Third party leases", taskLinkBuilder.Build("third_party_leases"), conversionTaskList.ThirdPartyLeases, 12),
-                new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 13),
-                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 14),
-                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 15)
+                new("Land questionnaire(s) and land registry plans", taskLinkBuilder.Build("land_questionnaire"), conversionTaskList.LandQuestionnaire, 1),
+                new("Supplemental funding agreement", taskLinkBuilder.Build("supplemental_funding_agreement"), conversionTaskList.SupplementalFundingAgreement, 2),
+                new("Church supplemental agreement", taskLinkBuilder.Build("church_supplemental_agreement"), conversionTaskList.ChurchSupplementalAgreement, 3),
+                new("Master funding agreement", taskLinkBuilder.Build("master_funding_agreement"), conversionTaskList.MasterFundingAgreement, 4),
+                new("Articles of association", taskLinkBuilder.Build("articles_of_association"), conversionTaskList.ArticlesOfAssociation, 5),
+                new("Deed of variation", taskLinkBuilder.Build("deed_of_variation"), conversionTaskList.DeedOfVariation, 6),
+                new("Trust modification order", taskLinkBuilder.Build("trust_modification_order"), conversionTaskList.TrustModificationOrder, 7),
+                new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 8),
+                new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 9),
+                new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 10),
+                new("Third party leases", taskLinkBuilder.Build("third_party_leases"), conversionTaskList.ThirdPartyLeases, 11),
+                new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 12),
+                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13),
+                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 14)
             };
 
             return legalDocumentsTasks;
