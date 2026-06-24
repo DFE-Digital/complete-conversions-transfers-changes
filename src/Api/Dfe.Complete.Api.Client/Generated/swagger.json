@@ -3284,7 +3284,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm conversion project's  land questionnaire and land registry plans task updated successfully.",
+        "summary": "Confirm conversion project's land questionnaire and land registry plans task updated successfully.",
         "operationId": "TasksData_UpdateLandQuestionnaireTask",
         "requestBody": {
           "x-name": "request",
