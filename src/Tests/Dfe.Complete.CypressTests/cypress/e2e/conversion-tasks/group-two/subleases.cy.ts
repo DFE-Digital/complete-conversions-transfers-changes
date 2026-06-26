@@ -28,7 +28,7 @@ describe("Conversion tasks - Subleases", () => {
                 "Receive email from the school confirming all relevant parties have agreed and signed any subleases",
             )
             .tick()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .hasCheckboxLabel("Save a copy of the confirmation email in the School's SharePoint folder")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("Subleases").selectTask("Subleases");
@@ -43,7 +43,7 @@ describe("Conversion tasks - Subleases", () => {
             )
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .hasCheckboxLabel("Save a copy of the confirmation email in the School's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -55,7 +55,7 @@ describe("Conversion tasks - Subleases", () => {
                 "Receive email from the school confirming all relevant parties have agreed and signed any subleases",
             )
             .isUnticked()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .hasCheckboxLabel("Save a copy of the confirmation email in the School's SharePoint folder")
             .isUnticked();
     });
 
