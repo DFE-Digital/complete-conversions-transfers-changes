@@ -5,7 +5,6 @@ namespace Dfe.Complete.Application.Validation;
 public interface ISignificantDateValidator
 {
     ValidationResult ValidateSignificantDate(DateOnly? significantDate, ProjectDto? existingProject = null, DateOnly? payrollDeadline = null);
-    ValidationResult ValidatePayrollDeadline(DateOnly? payrollDeadline, ProjectDto project);
     ValidationResult ValidateSignificantDateInFuture(DateOnly? significantDate);
 }
 
@@ -47,28 +46,6 @@ public class SignificantDateValidator : ISignificantDateValidator
         if (significantDate.HasValue && payrollDeadline.HasValue && significantDate <= payrollDeadline.Value)
         {
             return ValidationResult.Error("The significant date must be after the payroll deadline.");
-        }
-
-        return ValidationResult.Success();
-    }
-
-    public ValidationResult ValidatePayrollDeadline(DateOnly? payrollDeadline, ProjectDto project)
-    {
-        if (project.SignificantDateProvisional != true)
-        {
-            var beforeSignificantDateValidation = ValidatePayrollDeadlineBeforeSignificantDate(payrollDeadline, project.SignificantDate);
-            if (!beforeSignificantDateValidation.IsValid)
-                return beforeSignificantDateValidation;
-        }
-
-        return ValidationResult.Success();
-    }
-
-    private static ValidationResult ValidatePayrollDeadlineBeforeSignificantDate(DateOnly? payrollDeadline, DateOnly? significantDate)
-    {
-        if (payrollDeadline.HasValue && significantDate.HasValue && payrollDeadline >= significantDate.Value)
-        {
-            return ValidationResult.Error("Payroll deadline must be before the significant date.");
         }
 
         return ValidationResult.Success();

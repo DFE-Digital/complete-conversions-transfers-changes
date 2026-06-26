@@ -4433,9 +4433,6 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ThirdPartyLeases")]
         ThirdPartyLeases = 55,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolBankDetails")]
-        ConfirmSchoolBankDetails = 56,
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]

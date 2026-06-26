@@ -4,8 +4,6 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSetup";
 import validationComponent from "cypress/pages/validationComponent";
-import taskHelperConversions from "cypress/api/taskHelperConversions";
-import { getSignificantDateString } from "cypress/support/formatDate";
 
 const taskPath = "la_confirms_payroll_deadline";
 
@@ -13,8 +11,6 @@ const today = new Date();
 const dayTomorrow = String(today.getDate() + 1);
 const month = String(today.getMonth() + 1);
 const year = String(today.getFullYear());
-const yearTwoYearsFromNow = String(today.getFullYear() + 2);
-const significantDateNextYear = getSignificantDateString(12);
 
 describe("Conversion tasks - LA confirms payroll deadline", () => {
     let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
@@ -26,8 +22,6 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
             return cy.wrap(null).should(() => {
                 expect(setup.projectId, 'projectId should be set').to.not.be.empty;
             });
-        }).then(() => {
-            taskHelperConversions.updateExternalStakeholderKickOff(setup.projectId, "completed", significantDateNextYear);
         });
     });
 
@@ -51,13 +45,6 @@ describe("Conversion tasks - LA confirms payroll deadline", () => {
     });
 
     it("should show validation errors", () => {
-        Logger.log("Try to input a date after the significant date");
-        taskPage
-            .enterDate("15", "6", yearTwoYearsFromNow, "payroll-deadline")
-            .saveAndReturn()
-
-        validationComponent.hasLinkedValidationError("Payroll deadline must be before the significant date");
-
         Logger.log("Try to input an invalid date");
         taskPage
             .enterDate("15", "16", "2020", "payroll-deadline")
