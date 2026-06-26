@@ -19,38 +19,36 @@ describe("Conversion tasks - Master funding agreement", () => {
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
+    it("should display ", () => {
         taskPage
-            .clickDropdown("Help checking and updating the master funding agreement")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust")
-            .clickDropdown("How to sign the master funding agreement")
-            .hasDropdownContent("The Secretary of State, or somebody with the authority to act on their behalf");
+            .contains(" The Master Funding Agreement (MFA) is a deed between the DfE and academy trust and outlines the core teams and conditions under which the trust operates. As part of the MAT formation, the draft MFA must be cleared by the DfE conversion lead prior to signature. We do not expect any deviations to the model.")
+            .contains("Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected, otherwise we do not expect any deviations to the model.");
     });
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .tick()
-            .hasCheckboxLabel("Saved in school and trust SharePoint folders")
+            .hasCheckboxLabel("Draft saved in the school's SharePoint folder")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("Master funding agreement").selectTask("Master funding agreement");
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Saved in school and trust SharePoint folders")
+            .hasCheckboxLabel("Draft saved in the school's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
         taskListPage.hasTaskStatusNotStarted("Master funding agreement").selectTask("Master funding agreement");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .isUnticked()
-            .hasCheckboxLabel("Saved in school and trust SharePoint folders")
+            .hasCheckboxLabel("Draft saved in the school's SharePoint folder")
             .isUnticked();
     });
 

@@ -505,7 +505,7 @@ class TaskHelperConversions extends TaskHelper {
             documentsSentToSOPUForClearance: null,
             cleared: null,
             draftSaved: null,
-            signedByAllStakeholders: null,
+            signedByAllStakeHolders: null,
             finalVersionSavedInSharepointFolder: null,
         };
 
@@ -532,7 +532,7 @@ class TaskHelperConversions extends TaskHelper {
                     documentsSentToSOPUForClearance: true,
                     cleared: true,
                     draftSaved: true,
-                    signedByAllStakeholders: true,
+                    signedByAllStakeHolders: true,
                     finalVersionSavedInSharepointFolder: true
                 });
 

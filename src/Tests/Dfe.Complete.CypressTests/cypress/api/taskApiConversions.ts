@@ -136,7 +136,7 @@ interface UpdatePrivateFinanceInitiativeTaskRequest {
     documentsSentToSOPUForClearance?: boolean | null;
     cleared?: boolean | null;
     draftSaved?: boolean | null;
-    signedByAllStakeholders?: boolean | null;
+    signedByAllStakeHolders?: boolean | null;
     finalVersionSavedInSharepointFolder?: boolean | null;
 }
 
