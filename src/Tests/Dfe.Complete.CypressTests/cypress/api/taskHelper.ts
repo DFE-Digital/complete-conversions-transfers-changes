@@ -133,7 +133,7 @@ export class TaskHelper {
             notApplicable: false,
             received: false,
             cleared: false,
-            draftSaved: false,
+            sent: false,
             saved: false,
             signed: false,
             signedSecretaryState: false,
@@ -159,7 +159,7 @@ export class TaskHelper {
                     notApplicable: false,
                     received: true,
                     cleared: true,
-                    draftSaved: true,
+                    sent: true,
                     saved: true,
                     signed: true,
                     signedSecretaryState: true,
@@ -395,7 +395,7 @@ export class TaskHelper {
                     cleared: true,
                     signed: true,
                     saved: true,
-                    draftSaved: true,
+                    sent: true,
                     signedSecretaryState: true,
                 });
 
