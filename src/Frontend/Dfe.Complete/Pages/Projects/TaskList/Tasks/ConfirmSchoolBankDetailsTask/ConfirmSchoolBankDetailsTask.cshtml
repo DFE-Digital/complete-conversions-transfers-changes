@@ -31,8 +31,12 @@
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Submitted))" data-cy="@(nameof(Model.Submitted))" asp-for="@Model.Submitted" value="true" name="@(nameof(Model.Submitted))" checked="@Model.Submitted">
-                    <b>Received confirmation that the school bank details have been submitted.</b>
-                </govuk-checkboxes-item>
+                    <b>Received confirmation that the school bank details have been submitted and confirmation of the AF reference number.</b>
+                    <govuk-checkboxes-item-hint>
+                        <p><external-link href="@_configuration["ExternalLinks:VRSCaseLog"]">Standing Data VRS case log</external-link></p>
+                        <p><external-link href="@_configuration["ExternalLinks:VendorAccountLog"]">Vendor account log</external-link></p>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>    
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
 
