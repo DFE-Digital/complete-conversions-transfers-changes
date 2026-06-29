@@ -21,8 +21,12 @@ describe("Conversion tasks - Master funding agreement", () => {
 
     it("should contain guidance details", () => {
         taskPage
-            .contains(" The Master Funding Agreement (MFA) is a deed between the DfE and academy trust and outlines the core teams and conditions under which the trust operates. As part of the MAT formation, the draft MFA must be cleared by the DfE conversion lead prior to signature. We do not expect any deviations to the model.")
-            .contains("Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected, otherwise we do not expect any deviations to the model.");
+            .hasDropdownContent(
+                "The Master Funding Agreement (MFA) is a deed between the DfE and academy trust and outlines the core teams and conditions under which the trust operates",
+            )
+            .hasDropdownContent(
+                "Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected",
+            );
     });
 
     it("should submit the form and persist selections", () => {
