@@ -6,18 +6,12 @@
         {
             object? value = func(input);
 
-            if (value == null)
+            if (value == null || value.ToString() == string.Empty)
             {
                 return defaultValue;
             }
-            if (value.ToString() == string.Empty)
-            {
-                return defaultValue;
-            }
-            else
-            {
-                return value.ToString();
-            }
+
+            return value.ToString();
         }
     }
 }
