@@ -33,6 +33,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
 - [282906](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282906) - Update wording on confirm academy open date
 - [279037](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279037) - updated checkboxes on 125 year lease
+- [282893](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282893) - updated checkboxes to be radio buttons and general content change
 
 ### Added
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
@@ -47,7 +48,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - [279041](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279041) - Commercial Transfer Agreement
-  
+- [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
+- [279038](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279038) - Update UI on subleases task
+
 ---
 
 ## [1.46.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-21.1562) - 2026-05-21
