@@ -18,29 +18,33 @@ describe("Conversion tasks - Confirm all conditions have been met", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
+
     it("should expand and collapse guidance details", () => {
         taskPage
             .clickDropdown("How to check all conditions have been met")
-            .hasDropdownContent("legal documents are cleared")
-            .clickDropdown("What to do if conditions are not met")
-            .hasDropdownContent(
-                "You must agree a new conversion date with all stakeholders, then change the conversion date for this project.",
-            );
+            .hasDropdownContent("legal documents are cleared");
+    });
+
+    it("for initial status should have No selected", () => {
+       taskPage.hasCheckboxLabel("No").isTicked();
+       taskPage.hasCheckboxLabel("Yes").isUnticked();
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Confirm' checkbox and save");
-        taskPage.hasCheckboxLabel("Confirm all conditions are met").tick().saveAndReturn();
+        Logger.log("Select the 'Yes' option and save");
+        taskPage.hasCheckboxLabel("Yes").tick().saveAndReturn();
+
         taskListPage
             .hasTaskStatusCompleted("Confirm all conditions have been met")
             .selectTask("Confirm all conditions have been met");
 
-        Logger.log("Unselect the 'Confirm' checkbox and save");
-        taskPage.hasCheckboxLabel("Confirm all conditions are met").isTicked().untick().saveAndReturn();
+        Logger.log("Select the 'No' option and save");
+        taskPage.hasCheckboxLabel("No").isUnticked().tick().saveAndReturn();
         taskListPage
             .hasTaskStatusNotStarted("Confirm all conditions have been met")
             .selectTask("Confirm all conditions have been met");
-        taskPage.hasCheckboxLabel("Confirm all conditions are met").isUnticked();
+        taskPage.hasCheckboxLabel("Yes").isUnticked();
+        taskPage.hasCheckboxLabel("No").isTicked();
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
