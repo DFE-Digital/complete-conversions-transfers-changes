@@ -61,6 +61,9 @@
                 <govuk-checkboxes-fieldset-legend class="govuk-fieldset__legend--m">
                     Check and save declaration of expenditure certificate
                 </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <p class="govuk-!-margin-top-0">Select all that may apply</p>
+                </govuk-checkboxes-hint>
                 <govuk-checkboxes-item data-cy="check-certificate" id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
                     <b>Check the declaration of expenditure certificate is correct</b>
                     <govuk-checkboxes-item-hint>
