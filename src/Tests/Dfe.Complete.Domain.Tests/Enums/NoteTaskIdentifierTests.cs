@@ -38,7 +38,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease, "one_hundred_and_twenty_five_year_lease", "125 year lease")]
         [InlineData(NoteTaskIdentifier.Subleases, "subleases", "Subleases")]
         [InlineData(NoteTaskIdentifier.TenancyAtWill, "tenancy_at_will", "Tenancy at will")]
-        [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, "school_completed", "Confirm the school has completed all actions")]
+        [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, "school_completed", "Confirm school has completed all actions")]
         [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening, "share_information", "Share the information about opening")]
         [InlineData(NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails, "confirm_outgoing_trust_ceo_contact", "Confirm the outgoing trust CEO's details")]
         [InlineData(NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy, "request_new_urn_and_record", "Request a new URN and record for the academy")]

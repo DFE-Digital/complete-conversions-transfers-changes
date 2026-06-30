@@ -11,7 +11,11 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>Contact the school or trust to check the school have completed all their tasks. Save their responses in the school's SharePoint folder.</p>
+        <p>Contact the main contact to check the school has completed all its tasks. The template email is in the 
+            <external-link href="@_configuration["ExternalLinks:ApprovalToOpeningGuidance"]" class="govuk-link">
+                Academy Conversion Guidance
+            </external-link>.
+        </p>
     </div>
 }
 @section TaskSection {
@@ -22,28 +26,21 @@
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
+                    <p>Confirm school has completed all actions</p>
+                    <div class="govuk-hint">
+                        <p>Select all that apply.</p>
+                    </div>
                 </govuk-checkboxes-fieldset-legend>
     
 
                 <govuk-checkboxes-item id="@(nameof(Model.Emailed))" data-cy="@(nameof(Model.Emailed))" asp-for="@Model.Emailed" value="true" name="@(nameof(Model.Emailed))" checked="@Model.Emailed">
-                    <b>Email the main contact for the conversion</b>
-                    <govuk-checkboxes-hint>
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">How to structure your email</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>You should ask them to check and confirm they've completed all tasks.</p>
-                                <p>You can <external-link data-cy="main-contact-for-conversion-email-template-link" href="@_configuration["ExternalLinks:MainContactForConversionEmailTemplate"]" class="govuk-link">use the email template</external-link> in 'section five: last tasks before opening' in your desk instructions to help you structure your email.</p>
-                            </govuk-details-text>
-                        </govuk-details>
-                    </govuk-checkboxes-hint>
+                    <b>Send the final email checklist to the main contact</b>
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Saved))" data-cy="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
-                    <b>Save the responses to the checklist in the school's SharePoint folder</b>
+                    <b>Save response in school’s Sharepoint folder</b>
                     <govuk-checkboxes-hint>
-
+                        
                         <govuk-details>
                             <govuk-details-summary>
                                 <span class="govuk-details__summary-text">What to do if the school has not completed the tasks</span>
@@ -54,9 +51,13 @@
                                 <ol class="govuk-list govuk-list--number">
                                     <li>inform the school of the outstanding tasks</li>
                                     <li>agree a new conversion date with all stakeholders</li>
-                                    <li>email the Academies Operational Practice Unit at <a href="mailto:@_configuration["Emails:AcademiesOperationalPracticeUnit"]" data-cy="academies-operational-practice-unit-email-link" class="govuk-link" target="_blank">@_configuration["Emails:AcademiesOperationalPracticeUnit"]</a> with the new date</li>
-                                    <li>change the date in the External stakeholder kick-off task</li>
-                                    <li>inform the regional delivery officer who started on this project</li>
+                                    <li>email the Academies Operational Practice Unit at 
+                                        <a href="mailto:@_configuration["Emails:AcademyDeliveryOperations"]" data-cy="academies-operational-practice-unit-email-link" class="govuk-link" target="_blank">
+                                            @_configuration["Emails:AcademiesOperationalPracticeUnit"]
+                                        </a> 
+                                        if project has slipped
+                                    </li>
+                                    <li>Update Complete with new conversion date</li>
                                 </ol>
                             </govuk-details-text>
                         </govuk-details>

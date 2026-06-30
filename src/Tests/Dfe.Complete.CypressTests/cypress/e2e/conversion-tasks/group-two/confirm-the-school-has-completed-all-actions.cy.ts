@@ -7,7 +7,7 @@ import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSet
 
 const taskPath = "school_completed";
 
-describe("Conversion tasks - Confirm the school has completed all actions", () => {
+describe("Conversion tasks - Confirm school has completed all actions", () => {
     let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
 
     before(() => {
@@ -38,8 +38,8 @@ describe("Conversion tasks - Confirm the school has completed all actions", () =
             .tick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Confirm the school has completed all actions")
-            .selectTask("Confirm the school has completed all actions");
+            .hasTaskStatusCompleted("Confirm school has completed all actions")
+            .selectTask("Confirm school has completed all actions");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
@@ -51,8 +51,8 @@ describe("Conversion tasks - Confirm the school has completed all actions", () =
             .untick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Confirm the school has completed all actions")
-            .selectTask("Confirm the school has completed all actions");
+            .hasTaskStatusNotStarted("Confirm school has completed all actions")
+            .selectTask("Confirm school has completed all actions");
         taskPage
             .hasCheckboxLabel("Email the main contact for the conversion")
             .isUnticked()
@@ -65,15 +65,15 @@ describe("Conversion tasks - Confirm the school has completed all actions", () =
 
         TaskHelperConversions.updateConfirmSchoolHasCompletedAllActions(setup.taskId, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Confirm the school has completed all actions");
+        taskListPage.hasTaskStatusNotStarted("Confirm school has completed all actions");
 
         TaskHelperConversions.updateConfirmSchoolHasCompletedAllActions(setup.taskId, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Confirm the school has completed all actions");
+        taskListPage.hasTaskStatusInProgress("Confirm school has completed all actions");
 
         TaskHelperConversions.updateConfirmSchoolHasCompletedAllActions(setup.taskId, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Confirm the school has completed all actions");
+        taskListPage.hasTaskStatusCompleted("Confirm school has completed all actions");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
