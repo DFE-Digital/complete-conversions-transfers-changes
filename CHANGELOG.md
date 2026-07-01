@@ -16,8 +16,6 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-## Unreleased
-
 ### Changed
 - [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
 - [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
@@ -31,6 +29,7 @@ Security in case of vulnerabilities.
 - [278436](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/278436) - Transfer modification order content changes
 - [279041](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279041) - Commercial Transfer Agreement
 - [279038](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279038) - Update UI on subleases task
+- [282907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282907) - Redact and send documents content changes
 
 ### Added
 - [282893](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282893) - updated checkboxes to be radio buttons and general content change

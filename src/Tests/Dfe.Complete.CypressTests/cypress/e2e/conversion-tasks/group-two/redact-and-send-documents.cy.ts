@@ -19,11 +19,14 @@ describe("Conversion tasks - Redact and send documents", () => {
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
+    it("shows the document actions heading and guidance link", () => {
         taskPage
             .hasCheckboxLabel("Redact all relevant documents")
-            .expandGuidance("Help redacting the documents")
-            .hasGuidance("You need to create a redacted version of each applicable document");
+            .hasCheckboxLabel("Save relevant documents in the school's SharePoint folder")
+            .hasCheckboxLabel("Send the redacted documents to the funding agreements mailbox to be published on GOV.UK")
+            .hasCheckboxLabel("Send the redacted and unredacted versions of documents to the solicitors");
+        cy.contains("Confirm document actions").should("be.visible");
+        cy.contains("a", "Approval to Opening guidance").should("have.attr", "href");
     });
 
     it("should submit the form and persist selections", () => {
