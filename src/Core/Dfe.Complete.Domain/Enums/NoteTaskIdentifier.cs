@@ -228,4 +228,8 @@ public enum NoteTaskIdentifier
     [Description("third_party_leases")]
     [DisplayDescription("Third party leases")]
     ThirdPartyLeases = 58,
+
+    [Description("confirm_school_bank_details")]
+    [DisplayDescription("Confirm the new bank account details for the school")]
+    ConfirmSchoolBankDetails = 59,
 }

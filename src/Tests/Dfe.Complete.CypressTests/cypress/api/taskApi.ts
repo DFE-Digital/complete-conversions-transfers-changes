@@ -127,7 +127,7 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     received?: boolean;
     cleared?: boolean;
     saved?: boolean;
-    sent?: boolean;
+    draftSaved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
 }
