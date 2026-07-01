@@ -7,6 +7,11 @@ import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSet
 
 const taskPath = "tenancy_at_will";
 
+const emailLabel = "Email the school to ask if all relevant parties have agreed and signed the tenancy at will";
+const receiveLabel =
+    "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will";
+const saveLabel = "Save a copy of the confirmation email in the school's SharePoint folder";
+
 describe("Conversion tasks - Tenancy at will", () => {
     let setup: ReturnType<typeof ConversionTasksGroupTwoSetup.getSetup>;
 
@@ -20,61 +25,95 @@ describe("Conversion tasks - Tenancy at will", () => {
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select all and save");
+        Logger.log("Answer 'Yes', tick all checkboxes and save");
+        cy.contains("label", "Yes").first().click();
         taskPage
-            .hasCheckboxLabel(
-                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
-            )
+            .hasCheckboxLabel("Received")
             .tick()
-            .hasCheckboxLabel(
-                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
-            )
+            .hasCheckboxLabel("Cleared")
             .tick()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .hasCheckboxLabel(emailLabel)
+            .tick()
+            .hasCheckboxLabel(receiveLabel)
+            .tick()
+            .hasCheckboxLabel(saveLabel)
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusCompleted("Tenancy at will").selectTask("Tenancy at will");
 
-        Logger.log("Unselect same checkboxes and save");
+        Logger.log("Confirm selections persist");
+        cy.contains("label", "Yes").first().siblings("input").should("be.checked");
         taskPage
-            .hasCheckboxLabel(
-                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
-            )
+            .hasCheckboxLabel("Received")
             .isTicked()
+            .hasCheckboxLabel("Cleared")
+            .isTicked()
+            .hasCheckboxLabel(emailLabel)
+            .isTicked()
+            .hasCheckboxLabel(receiveLabel)
+            .isTicked()
+            .hasCheckboxLabel(saveLabel)
+            .isTicked();
+
+        Logger.log("Untick checkboxes and save (radio stays 'Yes' => In progress)");
+        taskPage
+            .hasCheckboxLabel("Received")
             .untick()
-            .hasCheckboxLabel(
-                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
-            )
-            .isTicked()
+            .hasCheckboxLabel("Cleared")
             .untick()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
-            .isTicked()
+            .hasCheckboxLabel(emailLabel)
+            .untick()
+            .hasCheckboxLabel(receiveLabel)
+            .untick()
+            .hasCheckboxLabel(saveLabel)
             .untick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Tenancy at will").selectTask("Tenancy at will");
+        taskListPage.hasTaskStatusInProgress("Tenancy at will").selectTask("Tenancy at will");
         taskPage
-            .hasCheckboxLabel(
-                "Email the school to ask if all relevant parties have agreed and signed the tenancy at will",
-            )
+            .hasCheckboxLabel("Received")
             .isUnticked()
-            .hasCheckboxLabel(
-                "Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will",
-            )
+            .hasCheckboxLabel("Cleared")
             .isUnticked()
-            .hasCheckboxLabel("Save a copy of the confirmation email in the school's SharePoint folder")
+            .hasCheckboxLabel(emailLabel)
+            .isUnticked()
+            .hasCheckboxLabel(receiveLabel)
+            .isUnticked()
+            .hasCheckboxLabel(saveLabel)
             .isUnticked();
     });
 
-    it("should show task status based on the checkboxes that are checked", () => {
+    it("should not show the 'Not applicable' checkbox", () => {
+        taskPage.noNotApplicableOptionExists();
+    });
+
+    it("should mark the task complete when both questions are answered 'No'", () => {
+        Logger.log("Answer 'No' to both radio questions and save");
+        // cy.contains() yields only the first match, so scope each click to its own
+        // radio group by the question legend rather than indexing a global 'No' match.
+        cy.contains("legend", "Is a tenancy at will being used?")
+            .closest("fieldset")
+            .within(() => cy.contains("label", "No").click());
+        cy.contains("legend", "Is a licence to occupy being used?")
+            .closest("fieldset")
+            .within(() => cy.contains("label", "No").click());
+        taskPage.saveAndReturn();
+        taskListPage.hasTaskStatusCompleted("Tenancy at will").selectTask("Tenancy at will");
+
+        Logger.log("Confirm both 'No' answers persist");
+        cy.contains("legend", "Is a tenancy at will being used?")
+            .closest("fieldset")
+            .within(() => cy.contains("label", "No").siblings("input").should("be.checked"));
+        cy.contains("legend", "Is a licence to occupy being used?")
+            .closest("fieldset")
+            .within(() => cy.contains("label", "No").siblings("input").should("be.checked"));
+    });
+
+    it("should show task status based on the fields that are selected", () => {
         cy.visit(`projects/${setup.projectId}/tasks`);
 
         TaskHelperConversions.updateTenancyAtWill(setup.taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Tenancy at will");
-
-        TaskHelperConversions.updateTenancyAtWill(setup.taskId, "notApplicable");
-        cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Tenancy at will");
 
         TaskHelperConversions.updateTenancyAtWill(setup.taskId, "inProgress");
         cy.reload();

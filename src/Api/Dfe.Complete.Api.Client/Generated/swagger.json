@@ -9093,6 +9093,22 @@
             "type": "boolean",
             "nullable": true
           },
+          "tenancyAtWillBeingUsed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillLicenceToOccupyBeingUsed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
           "shareInformationEmail": {
             "type": "boolean",
             "nullable": true
@@ -10556,7 +10572,19 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "notApplicable": {
+          "beingUsed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "licenceToOccupyBeingUsed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
             "type": "boolean",
             "nullable": true
           },

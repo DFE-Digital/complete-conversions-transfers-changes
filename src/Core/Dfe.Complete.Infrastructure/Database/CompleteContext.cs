@@ -642,6 +642,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.TenancyAtWillNotApplicable).HasColumnName("tenancy_at_will_not_applicable");
         projectConfiguration.Property(e => e.TenancyAtWillReceiveSigned).HasColumnName("tenancy_at_will_receive_signed");
         projectConfiguration.Property(e => e.TenancyAtWillSaveSigned).HasColumnName("tenancy_at_will_save_signed");
+        projectConfiguration.Property(e => e.TenancyAtWillBeingUsed).HasColumnName("tenancy_at_will_being_used");
+        projectConfiguration.Property(e => e.TenancyAtWillLicenceToOccupyBeingUsed).HasColumnName("tenancy_at_will_licence_to_occupy_being_used");
+        projectConfiguration.Property(e => e.TenancyAtWillReceived).HasColumnName("tenancy_at_will_received");
+        projectConfiguration.Property(e => e.TenancyAtWillCleared).HasColumnName("tenancy_at_will_cleared");
         projectConfiguration.Property(e => e.TrustModificationOrderCleared).HasColumnName("trust_modification_order_cleared");
         projectConfiguration.Property(e => e.TrustModificationOrderNotApplicable).HasColumnName("trust_modification_order_not_applicable");
         projectConfiguration.Property(e => e.TrustModificationOrderReceived).HasColumnName("trust_modification_order_received");

@@ -359,32 +359,34 @@ class TaskHelperConversions extends TaskHelper {
     updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            notApplicable: false,
+            beingUsed: undefined,
+            licenceToOccupyBeingUsed: undefined,
+            received: false,
+            cleared: false,
             emailSigned: false,
             saveSigned: false,
             receiveSigned: false,
         };
         switch (status) {
-            case "notApplicable":
-                return taskApiConversions.updateTenancyAtWillTask({
-                    ...defaultBody,
-                    notApplicable: true,
-                });
-
             case "inProgress":
                 return taskApiConversions.updateTenancyAtWillTask({
                     ...defaultBody,
+                    beingUsed: true,
                     emailSigned: true,
                 });
 
             case "completed":
                 return taskApiConversions.updateTenancyAtWillTask({
-                    taskDataId: { value: taskDataId },
-                    notApplicable: false,
+                    ...defaultBody,
+                    beingUsed: true,
+                    received: true,
+                    cleared: true,
                     emailSigned: true,
-                    saveSigned: true,
                     receiveSigned: true,
+                    saveSigned: true,
                 });
+            default:
+                return taskApiConversions.updateTenancyAtWillTask(defaultBody);
         }
     }
 

@@ -17,6 +17,11 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Changed
+- [279040](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279040) - Tenancy at Will additional fields
+
+---
+
+### Changed
 - [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
 
 ---
