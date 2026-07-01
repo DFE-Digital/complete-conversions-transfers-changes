@@ -28,6 +28,7 @@ Security in case of vulnerabilities.
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-05-21.1562...main) for everything awaiting release
 
 ### Changed
+- [282882](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/282882) - Updated School Actions task confirmation content and tests
 - [277812](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277812) - Update wording on supplemental funding agreement conversion tasks
 - [277849](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277849) - Update wording on articles of association conversion tasks
 - [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
@@ -36,6 +37,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - [282872](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282872) - Add conversion task "Confirm the new bank account details for the school" in Get ready for opening, with status logic, API endpoint, migration, and test coverage
+- [282893](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282893) - updated checkboxes to be radio buttons and general content change
+
+### Added
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
 - [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
 - [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
