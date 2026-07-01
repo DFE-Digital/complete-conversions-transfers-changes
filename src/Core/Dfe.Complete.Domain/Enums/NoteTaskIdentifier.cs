@@ -54,7 +54,7 @@ public enum NoteTaskIdentifier
     ConfirmDateAcademyTransferred = 13,
 
     [Description("conditions_met")]
-    [DisplayDescription("Confirm all conditions have been met")]
+    [DisplayDescription("Confirm all conditions have been met (according to the set deadline)")]
     ConfirmAllConditionsMet = 14,
 
     [Description("receive_grant_payment_certificate")]
