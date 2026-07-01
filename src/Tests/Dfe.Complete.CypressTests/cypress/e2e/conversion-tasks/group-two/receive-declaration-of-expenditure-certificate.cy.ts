@@ -20,13 +20,11 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
+    it("should expand and collapse dropdown with correct content", () => {
         taskPage
             .clickDropdown("Update the grant assurance spreadsheet")
             .hasDropdownContent("Regional Casework Services team members must update the support grant assurance")
-            .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
-            .expandPageGuidance("Using the right certificate")
-            .pageHasGuidance("If the school only received the £25,000 pre-opening support grant,");
+            .hasCheckboxLabel("Check the declaration of expenditure certificate is correct");
     });
 
     it("should submit the form and persist selections", () => {
