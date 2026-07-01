@@ -138,7 +138,7 @@ public enum NoteTaskIdentifier
     TenancyAtWill = 34,
 
     [Description("school_completed")]
-    [DisplayDescription("Confirm the school has completed all actions")]
+    [DisplayDescription("Confirm school has completed all actions")]
     ConfirmSchoolHasCompletedAllActions = 35,
 
     [Description("share_information")]
