@@ -31,7 +31,7 @@ services:
 
    complete.redis:
     container_name: complete.redis
-    image: redis:latest@sha256:0c341492924cad6f5483f9133e43bd6c51ecdecbcadfac5b51657393b6a7936c
+    image: redis:latest@sha256:2838d5524559494f6f1cd66e97e76b200d64a633a8614200620755ed395daf32
     restart: always
     ports:
      - "6379:6379"
