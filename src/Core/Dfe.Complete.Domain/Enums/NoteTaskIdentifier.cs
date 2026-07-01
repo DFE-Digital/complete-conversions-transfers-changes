@@ -134,7 +134,7 @@ public enum NoteTaskIdentifier
     Subleases = 33,
 
     [Description("tenancy_at_will")]
-    [DisplayDescription("Tenancy at will")]
+    [DisplayDescription("Tenancy at will or license to occupy")]
     TenancyAtWill = 34,
 
     [Description("school_completed")]

@@ -32,9 +32,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateTenancyAtWillTaskCommand
+           var command = new UpdateTenancyAtWillTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
+                BeingUsed = true,
+                LicenceToOccupyBeingUsed = false,
+                Received = true,
+                Cleared = true,
                 EmailSigned = false,
                 ReceiveSigned = true,
                 SaveSigned = false,
@@ -47,7 +51,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.TenancyAtWillNotApplicable);
+            Assert.False(existingTaskData.TenancyAtWillNotApplicable);
+            Assert.True(existingTaskData.TenancyAtWillBeingUsed);
+            Assert.False(existingTaskData.TenancyAtWillLicenceToOccupyBeingUsed);
+            Assert.True(existingTaskData.TenancyAtWillReceived);
+            Assert.True(existingTaskData.TenancyAtWillCleared);
             Assert.False(existingTaskData.TenancyAtWillEmailSigned);
             Assert.True(existingTaskData.TenancyAtWillReceiveSigned);
             Assert.False(existingTaskData.TenancyAtWillSaveSigned);
@@ -56,7 +64,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateTenancyAtWillTaskAsync_ShouldNotUpdate_IfNotApplicableIsTrue(
+        public async Task UpdateTenancyAtWillTaskAsync_ShouldClearCheckboxes_WhenBothRadiosNo(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -73,7 +81,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var command = new UpdateTenancyAtWillTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                NotApplicable = true,
+                BeingUsed = false,
+                LicenceToOccupyBeingUsed = false,
+                Received = true,
+                Cleared = true,
                 EmailSigned = true,
                 ReceiveSigned = true,
                 SaveSigned = true,
@@ -87,6 +98,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.TenancyAtWillNotApplicable);
+            Assert.False(existingTaskData.TenancyAtWillBeingUsed);
+            Assert.False(existingTaskData.TenancyAtWillLicenceToOccupyBeingUsed);
+            Assert.Null(existingTaskData.TenancyAtWillReceived);
+            Assert.Null(existingTaskData.TenancyAtWillCleared);
             Assert.Null(existingTaskData.TenancyAtWillEmailSigned);
             Assert.Null(existingTaskData.TenancyAtWillReceiveSigned);
             Assert.Null(existingTaskData.TenancyAtWillSaveSigned);

@@ -193,7 +193,15 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? TenancyAtWillReceiveSigned { get; set; }
 
         public bool? TenancyAtWillSaveSigned { get; set; }
+        
+        public bool? TenancyAtWillBeingUsed { get; set; }
 
+        public bool? TenancyAtWillLicenceToOccupyBeingUsed { get; set; }
+
+        public bool? TenancyAtWillReceived { get; set; }
+
+        public bool? TenancyAtWillCleared { get; set; }
+        
         public bool? ShareInformationEmail { get; set; }
 
         public bool? RedactAndSendSendSolicitors { get; set; }

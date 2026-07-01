@@ -765,22 +765,29 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ConfirmAllConditionsHaveBeenMet);
         }
         [Theory]
-        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        // beingUsed, licenceUsed, received, cleared, emailSigned, receiveSigned, saveSigned, expected
+        [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, null, null, null, null, null, TaskListStatus.Completed)]
+        [InlineData(true, false, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, null, null, null, null, null, null, TaskListStatus.InProgress)]
+        [InlineData(false, null, null, null, null, null, null, TaskListStatus.InProgress)]
         public void TenancyAtWillTaskStatus_ShouldReturn_CorrectStatus(
-            bool? emailSigned, bool? receiveSigned, bool? saveSigned, bool? notApplicable,
+            bool? beingUsed, bool? licenceUsed, bool? received, bool? cleared,
+            bool? emailSigned, bool? receiveSigned, bool? saveSigned,
             TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
+                TenancyAtWillBeingUsed = beingUsed,
+                TenancyAtWillLicenceToOccupyBeingUsed = licenceUsed,
+                TenancyAtWillReceived = received,
+                TenancyAtWillCleared = cleared,
                 TenancyAtWillEmailSigned = emailSigned,
                 TenancyAtWillReceiveSigned = receiveSigned,
-                TenancyAtWillSaveSigned = saveSigned,
-                TenancyAtWillNotApplicable = notApplicable
+                TenancyAtWillSaveSigned = saveSigned
             };
 
             var project = new ProjectDto();

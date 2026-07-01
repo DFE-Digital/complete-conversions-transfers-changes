@@ -257,24 +257,40 @@ namespace Dfe.Complete.Models
                 taskData.CommercialTransferAgreementQuestionsReceived == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
-
-        private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataDto taskData)
+        
+       private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.TenancyAtWillEmailSigned.HasValue || taskData.TenancyAtWillEmailSigned == false) &&
-               (!taskData.TenancyAtWillReceiveSigned.HasValue || taskData.TenancyAtWillReceiveSigned == false) &&
-               (!taskData.TenancyAtWillSaveSigned.HasValue || taskData.TenancyAtWillSaveSigned == false) &&
-               (!taskData.TenancyAtWillNotApplicable.HasValue || taskData.TenancyAtWillNotApplicable == false))
+            var anyCheckboxSet =
+                taskData.TenancyAtWillReceived == true ||
+                taskData.TenancyAtWillCleared == true ||
+                taskData.TenancyAtWillEmailSigned == true ||
+                taskData.TenancyAtWillReceiveSigned == true ||
+                taskData.TenancyAtWillSaveSigned == true;
+
+            if (!taskData.TenancyAtWillBeingUsed.HasValue &&
+                !taskData.TenancyAtWillLicenceToOccupyBeingUsed.HasValue &&
+                !anyCheckboxSet)
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskData.TenancyAtWillNotApplicable == true)
+
+            if (taskData.TenancyAtWillBeingUsed == false &&
+                taskData.TenancyAtWillLicenceToOccupyBeingUsed == false)
             {
-                return TaskListStatus.NotApplicable;
+                return TaskListStatus.Completed;
             }
-            return (taskData.TenancyAtWillEmailSigned == true &&
-               taskData.TenancyAtWillReceiveSigned == true &&
-               taskData.TenancyAtWillSaveSigned == true)
-            ? TaskListStatus.Completed : TaskListStatus.InProgress;
+
+            if ((taskData.TenancyAtWillBeingUsed == true || taskData.TenancyAtWillLicenceToOccupyBeingUsed == true) &&
+                taskData.TenancyAtWillReceived == true &&
+                taskData.TenancyAtWillCleared == true &&
+                taskData.TenancyAtWillEmailSigned == true &&
+                taskData.TenancyAtWillReceiveSigned == true &&
+                taskData.TenancyAtWillSaveSigned == true)
+            {
+                return TaskListStatus.Completed;
+            }
+
+            return TaskListStatus.InProgress;
         }
 
         private static TaskListStatus TubleasesTaskStatus(ConversionTaskDataDto taskData)

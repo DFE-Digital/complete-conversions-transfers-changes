@@ -6183,6 +6183,18 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("tenancyAtWillSaveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TenancyAtWillSaveSigned { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillLicenceToOccupyBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillLicenceToOccupyBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillCleared { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("shareInformationEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ShareInformationEmail { get; set; } = default!;
 
@@ -7884,8 +7896,17 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? NotApplicable { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("beingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? BeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("licenceToOccupyBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LicenceToOccupyBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("emailSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? EmailSigned { get; set; } = default!;
