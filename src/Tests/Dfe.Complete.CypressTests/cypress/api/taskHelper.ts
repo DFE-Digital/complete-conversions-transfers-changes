@@ -395,7 +395,7 @@ export class TaskHelper {
                     cleared: true,
                     signed: true,
                     saved: true,
-                    draftSaved: true,
+                    sent: true,
                     signedSecretaryState: true,
                 });
 
