@@ -7,8 +7,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
     {
         [Theory]
         [InlineData(NoteTaskIdentifier.Handover, "handover", "Handover with regional delivery officer")]
-        [InlineData(NoteTaskIdentifier.LandQuestionnaire, "land_questionnaire", "Land questionnaire")]
-        [InlineData(NoteTaskIdentifier.LandRegistryTitlePlans, "land_registry", "Land registry title plans")]
+        [InlineData(NoteTaskIdentifier.LandQuestionnaire, "land_questionnaire", "Land questionnaire(s) and land registry plans")]
         [InlineData(NoteTaskIdentifier.StakeholderKickoff, "stakeholder_kick_off", "External stakeholder kick-off")]
         [InlineData(NoteTaskIdentifier.SupplementalFundingAgreement, "supplemental_funding_agreement", "Supplemental funding agreement")]
         [InlineData(NoteTaskIdentifier.ArticleOfAssociation, "articles_of_association", "Articles of association")]
@@ -18,9 +17,9 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, "proposed_capacity_of_the_academy", "Confirm the proposed capacity of the academy")]
         [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "conditions_met", "Confirm this transfer has authority to proceed")]
         [InlineData(NoteTaskIdentifier.DeclarationOfExpenditureCertificate, "declaration_of_expenditure_certificate", "Receive declaration of expenditure certificate")]
-        [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met")]
+        [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met (according to the set deadline)")]
         [InlineData(NoteTaskIdentifier.ReceiveGrantPaymentCertificate, "receive_grant_payment_certificate", "Receive declaration of expenditure certificate")]
-        [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate, "confirm_date_academy_opened", "Confirm the academy open date")]
+        [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate, "confirm_date_academy_opened", "Confirm date academy opened")]
         [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]
         [InlineData(NoteTaskIdentifier.CommercialTransferAgreement, "commercial_transfer_agreement", "Commercial transfer agreement")]
         [InlineData(NoteTaskIdentifier.MainContact, "main_contact", "Confirm the main contact")]
@@ -39,7 +38,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease, "one_hundred_and_twenty_five_year_lease", "125 year lease")]
         [InlineData(NoteTaskIdentifier.Subleases, "subleases", "Subleases")]
         [InlineData(NoteTaskIdentifier.TenancyAtWill, "tenancy_at_will", "Tenancy at will")]
-        [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, "school_completed", "Confirm the school has completed all actions")]
+        [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, "school_completed", "Confirm school has completed all actions")]
         [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening, "share_information", "Share the information about opening")]
         [InlineData(NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails, "confirm_outgoing_trust_ceo_contact", "Confirm the outgoing trust CEO's details")]
         [InlineData(NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy, "request_new_urn_and_record", "Request a new URN and record for the academy")]
@@ -51,6 +50,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions, "confirm_incoming_trust_has_completed_all_actions", "Confirm the incoming trust has completed all actions")]
         [InlineData(NoteTaskIdentifier.AcademyDetails, "academy_details", "Confirm the academy name")]
         [InlineData(NoteTaskIdentifier.RedactAndSend, "redact_and_send", "Redact and send documents")]
+        [InlineData(NoteTaskIdentifier.PrivateFinanceInitiative, "private_finance_initiative", "Private finance initiative")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act

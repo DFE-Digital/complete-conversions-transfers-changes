@@ -35,10 +35,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var command = new UpdateLandQuestionnaireTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                Received = true,
-                Cleared = true,
-                Signed = true,
-                Saved = true,
+                LandQuestionnaireReceived = true,
+                LandQuestionnaireCleared = true,
+                LandQuestionnaireSigned = true,
+                LandQuestionnaireSaved = true,
+                LandRegistryTitlePlansReceived = true,
+                LandRegistryTitlePlansCleared = true,
+                LandRegistryTitlePlansSaved = true,
             };
 
             // Act
@@ -52,6 +55,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.LandQuestionnaireCleared);
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.True(existingTaskData.LandQuestionnaireSaved);
+            Assert.True(existingTaskData.LandRegistryReceived);
+            Assert.True(existingTaskData.LandRegistryCleared);
+            Assert.True(existingTaskData.LandRegistrySaved);
         }
     }
 }

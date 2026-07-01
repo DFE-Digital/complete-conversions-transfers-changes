@@ -65,7 +65,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? SupplementalFundingAgreementSaved { get; set; }
 
+    // 277812 - field preserved for historical data but no longer used in the application
     public bool? SupplementalFundingAgreementSent { get; set; }
+
+    public bool? SupplementalFundingAgreementDraftSaved { get; set; }
 
     public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
@@ -73,13 +76,13 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? ChurchSupplementalAgreementCleared { get; set; }
 
-    public bool? ChurchSupplementalAgreementSigned { get; set; }
+    public bool? ChurchSupplementalAgreementSignedTrust { get; set; }
 
     public bool? ChurchSupplementalAgreementSignedDiocese { get; set; }
 
-    public bool? ChurchSupplementalAgreementSaved { get; set; }
+    public bool? ChurchSupplementalAgreementDraftSaved { get; set; }
 
-    public bool? ChurchSupplementalAgreementSent { get; set; }
+    public bool? ChurchSupplementalAgreementFinalSaved { get; set; }
 
     public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; }
 
@@ -108,9 +111,11 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? DeedOfVariationCleared { get; set; }
 
     public bool? DeedOfVariationSigned { get; set; }
+    public bool? DeedOfVariationDraftSaved { get; set; }
 
     public bool? DeedOfVariationSaved { get; set; }
 
+    [Obsolete("278434 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? DeedOfVariationSent { get; set; }
 
     public bool? DeedOfVariationSignedSecretaryState { get; set; }
@@ -122,6 +127,24 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? TrustModificationOrderCleared { get; set; }
 
     public bool? TrustModificationOrderSaved { get; set; }
+
+    public bool? PrivateFinanceInitiativeNotApplicable { get; set; }
+
+    public bool? PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted { get; set; }
+
+    public bool? PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted { get; set; }
+
+    public bool? PrivateFinanceInitiativeReceived { get; set; }
+
+    public bool? PrivateFinanceInitiativeDocumentsSentToSOPUForClearance { get; set; }
+
+    public bool? PrivateFinanceInitiativeCleared { get; set; }
+
+    public bool? PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder { get; set; }
+
+    public bool? PrivateFinanceInitiativeSignedByAllStakeholders { get; set; }
+
+    public bool? PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder { get; set; }
 
     public bool? DirectionToTransferReceived { get; set; }
 
@@ -154,6 +177,14 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
 
     public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }
+
+    public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; }
+
+    public bool? ThirdPartyLeasesEmail { get; set; }
+
+    public bool? ThirdPartyLeasesReceive { get; set; }
+
+    public bool? ThirdPartyLeasesSave { get; set; }
 
     public bool? SubleasesReceived { get; set; }
 
@@ -189,7 +220,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? MasterFundingAgreementNotApplicable { get; set; }
 
+    [Obsolete("279037 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
+
+    public bool? ThirdPartyLeasesNotApplicable { get; set; }
 
     public bool? SubleasesNotApplicable { get; set; }
 
@@ -247,6 +281,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public string? RiskProtectionArrangementReason { get; set; }
 
+    [Obsolete("277849 - This property is no longer in use but is preserved for historical reasons.")]
     public bool? ArticlesOfAssociationSent { get; set; }
 
     public bool? CommercialTransferAgreementAgreed { get; set; }
@@ -261,9 +296,9 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
     public bool? ConfirmDBSChecks { get; set; }
-    
+
     public NurseryArrangementOption? NurseryArrangement { get; set; }
-    
+
     public bool? StatutoryConsultationNotApplicable { get; set; }
 
     public bool? StatutoryConsultationComplete { get; set; }
@@ -273,6 +308,8 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? PostDecisionActionsAcademyOrderUploaded { get; set; }
 
     public bool? PostDecisionActionsLaProformaUploaded { get; set; }
+
+    public bool? CommercialTransferAgreementUnamended { get; set; }
 
     private ConversionTasksData() { }
 

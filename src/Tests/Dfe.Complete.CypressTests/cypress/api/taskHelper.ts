@@ -11,7 +11,6 @@ export class TaskHelper {
             notApplicable: false,
             cleared: false,
             received: false,
-            sent: false,
             signed: false,
             saved: false,
         };
@@ -36,7 +35,6 @@ export class TaskHelper {
                     notApplicable: false,
                     cleared: true,
                     received: true,
-                    sent: true,
                     signed: true,
                     saved: true,
                 });
@@ -55,6 +53,7 @@ export class TaskHelper {
             questionsReceived: false,
             questionsChecked: false,
             saved: false,
+            unamended: false,
         };
 
         switch (status) {
@@ -73,6 +72,7 @@ export class TaskHelper {
                     questionsReceived: true,
                     questionsChecked: true,
                     saved: true,
+                    unamended: true,
                 });
 
             default:
@@ -375,9 +375,9 @@ export class TaskHelper {
             projectType: projectType,
             received: false,
             cleared: false,
-            sent: false,
             signed: false,
             saved: false,
+            draftSaved: false,
             signedSecretaryState: false,
         };
         switch (status) {
@@ -393,9 +393,9 @@ export class TaskHelper {
                     projectType: projectType,
                     received: true,
                     cleared: true,
-                    sent: true,
                     signed: true,
                     saved: true,
+                    sent: true,
                     signedSecretaryState: true,
                 });
 

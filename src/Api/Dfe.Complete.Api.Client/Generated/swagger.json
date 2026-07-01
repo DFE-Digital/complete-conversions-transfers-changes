@@ -3147,6 +3147,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/PrivateFinanceInitiative": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the private finance initiative task for conversion project.",
+        "operationId": "TasksData_UpdatePrivateFinanceInitiativeTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePrivateFinanceInitiativeTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Private finance initiative task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ChurchSupplementalAgreement": {
       "patch": {
         "tags": [
@@ -3251,7 +3284,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm conversion project's land questionnaire task updated successfully.",
+        "summary": "Confirm conversion project's land questionnaire and land registry plans task updated successfully.",
         "operationId": "TasksData_UpdateLandQuestionnaireTask",
         "requestBody": {
           "x-name": "request",
@@ -3268,40 +3301,7 @@
         },
         "responses": {
           "204": {
-            "description": "Confirm conversion project's land questionnaire task updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
-          }
-        }
-      }
-    },
-    "/v1/TasksData/TaskData/LandRegistryTitlePlans": {
-      "patch": {
-        "tags": [
-          "TasksData"
-        ],
-        "summary": "Updaing the land registry title plans task data for transfer project.",
-        "operationId": "TasksData_UpdateLandRegistryTitlePlansTask",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateLandRegistryTitlePlansTaskCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "The land registry title plans task updated successfully."
+            "description": "Confirm conversion project's land questionnaire and land registry plans task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -3716,7 +3716,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "summary": "Updating the chair of governors' task data for conversion project.",
         "operationId": "TasksData_UpdateChairOfGovernorsTask",
         "requestBody": {
           "x-name": "request",
@@ -3733,7 +3733,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the chair of governors’ task successfully."
+            "description": "Updated the chair of governors' task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -4028,6 +4028,39 @@
         "responses": {
           "204": {
             "description": "Updated the subleases task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ThirdPartyLeases": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the third party leases task data for conversion project.",
+        "operationId": "TasksData_UpdateThirdPartyLeasesTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateThirdPartyLeasesTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the third party leases task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -7157,7 +7190,6 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -7209,12 +7241,13 @@
           "PostDecisionActions",
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
-          "ConfirmDBSChecks"
+          "ConfirmDBSChecks",
+          "PrivateFinanceInitiative",
+          "ThirdPartyLeases"
         ],
         "x-enum-descriptions": [
           "handover",
           "land_questionnaire",
-          "land_registry",
           "stakeholder_kick_off",
           "supplemental_funding_agreement",
           "articles_of_association",
@@ -7266,12 +7299,13 @@
           "post_decision_actions",
           "tupe_consultation",
           "la_confirms_payroll_deadline",
-          "confirm_dbs_checks"
+          "confirm_dbs_checks",
+          "private_finance_initiative",
+          "third_party_leases"
         ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -7323,7 +7357,9 @@
           "PostDecisionActions",
           "TupeConsultation",
           "LAConfirmsPayrollDeadline",
-          "ConfirmDBSChecks"
+          "ConfirmDBSChecks",
+          "PrivateFinanceInitiative",
+          "ThirdPartyLeases"
         ]
       },
       "CreateNoteCommand": {
@@ -8785,11 +8821,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "supplementalFundingAgreementSaved": {
+          "supplementalFundingAgreementDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "supplementalFundingAgreementSent": {
+          "supplementalFundingAgreementSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -8805,7 +8841,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSigned": {
+          "churchSupplementalAgreementSignedTrust": {
             "type": "boolean",
             "nullable": true
           },
@@ -8813,11 +8849,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSaved": {
+          "churchSupplementalAgreementDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "churchSupplementalAgreementSent": {
+          "churchSupplementalAgreementFinalSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -8881,7 +8917,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "deedOfVariationSent": {
+          "deedOfVariationDraftSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -8902,6 +8938,42 @@
             "nullable": true
           },
           "trustModificationOrderSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeMasterFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeDocumentsSentToSOPUForClearance": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeDraftSavedInTrustSharepointFolder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeSignedByAllStakeholders": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "privateFinanceInitiativeFinalVersionSavedInSharepointFolder": {
             "type": "boolean",
             "nullable": true
           },
@@ -8953,6 +9025,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "oneHundredAndTwentyFiveYearLeaseConfirmModel": {
+            "type": "boolean",
+            "nullable": true
+          },
           "tupeConsultationCompleted": {
             "type": "boolean",
             "nullable": true
@@ -8962,6 +9038,18 @@
             "nullable": true
           },
           "oneHundredAndTwentyFiveYearLeaseSaveLease": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesEmail": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesReceive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "thirdPartyLeasesSave": {
             "type": "boolean",
             "nullable": true
           },
@@ -9033,7 +9121,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
+          "thirdPartyLeasesNotApplicable": {
             "type": "boolean",
             "nullable": true
           },
@@ -9217,6 +9305,10 @@
             "nullable": true
           },
           "postDecisionActionsLaProformaUploaded": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementUnamended": {
             "type": "boolean",
             "nullable": true
           }
@@ -9423,6 +9515,10 @@
           "notApplicable": {
             "type": "boolean",
             "nullable": true
+          },
+          "draftSaved": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -9491,11 +9587,11 @@
             "type": "boolean",
             "nullable": true
           },
-          "sent": {
+          "saved": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
+          "draftSaved": {
             "type": "boolean",
             "nullable": true
           },
@@ -9702,6 +9798,51 @@
           }
         }
       },
+      "UpdatePrivateFinanceInitiativeTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementaryFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementPfiClausesInserted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "documentsSentToSOPUForClearance": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "draftSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByAllStakeHolders": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "finalVersionSavedInSharepointFolder": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateChurchSupplementalAgreementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9766,6 +9907,10 @@
               }
             ]
           },
+          "unamended": {
+            "type": "boolean",
+            "nullable": true
+          },
           "agreed": {
             "type": "boolean",
             "nullable": true
@@ -9807,40 +9952,31 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "received": {
+          "landQuestionnaireReceived": {
             "type": "boolean",
             "nullable": true
           },
-          "cleared": {
+          "landQuestionnaireCleared": {
             "type": "boolean",
             "nullable": true
           },
-          "signed": {
+          "landQuestionnaireSigned": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateLandRegistryTitlePlansTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "received": {
+          "landQuestionnaireSaved": {
             "type": "boolean",
             "nullable": true
           },
-          "cleared": {
+          "landRegistryTitlePlansReceived": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
+          "landRegistryTitlePlansCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landRegistryTitlePlansSaved": {
             "type": "boolean",
             "nullable": true
           }
@@ -10388,6 +10524,31 @@
           }
         }
       },
+      "UpdateThirdPartyLeasesTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "email": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "save": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateTenancyAtWillTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -10520,7 +10681,7 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "notApplicable": {
+          "confirm": {
             "type": "boolean",
             "nullable": true
           },

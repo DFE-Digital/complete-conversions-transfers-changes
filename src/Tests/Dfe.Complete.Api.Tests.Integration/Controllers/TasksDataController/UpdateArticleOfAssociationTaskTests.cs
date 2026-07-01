@@ -86,7 +86,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Received = true,
                 Cleared = true,
                 Saved = true,
-                Sent = true,
                 Signed = true,
             };
 
@@ -100,7 +99,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.ArticlesOfAssociationReceived);
             Assert.True(existingTaskData.ArticlesOfAssociationCleared);
             Assert.True(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.True(existingTaskData.ArticlesOfAssociationSent);
             Assert.True(existingTaskData.ArticlesOfAssociationSigned);
             Assert.Null(existingTaskData.ArticlesOfAssociationNotApplicable);
         }
@@ -131,7 +129,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Received = true,
                 Cleared = true,
                 Saved = true,
-                Sent = true,
                 Signed = true,
                 NotApplicable = true
             };
@@ -146,7 +143,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
             Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
             Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
             Assert.Null(existingTaskData.ArticlesOfAssociationSigned);
             Assert.True(existingTaskData.ArticlesOfAssociationNotApplicable);
         }

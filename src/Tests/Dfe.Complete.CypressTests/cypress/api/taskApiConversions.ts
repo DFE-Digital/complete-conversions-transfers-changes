@@ -55,22 +55,18 @@ interface UpdateDirectionToTransferTaskRequest {
 
 interface UpdateLandQuestionnaireTaskRequest {
     taskDataId: TaskDataId;
-    received?: boolean;
-    cleared?: boolean;
-    signed?: boolean;
-    saved?: boolean;
-}
-
-interface UpdateLandRegistryTitlePlansTaskRequest {
-    taskDataId: TaskDataId;
-    received?: boolean;
-    cleared?: boolean;
-    saved?: boolean;
+    landQuestionnaireReceived?: boolean;
+    landQuestionnaireCleared?: boolean;
+    landQuestionnaireSigned?: boolean;
+    landQuestionnaireSaved?: boolean;
+    landRegistryTitlePlansReceived?: boolean;
+    landRegistryTitlePlansCleared?: boolean;
+    landRegistryTitlePlansSaved?: boolean;
 }
 
 interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
     taskDataId: TaskDataId;
-    notApplicable?: boolean;
+    confirm?: boolean;
     email?: boolean;
     receive?: boolean;
     save?: boolean;
@@ -95,6 +91,14 @@ interface UpdateSubleasesTaskRequest {
     emailSigned?: boolean;
     saveSigned?: boolean;
     receiveSigned?: boolean;
+}
+
+interface UpdateThirdPartyLeasesTaskRequest {
+    taskDataId: { value: string };
+    notApplicable: boolean;
+    email: boolean;
+    receive: boolean;
+    save: boolean;
 }
 
 interface UpdateTenancyAtWillTaskRequest {
@@ -125,6 +129,19 @@ interface UpdateTrustModificationOrderTaskRequest {
     sent?: boolean;
     cleared?: boolean;
     saved?: boolean;
+}
+
+interface UpdatePrivateFinanceInitiativeTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean | null;
+    supplementaryFundingAgreementPfiClausesInserted?: boolean | null;
+    masterFundingAgreementPfiClausesInserted?: boolean | null;
+    received?: boolean | null;
+    documentsSentToSOPUForClearance?: boolean | null;
+    cleared?: boolean | null;
+    draftSaved?: boolean | null;
+    signedByAllStakeholders?: boolean | null;
+    finalVersionSavedInSharepointFolder?: boolean | null;
 }
 
 class TaskApiConversions extends TaskApi {
@@ -168,10 +185,6 @@ class TaskApiConversions extends TaskApi {
         return this.taskDataBaseRequest<void>("LandQuestionnaire", requestBody);
     }
 
-    public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
-        return this.taskDataBaseRequest<void>("LandRegistryTitlePlans", requestBody);
-    }
-
     public updateOneHundredAndTwentyFiveYearLeaseTask(requestBody: UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest) {
         return this.taskDataBaseRequest<void>("OneHundredAndTwentyFiveYearLease", requestBody);
     }
@@ -182,6 +195,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateSubleasesTask(requestBody: UpdateSubleasesTaskRequest) {
         return this.taskDataBaseRequest<void>("Subleases", requestBody);
+    }
+
+    public updateThirdPartyLeasesTask(requestBody: UpdateThirdPartyLeasesTaskRequest) {
+        return this.taskDataBaseRequest<void>("ThirdPartyLeases", requestBody);
     }
 
     public updateTenancyAtWillTask(requestBody: UpdateTenancyAtWillTaskRequest) {
@@ -198,6 +215,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateTupeConsultationTask(requestBody: UpdateTupeConsultationTaskRequest) {
         return this.taskDataBaseRequest<void>("TupeConsultation", requestBody);
+    }
+
+    public updatePrivateFinanceInitiativeTask(requestBody: UpdatePrivateFinanceInitiativeTaskRequest) {
+        return this.taskDataBaseRequest<void>("PrivateFinanceInitiative", requestBody);
     }
 }
 

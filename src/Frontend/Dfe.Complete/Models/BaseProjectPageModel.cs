@@ -40,7 +40,9 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger, IProj
     public ProjectTeam CurrentUserTeam { get; set; }
 
     public TransferTaskDataDto TransferTaskData { get; private set; } = null!;
+
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
+    
     public KeyContactDto? KeyContacts { get; private set; } = null!;
 
     public bool UserHasAdminAccess() =>

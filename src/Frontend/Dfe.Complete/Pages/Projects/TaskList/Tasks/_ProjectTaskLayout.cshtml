@@ -20,7 +20,9 @@
                 @Model.TaskIdentifier.ToDisplayDescription()
             </h1>
             @await RenderSectionAsync("TaskHeaderHintSection", required: false) 
-            @await RenderSectionAsync("TaskSection", required: true)
+            <task-section>
+                @await RenderSectionAsync("TaskSection", required: true)
+            </task-section>
         </div>
         <div class="govuk-grid-column-one-third">
             @await Html.PartialAsync("_ProjectTaskNotes", Model)

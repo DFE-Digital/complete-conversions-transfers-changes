@@ -10,12 +10,8 @@ public enum NoteTaskIdentifier
     Handover = 1,
 
     [Description("land_questionnaire")]
-    [DisplayDescription("Land questionnaire")]
+    [DisplayDescription("Land questionnaire(s) and land registry plans")]
     LandQuestionnaire = 2,
-
-    [Description("land_registry")]
-    [DisplayDescription("Land registry title plans")]
-    LandRegistryTitlePlans = 3,
 
     [Description("stakeholder_kick_off")]
     [DisplayDescription("External stakeholder kick-off")]
@@ -58,7 +54,7 @@ public enum NoteTaskIdentifier
     ConfirmDateAcademyTransferred = 13,
 
     [Description("conditions_met")]
-    [DisplayDescription("Confirm all conditions have been met")]
+    [DisplayDescription("Confirm all conditions have been met (according to the set deadline)")]
     ConfirmAllConditionsMet = 14,
 
     [Description("receive_grant_payment_certificate")]
@@ -66,7 +62,7 @@ public enum NoteTaskIdentifier
     ReceiveGrantPaymentCertificate = 15,
 
     [Description("confirm_date_academy_opened")]
-    [DisplayDescription("Confirm the academy open date")]
+    [DisplayDescription("Confirm date academy opened")]
     ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]
@@ -142,7 +138,7 @@ public enum NoteTaskIdentifier
     TenancyAtWill = 34,
 
     [Description("school_completed")]
-    [DisplayDescription("Confirm the school has completed all actions")]
+    [DisplayDescription("Confirm school has completed all actions")]
     ConfirmSchoolHasCompletedAllActions = 35,
 
     [Description("share_information")]
@@ -224,4 +220,12 @@ public enum NoteTaskIdentifier
     [Description("confirm_dbs_checks")]
     [DisplayDescription("DBS checks")]
     ConfirmDBSChecks = 56,
+
+    [Description("private_finance_initiative")]
+    [DisplayDescription("Private finance initiative")]
+    PrivateFinanceInitiative = 57,
+
+    [Description("third_party_leases")]
+    [DisplayDescription("Third party leases")]
+    ThirdPartyLeases = 58,
 }

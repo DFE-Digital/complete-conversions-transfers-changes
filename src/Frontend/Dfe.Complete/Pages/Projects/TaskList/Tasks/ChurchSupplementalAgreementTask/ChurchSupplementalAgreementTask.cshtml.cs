@@ -60,10 +60,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreement
                 NotApplicable = ConversionTaskData.ChurchSupplementalAgreementNotApplicable;
                 Received = ConversionTaskData.ChurchSupplementalAgreementReceived;
                 Cleared = ConversionTaskData.ChurchSupplementalAgreementCleared;
-                Signed = ConversionTaskData.ChurchSupplementalAgreementSigned;
+                Signed = ConversionTaskData.ChurchSupplementalAgreementSignedTrust;
                 SignedByDiocese = ConversionTaskData.ChurchSupplementalAgreementSignedDiocese;
-                Saved = ConversionTaskData.ChurchSupplementalAgreementSaved;
-                SentOrSaved = ConversionTaskData.ChurchSupplementalAgreementSent;
+                Saved = ConversionTaskData.ChurchSupplementalAgreementDraftSaved;
+                SentOrSaved = ConversionTaskData.ChurchSupplementalAgreementFinalSaved;
                 SignedBySecretaryState = ConversionTaskData.ChurchSupplementalAgreementSignedSecretaryState;
             }
             return Page();

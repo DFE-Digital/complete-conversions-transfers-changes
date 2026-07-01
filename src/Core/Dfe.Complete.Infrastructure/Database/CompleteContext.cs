@@ -494,9 +494,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementCleared).HasColumnName("church_supplemental_agreement_cleared");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementNotApplicable).HasColumnName("church_supplemental_agreement_not_applicable");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementReceived).HasColumnName("church_supplemental_agreement_received");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSaved).HasColumnName("church_supplemental_agreement_saved");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSent).HasColumnName("church_supplemental_agreement_sent");
-        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSigned).HasColumnName("church_supplemental_agreement_signed");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementDraftSaved).HasColumnName("church_supplemental_agreement_draft_saved");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementFinalSaved).HasColumnName("church_supplemental_agreement_final_saved");
+        projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedTrust).HasColumnName("church_supplemental_agreement_signed_trust");
+
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedDiocese).HasColumnName("church_supplemental_agreement_signed_diocese");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementSignedSecretaryState).HasColumnName("church_supplemental_agreement_signed_secretary_state");
         projectConfiguration.Property(e => e.CommercialTransferAgreementAgreed)
@@ -530,6 +531,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.DeedOfVariationCleared).HasColumnName("deed_of_variation_cleared");
         projectConfiguration.Property(e => e.DeedOfVariationNotApplicable).HasColumnName("deed_of_variation_not_applicable");
         projectConfiguration.Property(e => e.DeedOfVariationReceived).HasColumnName("deed_of_variation_received");
+        projectConfiguration.Property(e => e.DeedOfVariationDraftSaved).HasColumnName("deed_of_variation_draft_saved");
         projectConfiguration.Property(e => e.DeedOfVariationSaved).HasColumnName("deed_of_variation_saved");
         projectConfiguration.Property(e => e.DeedOfVariationSent).HasColumnName("deed_of_variation_sent");
         projectConfiguration.Property(e => e.DeedOfVariationSigned).HasColumnName("deed_of_variation_signed");
@@ -561,9 +563,16 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.MasterFundingAgreementSignedSecretaryState).HasColumnName("master_funding_agreement_signed_secretary_state");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseEmail).HasColumnName("one_hundred_and_twenty_five_year_lease_email");
         projectConfiguration.Property(e => e.TupeConsultationCompleted).HasColumnName("tupe_consultation_completed");
+        projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseConfirmModel).HasColumnName("one_hundred_and_twenty_five_year_lease_confirm_model");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseNotApplicable).HasColumnName("one_hundred_and_twenty_five_year_lease_not_applicable");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseReceive).HasColumnName("one_hundred_and_twenty_five_year_lease_receive");
         projectConfiguration.Property(e => e.OneHundredAndTwentyFiveYearLeaseSaveLease).HasColumnName("one_hundred_and_twenty_five_year_lease_save_lease");
+        
+        projectConfiguration.Property(e => e.ThirdPartyLeasesEmail).HasColumnName("third_party_leases_email");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesReceive).HasColumnName("third_party_leases_receive");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesSave).HasColumnName("third_party_leases_save");
+        projectConfiguration.Property(e => e.ThirdPartyLeasesNotApplicable).HasColumnName("third_party_leases_not_applicable");
+
         projectConfiguration.Property(e => e.PostDecisionActionsAcademyOrderUploaded).HasColumnName("post_decision_actions_academy_order_uploaded");
         projectConfiguration.Property(e => e.PostDecisionActionsApplicationUploaded).HasColumnName("post_decision_actions_application_uploaded");
         projectConfiguration.Property(e => e.PostDecisionActionsLaProformaUploaded).HasColumnName("post_decision_actions_la_proforma_uploaded");
@@ -625,6 +634,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.SupplementalFundingAgreementCleared).HasColumnName("supplemental_funding_agreement_cleared");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementReceived).HasColumnName("supplemental_funding_agreement_received");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSaved).HasColumnName("supplemental_funding_agreement_saved");
+        projectConfiguration.Property(e => e.SupplementalFundingAgreementDraftSaved).HasColumnName("supplemental_funding_agreement_draft_saved");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSent).HasColumnName("supplemental_funding_agreement_sent");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSigned).HasColumnName("supplemental_funding_agreement_signed");
         projectConfiguration.Property(e => e.SupplementalFundingAgreementSignedSecretaryState).HasColumnName("supplemental_funding_agreement_signed_secretary_state");
@@ -637,12 +647,22 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.TrustModificationOrderReceived).HasColumnName("trust_modification_order_received");
         projectConfiguration.Property(e => e.TrustModificationOrderSaved).HasColumnName("trust_modification_order_saved");
         projectConfiguration.Property(e => e.TrustModificationOrderSentLegal).HasColumnName("trust_modification_order_sent_legal");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeNotApplicable).HasColumnName("private_finance_initiative_not_applicable");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted).HasColumnName("private_finance_initiative_supplementary_funding_agreement_pfi_clauses_inserted");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted).HasColumnName("private_finance_initiative_master_funding_agreement_pfi_clauses_inserted");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeReceived).HasColumnName("private_finance_initiative_received");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeDocumentsSentToSOPUForClearance).HasColumnName("private_finance_initiative_documents_sent_to_sopu_for_clearance");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeCleared).HasColumnName("private_finance_initiative_cleared");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder).HasColumnName("private_finance_initiative_draft_saved_in_trust_sharepoint_folder");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeSignedByAllStakeholders).HasColumnName("private_finance_initiative_signed_by_all_stakeholders");
+        projectConfiguration.Property(e => e.PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder).HasColumnName("private_finance_initiative_final_version_saved_in_sharepoint_folder");
         projectConfiguration.Property(e => e.UpdateEsfaUpdate).HasColumnName("update_esfa_update");
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
         projectConfiguration.Property(e => e.NurseryArrangement).HasColumnName("nursery_arrangement");
         projectConfiguration.Property(e => e.ConfirmDBSChecks).HasColumnName("confirm_dbs_checks");
+        projectConfiguration.Property(e => e.CommercialTransferAgreementUnamended).HasColumnName("transfer_agreement_unamended");        
     }
 
     private static void ConfigureTransferTasksData(EntityTypeBuilder<TransferTasksData> projectConfiguration)

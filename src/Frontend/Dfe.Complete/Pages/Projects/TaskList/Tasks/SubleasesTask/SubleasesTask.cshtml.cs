@@ -22,7 +22,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
         public bool? Cleared { get; set; }
 
         [BindProperty]
-        public bool? Signed { get; set; }
+        public bool? EmailSaved { get; set; }
 
         [BindProperty]
         public bool? Saved { get; set; }
@@ -48,7 +48,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
             NotApplicable = ConversionTaskData.SubleasesNotApplicable;
             Received = ConversionTaskData.SubleasesReceived;
             Cleared = ConversionTaskData.SubleasesCleared;
-            Signed = ConversionTaskData.SubleasesSigned;
+            EmailSaved = ConversionTaskData.SubleasesSigned;
             Saved = ConversionTaskData.SubleasesSaved;
             EmailSigned = ConversionTaskData.SubleasesEmailSigned;
             ReceiveSigned = ConversionTaskData.SubleasesReceiveSigned;
@@ -59,7 +59,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
         public async Task<IActionResult> OnPostAsync()
         {
             await Sender.Send(new UpdateSubleasesTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!,
-                NotApplicable, Received, Cleared, Signed, Saved, EmailSigned, SaveSigned, ReceiveSigned));
+                NotApplicable, Received, Cleared, EmailSaved, Saved, EmailSigned, SaveSigned, ReceiveSigned));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

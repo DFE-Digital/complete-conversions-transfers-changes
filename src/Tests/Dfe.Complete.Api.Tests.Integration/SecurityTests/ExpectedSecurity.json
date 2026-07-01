@@ -387,6 +387,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdatePrivateFinanceInitiativeTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateChurchSupplementalAgreementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
@@ -408,11 +413,6 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    },
-    {
-      "Controller": "TasksDataController",
-      "Action": "UpdateLandRegistryTitlePlansTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
@@ -503,6 +503,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateSubleasesTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateThirdPartyLeasesTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {

@@ -34,6 +34,7 @@ interface UpdateCommercialTransferAgreementTaskRequest {
     questionsReceived?: boolean;
     questionsChecked?: boolean;
     saved?: boolean;
+    unamended?: boolean;
 }
 
 interface UpdateChurchSupplementalAgreementTaskRequest {
@@ -59,6 +60,7 @@ interface UpdateDeedOfVariationTaskRequest {
     saved?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
+    draftSaved?: boolean;
 }
 
 interface UpdateExternalStakeholderKickOffTaskRequest {
@@ -124,8 +126,8 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     projectType?: ProjectType;
     received?: boolean;
     cleared?: boolean;
-    sent?: boolean;
     saved?: boolean;
+    sent?: boolean;
     signed?: boolean;
     signedSecretaryState?: boolean;
 }

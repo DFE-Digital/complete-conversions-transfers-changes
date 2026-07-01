@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
-using Dfe.Complete.Application.Validation;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -12,10 +11,9 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTask
 {
-    public class LAConfirmsPayrollDeadlineTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LAConfirmsPayrollDeadlineTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService, ISignificantDateValidator significantDateValidator)
+    public class LAConfirmsPayrollDeadlineTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<LAConfirmsPayrollDeadlineTaskModel> logger, IErrorService errorService, IProjectPermissionService projectPermissionService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.LAConfirmsPayrollDeadline, projectPermissionService)
     {
-        private readonly ISignificantDateValidator _significantDateValidator = significantDateValidator;
         [BindProperty(Name = "payroll-deadline")]
         [DisplayName("Payroll deadline")]
         public DateOnly? PayrollDeadline { get; set; }
@@ -35,17 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LAConfirmsPayrollDeadlineTa
         }
         public async Task<IActionResult> OnPost()
         {
-            await base.OnGetAsync();
-
-            // Use domain validator for payroll deadline validation
-            if (PayrollDeadline.HasValue)
-            {
-                var validationResult = _significantDateValidator.ValidatePayrollDeadline(PayrollDeadline, Project);
-                if (!validationResult.IsValid)
-                {
-                    ModelState.AddModelError("payroll-deadline", validationResult.ErrorMessage!);
-                }
-            }
+            await base.OnGetAsync();           
 
             if (!ModelState.IsValid)
             {

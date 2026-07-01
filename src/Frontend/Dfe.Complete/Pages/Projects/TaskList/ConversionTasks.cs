@@ -33,15 +33,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new("Confirm and process the sponsored support grant", taskLinkBuilder.Build("sponsored_support_grant"), conversionTaskList.ConfirmAndProcessSponsoredSupportGrant, 8),
                 new("Confirm academy nursery arrangement", taskLinkBuilder.Build("confirm_nursery_arrangement"), conversionTaskList.ConfirmNurseryArrangement, 9),
                 new("Confirm statutory consultation is complete and any issues are being managed", taskLinkBuilder.Build("confirm_statutory_consultation"), conversionTaskList.ConfirmStatutoryConsultation, 10),
-                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 11),
-                new("Confirm the academy name", taskLinkBuilder.Build("academy_details"), conversionTaskList.ConfirmAcademyName, 12),
-                new("Confirm the headteacher's details", taskLinkBuilder.Build("confirm_headteacher_contact"), conversionTaskList.ConfirmHeadTeacherDetails, 13),
-                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 14),
-                new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 15),
-                new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 16),
-                new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 17),
-                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 18),
-                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 19)
+                new("Confirm the academy name", taskLinkBuilder.Build("academy_details"), conversionTaskList.ConfirmAcademyName, 11),
+                new("Confirm the headteacher's details", taskLinkBuilder.Build("confirm_headteacher_contact"), conversionTaskList.ConfirmHeadTeacherDetails, 12),
+                new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 13),
+                new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 14),
+                new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 15),
+                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 16),
+                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 17)
             };
 
             if (conversionTaskList.ShowProcessConversionSupportGrant)
@@ -57,19 +55,20 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             var legalDocumentsTasks = new List<TaskListItemViewModel>
             {
-                new("Land questionnaire", taskLinkBuilder.Build("land_questionnaire"), conversionTaskList.LandQuestionnaire, 1),
-                new("Land registry title plans", taskLinkBuilder.Build("land_registry"), conversionTaskList.LandRegistry, 2),
-                new("Supplemental funding agreement", taskLinkBuilder.Build("supplemental_funding_agreement"), conversionTaskList.SupplementalFundingAgreement, 3),
-                new("Church supplemental agreement", taskLinkBuilder.Build("church_supplemental_agreement"), conversionTaskList.ChurchSupplementalAgreement, 4),
-                new("Master funding agreement", taskLinkBuilder.Build("master_funding_agreement"), conversionTaskList.MasterFundingAgreement, 5),
-                new("Articles of association", taskLinkBuilder.Build("articles_of_association"), conversionTaskList.ArticlesOfAssociation, 6),
-                new("Deed of variation", taskLinkBuilder.Build("deed_of_variation"), conversionTaskList.DeedOfVariation, 7),
-                new("Trust modification order", taskLinkBuilder.Build("trust_modification_order"), conversionTaskList.TrustModificationOrder, 8),
-                new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 9),
-                new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 10),
-                new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 11),
+                new("Land questionnaire(s) and land registry plans", taskLinkBuilder.Build("land_questionnaire"), conversionTaskList.LandQuestionnaire, 1),
+                new("Supplemental funding agreement", taskLinkBuilder.Build("supplemental_funding_agreement"), conversionTaskList.SupplementalFundingAgreement, 2),
+                new("Church supplemental agreement", taskLinkBuilder.Build("church_supplemental_agreement"), conversionTaskList.ChurchSupplementalAgreement, 3),
+                new("Master funding agreement", taskLinkBuilder.Build("master_funding_agreement"), conversionTaskList.MasterFundingAgreement, 4),
+                new("Articles of association", taskLinkBuilder.Build("articles_of_association"), conversionTaskList.ArticlesOfAssociation, 5),
+                new("Deed of variation", taskLinkBuilder.Build("deed_of_variation"), conversionTaskList.DeedOfVariation, 6),
+                new("Trust modification order", taskLinkBuilder.Build("trust_modification_order"), conversionTaskList.TrustModificationOrder, 7),
+                new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 8),
+                new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 9),
+                new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 10),
+                new("Third party leases", taskLinkBuilder.Build("third_party_leases"), conversionTaskList.ThirdPartyLeases, 11),
                 new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 12),
-                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13)
+                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13),
+                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 14)
             };
 
             return legalDocumentsTasks;
@@ -79,9 +78,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             var readyForOpeningTasks = new List<TaskListItemViewModel>
             {
-                new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 1),
+                new("Confirm school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 1),
                 new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 2),
-                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3)
+                new("Share the information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3),
+                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 4),
+                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 5)
             };
 
             return readyForOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();

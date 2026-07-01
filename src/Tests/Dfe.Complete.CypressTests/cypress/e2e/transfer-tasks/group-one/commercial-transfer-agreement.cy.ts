@@ -29,13 +29,21 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select 'Confirm commercial transfer agreement is agreed' and save");
-        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").tick().saveAndReturn();
+        taskPage
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
+            .tick()
+            .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
+            .tick()
+            .saveAndReturn();
         taskListPage
             .hasTaskStatusInProgress("Commercial transfer agreement")
             .selectTask("Commercial transfer agreement");
 
         Logger.log("Unselect 'Confirm commercial transfer agreement is agreed' and save");
         taskPage
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
+            .isTicked()
+            .untick()
             .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
             .isTicked()
             .untick()
@@ -43,7 +51,11 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
         taskListPage
             .hasTaskStatusNotStarted("Commercial transfer agreement")
             .selectTask("Commercial transfer agreement");
-        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").isUnticked();
+        taskPage
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
+            .isUnticked()
+            .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
+            .isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {

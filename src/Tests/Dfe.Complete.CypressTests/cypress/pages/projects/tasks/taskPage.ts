@@ -1,6 +1,8 @@
 import BasePage from "cypress/pages/basePage";
 
 export class TaskPage extends BasePage {
+    private currentFormGroupLegendText?: string;
+
     // information dropdowns
     clickDropdown(summaryText: string) {
         cy.contains("summary", summaryText).click();
@@ -14,7 +16,10 @@ export class TaskPage extends BasePage {
 
     // options
     hasCheckboxLabel(text: string) {
-        cy.contains("label", text).should("exist");
+        this.withinCurrentFormGroup(() => {
+            cy.contains("label", text).should("exist");
+        });
+
         cy.wrap(text).as("label");
         return this;
     }
@@ -111,11 +116,13 @@ export class TaskPage extends BasePage {
 
     private performLabelContainerAction(action: () => void) {
         cy.get("@label").then((label) => {
-            cy.contains("label", String(label))
-                .parent()
-                .within(() => {
-                    action();
-                });
+            this.withinCurrentFormGroup(() => {
+                cy.contains("label", String(label))
+                    .parent()
+                    .within(() => {
+                        action();
+                    });
+            });
         });
     }
 
@@ -127,6 +134,29 @@ export class TaskPage extends BasePage {
     pageHasGuidance(content: string) {
         cy.contains(content).should("be.visible");
         return this;
+    }
+
+    getFormGroupByLegend(legendText: string) {
+        cy.then(() => {
+            this.currentFormGroupLegendText = legendText;
+        });
+
+        return this;
+    }
+
+    private withinCurrentFormGroup(action: () => void) {
+        cy.then(() => {
+            if (!this.currentFormGroupLegendText) {
+                action();
+                return;
+            }
+
+            cy.contains("legend", this.currentFormGroupLegendText)
+                .closest("fieldset")
+                .within(() => {
+                    action();
+                });
+        });
     }
 }
 
