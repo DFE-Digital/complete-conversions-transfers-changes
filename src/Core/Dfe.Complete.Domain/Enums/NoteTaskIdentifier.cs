@@ -142,7 +142,7 @@ public enum NoteTaskIdentifier
     ConfirmSchoolHasCompletedAllActions = 35,
 
     [Description("share_information")]
-    [DisplayDescription("Share the information about opening")]
+    [DisplayDescription("Share information about opening")]
     ShareInformationAboutOpening = 36,
 
     [Description("confirm_outgoing_trust_ceo_contact")]

@@ -18,32 +18,24 @@ describe("Conversion tasks - Share the information about opening", () => {
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Email relevant information to your main contact")
-            .clickDropdown("What to tell the school or trust")
-            .hasGuidance("Email your main contact at the school or trust.");
-    });
 
-    it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Confirm' checkbox and save");
-        taskPage.hasCheckboxLabel("Email relevant information to your main contact").tick().saveAndReturn();
+ it("should submit the form and persist selections", () => {
+        Logger.log("Select the 'Yes' option and save");
+        taskPage.hasCheckboxLabel("Yes").tick().saveAndReturn();
+
         taskListPage
-            .hasTaskStatusCompleted("Share the information about opening")
-            .selectTask("Share the information about opening");
+            .hasTaskStatusCompleted("Share information about opening")
+            .selectTask("Share information about opening");
 
-        Logger.log("Unselect the 'Confirm' checkbox and save");
-        taskPage
-            .hasCheckboxLabel("Email relevant information to your main contact")
-            .isTicked()
-            .untick()
-            .saveAndReturn();
+        Logger.log("Select the 'No' option and save");
+        taskPage.hasCheckboxLabel("No").isUnticked().tick().saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Share the information about opening")
-            .selectTask("Share the information about opening");
-        taskPage.hasCheckboxLabel("Email relevant information to your main contact").isUnticked();
+            .hasTaskStatusNotStarted("Share information about opening")
+            .selectTask("Share information about opening");
+        taskPage.hasCheckboxLabel("Yes").isUnticked();
+        taskPage.hasCheckboxLabel("No").isTicked();
     });
-
+    
     it("Should NOT see the 'save and return' button for another user's project", () => {
         cy.visit(`projects/${setup.otherUserProjectId}/tasks/${taskPath}`);
         taskPage.noSaveAndReturnExists();
