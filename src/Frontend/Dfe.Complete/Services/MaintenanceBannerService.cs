@@ -42,7 +42,7 @@ namespace Dfe.Complete.Services
                 // Validate maintenance end is not in the past (if provided)
                 if (_options.MaintenanceEnd.HasValue && _options.MaintenanceEnd.Value < now)
                 {
-                    _logger.LogError("Maintenance banner configuration error: MaintenanceEnd ({MaintenanceEnd}) is in the past", _options.MaintenanceEnd.Value);
+                    _logger.LogWarning("Maintenance banner configuration error: MaintenanceEnd ({MaintenanceEnd}) is in the past", _options.MaintenanceEnd.Value);
                     return false;
                 }
 
