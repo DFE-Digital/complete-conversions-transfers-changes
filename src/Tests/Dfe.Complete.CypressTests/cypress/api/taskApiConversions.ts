@@ -107,6 +107,9 @@ interface UpdateTenancyAtWillTaskRequest {
     emailSigned?: boolean;
     saveSigned?: boolean;
     receiveSigned?: boolean;
+    beingUsed?: boolean;
+    received?: boolean;
+    cleared?: boolean;
 }
 
 interface UpdatePostDecisionActionsTaskRequest {

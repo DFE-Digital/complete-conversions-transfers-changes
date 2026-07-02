@@ -10572,31 +10572,6 @@
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "email": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "receive": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "save": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateTenancyAtWillTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
           "beingUsed": {
             "type": "boolean",
             "nullable": true
