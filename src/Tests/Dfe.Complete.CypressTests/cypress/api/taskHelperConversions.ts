@@ -114,6 +114,33 @@ class TaskHelperConversions extends TaskHelper {
         }
     }
 
+    updateConfirmSchoolBankDetails(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            sent: false,
+            submitted: false,
+        };
+
+        switch (status) {
+
+            case "inProgress":
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask({
+                    ...defaultBody,
+                    sent: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask({
+                    taskDataId: { value: taskDataId },
+                    sent: true,
+                    submitted: true,
+                });
+
+            default:
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask(defaultBody);
+        }
+    }
+
     updateDirectionToTransfer(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
