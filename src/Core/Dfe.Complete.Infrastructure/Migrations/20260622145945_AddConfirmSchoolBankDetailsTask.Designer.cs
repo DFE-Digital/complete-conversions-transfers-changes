@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260622145945_AddConfirmSchoolBankDetailsTask")]
+    partial class AddConfirmSchoolBankDetailsTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,10 +398,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<int?>("NurseryArrangement")
                         .HasColumnType("int")
                         .HasColumnName("nursery_arrangement");
-
-                    b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseConfirmModel")
-                        .HasColumnType("bit")
-                        .HasColumnName("one_hundred_and_twenty_five_year_lease_confirm_model");
 
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
