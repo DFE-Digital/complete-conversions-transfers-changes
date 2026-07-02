@@ -22,7 +22,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.46.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-07-01.1643) - 2026-07-01
 
 ### Changed
-- [289552](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/2895521) - Relax maintenance banner logs
+- [289552](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/289552) - Relax maintenance banner logs
  - [282060](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/288436) - Update Project page header size for consistency
 - [287342](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/287342) - revert mediatr version to <13
 - [282385](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282385) -  Sonar high severity issues
