@@ -37,6 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-rvv3-g6hj-g44x" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
     <ProjectReference Include="..\..\Core\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
   </ItemGroup>

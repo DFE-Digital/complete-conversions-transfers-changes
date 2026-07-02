@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using AutoMapper.Internal;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
 using Dfe.Complete.Application.ApiConfig;
@@ -79,7 +80,14 @@ namespace Dfe.Complete.Api
             builder.Services.AddApplicationDependencyGroup(builder.Configuration);
             builder.Services.AddInfrastructureDependencyGroup(builder.Configuration);
 
-            builder.Services.AddAutoMapper(typeof(AutoMapping));
+            var autoMapperMaxDepth = int.TryParse(builder.Configuration["AutoMapper:MaxDepth"], out var configuredAutoMapperMaxDepth)
+                ? configuredAutoMapperMaxDepth
+                : 64;
+
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                cfg.Internal().ForAllMaps((_, mapping) => mapping.MaxDepth(autoMapperMaxDepth));
+            }, typeof(AutoMapping));
 
             builder.Services.AddOptions<SwaggerUIOptions>()
                 .Configure<IHttpContextAccessor>((swaggerUiOptions, httpContextAccessor) =>

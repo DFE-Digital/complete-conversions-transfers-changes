@@ -99,7 +99,7 @@ public class MaintenanceBannerServiceTests
     }
 
     [Fact]
-    public void ShouldShowBanner_WhenMaintenanceEndInPast_ShouldReturnFalseAndLogError()
+    public void ShouldShowBanner_WhenMaintenanceEndInPast_ShouldReturnFalseAndLogWarning()
     {
         // Arrange
         _mockEnvironment.Setup(x => x.EnvironmentName).Returns(Environments.Production);
@@ -119,7 +119,7 @@ public class MaintenanceBannerServiceTests
         result.Should().BeFalse();
         _mockLogger.Verify(
             x => x.Log(
-                LogLevel.Error,
+                LogLevel.Warning,
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((v, t) => v.ToString()!.Contains("MaintenanceEnd") && v.ToString()!.Contains("is in the past")),
                 It.IsAny<Exception>(),
