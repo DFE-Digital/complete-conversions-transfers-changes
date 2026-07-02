@@ -30,7 +30,7 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
     it("should submit the form and persist selections", () => {
         Logger.log("Select 'Confirm commercial transfer agreement is agreed' and save");
         taskPage
-            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
             .tick()
             .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
             .tick()
@@ -41,7 +41,7 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
 
         Logger.log("Unselect 'Confirm commercial transfer agreement is agreed' and save");
         taskPage
-            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
             .isTicked()
             .untick()
             .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
@@ -52,7 +52,7 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
             .hasTaskStatusNotStarted("Commercial transfer agreement")
             .selectTask("Commercial transfer agreement");
         taskPage
-            .hasCheckboxLabel("Confirm if the DfE model has been used unamended")
+            .hasCheckboxLabel("Receive solicitor responses to assurance questions")
             .isUnticked()
             .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
             .isUnticked();
