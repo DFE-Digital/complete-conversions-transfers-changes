@@ -706,24 +706,6 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(null, TaskListStatus.NotStarted)]
-        [InlineData(false, TaskListStatus.NotStarted)]
-        [InlineData(true, TaskListStatus.Completed)]
-        public void ShareTheInformationAboutOpeningTaskStatus_ShouldReturn_CorrectStatus(
-            bool? email, TaskListStatus expectedStatus)
-        {
-            var taskData = new ConversionTaskDataDto
-            {
-                Id = new TaskDataId(Guid.NewGuid()),
-                ShareInformationEmail = email
-            };
-
-            var project = new ProjectDto();
-            var result = ConversionTaskListViewModel.Create(taskData, project, null);
-
-            Assert.Equal(expectedStatus, result.ShareTheInformationAboutOpening);
-        }
-        [Theory]
         [InlineData(null, null, TaskListStatus.NotStarted)]
         [InlineData(false, false, TaskListStatus.NotStarted)]
         [InlineData(true, false, TaskListStatus.InProgress)]
@@ -744,15 +726,18 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ConfirmTheSchoolHasCompletedAllActions);
         }
         [Theory]
-        [InlineData(null, TaskListStatus.NotStarted)]
-        [InlineData(false, TaskListStatus.NotStarted)]
-        [InlineData(true, TaskListStatus.Completed)]
+        [InlineData(null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
+        [InlineData(true, true, TaskListStatus.Completed)]
         public void ConfirmAllConditionsHaveBeenMetTaskStatus_ShouldReturn_CorrectStatus(
-         bool? allConditionsMet, TaskListStatus expectedStatus)
+         bool? allConditionsMet, bool? shareInformationEmail, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
-                Id = new TaskDataId(Guid.NewGuid())
+                Id = new TaskDataId(Guid.NewGuid()),
+                ShareInformationEmail = shareInformationEmail
             };
 
             var project = new ProjectDto

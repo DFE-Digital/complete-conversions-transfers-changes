@@ -80,9 +80,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             {
                 new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 1),
                 new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 2),
-                new("Share information about opening", taskLinkBuilder.Build("share_information"), conversionTaskList.ShareTheInformationAboutOpening, 3),
-                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 4),
-                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 5)
+                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 3),
+                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 4)
             };
 
             return readyForOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();
