@@ -158,6 +158,10 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? SchoolCompletedSaved { get; set; }
 
+    public bool? ConfirmSchoolBankDetailsSent { get; set; }
+
+    public bool? ConfirmSchoolBankDetailsSubmitted { get; set; }
+
     public bool? RedactAndSendRedact { get; set; }
 
     public bool? RedactAndSendSaveRedaction { get; set; }
@@ -205,6 +209,14 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? TenancyAtWillReceiveSigned { get; set; }
 
     public bool? TenancyAtWillSaveSigned { get; set; }
+
+    public bool? TenancyAtWillBeingUsed { get; set; }
+
+    public bool? TenancyAtWillLicenceToOccupyBeingUsed { get; set; }
+
+    public bool? TenancyAtWillReceived { get; set; }
+
+    public bool? TenancyAtWillCleared { get; set; }
 
     public bool? ShareInformationEmail { get; set; }
 

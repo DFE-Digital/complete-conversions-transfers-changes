@@ -1636,6 +1636,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateClosureOrTransferDeclarationTaskAsync(UpdateClosureOrTransferDeclarationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Update the confirmation of new school bank details task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Update confirm school bank details task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmSchoolBankDetailsTaskAsync(UpdateConfirmSchoolBankDetailsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the confirmation of new school bank details task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Update confirm school bank details task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmSchoolBankDetailsTaskAsync(UpdateConfirmSchoolBankDetailsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Update the confirmation the school has completed all actions task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -4416,6 +4433,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ThirdPartyLeases")]
         ThirdPartyLeases = 55,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolBankDetails")]
+        ConfirmSchoolBankDetails = 56,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6114,6 +6134,12 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("schoolCompletedSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? SchoolCompletedSaved { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("confirmSchoolBankDetailsSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmSchoolBankDetailsSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmSchoolBankDetailsSubmitted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmSchoolBankDetailsSubmitted { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("redactAndSendRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendRedact { get; set; } = default!;
 
@@ -6182,6 +6208,18 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("tenancyAtWillSaveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TenancyAtWillSaveSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillLicenceToOccupyBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillLicenceToOccupyBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillCleared { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("shareInformationEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ShareInformationEmail { get; set; } = default!;
@@ -7689,6 +7727,33 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmSchoolBankDetailsTaskCommand
+    {
+
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("submitted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Submitted { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmSchoolBankDetailsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmSchoolBankDetailsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class UpdateConfirmSchoolHasCompletedAllActionsTaskCommand
     {
 
@@ -7884,8 +7949,17 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? NotApplicable { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("beingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? BeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("licenceToOccupyBeingUsed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LicenceToOccupyBeingUsed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("emailSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? EmailSigned { get; set; } = default!;

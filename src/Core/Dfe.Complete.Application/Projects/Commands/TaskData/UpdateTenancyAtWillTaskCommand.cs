@@ -10,7 +10,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateTenancyAtWillTaskCommand(
         TaskDataId TaskDataId,
-        bool? NotApplicable,
+        bool? BeingUsed,
+        bool? LicenceToOccupyBeingUsed,
+        bool? Received,
+        bool? Cleared,
         bool? EmailSigned,
         bool? SaveSigned,
         bool? ReceiveSigned
@@ -26,10 +29,28 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.TenancyAtWillNotApplicable = request.NotApplicable;
-            tasksData.TenancyAtWillEmailSigned = request.NotApplicable == true ? null : request.EmailSigned;
-            tasksData.TenancyAtWillSaveSigned = request.NotApplicable == true ? null : request.SaveSigned;
-            tasksData.TenancyAtWillReceiveSigned = request.NotApplicable == true ? null : request.ReceiveSigned;
+            var notApplicable = request.BeingUsed == false && request.LicenceToOccupyBeingUsed == false;
+
+            tasksData.TenancyAtWillBeingUsed = request.BeingUsed;
+            tasksData.TenancyAtWillLicenceToOccupyBeingUsed = request.LicenceToOccupyBeingUsed;
+            tasksData.TenancyAtWillNotApplicable = notApplicable;
+
+            if (notApplicable)
+            {
+                tasksData.TenancyAtWillReceived = null;
+                tasksData.TenancyAtWillCleared = null;
+                tasksData.TenancyAtWillEmailSigned = null;
+                tasksData.TenancyAtWillReceiveSigned = null;
+                tasksData.TenancyAtWillSaveSigned = null;
+            }
+            else
+            {
+                tasksData.TenancyAtWillReceived = request.Received;
+                tasksData.TenancyAtWillCleared = request.Cleared;
+                tasksData.TenancyAtWillEmailSigned = request.EmailSigned;
+                tasksData.TenancyAtWillSaveSigned = request.SaveSigned;
+                tasksData.TenancyAtWillReceiveSigned = request.ReceiveSigned;
+            }
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

@@ -44,6 +44,12 @@ interface UpdateConfirmSchoolHasCompletedAllActionsTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateConfirmSchoolBankDetailsTaskRequest {
+    taskDataId: TaskDataId;
+    sent?: boolean;
+    submitted?: boolean;
+}
+
 interface UpdateDirectionToTransferTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -107,6 +113,9 @@ interface UpdateTenancyAtWillTaskRequest {
     emailSigned?: boolean;
     saveSigned?: boolean;
     receiveSigned?: boolean;
+    beingUsed?: boolean;
+    received?: boolean;
+    cleared?: boolean;
 }
 
 interface UpdatePostDecisionActionsTaskRequest {
@@ -175,6 +184,10 @@ class TaskApiConversions extends TaskApi {
         requestBody: UpdateConfirmSchoolHasCompletedAllActionsTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("UpdateConfirmSchoolHasCompletedAllActions", requestBody);
+    }
+
+    public updateConfirmSchoolBankDetailsTask(requestBody: UpdateConfirmSchoolBankDetailsTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmSchoolBankDetails", requestBody);
     }
 
     public updateDirectionToTransferTask(requestBody: UpdateDirectionToTransferTaskRequest) {
