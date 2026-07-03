@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260622145945_AddConfirmSchoolBankDetailsTask")]
+    partial class AddConfirmSchoolBankDetailsTask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -396,10 +399,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("nursery_arrangement");
 
-                    b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseConfirmModel")
-                        .HasColumnType("bit")
-                        .HasColumnName("one_hundred_and_twenty_five_year_lease_confirm_model");
-
                     b.Property<bool?>("OneHundredAndTwentyFiveYearLeaseEmail")
                         .HasColumnType("bit")
                         .HasColumnName("one_hundred_and_twenty_five_year_lease_email");
@@ -658,21 +657,9 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("supplemental_funding_agreement_signed_secretary_state");
 
-                    b.Property<bool?>("TenancyAtWillBeingUsed")
-                        .HasColumnType("bit")
-                        .HasColumnName("tenancy_at_will_being_used");
-
-                    b.Property<bool?>("TenancyAtWillCleared")
-                        .HasColumnType("bit")
-                        .HasColumnName("tenancy_at_will_cleared");
-
                     b.Property<bool?>("TenancyAtWillEmailSigned")
                         .HasColumnType("bit")
                         .HasColumnName("tenancy_at_will_email_signed");
-
-                    b.Property<bool?>("TenancyAtWillLicenceToOccupyBeingUsed")
-                        .HasColumnType("bit")
-                        .HasColumnName("tenancy_at_will_licence_to_occupy_being_used");
 
                     b.Property<bool?>("TenancyAtWillNotApplicable")
                         .HasColumnType("bit")
@@ -681,10 +668,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("TenancyAtWillReceiveSigned")
                         .HasColumnType("bit")
                         .HasColumnName("tenancy_at_will_receive_signed");
-
-                    b.Property<bool?>("TenancyAtWillReceived")
-                        .HasColumnType("bit")
-                        .HasColumnName("tenancy_at_will_received");
 
                     b.Property<bool?>("TenancyAtWillSaveSigned")
                         .HasColumnType("bit")

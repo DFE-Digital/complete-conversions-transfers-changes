@@ -605,6 +605,8 @@ public partial class CompleteContext : DbContext
             .HasColumnName("risk_protection_arrangement_reason");
         projectConfiguration.Property(e => e.SchoolCompletedEmailed).HasColumnName("school_completed_emailed");
         projectConfiguration.Property(e => e.SchoolCompletedSaved).HasColumnName("school_completed_saved");
+        projectConfiguration.Property(e => e.ConfirmSchoolBankDetailsSent).HasColumnName("confirm_school_bank_details_sent");
+        projectConfiguration.Property(e => e.ConfirmSchoolBankDetailsSubmitted).HasColumnName("confirm_school_bank_details_submitted");
         projectConfiguration.Property(e => e.ShareInformationEmail).HasColumnName("share_information_email");
         projectConfiguration.Property(e => e.SponsoredSupportGrantInformTrust).HasColumnName("sponsored_support_grant_inform_trust");
         projectConfiguration.Property(e => e.SponsoredSupportGrantNotApplicable).HasColumnName("sponsored_support_grant_not_applicable");
@@ -642,6 +644,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.TenancyAtWillNotApplicable).HasColumnName("tenancy_at_will_not_applicable");
         projectConfiguration.Property(e => e.TenancyAtWillReceiveSigned).HasColumnName("tenancy_at_will_receive_signed");
         projectConfiguration.Property(e => e.TenancyAtWillSaveSigned).HasColumnName("tenancy_at_will_save_signed");
+        projectConfiguration.Property(e => e.TenancyAtWillBeingUsed).HasColumnName("tenancy_at_will_being_used");
+        projectConfiguration.Property(e => e.TenancyAtWillLicenceToOccupyBeingUsed).HasColumnName("tenancy_at_will_licence_to_occupy_being_used");
+        projectConfiguration.Property(e => e.TenancyAtWillReceived).HasColumnName("tenancy_at_will_received");
+        projectConfiguration.Property(e => e.TenancyAtWillCleared).HasColumnName("tenancy_at_will_cleared");
         projectConfiguration.Property(e => e.TrustModificationOrderCleared).HasColumnName("trust_modification_order_cleared");
         projectConfiguration.Property(e => e.TrustModificationOrderNotApplicable).HasColumnName("trust_modification_order_not_applicable");
         projectConfiguration.Property(e => e.TrustModificationOrderReceived).HasColumnName("trust_modification_order_received");

@@ -114,6 +114,33 @@ class TaskHelperConversions extends TaskHelper {
         }
     }
 
+    updateConfirmSchoolBankDetails(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            sent: false,
+            submitted: false,
+        };
+
+        switch (status) {
+
+            case "inProgress":
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask({
+                    ...defaultBody,
+                    sent: true,
+                });
+
+            case "completed":
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask({
+                    taskDataId: { value: taskDataId },
+                    sent: true,
+                    submitted: true,
+                });
+
+            default:
+                return taskApiConversions.updateConfirmSchoolBankDetailsTask(defaultBody);
+        }
+    }
+
     updateDirectionToTransfer(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -359,32 +386,34 @@ class TaskHelperConversions extends TaskHelper {
     updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
-            notApplicable: false,
+            beingUsed: undefined,
+            licenceToOccupyBeingUsed: undefined,
+            received: false,
+            cleared: false,
             emailSigned: false,
             saveSigned: false,
             receiveSigned: false,
         };
         switch (status) {
-            case "notApplicable":
-                return taskApiConversions.updateTenancyAtWillTask({
-                    ...defaultBody,
-                    notApplicable: true,
-                });
-
             case "inProgress":
                 return taskApiConversions.updateTenancyAtWillTask({
                     ...defaultBody,
+                    beingUsed: true,
                     emailSigned: true,
                 });
 
             case "completed":
                 return taskApiConversions.updateTenancyAtWillTask({
-                    taskDataId: { value: taskDataId },
-                    notApplicable: false,
+                    ...defaultBody,
+                    beingUsed: true,
+                    received: true,
+                    cleared: true,
                     emailSigned: true,
-                    saveSigned: true,
                     receiveSigned: true,
+                    saveSigned: true,
                 });
+            default:
+                return taskApiConversions.updateTenancyAtWillTask(defaultBody);
         }
     }
 

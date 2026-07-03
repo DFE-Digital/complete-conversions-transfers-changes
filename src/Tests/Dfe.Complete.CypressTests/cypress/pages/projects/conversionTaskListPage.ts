@@ -47,7 +47,8 @@ class ConversionTaskListPage {
             "Private finance initiative",
         ],
         readyForOpening: [
-            "Confirm school has completed all actions",
+            "Confirm the new bank account details for the school",
+            "Confirm the school has completed all actions",
             "Confirm all conditions have been met",
             "Share the information about opening",
             "TUPE Consultation",
