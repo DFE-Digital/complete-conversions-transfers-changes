@@ -12,6 +12,27 @@
             <govuk-radios-item value="false" checked="@(!Model.Confirm)">No</govuk-radios-item>
         </govuk-radios-fieldset>    
     </govuk-radios>
+    
+    <h2 class="govuk-heading-xl govuk-!-margin-bottom-2">Share information about opening</h2>
+    <div class="govuk-hint">
+        <p>Once you have confirmed that all conditions have been met, email your main contact at the school or trust to tell them the conversion will happen on the agreed date.</p>
+        <p>Your email should include:</p> 
+        <ul> 
+            <li>confirmation the school will convert on the provisional date</li> 
+            <li>the school's new URN</li> 
+            <li>the feedback form (if applicable)</li> 
+        </ul> 
+        <p>You can split this information over more than one email if you do not immediately have everything you need.</p>     
+    </div>
+
+    <govuk-radios asp-for="@Model.ShareInformationEmail" id="@(nameof(Model.ShareInformationEmail))" name="@(nameof(Model.ShareInformationEmail))">
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">Have you emailed your main contact the relevant information?</govuk-radios-fieldset-legend>
+            <govuk-radios-item value="true" checked="@(Model.ShareInformationEmail)">Yes</govuk-radios-item>
+            <govuk-radios-item value="false" checked="@(!Model.ShareInformationEmail)">No</govuk-radios-item>
+        </govuk-radios-fieldset>    
+    </govuk-radios>
+
     @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
 </form>
 
