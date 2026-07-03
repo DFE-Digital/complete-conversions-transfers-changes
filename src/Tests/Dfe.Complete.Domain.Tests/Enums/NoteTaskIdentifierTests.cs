@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Tests.Enums
