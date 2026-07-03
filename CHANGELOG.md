@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Changed
+- [282908](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282908) - Update content of Declaration of Expenditure Certificate conversion task 
 - [279040](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279040) - Tenancy at Will additional fields
 - [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
 - [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
