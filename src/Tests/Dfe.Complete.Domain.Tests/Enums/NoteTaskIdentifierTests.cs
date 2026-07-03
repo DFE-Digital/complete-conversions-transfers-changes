@@ -1,11 +1,11 @@
-﻿using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Tests.Enums
 {
     public class NoteTaskIdentifierTests
     {
-        [Theory]
+      [Theory]
         [InlineData(NoteTaskIdentifier.Handover, "handover", "Handover with regional delivery officer")]
         [InlineData(NoteTaskIdentifier.LandQuestionnaire, "land_questionnaire", "Land questionnaire(s) and land registry plans")]
         [InlineData(NoteTaskIdentifier.StakeholderKickoff, "stakeholder_kick_off", "External stakeholder kick-off")]
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.DirectionToTransfer, "direction_to_transfer", "Direction to transfer")]
         [InlineData(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease, "one_hundred_and_twenty_five_year_lease", "125 year lease")]
         [InlineData(NoteTaskIdentifier.Subleases, "subleases", "Subleases")]
-        [InlineData(NoteTaskIdentifier.TenancyAtWill, "tenancy_at_will", "Tenancy at will")]
+        [InlineData(NoteTaskIdentifier.TenancyAtWill, "tenancy_at_will", "Tenancy at will or license to occupy")]
         [InlineData(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, "school_completed", "Confirm school has completed all actions")]
         [InlineData(NoteTaskIdentifier.ShareInformationAboutOpening, "share_information", "Share the information about opening")]
         [InlineData(NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails, "confirm_outgoing_trust_ceo_contact", "Confirm the outgoing trust CEO's details")]
@@ -64,4 +64,3 @@ namespace Dfe.Complete.Domain.Tests.Enums
         }
     }
 }
-
