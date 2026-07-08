@@ -51,12 +51,12 @@
                             <govuk-checkboxes-fieldset>
                                 <govuk-checkboxes-fieldset-legend></govuk-checkboxes-fieldset-legend>
                                 <govuk-checkboxes-item
-                                    data-cy="@nameof(Model.ConfirmNumber)"
-                                    id="@(nameof(Model.ConfirmNumber))"
-                                    asp-for="@Model.ConfirmNumber"
+                                    data-cy="@nameof(Model.ConfirmPublishedNumber)"
+                                    id="@(nameof(Model.ConfirmPublishedNumber))"
+                                    asp-for="@Model.ConfirmPublishedNumber"
                                     value="true"
-                                    name="@(nameof(Model.ConfirmNumber))"
-                                    checked="@Model.ConfirmNumber"
+                                    name="@(nameof(Model.ConfirmPublishedNumber))"
+                                    checked="@Model.ConfirmPublishedNumber"
                                 >
                                     <b>Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund</b>
                                 </govuk-checkboxes-item>
@@ -114,12 +114,12 @@
                             <govuk-checkboxes-fieldset>
                                 <govuk-checkboxes-fieldset-legend></govuk-checkboxes-fieldset-legend>
                                 <govuk-checkboxes-item
-                                    data-cy="@nameof(Model.ConfirmNumber)"
-                                    id="@(nameof(Model.ConfirmNumber))"
-                                    asp-for="@Model.ConfirmNumber"
+                                    data-cy="@nameof(Model.AcknowledgeLAMustConfirm)"
+                                    id="@(nameof(Model.AcknowledgeLAMustConfirm))"
+                                    asp-for="@Model.AcknowledgeLAMustConfirm"
                                     value="true"
-                                    name="@(nameof(Model.ConfirmNumber))"
-                                    checked="@Model.ConfirmNumber"
+                                    name="@(nameof(Model.AcknowledgeLAMustConfirm))"
+                                    checked="@Model.AcknowledgeLAMustConfirm"
                                 >
                                     <b>The local authority must complete a notification of changes to funded high needs places form if the section 251 spreadsheet is incorrect</b>
                                 </govuk-checkboxes-item>
@@ -173,7 +173,7 @@
                         </govuk-details>
                     </div>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmNumber)" id="@(nameof(Model.ConfirmNumber))" asp-for="@Model.ConfirmNumber" value="true" name="@(nameof(Model.ConfirmNumber))" checked="@Model.ConfirmNumber">
+                <govuk-checkboxes-item data-cy="@nameof(Model.CheckReturnedForm)" id="@(nameof(Model.CheckReturnedForm))" asp-for="@Model.CheckReturnedForm" value="true" name="@(nameof(Model.CheckReturnedForm))" checked="@Model.CheckReturnedForm">
                     <b>Check the returned Notification of Changes form</b>
                     <div class="govuk-hint">
                         <p>Compare the notification of changes document to the section 251 spreadsheet.</p>
@@ -195,7 +195,7 @@
                         </govuk-details>
                     </div>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" asp-for="@Model.ConfirmPublishedNumber" value="true" name="@(nameof(Model.ConfirmPublishedNumber))" checked="@Model.ConfirmPublishedNumber">
+                <govuk-checkboxes-item data-cy="@nameof(Model.SendForm)" id="@(nameof(Model.SendForm))" asp-for="@Model.SendForm" value="true" name="@(nameof(Model.SendForm))" checked="@Model.SendForm">
                     <b>Send the completed Notification of Changes for to FFO</b>
                     <div class="govuk-hint">
                         <p>Email the completed notification of change document to the FFO at <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a>.</p>
@@ -206,7 +206,3 @@
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
-
-
-
-@* <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a> *@

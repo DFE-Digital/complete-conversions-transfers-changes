@@ -14,12 +14,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
     {
         [BindProperty]
         public bool? ConfirmNumber { get; set; }
+
         [BindProperty]
         public bool? ConfirmPublishedNumber { get; set; }
 
         [BindProperty]
         public bool? FundedPlacesRequired { get; set; }
-        
+
+        [BindProperty]
+        public bool? AcknowledgeLAMustConfirm { get; set; }
+
+        [BindProperty]
+        public bool? CheckReturnedForm { get; set; }
+
+        [BindProperty]
+        public bool? SendForm { get; set; }
+
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         public override async Task<IActionResult> OnGetAsync()
