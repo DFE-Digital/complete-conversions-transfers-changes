@@ -9283,6 +9283,22 @@
             "type": "boolean",
             "nullable": true
           },
+          "checkAccuracyOfHigherNeedsFundedPlacesRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkAccuracyOfHigherNeedsAcknowledgeLAMustConfirm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkAccuracyOfHigherNeedsCheckReturnedForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkAccuracyOfHigherNeedsSendForm": {
+            "type": "boolean",
+            "nullable": true
+          },
           "completeNotificationOfChangeNotApplicable": {
             "type": "boolean",
             "nullable": true
