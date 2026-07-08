@@ -38,7 +38,6 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmTheSchoolHasCompletedAllActions { get; set; }
         public TaskListStatus ConfirmSchoolBankDetails { get; set; }
         public TaskListStatus ConfirmAllConditionsHaveBeenMet { get; set; }
-        public TaskListStatus ShareTheInformationAboutOpening { get; set; }
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
@@ -83,8 +82,7 @@ namespace Dfe.Complete.Models
                 CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
                 ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskData),
                 ConfirmSchoolBankDetails = ConfirmSchoolBankDetailsTaskStatus(taskData),
-                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project),
-                ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
+                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project, taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
@@ -212,16 +210,6 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ShareTheInformationAboutOpeningTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if (!taskData.ShareInformationEmail.HasValue || taskData.ShareInformationEmail == false)
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.ShareInformationEmail == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
-
         private static TaskListStatus ConfirmTheSchoolHasCompletedAllActionsTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.SchoolCompletedEmailed.HasValue || taskData.SchoolCompletedEmailed == false) &&
@@ -248,10 +236,15 @@ namespace Dfe.Complete.Models
                 : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ProjectDto project)
+        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ProjectDto project, ConversionTaskDataDto taskData)
         {
-            return project.AllConditionsMet == true
-                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+            if (project.AllConditionsMet is null or false && taskData.ShareInformationEmail is null or false)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return (project.AllConditionsMet == true && taskData.ShareInformationEmail == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus CommercialTransferAgreementTaskStatus(ConversionTaskDataDto taskData)
