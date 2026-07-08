@@ -18,6 +18,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
         public bool? ConfirmPublishedNumber { get; set; }
 
         [BindProperty]
+        public bool? FundedPlacesRequired { get; set; }
+        
+        [BindProperty]
         public Guid? TasksDataId { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
