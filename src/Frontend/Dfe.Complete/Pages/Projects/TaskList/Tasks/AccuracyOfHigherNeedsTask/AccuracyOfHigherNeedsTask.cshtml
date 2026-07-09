@@ -44,7 +44,7 @@
                 <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
                     Will the academy have high needs places FFO must fund?
                 </govuk-radios-fieldset-legend>
-                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)True" value="true">
+                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)True" value="true" checked="@(Model.FundedPlacesRequired == true)">
                     Yes
                     <govuk-radios-item-conditional>
                         <govuk-checkboxes name="options">
@@ -107,7 +107,7 @@
                         </div>
                     </govuk-radios-item-conditional>
                 </govuk-radios-item>
-                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)False" value="false">
+                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)False" value="false" checked="@(Model.FundedPlacesRequired == false)">
                     No
                     <govuk-radios-item-conditional>
                         <govuk-checkboxes name="options">

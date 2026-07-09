@@ -10373,6 +10373,22 @@
           "confirmPublishedNumber": {
             "type": "boolean",
             "nullable": true
+          },
+          "fundedPlacesRequired": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "acknowledgeLAMustConfirm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkReturnedForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendForm": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },

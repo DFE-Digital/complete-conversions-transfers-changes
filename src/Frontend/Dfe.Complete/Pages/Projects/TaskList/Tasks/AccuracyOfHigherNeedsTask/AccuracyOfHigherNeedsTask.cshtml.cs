@@ -42,11 +42,24 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
             TasksDataId = Project.TasksDataId?.Value;
             ConfirmNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmNumber;
             ConfirmPublishedNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber;
+            FundedPlacesRequired = ConversionTaskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired;
+            AcknowledgeLAMustConfirm = ConversionTaskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm;
+            CheckReturnedForm = ConversionTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm;
+            SendForm = ConversionTaskData.CheckAccuracyOfHigherNeedsSendForm;
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateAccuracyOfHigherNeedsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, ConfirmNumber, ConfirmPublishedNumber));
+            await Sender.Send(new UpdateAccuracyOfHigherNeedsTaskCommand(new TaskDataId(
+                TasksDataId.GetValueOrDefault())!,
+                ConfirmNumber,
+                ConfirmPublishedNumber,
+                FundedPlacesRequired,
+                AcknowledgeLAMustConfirm,
+                CheckReturnedForm,
+                SendForm
+            ));
+
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

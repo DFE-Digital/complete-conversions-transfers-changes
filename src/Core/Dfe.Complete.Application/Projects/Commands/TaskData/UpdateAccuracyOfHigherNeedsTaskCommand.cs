@@ -11,7 +11,11 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     public record UpdateAccuracyOfHigherNeedsTaskCommand(
         TaskDataId TaskDataId,
         bool? ConfirmNumber,
-        bool? ConfirmPublishedNumber
+        bool? ConfirmPublishedNumber,
+        bool? FundedPlacesRequired,
+        bool? AcknowledgeLAMustConfirm,
+        bool? CheckReturnedForm,
+        bool? SendForm
     ) : IRequest<Result<bool>>;
 
     internal class UpdateAccuracyOfHigherNeedsTaskCommandHandler(
@@ -25,7 +29,21 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
             tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = request.ConfirmNumber;
-            tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = request.ConfirmPublishedNumber;
+            tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = request.CheckReturnedForm;
+            tasksData.CheckAccuracyOfHigherNeedsSendForm = request.SendForm;
+            tasksData.CheckAccuracyOfHigherNeedsFundedPlacesRequired = request.FundedPlacesRequired;
+
+            tasksData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = null;
+            tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = null;
+
+            if (request.FundedPlacesRequired is true)
+            {
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = request.ConfirmPublishedNumber;
+            }
+            else if (request.FundedPlacesRequired is false)
+            {
+                tasksData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = request.AcknowledgeLAMustConfirm;
+            }
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

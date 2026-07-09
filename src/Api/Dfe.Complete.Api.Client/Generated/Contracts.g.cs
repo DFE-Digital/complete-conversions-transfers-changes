@@ -7541,6 +7541,18 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("confirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConfirmPublishedNumber { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("fundedPlacesRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FundedPlacesRequired { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("acknowledgeLAMustConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? AcknowledgeLAMustConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckReturnedForm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sendForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SendForm { get; set; } = default!;
+
         public string ToJson()
         {
 
