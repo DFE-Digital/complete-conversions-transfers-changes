@@ -58,16 +58,6 @@ public class ConfirmChildrenCentreTaskModel(ISender sender, IAuthorizationServic
     
     public async Task<IActionResult> OnPost()
     {
-        if (NotApplicable == true)
-        {
-            ChildrenCentreAcademyTrust = false;
-            ChildrenCentreFundingPensionReviewed = false;
-            ChildrenCentreLandLeaseSharedAgreed = false;
-            ChildrenCentreLegalAndGovernanceReviewed = false;
-            ChildrenCentreLocalAuthority = false;
-            ChildrenCentreStaffingAndTransferReviewed = false;
-        }
-        
         await Sender.Send(new UpdateChildrenCentreTaskCommand(
             new TaskDataId(TasksDataId.GetValueOrDefault()), 
             NotApplicable,
