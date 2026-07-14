@@ -29,7 +29,7 @@
 @section TaskSection {
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
-        <govuk-checkboxes name="options">
+        <govuk-checkboxes name="@nameof(Model.SelectedOptions)">
             <govuk-checkboxes-fieldset>
 
                 <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
@@ -37,25 +37,25 @@
                     <span class="govuk-caption-m">Select all that apply</span>
                 </govuk-checkboxes-fieldset-legend>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" asp-for="@Model.ConfirmPublishedNumber" value="true" name="@(nameof(Model.ConfirmPublishedNumber))" checked="@Model.ConfirmPublishedNumber">
+                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" value="confirm-published-number" checked="@(Model.SelectedOptions.Contains("confirm-published-number"))" behavior="Exclusive">
                     <b>Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmNumber)" id="@(nameof(Model.ConfirmNumber))" asp-for="@Model.ConfirmNumber" value="true" name="@(nameof(Model.ConfirmNumber))" checked="@Model.ConfirmNumber">
+                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmNumber)" id="@(nameof(Model.ConfirmNumber))" value="confirm-number" checked="@(Model.SelectedOptions.Contains("confirm-number"))">
                     <b>Tell the local authority to complete the Notification of Changes form</b>
                     <div class="govuk-hint">
                         <p>Email the document to your local authority contact. They must complete the notification of change and email it back to you. They must also include the school in the email they send you.</p>
                     </div>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.CheckReturnedForm)" id="@(nameof(Model.CheckReturnedForm))" asp-for="@Model.CheckReturnedForm" value="true" name="@(nameof(Model.CheckReturnedForm))" checked="@Model.CheckReturnedForm">
+                <govuk-checkboxes-item data-cy="@nameof(Model.CheckReturnedForm)" id="@(nameof(Model.CheckReturnedForm))" value="check-returned-form" checked="@(Model.SelectedOptions.Contains("check-returned-form"))">
                     <b>Check the returned Notification of Changes form</b>
                     <div class="govuk-hint">
                         <p>Compare the notification of changes document to the section 251 spreadsheet.</p>
                     </div>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.SendForm)" id="@(nameof(Model.SendForm))" asp-for="@Model.SendForm" value="true" name="@(nameof(Model.SendForm))" checked="@Model.SendForm" behaviour="Exclusive">
+                <govuk-checkboxes-item data-cy="@nameof(Model.SendForm)" id="@(nameof(Model.SendForm))" value="send-form" checked="@(Model.SelectedOptions.Contains("send-form"))">
                     <b>Send the completed Notification of Changes form to FFO</b>
                     <div class="govuk-hint">
                         <p>Email the completed notification of change document to the FFO at <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a>.</p>
