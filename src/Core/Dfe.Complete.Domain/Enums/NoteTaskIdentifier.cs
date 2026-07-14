@@ -208,9 +208,9 @@ public enum NoteTaskIdentifier
     [Description("post_decision_actions")]
     [DisplayDescription("Post decision actions")]
     PostDecisionActions = 52,
+    
     [Description("tupe_consultation")]
     [DisplayDescription("TUPE Consultation")]
-
     TupeConsultation = 53,
 
     [Description("la_confirms_payroll_deadline")]
@@ -232,4 +232,8 @@ public enum NoteTaskIdentifier
     [Description("confirm_school_bank_details")]
     [DisplayDescription("Confirm the new bank account details for the school")]
     ConfirmSchoolBankDetails = 59,
+    
+    [Description("confirm_children_centre")]
+    [DisplayDescription("Confirm children's centre provision")]
+    ConfirmChildrenCentre = 60
 }

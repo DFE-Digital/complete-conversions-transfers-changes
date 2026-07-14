@@ -44,6 +44,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
         public TaskListStatus ConfirmStatutoryConsultation { get; set; }
         public TaskListStatus ConfirmNurseryArrangement { get; set; }
+        public TaskListStatus ConfirmChildrenCentre { get; set; }
         public TaskListStatus PostDecisionActions { get; set; }
         public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmDbsChecks { get; set; }
@@ -90,6 +91,7 @@ namespace Dfe.Complete.Models
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
+                ConfirmChildrenCentre = ConfirmChildrenCentreTaskStatus(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
                 PostDecisionActions = PostDecisionActionsTaskStatus(taskData),
                 ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
@@ -121,6 +123,24 @@ namespace Dfe.Complete.Models
 
             return TaskListStatus.Completed;
             
+        }
+        
+        private static TaskListStatus ConfirmChildrenCentreTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.ChildrenCentreNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            
+            if (taskData.ChildrenCentreAcademyTrust != true && taskData.ChildrenCentreFundingPensionReviewed != true &&
+                taskData.ChildrenCentreLandLeaseSharedAgreed != true && taskData.ChildrenCentreLocalAuthority != true &&
+                taskData.ChildrenCentreLegalAndGovernanceReviewed != true && 
+                taskData.ChildrenCentreStaffingAndTransferReviewed != true)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return TaskListStatus.Completed;
         }
 
         private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)

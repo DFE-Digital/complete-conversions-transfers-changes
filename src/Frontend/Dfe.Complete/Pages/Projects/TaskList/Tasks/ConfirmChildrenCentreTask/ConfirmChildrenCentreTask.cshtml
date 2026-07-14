@@ -1,0 +1,118 @@
+@page "/projects/{projectId}/tasks/confirm_childrens_centre"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChildrenCentreTask.ConfirmChildrenCentreTaskModel;
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
+}
+
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>
+            A children's centre is usually managed by the local authority, even where it shares a site with a school.
+            You should confirm whether the centre will remain under local authority management or whether the academy trust intends to manage it.
+        </p>
+        <p>
+            Review any implications for staff, land, funding, shared use arrangements, and legal agreements before marking this task as complete.
+        </p>
+    </div>
+}
+
+@section TaskSection {
+    <form method="post" novalidate data-cy="task-update-childrens-centre">
+        <input type="hidden" asp-for="@Model.TasksDataId" />
+        
+        <govuk-checkboxes name="not_applicable_provision">
+            <govuk-checkboxes-item
+                data-cy="not_applicable"
+                id="not_applicable"
+                asp-for="@Model.NotApplicable"
+                value="true"
+                name="not_applicable"
+                checked="@Model.NotApplicable"
+            >
+                Not applicable
+            </govuk-checkboxes-item>
+        </govuk-checkboxes>
+        
+        <govuk-checkboxes name="children-centre-options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m govuk-!-margin-bottom-0">
+                    Confirm children's centre provision
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint class="govuk-!-margin-top-0">
+                    Select all that apply
+                </govuk-checkboxes-hint>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_local_authority"
+                    id="children_centre_local_authority"
+                    asp-for="@Model.ChildrenCentreLocalAuthority"
+                    value="true"
+                    name="children_centre_local_authority"
+                    checked="@Model.ChildrenCentreLocalAuthority"
+                >
+                    Children's centre remains managed by the local authority
+                </govuk-checkboxes-item>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_academy_trust"
+                    id="children_centre_academy_trust"
+                    asp-for="@Model.ChildrenCentreAcademyTrust"
+                    value="true"
+                    name="children_centre_academy_trust"
+                    checked="@Model.ChildrenCentreAcademyTrust"
+                >
+                    Academy trust intends to manage the children's centre
+                </govuk-checkboxes-item>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_staffing_and_transfer_reviewed"
+                    id="children_centre_staffing_and_transfer_reviewed"
+                    asp-for="@Model.ChildrenCentreStaffingAndTransferReviewed"
+                    value="true"
+                    name="children_centre_staffing_and_transfer_reviewed"
+                    checked="@Model.ChildrenCentreStaffingAndTransferReviewed"
+                >
+                    Staffing and transfer arrangements reviewed
+                </govuk-checkboxes-item>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_land_lease_shared_agreed"
+                    id="children_centre_land_lease_shared_agreed"
+                    asp-for="@Model.ChildrenCentreLandLeaseSharedAgreed"
+                    value="true"
+                    name="children_centre_land_lease_shared_agreed"
+                    checked="@Model.ChildrenCentreLandLeaseSharedAgreed"
+                >
+                    Land, lease and shared use arrangements agreed
+                </govuk-checkboxes-item>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_funding_pension_reviewed"
+                    id="children_centre_funding_pension_reviewed"
+                    asp-for="@Model.ChildrenCentreFundingPensionReviewed"
+                    value="true"
+                    name="children_centre_funding_pension_reviewed"
+                    checked="@Model.ChildrenCentreFundingPensionReviewed"
+                >
+                    Funding, pension and financial liability risks reviewed
+                </govuk-checkboxes-item>
+    
+                <govuk-checkboxes-item
+                    data-cy="children_centre_legal_and_governance_reviewed"
+                    id="children_centre_legal_and_governance_reviewed"
+                    asp-for="@Model.ChildrenCentreLegalAndGovernanceReviewed"
+                    value="true"
+                    name="children_centre_legal_and_governance_reviewed"
+                    checked="@Model.ChildrenCentreLegalAndGovernanceReviewed"
+                >
+                    Legal agreements and governance requirements reviewed
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

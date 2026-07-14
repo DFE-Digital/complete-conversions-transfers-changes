@@ -7277,7 +7277,8 @@
           "ConfirmDBSChecks",
           "PrivateFinanceInitiative",
           "ThirdPartyLeases",
-          "ConfirmSchoolBankDetails"
+          "ConfirmSchoolBankDetails",
+          "ConfirmChildrenCentre"
         ],
         "x-enum-descriptions": [
           "handover",
@@ -7336,7 +7337,8 @@
           "confirm_dbs_checks",
           "private_finance_initiative",
           "third_party_leases",
-          "confirm_school_bank_details"
+          "confirm_school_bank_details",
+          "confirm_children_centre"
         ],
         "enum": [
           "Handover",
@@ -7395,7 +7397,8 @@
           "ConfirmDBSChecks",
           "PrivateFinanceInitiative",
           "ThirdPartyLeases",
-          "ConfirmSchoolBankDetails"
+          "ConfirmSchoolBankDetails",
+          "ConfirmChildrenCentre"
         ]
       },
       "CreateNoteCommand": {
@@ -9347,6 +9350,34 @@
                 "$ref": "#/components/schemas/NurseryArrangementOption"
               }
             ]
+          },
+          "childrenCentreNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLocalAuthority": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreAcademyTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreStaffingAndTransferReviewed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLandLeaseSharedAgreed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreFundingPensionReviewed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLegalAndGovernanceReviewed": {
+            "type": "boolean",
+            "nullable": true
           },
           "statutoryConsultationNotApplicable": {
             "type": "boolean",
