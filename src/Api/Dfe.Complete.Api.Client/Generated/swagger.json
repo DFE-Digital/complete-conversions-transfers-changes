@@ -9275,6 +9275,10 @@
               }
             ]
           },
+          "checkAccuracyOfHigherNeedsNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
           "checkAccuracyOfHigherNeedsConfirmNumber": {
             "type": "boolean",
             "nullable": true
@@ -10371,14 +10375,6 @@
             "nullable": true
           },
           "confirmPublishedNumber": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "fundedPlacesRequired": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "acknowledgeLAMustConfirm": {
             "type": "boolean",
             "nullable": true
           },

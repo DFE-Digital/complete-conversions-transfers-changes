@@ -489,6 +489,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ArticlesOfAssociationSaved).HasColumnName("articles_of_association_saved");
         projectConfiguration.Property(e => e.ArticlesOfAssociationSent).HasColumnName("articles_of_association_sent");
         projectConfiguration.Property(e => e.ArticlesOfAssociationSigned).HasColumnName("articles_of_association_signed");
+        projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsNotApplicable).HasColumnName("check_accuracy_of_higher_needs_not_applicable");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_number");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmPublishedNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_published_number");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsCheckReturnedForm).HasColumnName("check_accuracy_of_higher_needs_check_returned_form");
