@@ -12,10 +12,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
     public class AccuracyOfHigherNeedsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<AccuracyOfHigherNeedsTaskModel> logger, IProjectPermissionService projectPermissionService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.CheckAccuracyOfHigherNeeds, projectPermissionService)
     {
-        private const string OptionConfirmPublishedNumber = "confirm-published-number";
-        private const string OptionConfirmNumber = "confirm-number";
-        private const string OptionCheckReturnedForm = "check-returned-form";
-        private const string OptionSendForm = "send-form";
+        private const string NotApplicableOption = "not-applicable";
+        private const string ConfirmPublishedNumberOption = "confirm-published-number";
+        private const string ConfirmNumberOption = "confirm-number";
+        private const string CheckReturnedFormOption = "check-returned-form";
+        private const string SendFormOption = "send-form";
 
         [BindProperty]
         public List<string> SelectedOptions { get; set; } = [];
@@ -33,6 +34,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
         public bool? SendForm { get; set; }
 
         [BindProperty]
+        public bool? NotApplicable { get; set; }
+
+        [BindProperty]
         public Guid? TasksDataId { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
@@ -46,27 +50,24 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
             ConfirmPublishedNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber;
             CheckReturnedForm = ConversionTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm;
             SendForm = ConversionTaskData.CheckAccuracyOfHigherNeedsSendForm;
+            NotApplicable = ConversionTaskData.CheckAccuracyOfHigherNeedsNotApplicable;
 
-            SelectedOptions = [];
-            if (ConfirmPublishedNumber == true)
-                SelectedOptions.Add(OptionConfirmPublishedNumber);
-            if (ConfirmNumber == true)
-                SelectedOptions.Add(OptionConfirmNumber);
-            if (CheckReturnedForm == true)
-                SelectedOptions.Add(OptionCheckReturnedForm);
-            if (SendForm == true)
-                SelectedOptions.Add(OptionSendForm);
+            SelectedOptions = CheckboxSelectionHelper.BuildSelectedOptions(
+                (NotApplicableOption, NotApplicable),
+                (ConfirmPublishedNumberOption, ConfirmPublishedNumber),
+                (ConfirmNumberOption, ConfirmNumber),
+                (CheckReturnedFormOption, CheckReturnedForm),
+                (SendFormOption, SendForm));
 
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            SelectedOptions ??= [];
-
-            ConfirmPublishedNumber = SelectedOptions.Contains(OptionConfirmPublishedNumber);
-            ConfirmNumber = SelectedOptions.Contains(OptionConfirmNumber);
-            CheckReturnedForm = SelectedOptions.Contains(OptionCheckReturnedForm);
-            SendForm = SelectedOptions.Contains(OptionSendForm);
+            NotApplicable = CheckboxSelectionHelper.IsSelected(SelectedOptions, NotApplicableOption);
+            ConfirmPublishedNumber = CheckboxSelectionHelper.IsSelected(SelectedOptions, ConfirmPublishedNumberOption);
+            ConfirmNumber = CheckboxSelectionHelper.IsSelected(SelectedOptions, ConfirmNumberOption);
+            CheckReturnedForm = CheckboxSelectionHelper.IsSelected(SelectedOptions, CheckReturnedFormOption);
+            SendForm = CheckboxSelectionHelper.IsSelected(SelectedOptions, SendFormOption);
 
             await Sender.Send(new UpdateAccuracyOfHigherNeedsTaskCommand(new TaskDataId(
                 TasksDataId.GetValueOrDefault())!,
