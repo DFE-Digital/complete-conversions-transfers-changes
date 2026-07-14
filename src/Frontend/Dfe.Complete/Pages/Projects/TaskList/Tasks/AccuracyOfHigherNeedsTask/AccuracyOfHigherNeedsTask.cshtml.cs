@@ -25,13 +25,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
 
         [BindProperty]
         public bool? ConfirmPublishedNumber { get; set; }
-
-        [BindProperty]
-        public bool? FundedPlacesRequired { get; set; }
-
-        [BindProperty]
-        public bool? AcknowledgeLAMustConfirm { get; set; }
-
+    
         [BindProperty]
         public bool? CheckReturnedForm { get; set; }
 
@@ -50,8 +44,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
             TasksDataId = Project.TasksDataId?.Value;
             ConfirmNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmNumber;
             ConfirmPublishedNumber = ConversionTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber;
-            FundedPlacesRequired = ConversionTaskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired;
-            AcknowledgeLAMustConfirm = ConversionTaskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm;
             CheckReturnedForm = ConversionTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm;
             SendForm = ConversionTaskData.CheckAccuracyOfHigherNeedsSendForm;
 
@@ -80,8 +72,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
                 TasksDataId.GetValueOrDefault())!,
                 ConfirmNumber,
                 ConfirmPublishedNumber,
-                FundedPlacesRequired,
-                AcknowledgeLAMustConfirm,
                 CheckReturnedForm,
                 SendForm
             ));

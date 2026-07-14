@@ -129,14 +129,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("articles_of_association_signed");
 
-                    b.Property<bool?>("CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm")
-                        .HasColumnType("bit")
-                        .HasColumnName("check_accuracy_of_higher_needs_acknowledge_la_must_confirm");
-
-                    b.Property<bool?>("CheckAccuracyOfHigherNeedsCheckReturnedForm")
-                        .HasColumnType("bit")
-                        .HasColumnName("check_accuracy_of_higher_needs_check_returned_form");
-
                     b.Property<bool?>("CheckAccuracyOfHigherNeedsConfirmNumber")
                         .HasColumnType("bit")
                         .HasColumnName("check_accuracy_of_higher_needs_confirm_number");
@@ -269,14 +261,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<DateOnly?>("ConfirmDateAcademyOpenedDateOpened")
                         .HasColumnType("date")
                         .HasColumnName("confirm_date_academy_opened_date_opened");
-
-                    b.Property<bool?>("ConfirmSchoolBankDetailsSent")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_school_bank_details_sent");
-
-                    b.Property<bool?>("ConfirmSchoolBankDetailsSubmitted")
-                        .HasColumnType("bit")
-                        .HasColumnName("confirm_school_bank_details_submitted");
 
                     b.Property<bool?>("ConversionGrantCheckVendorAccount")
                         .HasColumnType("bit")

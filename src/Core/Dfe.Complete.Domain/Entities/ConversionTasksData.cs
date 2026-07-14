@@ -265,10 +265,6 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; }
 
-    public bool? CheckAccuracyOfHigherNeedsFundedPlacesRequired { get; set; }
-
-    public bool? CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm { get; set; }
-
     public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; }
 
     public bool? CheckAccuracyOfHigherNeedsSendForm { get; set; }

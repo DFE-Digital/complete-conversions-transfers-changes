@@ -48,6 +48,22 @@ namespace Dfe.Complete.Models
         public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmDbsChecks { get; set; }
 
+        public static TaskListStatus GetStatusFromCheckboxList(List<bool?> values)
+        {
+            var hasTrue = false;
+            var hasFalse = false;
+
+            foreach (var value in values)
+            {
+                if (value == true) hasTrue = true;
+                else hasFalse = true;
+
+                if (hasTrue && hasFalse) return TaskListStatus.InProgress;
+            }
+
+            return hasTrue ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+        }
+
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
             return (taskData == null) ? new() : new ConversionTaskListViewModel
@@ -749,34 +765,15 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
         {
-            if (
-                (!taskData.CheckAccuracyOfHigherNeedsConfirmNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmNumber == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm.HasValue || taskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm.HasValue || taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsSendForm.HasValue || taskData.CheckAccuracyOfHigherNeedsSendForm == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired.HasValue)
-                )
-            {
-                return TaskListStatus.NotStarted;
-            }
-
-            if (
-                (taskData.CheckAccuracyOfHigherNeedsConfirmNumber is true) &&
-                (taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm is true) &&
-                (taskData.CheckAccuracyOfHigherNeedsSendForm is true) &&
-                (
-                    (taskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired is true && taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber is true) ||
-                    (taskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired is false && taskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm is true) 
-                ))
-            {
-                return TaskListStatus.Completed;
-            }
-
-
-            return (taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true &&
-                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+            // TODO not applicable placeholder
+            // 
+            return GetStatusFromCheckboxList(
+            [
+                taskData.CheckAccuracyOfHigherNeedsConfirmNumber,
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber,
+                taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm,
+                taskData.CheckAccuracyOfHigherNeedsSendForm
+            ]);
         }
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)

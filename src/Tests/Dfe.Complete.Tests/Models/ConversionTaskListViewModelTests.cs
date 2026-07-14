@@ -101,28 +101,23 @@ namespace Dfe.Complete.Tests.Models
 
 
         [Theory]
-        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, null, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, null, null, null, null, TaskListStatus.InProgress)]
-        [InlineData(false, true, null, null, null, null, TaskListStatus.InProgress)]
-        [InlineData(true, null, false, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, true, true, null, true, true, TaskListStatus.Completed)]
+        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, null, null, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, TaskListStatus.Completed)]
         public void CheckAccuracyOfHigherNeedsTaskStatus_ShouldReturn_CorrectStatus(
-                bool? confirmNumber,
-                bool? confirmPublishedNumber,
-                bool? fundedPlacesRequired,
-                bool? acknowledgeLAMustConfirm,
-                bool? checkReturnedForm,
-                bool? sendForm,
-                TaskListStatus expectedStatus)
+            bool? confirmNumber,
+            bool? confirmPublishedNumber,
+            bool? checkReturnedForm,
+            bool? sendForm,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
                 CheckAccuracyOfHigherNeedsConfirmNumber = confirmNumber,
                 CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber,
-                CheckAccuracyOfHigherNeedsFundedPlacesRequired = fundedPlacesRequired,
-                CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = acknowledgeLAMustConfirm,
                 CheckAccuracyOfHigherNeedsCheckReturnedForm = checkReturnedForm,
                 CheckAccuracyOfHigherNeedsSendForm = sendForm
             };

@@ -12,8 +12,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         TaskDataId TaskDataId,
         bool? ConfirmNumber,
         bool? ConfirmPublishedNumber,
-        bool? FundedPlacesRequired,
-        bool? AcknowledgeLAMustConfirm,
         bool? CheckReturnedForm,
         bool? SendForm
     ) : IRequest<Result<bool>>;
@@ -31,19 +29,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = request.ConfirmNumber;
             tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = request.CheckReturnedForm;
             tasksData.CheckAccuracyOfHigherNeedsSendForm = request.SendForm;
-            tasksData.CheckAccuracyOfHigherNeedsFundedPlacesRequired = request.FundedPlacesRequired;
-
-            tasksData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = null;
-            tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = null;
-
-            if (request.FundedPlacesRequired is true)
-            {
-                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = request.ConfirmPublishedNumber;
-            }
-            else if (request.FundedPlacesRequired is false)
-            {
-                tasksData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = request.AcknowledgeLAMustConfirm;
-            }
+            tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = request.ConfirmPublishedNumber;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

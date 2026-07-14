@@ -10,7 +10,7 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
+namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
 {
     public class UpdateAccuracyOfHigherNeedsTaskTests
     {
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 ConfirmNumber = true,
                 CheckReturnedForm = true,
                 SendForm = true,
-                FundedPlacesRequired = true
+                ConfirmPublishedNumber = true
             };
 
             // Act
@@ -50,92 +50,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsSendForm);
-            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired);
-
-        }
-
-        [Theory]
-        [CustomAutoData(
-            typeof(CustomWebApplicationDbContextFactoryCustomization),
-            typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldIgnoreOption_ConversionTasksData(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-            var taskData = fixture.Create<ConversionTasksData>();
-
-            taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = true;
-            taskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired = true;
-            taskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = false;
-
-            dbContext.ConversionTasksData.Add(taskData);
-            await dbContext.SaveChangesAsync();
-
-            var command = new UpdateAccuracyOfHigherNeedsTaskCommand
-            {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                FundedPlacesRequired = true,
-                ConfirmPublishedNumber = true,
-                AcknowledgeLAMustConfirm = true
-            };
-
-            // Act
-            await tasksDataClient.UpdateAccuracyOfHigherNeedsTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
-            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired);
-        }
 
-        [Theory]
-        [CustomAutoData(
-            typeof(CustomWebApplicationDbContextFactoryCustomization),
-            typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldNullUnusedOption_ConversionTasksData(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-            var taskData = fixture.Create<ConversionTasksData>();
-
-            taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = true;
-            taskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired = true;
-            taskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm = false;
-
-            dbContext.ConversionTasksData.Add(taskData);
-            await dbContext.SaveChangesAsync();
-
-            var command = new UpdateAccuracyOfHigherNeedsTaskCommand
-            {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                FundedPlacesRequired = false,
-                ConfirmPublishedNumber = true,
-                AcknowledgeLAMustConfirm = true
-            };
-
-            // Act
-            await tasksDataClient.UpdateAccuracyOfHigherNeedsTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
-            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm);
-            Assert.False(existingTaskData.CheckAccuracyOfHigherNeedsFundedPlacesRequired);
         }
 
         [Theory]
