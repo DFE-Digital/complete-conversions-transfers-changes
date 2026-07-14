@@ -4366,6 +4366,37 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ChildrensCentre": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "operationId": "TasksData_UpdateChildrenCentreTask",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChildrenCentreTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Children's centre task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ConfirmDbsChecks": {
       "patch": {
         "tags": [
@@ -10912,6 +10943,43 @@
                 "$ref": "#/components/schemas/NurseryArrangementOption"
               }
             ]
+          }
+        }
+      },
+      "UpdateChildrenCentreTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "childrenCentreNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLocalAuthority": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreAcademyTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreStaffingAndTransferReviewed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLandLeaseSharedAgreed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreFundingPensionReviewed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "childrenCentreLegalAndGovernanceReviewed": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
