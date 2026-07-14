@@ -36,6 +36,7 @@ interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
 interface UpdateConfirmAllConditionsMetTaskRequest {
     projectId: TaskDataId;
     confirm?: boolean;
+    shareInformationEmail?: boolean;
 }
 
 interface UpdateConfirmSchoolHasCompletedAllActionsTaskRequest {

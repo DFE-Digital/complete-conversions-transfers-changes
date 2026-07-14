@@ -79,12 +79,14 @@ class TaskHelperConversions extends TaskHelper {
             return taskApiConversions.updateConfirmAllConditionsMetTask({
                 projectId: { value: projectId },
                 confirm: true,
+                shareInformationEmail: true,
             });
         }
 
         return taskApiConversions.updateConfirmAllConditionsMetTask({
             projectId: { value: projectId },
             confirm: false,
+            shareInformationEmail: false,
         });
     }
 
@@ -381,7 +383,7 @@ class TaskHelperConversions extends TaskHelper {
             default:
                 return taskApiConversions.updateThirdPartyLeasesTask(defaultBody);
         }
-    } 
+    }
 
     updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
