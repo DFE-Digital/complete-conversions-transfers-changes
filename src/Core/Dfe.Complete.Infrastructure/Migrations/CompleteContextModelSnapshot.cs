@@ -262,6 +262,14 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("date")
                         .HasColumnName("confirm_date_academy_opened_date_opened");
 
+                    b.Property<bool?>("ConfirmSchoolBankDetailsSent")
+                        .HasColumnType("bit")
+                        .HasColumnName("confirm_school_bank_details_sent");
+
+                    b.Property<bool?>("ConfirmSchoolBankDetailsSubmitted")
+                        .HasColumnType("bit")
+                        .HasColumnName("confirm_school_bank_details_submitted");
+
                     b.Property<bool?>("ConversionGrantCheckVendorAccount")
                         .HasColumnType("bit")
                         .HasColumnName("conversion_grant_check_vendor_account");
