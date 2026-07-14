@@ -19,18 +19,6 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Confirm if the academy will have high needs places ESFA must fund")
-            .expandGuidance("Help checking and confirming high needs places")
-            .hasGuidance("Understanding differences in high needs places information")
-            .hasCheckboxLabel(
-                "Confirm the section 251 spreadsheet shows the number of high needs places ESFA must fund",
-            )
-            .expandGuidance("Help checking the 251 spreadsheet")
-            .hasGuidance("The section 251 spreadsheet shows how many high needs places the local authority funds.");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select all checkboxes and save");
         taskPage

@@ -17,16 +17,6 @@
         <p>The information the local authority and school have may differ and they may not agree on numbers.</p>
         <p>If that is the case the FFO will use the latest section 251 spreadsheet to make a funding decision.</p>
 
-        <govuk-details>
-            <govuk-details-summary>
-                <span class="govuk-details__summary-text">Help checking and confirming high needs places</span>
-            </govuk-details-summary>
-            <govuk-details-text>
-                <p>You may find different numbers of high needs places in the local authority proforma and Get information about schools.</p>
-                <p>Some numbers show the total amount of high needs places a school can support, known as their capacity. Others show how many places have funding in that academic year.</p>
-            </govuk-details-text>
-        </govuk-details>
-
         <span>You need to talk to the local authority and school to confirm:</span>
         <ul class="govuk-!-margin-top-0">
             <li>whether the school has high needs places</li> 
@@ -39,170 +29,41 @@
 @section TaskSection {
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
-        <govuk-radios name="@nameof(Model.FundedPlacesRequired)" id="@nameof(Model.FundedPlacesRequired)" data-cy="@nameof(Model.FundedPlacesRequired)" asp-for="FundedPlacesRequired" class="govuk-!-margin-top-8">
-            <govuk-radios-fieldset>
-                <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
-                    Will the academy have high needs places FFO must fund?
-                </govuk-radios-fieldset-legend>
-                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)True" value="true" checked="@(Model.FundedPlacesRequired == true)">
-                    Yes
-                    <govuk-radios-item-conditional>
-                        <govuk-checkboxes name="options">
-                            <govuk-checkboxes-fieldset>
-                                <govuk-checkboxes-fieldset-legend></govuk-checkboxes-fieldset-legend>
-                                <govuk-checkboxes-item
-                                    data-cy="@nameof(Model.ConfirmPublishedNumber)"
-                                    id="@(nameof(Model.ConfirmPublishedNumber))"
-                                    asp-for="@Model.ConfirmPublishedNumber"
-                                    value="true"
-                                    name="@(nameof(Model.ConfirmPublishedNumber))"
-                                    checked="@Model.ConfirmPublishedNumber"
-                                >
-                                    <b>Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund</b>
-                                </govuk-checkboxes-item>
-                            </govuk-checkboxes-fieldset>
-                        </govuk-checkboxes>
-                        <div class="govuk-hint">
-                            <p>Ask the local authority and school to check the section 251 spreadsheet. They must confirm if the information in it is correct.</p>
-                            <p>FFO create the spreadsheet every year. It is then emailed to delivery officers and caseworkers. Email <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a> for the latest version of the document if you do not have it.</p>
-
-                            <govuk-details>
-                                <govuk-details-summary>
-                                    <span class="govuk-details__summary-text">Help checking the 251 spreadsheet</span>
-                                </govuk-details-summary>
-                                <govuk-details-text>
-                                    <p>The section 251 spreadsheet shows how many high needs places the local authority funds.</p>
-                                    <p>FFO need to know if that number will be the same when the academy opens, or if there are any changes. FFO use the section 251 spreadsheet to calculate how much funding to give the academy for their high needs places.</p>
-                                    <p>The spreadsheet is only published once a year. Place numbers may change between publications so it can be out of date and post-16s places might not be included in the figures.</p>
-                                </govuk-details-text>
-                            </govuk-details>
-
-                            <govuk-details>
-                                <govuk-details-summary>
-                                    <span class="govuk-details__summary-text">What the FFO need to know</span>
-                                </govuk-details-summary>
-                                <govuk-details-text>
-                                    <p>The FFO need to know if any data in the section 251 spreadsheet has changed since it was last published.</p>
-                                    <p>For example, they need to know if:</p>
-                                    <ul>
-                                        <li>a school with no high needs places is on the section 251 spreadsheet</li> 
-                                        <li>a school with high needs places is missing</li>
-                                        <li>the number of pre-16 high needs places is wrong</li>
-                                        <li>the number of high needs places on the spreadsheet includes post-16 pupils or not</li>
-                                        <li>the FFO needs to fund post-16s (year 12 and 13) places that are not included in the section 251 spreadsheet</li> 
-                                    </ul>
-                                </govuk-details-text>
-                            </govuk-details>
-
-                            <govuk-details>
-                                <govuk-details-summary>
-                                    <span class="govuk-details__summary-text">Help to update the section 251 spreadsheet</span>
-                                </govuk-details-summary>
-                                <govuk-details-text>
-                                    <p>Missing or incorrect information can be changed using a notification of changes to funded high needs places form.</p>
-                                    <p>The local authority must complete one and send it to you. You must email the notification of changes to the academy openers team once you have it.</p>
-                                    <p>Email the openers team at <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a> if you, the local authority, or the school have any questions about the section 251 spreadsheet.</p>
-                                </govuk-details-text>
-                            </govuk-details>
-                        </div>
-                    </govuk-radios-item-conditional>
-                </govuk-radios-item>
-                <govuk-radios-item data-cy="@nameof(Model.FundedPlacesRequired)False" value="false" checked="@(Model.FundedPlacesRequired == false)">
-                    No
-                    <govuk-radios-item-conditional>
-                        <govuk-checkboxes name="options">
-                            <govuk-checkboxes-fieldset>
-                                <govuk-checkboxes-fieldset-legend></govuk-checkboxes-fieldset-legend>
-                                <govuk-checkboxes-item
-                                    data-cy="@nameof(Model.AcknowledgeLAMustConfirm)"
-                                    id="@(nameof(Model.AcknowledgeLAMustConfirm))"
-                                    asp-for="@Model.AcknowledgeLAMustConfirm"
-                                    value="true"
-                                    name="@(nameof(Model.AcknowledgeLAMustConfirm))"
-                                    checked="@Model.AcknowledgeLAMustConfirm"
-                                >
-                                    <b>The local authority must complete a notification of changes to funded high needs places form if the section 251 spreadsheet is incorrect</b>
-                                </govuk-checkboxes-item>
-                            </govuk-checkboxes-fieldset>
-                        </govuk-checkboxes>
-                        <div class="govuk-hint">
-                            <govuk-details>
-                                <govuk-details-summary>
-                                    <span class="govuk-details__summary-text">What the FFO need to know</span>
-                                </govuk-details-summary>
-                                <govuk-details-text>
-                                    <p>You will need to use the notification of changes document if the:</p>
-                                    <ul>
-                                        <li>school is not on the spreadsheet but has high needs places</li>
-                                        <li>school is on the spreadsheet but does not have high needs places</li>
-                                        <li>number of pre-16 high needs places is wrong</li>
-                                        <li>post-16 and pre-16 high needs places have been counted together</li>
-                                        <li>post-16 high needs places that need funding are not on the spreadsheet</li>
-                                    </ul>
-
-                                    <p class="govuk-!-margin-0">Pre-16 high needs places are for all pupils up to and including year 11.</p>
-                                    <p class="govuk-!-margin-0">Post-16 high needs places are for pupils in years 12 and 13.</p>
-                                    <p class="govuk-!-margin-0">It is critical to make sure this information is accurate so that FFO are able to fund high needs places at the academy.</p>
-                                    <p class="govuk-!-margin-0">You will need to work with the school and FFO after opening to resolve any funding payment issues.</p>
-                                </govuk-details-text>
-                            </govuk-details>
-                        </div>
-                    </govuk-radios-item-conditional>
-                </govuk-radios-item>
-            </govuk-radios-fieldset>
-        </govuk-radios> 
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
+
                 <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--m">
                     Check Accuracy of High Needs Places
                     <span class="govuk-caption-m">Select all that apply</span>
                 </govuk-checkboxes-fieldset-legend>
+
+                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" asp-for="@Model.ConfirmPublishedNumber" value="true" name="@(nameof(Model.ConfirmPublishedNumber))" checked="@Model.ConfirmPublishedNumber">
+                    <b>Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund</b>
+                </govuk-checkboxes-item>
+
                 <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmNumber)" id="@(nameof(Model.ConfirmNumber))" asp-for="@Model.ConfirmNumber" value="true" name="@(nameof(Model.ConfirmNumber))" checked="@Model.ConfirmNumber">
                     <b>Tell the local authority to complete the Notification of Changes form</b>
                     <div class="govuk-hint">
                         <p>Email the document to your local authority contact. They must complete the notification of change and email it back to you. They must also include the school in the email they send you.</p>
-                    
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">What to do if you do not have the document</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>Each year the academy openers team send out the notification of change document by email, with guidance on how to use it.</p>
-                                <p>You can email <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a> to ask for a notification of change document if you do not have one.</p> 
-                            </govuk-details-text>
-                        </govuk-details>
                     </div>
                 </govuk-checkboxes-item>
+
                 <govuk-checkboxes-item data-cy="@nameof(Model.CheckReturnedForm)" id="@(nameof(Model.CheckReturnedForm))" asp-for="@Model.CheckReturnedForm" value="true" name="@(nameof(Model.CheckReturnedForm))" checked="@Model.CheckReturnedForm">
                     <b>Check the returned Notification of Changes form</b>
                     <div class="govuk-hint">
                         <p>Compare the notification of changes document to the section 251 spreadsheet.</p>
-
-                        <govuk-details>
-                            <govuk-details-summary>
-                                <span class="govuk-details__summary-text">What to check for</span>
-                            </govuk-details-summary>
-                            <govuk-details-text>
-                                <p>You must make sure that the notification of change document includes:</p>
-                                <ul>
-                                    <li>school information that matches what is shown in the project</li> 
-                                    <li>the conversion date</li>
-                                    <li>high needs places numbers in the correct locations</li>
-                                    <li>the number "0" in categories where no high needs places are required</li>
-                                    <li>the signature of the local authority's Chief Finance Officer</li> 
-                                </ul>
-                            </govuk-details-text>
-                        </govuk-details>
                     </div>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="@nameof(Model.SendForm)" id="@(nameof(Model.SendForm))" asp-for="@Model.SendForm" value="true" name="@(nameof(Model.SendForm))" checked="@Model.SendForm">
-                    <b>Send the completed Notification of Changes for to FFO</b>
+
+                <govuk-checkboxes-item data-cy="@nameof(Model.SendForm)" id="@(nameof(Model.SendForm))" asp-for="@Model.SendForm" value="true" name="@(nameof(Model.SendForm))" checked="@Model.SendForm" behaviour="Exclusive">
+                    <b>Send the completed Notification of Changes form to FFO</b>
                     <div class="govuk-hint">
                         <p>Email the completed notification of change document to the FFO at <a href="mailto:@academyOpenersEmail">@academyOpenersEmail</a>.</p>
                     </div>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
+
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
