@@ -8,9 +8,18 @@ class TaskHelperConversions extends TaskHelper {
             taskDataId: { value: taskDataId },
             confirmNumber: false,
             confirmPublishedNumber: false,
+            checkReturnedForm: false,
+            sendForm: false,
+            notApplicable: false,
         };
 
         switch (status) {
+            case "notApplicable":
+                return taskApiConversions.updateCheckAccuracyOfHigherNeedsTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
             case "inProgress":
                 return taskApiConversions.updateCheckAccuracyOfHigherNeedsTask({
                     ...defaultBody,
@@ -22,6 +31,8 @@ class TaskHelperConversions extends TaskHelper {
                     taskDataId: { value: taskDataId },
                     confirmNumber: true,
                     confirmPublishedNumber: true,
+                    checkReturnedForm: true,
+                    sendForm: true,
                 });
 
             default:
