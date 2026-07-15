@@ -607,6 +607,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateChildrenCentreTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateConfirmDbsChecksTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

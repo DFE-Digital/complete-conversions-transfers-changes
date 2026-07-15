@@ -1034,6 +1034,20 @@ namespace Dfe.Complete.Api.Controllers
 
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
+        [Route("TaskData/ChildrensCentre")]
+        [SwaggerResponse(204, "Children's centre task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateChildrenCentreTaskAsync(
+            [FromBody] UpdateChildrenCentreTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
         [Route("TaskData/ConfirmDbsChecks")]
         [SwaggerResponse(204, "Conversion's Confirm DBS Checks task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]

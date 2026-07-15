@@ -1882,6 +1882,15 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateNurseryArrangementTaskAsync(UpdateNurseryArrangementTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>Children's centre task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChildrenCentreTaskAsync(UpdateChildrenCentreTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Children's centre task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChildrenCentreTaskAsync(UpdateChildrenCentreTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
         /// <returns>Conversion's Confirm DBS Checks task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateConfirmDbsChecksTaskAsync(UpdateConfirmDbsChecksTaskCommand request);
@@ -4436,6 +4445,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolBankDetails")]
         ConfirmSchoolBankDetails = 56,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmChildrenCentre")]
+        ConfirmChildrenCentre = 57,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -6364,6 +6376,27 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public NurseryArrangementOption? NurseryArrangement { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("childrenCentreNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLocalAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLocalAuthority { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreAcademyTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreAcademyTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreStaffingAndTransferReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreStaffingAndTransferReviewed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLandLeaseSharedAgreed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLandLeaseSharedAgreed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreFundingPensionReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreFundingPensionReviewed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLegalAndGovernanceReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLegalAndGovernanceReviewed { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("statutoryConsultationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? StatutoryConsultationNotApplicable { get; set; } = default!;
 
@@ -8241,6 +8274,48 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateNurseryArrangementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.6.3.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateChildrenCentreTaskCommand
+    {
+
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLocalAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLocalAuthority { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreAcademyTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreAcademyTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreStaffingAndTransferReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreStaffingAndTransferReviewed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLandLeaseSharedAgreed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLandLeaseSharedAgreed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreFundingPensionReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreFundingPensionReviewed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("childrenCentreLegalAndGovernanceReviewed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChildrenCentreLegalAndGovernanceReviewed { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateChildrenCentreTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateChildrenCentreTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
     }

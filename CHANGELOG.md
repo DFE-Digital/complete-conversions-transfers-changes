@@ -35,6 +35,7 @@ Security in case of vulnerabilities.
 - [282907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282907) - Redact and send documents content changes
 
 ### Added
+- [283349](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/283349) - Added new 'Confirm Children's Centre' conversion task and updated 'Nursery Arrangement' task content
 - [282872](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282872) - Add conversion task "Confirm the new bank account details for the school" in Get ready for opening, with status logic, API endpoint, migration, and test coverage
 - [282893](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282893) - updated checkboxes to be radio buttons and general content change
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage

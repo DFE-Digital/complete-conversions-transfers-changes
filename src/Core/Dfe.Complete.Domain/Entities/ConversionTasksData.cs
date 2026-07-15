@@ -305,11 +305,26 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
     public bool? CommercialTransferAgreementSaved { get; set; }
+    
     public bool? SponsoredSupportGrantHasVendorAccount { get; set; }
 
     public bool? ConfirmDBSChecks { get; set; }
 
     public NurseryArrangementOption? NurseryArrangement { get; set; }
+    
+    public bool? ChildrenCentreNotApplicable { get; set; }
+    
+    public bool? ChildrenCentreLocalAuthority { get; set; }
+    
+    public bool? ChildrenCentreAcademyTrust { get; set; }
+    
+    public bool? ChildrenCentreStaffingAndTransferReviewed { get; set; }
+    
+    public bool? ChildrenCentreLandLeaseSharedAgreed { get; set; }
+    
+    public bool? ChildrenCentreFundingPensionReviewed { get; set; }
+    
+    public bool? ChildrenCentreLegalAndGovernanceReviewed { get; set; }
 
     public bool? StatutoryConsultationNotApplicable { get; set; }
 

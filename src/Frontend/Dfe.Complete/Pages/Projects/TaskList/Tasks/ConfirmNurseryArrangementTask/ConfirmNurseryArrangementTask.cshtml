@@ -20,34 +20,30 @@
     <form method="post" novalidate data-cy="task-update-nursery-arrangement">
         <input type="hidden" asp-for="@Model.TasksDataId" />
 
+        <govuk-checkboxes name="not_applicable_arrangement">
+            <govuk-checkboxes-item id="not_applicable" name="not_applicable" value="true" data-cy="not-applicable" asp-for="@Model.NotApplicable" checked="@Model.NotApplicable">
+                Not applicable
+            </govuk-checkboxes-item>
+        </govuk-checkboxes>
         <govuk-radios name="nursery_arrangement" asp-for="@Model.SelectedNurseryArrangement">
             <govuk-radios-fieldset>
                 <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--m">
                     Confirm academy nursery arrangement
                 </govuk-radios-fieldset-legend>
-                @foreach (var type in Model.NurseryArrangementOptions)
+                @foreach (var type in Model.NurseryArrangementOptions.Where(t => t is not (NurseryArrangementOption.AChildrensCentre or NurseryArrangementOption.NotApplicable)))
                 {
                     var selected = type == Model.SelectedNurseryArrangement;
                     <govuk-radios-item data-cy="confirm_nursery_@type.ToDescription()"
-                                       id="nursery_arrangement_@type.ToString()"
-                                       value="@type"
-                                       name="@type.ToDescription()"
-                                       checked="@selected">
+                       id="nursery_arrangement_@type.ToString()"
+                       value="@type"
+                       name="@type.ToDescription()"
+                       checked="@selected"
+                    >
                         @type.ToDisplayDescription()
-                        @if (type == NurseryArrangementOption.AChildrensCentre)
-                        {
-                            <br />
-                            <govuk-radios-hint class="govuk-hint" data-cy="hint_@type.ToDescription()">
-                                See <external-link href="@_configuration["ExternalLinks:SureStartCentresGuidance"]">Children's Centres and Sure Start Centres Guidance (opens in new tab)</external-link> on the guidance site.
-                            </govuk-radios-hint>
-                        }
-                    
-                        </govuk-radios-item>
-
+                    </govuk-radios-item>
                 }
             </govuk-radios-fieldset>
         </govuk-radios>
-        
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
