@@ -79,14 +79,19 @@ class TaskHelperConversions extends TaskHelper {
             return taskApiConversions.updateConfirmAllConditionsMetTask({
                 projectId: { value: projectId },
                 confirm: true,
-                shareInformationEmail: true,
             });
         }
 
         return taskApiConversions.updateConfirmAllConditionsMetTask({
             projectId: { value: projectId },
             confirm: false,
-            shareInformationEmail: false,
+        });
+    }
+
+    public updateShareInformationAboutOpening(taskDataId: string, shareInformationEmail?: boolean) {
+        return taskApiConversions.updateShareInformationAboutOpeningTask({
+            taskDataId: { value: taskDataId },
+            shareInformationEmail: shareInformationEmail ?? true,
         });
     }
 

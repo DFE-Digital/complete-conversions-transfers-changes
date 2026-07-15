@@ -36,8 +36,13 @@ interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
 interface UpdateConfirmAllConditionsMetTaskRequest {
     projectId: TaskDataId;
     confirm?: boolean;
+}
+
+interface UpdateShareInformationAboutOpeningTaskRequest {
+    taskDataId: TaskDataId;
     shareInformationEmail?: boolean;
 }
+
 
 interface UpdateConfirmSchoolHasCompletedAllActionsTaskRequest {
     taskDataId: TaskDataId;
@@ -179,6 +184,10 @@ class TaskApiConversions extends TaskApi {
 
     public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
         return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
+    }
+
+    public updateShareInformationAboutOpeningTask(requestBody: UpdateShareInformationAboutOpeningTaskRequest) {
+        return this.taskDataBaseRequest<void>("UpdateShareInformationAboutOpening", requestBody);
     }
 
     public updateConfirmSchoolHasCompletedAllActionsTask(
