@@ -1,7 +1,7 @@
 ﻿namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public interface IColumnBuilder<T>
+    public interface IColumnBuilder<in T>
     {
-        string Build(T value);
+        string Build(T input);
     }
 }

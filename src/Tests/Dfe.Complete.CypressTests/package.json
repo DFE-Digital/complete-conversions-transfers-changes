@@ -54,5 +54,8 @@
     "util": "^0.12.5",
     "webpack": "^5.105.4",
     "zaproxy": "^2.0.0-rc.7"
+  },
+  "overrides": {
+    "serialize-javascript": "7.0.5"
   }
 }

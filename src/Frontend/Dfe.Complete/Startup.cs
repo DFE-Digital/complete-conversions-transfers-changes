@@ -1,4 +1,5 @@
 using Azure.Identity;
+using AutoMapper.Internal;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Infrastructure;
@@ -165,7 +166,14 @@ public class Startup
         services.AddCustomClaimProvider<CustomDatabaseClaimsProvider>();
 
         // AutoMapper
-        services.AddAutoMapper(typeof(AutoMapping));
+        var autoMapperMaxDepth = int.TryParse(Configuration["AutoMapper:MaxDepth"], out var configuredAutoMapperMaxDepth)
+            ? configuredAutoMapperMaxDepth
+            : 64;
+
+        services.AddAutoMapper(cfg =>
+        {
+            cfg.Internal().ForAllMaps((_, mapping) => mapping.MaxDepth(autoMapperMaxDepth));
+        }, typeof(AutoMapping));
 
         services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
         services.Configure<MaintenanceBannerOptions>(Configuration.GetSection(MaintenanceBannerOptions.Section));
