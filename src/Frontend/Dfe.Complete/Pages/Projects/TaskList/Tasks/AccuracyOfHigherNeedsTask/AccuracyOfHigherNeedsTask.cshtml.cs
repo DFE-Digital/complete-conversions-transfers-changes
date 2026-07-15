@@ -74,7 +74,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
                 ConfirmNumber,
                 ConfirmPublishedNumber,
                 CheckReturnedForm,
-                SendForm
+                SendForm,
+                NotApplicable
             ));
 
             SetTaskSuccessNotification();

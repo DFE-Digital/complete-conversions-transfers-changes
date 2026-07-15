@@ -10385,6 +10385,10 @@
           "sendForm": {
             "type": "boolean",
             "nullable": true
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },

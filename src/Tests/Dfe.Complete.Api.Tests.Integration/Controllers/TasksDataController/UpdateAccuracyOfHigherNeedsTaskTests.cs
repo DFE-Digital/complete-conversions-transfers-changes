@@ -37,7 +37,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
                 ConfirmNumber = true,
                 CheckReturnedForm = true,
                 SendForm = true,
-                ConfirmPublishedNumber = true
+                ConfirmPublishedNumber = true,
+                NotApplicable = false
             };
 
             // Act
