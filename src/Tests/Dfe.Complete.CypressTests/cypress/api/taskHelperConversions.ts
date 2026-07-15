@@ -88,6 +88,13 @@ class TaskHelperConversions extends TaskHelper {
         });
     }
 
+    public updateShareInformationAboutOpening(taskDataId: string, shareInformationEmail?: boolean) {
+        return taskApiConversions.updateShareInformationAboutOpeningTask({
+            taskDataId: { value: taskDataId },
+            shareInformationEmail: shareInformationEmail ?? true,
+        });
+    }
+
     updateConfirmSchoolHasCompletedAllActions(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -381,7 +388,7 @@ class TaskHelperConversions extends TaskHelper {
             default:
                 return taskApiConversions.updateThirdPartyLeasesTask(defaultBody);
         }
-    } 
+    }
 
     updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
         const defaultBody = {

@@ -24,7 +24,7 @@ describe("Conversion tasks - Confirm the new bank account details for the school
             .hasCheckboxLabel(
                 "Request confirmation that the school's bank account details have been sent to the DfE using the automated form by the published deadline.",
             )
-            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted.");
+            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted and confirmation of the AF reference number.");
     });
 
     it("should submit the form and persist selections", () => {
@@ -34,7 +34,7 @@ describe("Conversion tasks - Confirm the new bank account details for the school
                 "Request confirmation that the school's bank account details have been sent to the DfE using the automated form by the published deadline.",
             )
             .tick()
-            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted.")
+            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted and confirmation of the AF reference number.")
             .tick()
             .saveAndReturn();
         taskListPage
@@ -48,7 +48,7 @@ describe("Conversion tasks - Confirm the new bank account details for the school
             )
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted.")
+            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted and confirmation of the AF reference number.")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -60,7 +60,7 @@ describe("Conversion tasks - Confirm the new bank account details for the school
                 "Request confirmation that the school's bank account details have been sent to the DfE using the automated form by the published deadline.",
             )
             .isUnticked()
-            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted.")
+            .hasCheckboxLabel("Received confirmation that the school bank details have been submitted and confirmation of the AF reference number.")
             .isUnticked();
     });
 
