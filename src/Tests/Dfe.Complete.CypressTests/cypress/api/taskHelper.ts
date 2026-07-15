@@ -127,12 +127,14 @@ export class TaskHelper {
     }
 
     public updateDeedOfVariation(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const isConversion = projectType === ProjectType.Conversion;
         const defaultBody = {
             taskDataId: { value: taskDataId },
             projectType: projectType,
             notApplicable: false,
             received: false,
             cleared: false,
+            sent: false,
             draftSaved: false,
             saved: false,
             signed: false,
@@ -159,7 +161,8 @@ export class TaskHelper {
                     notApplicable: false,
                     received: true,
                     cleared: true,
-                    draftSaved: true,
+                    sent: !isConversion,
+                    draftSaved: isConversion,
                     saved: true,
                     signed: true,
                     signedSecretaryState: true,
