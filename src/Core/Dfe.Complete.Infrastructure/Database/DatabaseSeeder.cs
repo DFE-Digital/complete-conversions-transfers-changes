@@ -30,8 +30,9 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
         {
             if (force)
             {
-                Console.WriteLine("[Seeder] Force/reset flag detected. Deleting all seed data tables...");
-                await DeleteSeedDataAsync();
+                // Temporarily disabling "dangerous" code
+                // Console.WriteLine("[Seeder] Force/reset flag detected. Deleting all seed data tables...");
+                // await DeleteSeedDataAsync();
             }
             Console.WriteLine("[Seeder] Starting database seeding...");
 
@@ -53,18 +54,19 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
 
     private async Task DeleteSeedDataAsync()
     {
+        // Temporarily disable "dangerous" code to prevent accidental data loss. Uncomment the following lines to enable deletion of seed data in the specified order using EF.
         // Delete in the specified order using EF
-        _context.TransferTasksData.RemoveRange(_context.TransferTasksData);
-        _context.ConversionTasksData.RemoveRange(_context.ConversionTasksData);
-        _context.ProjectGroups.RemoveRange(_context.ProjectGroups);
-        _context.GiasEstablishments.RemoveRange(_context.GiasEstablishments);
-        _context.KeyContacts.RemoveRange(_context.KeyContacts);
-        _context.SignificantDateHistoryReasons.RemoveRange(_context.SignificantDateHistoryReasons);
-        _context.Projects.RemoveRange(_context.Projects);
-        _context.Users.RemoveRange(_context.Users);
-        _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
-        await _context.SaveChangesAsync();
-        Console.WriteLine("[Seeder] All seed data tables deleted.");
+        // _context.TransferTasksData.RemoveRange(_context.TransferTasksData);
+        // _context.ConversionTasksData.RemoveRange(_context.ConversionTasksData);
+        // _context.ProjectGroups.RemoveRange(_context.ProjectGroups);
+        // _context.GiasEstablishments.RemoveRange(_context.GiasEstablishments);
+        // _context.KeyContacts.RemoveRange(_context.KeyContacts);
+        // _context.SignificantDateHistoryReasons.RemoveRange(_context.SignificantDateHistoryReasons);
+        // _context.Projects.RemoveRange(_context.Projects);
+        // _context.Users.RemoveRange(_context.Users);
+        // _context.LocalAuthorities.RemoveRange(_context.LocalAuthorities);
+        // await _context.SaveChangesAsync();
+        // Console.WriteLine("[Seeder] All seed data tables deleted.");
     }
 
     private async Task SeedSignificantDateHistoryReasonsAsync()

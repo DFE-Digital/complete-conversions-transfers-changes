@@ -14,6 +14,7 @@
     ```bash
     dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
     ```
+    - The following --force option to clear down data is currently disabled (commented out). Uncomment the code to use it
     - To reset all seed data before seeding:
         ```bash
         dotnet run --project src/Api/Dfe.Complete.Api -- seed-db --force
