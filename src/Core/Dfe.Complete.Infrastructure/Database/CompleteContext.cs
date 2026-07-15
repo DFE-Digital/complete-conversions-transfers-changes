@@ -491,6 +491,13 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ArticlesOfAssociationSigned).HasColumnName("articles_of_association_signed");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_number");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmPublishedNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_published_number");
+        projectConfiguration.Property(e => e.ChildrenCentreAcademyTrust).HasColumnName("children_centre_academy_trust");
+        projectConfiguration.Property(e => e.ChildrenCentreFundingPensionReviewed).HasColumnName("children_centre_funding_pension_reviewed");
+        projectConfiguration.Property(e => e.ChildrenCentreLandLeaseSharedAgreed).HasColumnName("children_centre_land_lease_shared_agreed");
+        projectConfiguration.Property(e => e.ChildrenCentreLegalAndGovernanceReviewed).HasColumnName("children_centre_legal_and_governance_reviewed");
+        projectConfiguration.Property(e => e.ChildrenCentreLocalAuthority).HasColumnName("children_centre_local_authority");
+        projectConfiguration.Property(e => e.ChildrenCentreNotApplicable).HasColumnName("children_centre_not_applicable");
+        projectConfiguration.Property(e => e.ChildrenCentreStaffingAndTransferReviewed).HasColumnName("children_centre_staffing_and_transfer_reviewed");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementCleared).HasColumnName("church_supplemental_agreement_cleared");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementNotApplicable).HasColumnName("church_supplemental_agreement_not_applicable");
         projectConfiguration.Property(e => e.ChurchSupplementalAgreementReceived).HasColumnName("church_supplemental_agreement_received");
