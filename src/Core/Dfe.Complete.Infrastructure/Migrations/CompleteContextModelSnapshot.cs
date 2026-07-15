@@ -168,9 +168,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("ChildrenCentreStaffingAndTransferReviewed")
                         .HasColumnType("bit")
                         .HasColumnName("children_centre_staffing_and_transfer_reviewed");
-                    b.Property<bool?>("CheckAccuracyOfHigherNeedsFundedPlacesRequired")
-                        .HasColumnType("bit")
-                        .HasColumnName("check_accuracy_of_higher_needs_funded_places_required");
 
                     b.Property<bool?>("CheckAccuracyOfHigherNeedsNotApplicable")
                         .HasColumnType("bit")
