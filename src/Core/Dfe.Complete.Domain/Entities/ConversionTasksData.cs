@@ -261,9 +261,15 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public RiskProtectionArrangementOption? RiskProtectionArrangementOption { get; set; }
 
+    public bool? CheckAccuracyOfHigherNeedsNotApplicable { get; set; }
+
     public bool? CheckAccuracyOfHigherNeedsConfirmNumber { get; set; }
 
     public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; }
+
+    public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; }
+
+    public bool? CheckAccuracyOfHigherNeedsSendForm { get; set; }
 
     public bool? CompleteNotificationOfChangeNotApplicable { get; set; }
 

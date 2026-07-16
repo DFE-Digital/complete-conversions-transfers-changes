@@ -94,7 +94,7 @@ public enum NoteTaskIdentifier
     ConfirmRiskProtectionArrangementsPolicy = 23,
 
     [Description("check_accuracy_of_higher_needs")]
-    [DisplayDescription("Check accuracy of high needs places information")]
+    [DisplayDescription("Check accuracy of high needs places")]
     CheckAccuracyOfHigherNeeds = 24,
 
     [Description("complete_notification_of_change")]

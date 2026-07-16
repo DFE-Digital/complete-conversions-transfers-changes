@@ -101,21 +101,30 @@ namespace Dfe.Complete.Tests.Models
 
 
         [Theory]
-        [InlineData(null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, TaskListStatus.InProgress)]
-        [InlineData(false, true, TaskListStatus.InProgress)]
-        [InlineData(true, true, TaskListStatus.Completed)]
+        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, null, null, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void CheckAccuracyOfHigherNeedsTaskStatus_ShouldReturn_CorrectStatus(
-                bool? confirmNumber,
-                bool? confirmPublishedNumber,
-                TaskListStatus expectedStatus)
+            bool? confirmNumber,
+            bool? confirmPublishedNumber,
+            bool? checkReturnedForm,
+            bool? sendForm,
+            bool? notApplicable,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
                 CheckAccuracyOfHigherNeedsConfirmNumber = confirmNumber,
-                CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber
+                CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber,
+                CheckAccuracyOfHigherNeedsCheckReturnedForm = checkReturnedForm,
+                CheckAccuracyOfHigherNeedsSendForm = sendForm,
+                CheckAccuracyOfHigherNeedsNotApplicable = notApplicable
             };
             var project = new ProjectDto();
 

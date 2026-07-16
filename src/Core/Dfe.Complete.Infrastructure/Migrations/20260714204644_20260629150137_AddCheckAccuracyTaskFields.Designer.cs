@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260714204644_20260629150137_AddCheckAccuracyTaskFields")]
+    partial class _20260629150137_AddCheckAccuracyTaskFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,34 +143,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Property<bool?>("CheckAccuracyOfHigherNeedsConfirmPublishedNumber")
                         .HasColumnType("bit")
                         .HasColumnName("check_accuracy_of_higher_needs_confirm_published_number");
-
-                    b.Property<bool?>("ChildrenCentreAcademyTrust")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_academy_trust");
-
-                    b.Property<bool?>("ChildrenCentreFundingPensionReviewed")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_funding_pension_reviewed");
-
-                    b.Property<bool?>("ChildrenCentreLandLeaseSharedAgreed")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_land_lease_shared_agreed");
-
-                    b.Property<bool?>("ChildrenCentreLegalAndGovernanceReviewed")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_legal_and_governance_reviewed");
-
-                    b.Property<bool?>("ChildrenCentreLocalAuthority")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_local_authority");
-
-                    b.Property<bool?>("ChildrenCentreNotApplicable")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_not_applicable");
-
-                    b.Property<bool?>("ChildrenCentreStaffingAndTransferReviewed")
-                        .HasColumnType("bit")
-                        .HasColumnName("children_centre_staffing_and_transfer_reviewed");
 
                     b.Property<bool?>("CheckAccuracyOfHigherNeedsNotApplicable")
                         .HasColumnType("bit")

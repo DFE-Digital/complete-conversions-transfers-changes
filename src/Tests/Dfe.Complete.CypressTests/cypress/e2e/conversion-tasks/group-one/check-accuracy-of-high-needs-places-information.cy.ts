@@ -19,26 +19,16 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Confirm if the academy will have high needs places ESFA must fund")
-            .expandGuidance("Help checking and confirming high needs places")
-            .hasGuidance("Understanding differences in high needs places information")
-            .hasCheckboxLabel(
-                "Confirm the section 251 spreadsheet shows the number of high needs places ESFA must fund",
-            )
-            .expandGuidance("Help checking the 251 spreadsheet")
-            .hasGuidance("The section 251 spreadsheet shows how many high needs places the local authority funds.");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select all checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Confirm if the academy will have high needs places ESFA must fund")
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
             .tick()
-            .hasCheckboxLabel(
-                "Confirm the section 251 spreadsheet shows the number of high needs places ESFA must fund",
-            )
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
+            .tick()
+            .hasCheckboxLabel("Check the returned Notification of Changes form")
+            .tick()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
             .tick()
             .saveAndReturn();
         taskListPage
@@ -47,12 +37,16 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Confirm if the academy will have high needs places ESFA must fund")
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
             .isTicked()
             .untick()
-            .hasCheckboxLabel(
-                "Confirm the section 251 spreadsheet shows the number of high needs places ESFA must fund",
-            )
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Check the returned Notification of Changes form")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -60,16 +54,60 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
             .hasTaskStatusNotStarted("Check accuracy of high needs places information")
             .selectTask("Check accuracy of high needs places information");
         taskPage
-            .hasCheckboxLabel("Confirm if the academy will have high needs places ESFA must fund")
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
             .isUnticked()
-            .hasCheckboxLabel(
-                "Confirm the section 251 spreadsheet shows the number of high needs places ESFA must fund",
-            )
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
+            .isUnticked()
+            .hasCheckboxLabel("Check the returned Notification of Changes form")
+            .isUnticked()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
             .isUnticked();
     });
 
+    it("should have EXCLUSIVE not applicable checkbox", () => {
+        Logger.log("Check all checkboxes are unticked");
+        taskPage
+            .hasCheckboxLabel("Not applicable")
+            .isUnticked()
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .isUnticked()
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
+            .isUnticked()
+            .hasCheckboxLabel("Check the returned Notification of Changes form")
+            .isUnticked()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
+            .isUnticked();
+
+        Logger.log("Check ticking other options unticks not applicable");
+        taskPage.hasCheckboxLabel("Not applicable").tick();
+        taskPage.hasCheckboxLabel("Send the completed Notification of Changes form to FFO").tick();
+
+        taskPage
+            .hasCheckboxLabel("Not applicable")
+            .isUnticked()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
+            .isTicked();
+
+        Logger.log("Check ticking not applicable unticks other options");
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .hasCheckboxLabel("Not applicable").tick();
+
+        taskPage
+            .hasCheckboxLabel("Not applicable")
+            .isTicked()
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .isUnticked()
+            .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
+            .isUnticked();
+    })
+
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${setup.projectId}/tasks`);
+
+        TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "notApplicable");
+        cy.reload();
+        taskListPage.hasTaskStatusNotApplicable("Check accuracy of high needs places information");
 
         TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "notStarted");
         cy.reload();

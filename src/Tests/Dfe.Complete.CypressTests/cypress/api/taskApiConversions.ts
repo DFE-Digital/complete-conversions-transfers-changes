@@ -4,6 +4,9 @@ interface UpdateCheckAccuracyOfHigherNeedsTaskRequest {
     taskDataId: TaskDataId;
     confirmNumber?: boolean;
     confirmPublishedNumber?: boolean;
+    checkReturnedForm?: boolean;
+    sendForm?: boolean;
+    notApplicable?: boolean;
 }
 
 interface UpdateCompleteNotificationOfChangeTaskRequest {

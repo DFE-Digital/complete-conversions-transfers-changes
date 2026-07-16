@@ -48,6 +48,24 @@ namespace Dfe.Complete.Models
         public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmDbsChecks { get; set; }
 
+        public static TaskListStatus GetStatusFromCheckboxList(List<bool?> values, bool? notApplicableValue = null)
+        {
+            var hasTrue = false;
+            var hasFalse = false;
+
+            if ( notApplicableValue == true) return TaskListStatus.NotApplicable;
+
+            foreach (var value in values)
+            {
+                if (value == true) hasTrue = true;
+                else hasFalse = true;
+
+                if (hasTrue && hasFalse) return TaskListStatus.InProgress;
+            }
+
+            return hasTrue ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+        }
+
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
             return (taskData == null) ? new() : new ConversionTaskListViewModel
@@ -544,10 +562,8 @@ namespace Dfe.Complete.Models
         private static TaskListStatus LAConfirmsPayrollDeadlineTaskStatus(ConversionTaskDataDto taskData)
         {
             if (!taskData.LAPayrollDeadline.HasValue)
-            {
                 return TaskListStatus.NotStarted;
-            }
-            return (taskData.LAPayrollDeadline.HasValue)
+            return taskData.LAPayrollDeadline.HasValue
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -747,17 +763,13 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if ((!taskData.CheckAccuracyOfHigherNeedsConfirmNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmNumber == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true &&
-                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
+        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData) => GetStatusFromCheckboxList(
+            [
+                taskData.CheckAccuracyOfHigherNeedsConfirmNumber,
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber,
+                taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm,
+                taskData.CheckAccuracyOfHigherNeedsSendForm
+            ], taskData.CheckAccuracyOfHigherNeedsNotApplicable);
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)
         {
