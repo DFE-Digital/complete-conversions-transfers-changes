@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             List<TaskListItemViewModel> ReadyForOpeningTasks, 
             List<TaskListItemViewModel> AfterOpeningTasks) BuildTaskList(ConversionTaskListViewModel conversionTaskList, string projectId)
         {
-            TaskLinkBuilder taskLinkBuilder = new TaskLinkBuilder(RouteConstants.ProjectTask, projectId);
+            TaskLinkBuilder taskLinkBuilder = new(RouteConstants.ProjectTask, projectId);
 
             return (GetProjectKickoffTasks(conversionTaskList, taskLinkBuilder),
                 GetLegalDocumentsTasks(conversionTaskList, taskLinkBuilder),
@@ -22,85 +22,106 @@ namespace Dfe.Complete.Pages.Projects.TaskList
 
         private static List<TaskListItemViewModel> GetProjectKickoffTasks(ConversionTaskListViewModel conversionTaskList, TaskLinkBuilder taskLinkBuilder)
         {
-            var projectKickoffTasks = new List<TaskListItemViewModel>
+            var projectKickoffTasks = new List<TaskListItemBuildModel>
             {
-                new("Post decision actions", taskLinkBuilder.Build("post_decision_actions"), conversionTaskList.PostDecisionActions, 1),
-                new("Handover with regional delivery officer", taskLinkBuilder.Build("handover"), conversionTaskList.HandoverWithRegionalDeliveryOfficer, 2),
-                new("External stakeholder kick-off", taskLinkBuilder.Build("stakeholder_kick_off"), conversionTaskList.ExternalStakeHolderKickoff, 3),
-                new("Confirm the academy's risk protection arrangements", taskLinkBuilder.Build("risk_protection_arrangement"), conversionTaskList.ConfirmAcademyRiskProtectionArrangements, 4),
-                new("Check accuracy of high needs places information", taskLinkBuilder.Build("check_accuracy_of_higher_needs"), conversionTaskList.CheckAccuracyOfHigherNeeds, 5),
-                new("Complete a notification of changes to funded high needs places form", taskLinkBuilder.Build("complete_notification_of_change"), conversionTaskList.CompleteNotificationOfChange, 7),
-                new("Confirm and process the sponsored support grant", taskLinkBuilder.Build("sponsored_support_grant"), conversionTaskList.ConfirmAndProcessSponsoredSupportGrant, 8),
-                new("Confirm academy nursery arrangement", taskLinkBuilder.Build("confirm_nursery_arrangement"), conversionTaskList.ConfirmNurseryArrangement, 9),
-                new("Confirm children's centre provision", taskLinkBuilder.Build("confirm_childrens_centre"),  conversionTaskList.ConfirmChildrenCentre, 10),
-                new("Confirm statutory consultation is complete and any issues are being managed", taskLinkBuilder.Build("confirm_statutory_consultation"), conversionTaskList.ConfirmStatutoryConsultation, 11),
-                new("Confirm the academy name", taskLinkBuilder.Build("academy_details"), conversionTaskList.ConfirmAcademyName, 12),
-                new("Confirm the headteacher's details", taskLinkBuilder.Build("confirm_headteacher_contact"), conversionTaskList.ConfirmHeadTeacherDetails, 13),
-                new("Confirm the chair of governors' details", taskLinkBuilder.Build("confirm_chair_of_governors_contact"), conversionTaskList.ConfirmChairOfGovernorsDetails, 14),
-                new("Confirm the incoming trust CEO's details", taskLinkBuilder.Build("confirm_incoming_trust_ceo_contact"), conversionTaskList.ConfirmIncomingTrustCeoDetails, 15),
-                new("Confirm the main contact", taskLinkBuilder.Build("main_contact"), conversionTaskList.ConfirmMainContact, 16),
-                new("Confirm the proposed capacity of the academy", taskLinkBuilder.Build("proposed_capacity_of_the_academy"), conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 17),
-                new("LA confirms payroll deadline (LA)", taskLinkBuilder.Build("la_confirms_payroll_deadline"), conversionTaskList.LAConfirmsPayrollDeadline, 18)
+                new(NoteTaskIdentifier.PostDecisionActions, conversionTaskList.PostDecisionActions, 1),
+                new(NoteTaskIdentifier.Handover, conversionTaskList.HandoverWithRegionalDeliveryOfficer, 2),
+                new(NoteTaskIdentifier.StakeholderKickoff, conversionTaskList.ExternalStakeHolderKickoff, 3),
+                new(NoteTaskIdentifier.ConfirmRiskProtectionArrangements, conversionTaskList.ConfirmAcademyRiskProtectionArrangements, 4),
+                new(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds, conversionTaskList.CheckAccuracyOfHigherNeeds, 5),
+                new(NoteTaskIdentifier.CompleteNotificationOfChange, conversionTaskList.CompleteNotificationOfChange, 7),
+                new(NoteTaskIdentifier.ConfirmAndProcessTheSponsoredSupportGrant, conversionTaskList.ConfirmAndProcessSponsoredSupportGrant, 8),
+                new(NoteTaskIdentifier.NurseryArrangement, conversionTaskList.ConfirmNurseryArrangement, 9),
+                new(NoteTaskIdentifier.ConfirmChildrenCentre,  conversionTaskList.ConfirmChildrenCentre, 10),
+                new(NoteTaskIdentifier.ConfirmStatutoryConsultation, conversionTaskList.ConfirmStatutoryConsultation, 11),
+                new(NoteTaskIdentifier.AcademyDetails, conversionTaskList.ConfirmAcademyName, 12),
+                new(NoteTaskIdentifier.ConfirmHeadTeacherDetails, conversionTaskList.ConfirmHeadTeacherDetails, 13),
+                new(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails, conversionTaskList.ConfirmChairOfGovernorsDetails, 14),
+                new(NoteTaskIdentifier.ConfirmIncomingTrustCeoContact, conversionTaskList.ConfirmIncomingTrustCeoDetails, 15),
+                new(NoteTaskIdentifier.MainContact, conversionTaskList.ConfirmMainContact, 16),
+                new(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, conversionTaskList.ConfirmProposedCapacityOfTheAcademy, 17),
+                new(NoteTaskIdentifier.LAConfirmsPayrollDeadline, conversionTaskList.LAConfirmsPayrollDeadline, 18)
             };
 
             if (conversionTaskList.ShowProcessConversionSupportGrant)
             {
-                projectKickoffTasks.Add(new TaskListItemViewModel("Process conversion support grant", taskLinkBuilder.Build("conversion_grant"), conversionTaskList.ProcessConversionSupportGrant, 6));
+                projectKickoffTasks.Add(new TaskListItemBuildModel(NoteTaskIdentifier.ProcessConversionSupportGrant, conversionTaskList.ProcessConversionSupportGrant, 6));
             }
 
-            return projectKickoffTasks.OrderBy(x => x.DisplayOrder).ToList();
-
+            return [.. projectKickoffTasks
+                .Select(x => new TaskListItemViewModel(
+                    x.Identifier.ToDisplayDescription(),
+                    taskLinkBuilder.Build(x.Identifier.ToDescription()),
+                    x.Status,
+                    x.DisplayOrder    
+                )).OrderBy(x => x.DisplayOrder)];
         }
 
         private static List<TaskListItemViewModel> GetLegalDocumentsTasks(ConversionTaskListViewModel conversionTaskList, TaskLinkBuilder taskLinkBuilder)
         {
-            var legalDocumentsTasks = new List<TaskListItemViewModel>
+            var legalDocumentsTasks = new List<TaskListItemBuildModel>
             {
-                new("Land questionnaire(s) and land registry plans", taskLinkBuilder.Build("land_questionnaire"), conversionTaskList.LandQuestionnaire, 1),
-                new("Supplemental funding agreement", taskLinkBuilder.Build("supplemental_funding_agreement"), conversionTaskList.SupplementalFundingAgreement, 2),
-                new("Church supplemental agreement", taskLinkBuilder.Build("church_supplemental_agreement"), conversionTaskList.ChurchSupplementalAgreement, 3),
-                new("Master funding agreement", taskLinkBuilder.Build("master_funding_agreement"), conversionTaskList.MasterFundingAgreement, 4),
-                new("Articles of association", taskLinkBuilder.Build("articles_of_association"), conversionTaskList.ArticlesOfAssociation, 5),
-                new("Deed of variation", taskLinkBuilder.Build("deed_of_variation"), conversionTaskList.DeedOfVariation, 6),
-                new("Trust modification order", taskLinkBuilder.Build("trust_modification_order"), conversionTaskList.TrustModificationOrder, 7),
-                new("Direction to transfer", taskLinkBuilder.Build("direction_to_transfer"), conversionTaskList.DirectionToTransfer, 8),
-                new("125 year lease", taskLinkBuilder.Build("one_hundred_and_twenty_five_year_lease"), conversionTaskList.OneHundredAndTwentyFiveYearLease, 9),
-                new("Subleases", taskLinkBuilder.Build("subleases"), conversionTaskList.Tubleases, 10),
-                new("Third party leases", taskLinkBuilder.Build("third_party_leases"), conversionTaskList.ThirdPartyLeases, 11),
-                new("Tenancy at will", taskLinkBuilder.Build("tenancy_at_will"), conversionTaskList.TenancyAtWill, 12),
-                new("Commercial transfer agreement", taskLinkBuilder.Build("commercial_transfer_agreement"), conversionTaskList.CommercialTransferAgreement, 13),
-                new("Private finance initiative", taskLinkBuilder.Build("private_finance_initiative"), conversionTaskList.PrivateFinanceInitiative, 14)
+                new(NoteTaskIdentifier.LandQuestionnaire, conversionTaskList.LandQuestionnaire, 1),
+                new(NoteTaskIdentifier.SupplementalFundingAgreement, conversionTaskList.SupplementalFundingAgreement, 2),
+                new(NoteTaskIdentifier.ChurchSupplementalAgreement, conversionTaskList.ChurchSupplementalAgreement, 3),
+                new(NoteTaskIdentifier.MasterFundingAgreement, conversionTaskList.MasterFundingAgreement, 4),
+                new(NoteTaskIdentifier.ArticleOfAssociation, conversionTaskList.ArticlesOfAssociation, 5),
+                new(NoteTaskIdentifier.DeedOfVariation, conversionTaskList.DeedOfVariation, 6),
+                new(NoteTaskIdentifier.TrustModificationOrder, conversionTaskList.TrustModificationOrder, 7),
+                new(NoteTaskIdentifier.DirectionToTransfer, conversionTaskList.DirectionToTransfer, 8),
+                new(NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease, conversionTaskList.OneHundredAndTwentyFiveYearLease, 9),
+                new(NoteTaskIdentifier.Subleases, conversionTaskList.Tubleases, 10),
+                new(NoteTaskIdentifier.ThirdPartyLeases, conversionTaskList.ThirdPartyLeases, 11),
+                new(NoteTaskIdentifier.TenancyAtWill, conversionTaskList.TenancyAtWill, 12),
+                new(NoteTaskIdentifier.CommercialTransferAgreement, conversionTaskList.CommercialTransferAgreement, 13),
+                new(NoteTaskIdentifier.PrivateFinanceInitiative, conversionTaskList.PrivateFinanceInitiative, 14)
             };
 
-            return legalDocumentsTasks;
+            return [.. legalDocumentsTasks
+                .Select(x => new TaskListItemViewModel(
+                    x.Identifier.ToDisplayDescription(),
+                    taskLinkBuilder.Build(x.Identifier.ToDescription()),
+                    x.Status,
+                    x.DisplayOrder    
+                )).OrderBy(x => x.DisplayOrder)];
         }
 
         private static List<TaskListItemViewModel> GetReadyForOpeningTasks(ConversionTaskListViewModel conversionTaskList, TaskLinkBuilder taskLinkBuilder)
         {
-            var readyForOpeningTasks = new List<TaskListItemViewModel>
+            var readyForOpeningTasks = new List<TaskListItemBuildModel>
             {
-                new("Confirm the new bank account details for the school", taskLinkBuilder.Build("confirm_school_bank_details"), conversionTaskList.ConfirmSchoolBankDetails, 1),
-                new("Confirm the school has completed all actions", taskLinkBuilder.Build("school_completed"), conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 2),
-                new("Confirm all conditions have been met", taskLinkBuilder.Build("conditions_met"), conversionTaskList.ConfirmAllConditionsHaveBeenMet, 3),
-                new("TUPE Consultation", taskLinkBuilder.Build("tupe_consultation"), conversionTaskList.TupeConsultation, 4),
-                new("DBS checks", taskLinkBuilder.Build("confirm_dbs_checks"), conversionTaskList.ConfirmDbsChecks, 5)
+                new(NoteTaskIdentifier.ConfirmSchoolBankDetails, conversionTaskList.ConfirmSchoolBankDetails, 1),
+                new(NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions, conversionTaskList.ConfirmTheSchoolHasCompletedAllActions, 2),
+                new(NoteTaskIdentifier.ConfirmAllConditionsMet, conversionTaskList.ConfirmAllConditionsHaveBeenMet, 3),
+                new(NoteTaskIdentifier.TupeConsultation, conversionTaskList.TupeConsultation, 4),
+                new(NoteTaskIdentifier.ConfirmDBSChecks, conversionTaskList.ConfirmDbsChecks, 5)
             };
 
-            return readyForOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();
+            return [.. readyForOpeningTasks
+                .Select(x => new TaskListItemViewModel(
+                    x.Identifier.ToDisplayDescription(),
+                    taskLinkBuilder.Build(x.Identifier.ToDescription()),
+                    x.Status,
+                    x.DisplayOrder    
+                )).OrderBy(x => x.DisplayOrder)];
         }
 
         private static List<TaskListItemViewModel> GetAfterOpeningTasks(ConversionTaskListViewModel conversionTaskList, TaskLinkBuilder taskLinkBuilder)
         {
-            var confirmDateAcademyOpenedTitle = NoteTaskIdentifier.ConfirmAcademyOpenedDate.ToDisplayDescription();
-
-            var afterOpeningTasks = new List<TaskListItemViewModel>
+            var afterOpeningTasks = new List<TaskListItemBuildModel>
             {
-                new (confirmDateAcademyOpenedTitle, taskLinkBuilder.Build("confirm_date_academy_opened"), conversionTaskList.ConfirmDateAcademyOpened, 1),
-                new ("Redact and send documents", taskLinkBuilder.Build("redact_and_send"), conversionTaskList.RedactAndSendDocuments, 2),
-                new ("Receive declaration of expenditure certificate", taskLinkBuilder.Build("receive_grant_payment_certificate"), conversionTaskList.ProjectReceiveDeclarationOfExpenditureCertificate, 3)
+                new (NoteTaskIdentifier.ConfirmAcademyOpenedDate, conversionTaskList.ConfirmDateAcademyOpened, 1),
+                new (NoteTaskIdentifier.RedactAndSend, conversionTaskList.RedactAndSendDocuments, 2),
+                new (NoteTaskIdentifier.ReceiveGrantPaymentCertificate, conversionTaskList.ProjectReceiveDeclarationOfExpenditureCertificate, 3)
             };
 
-            return afterOpeningTasks.OrderBy(x => x.DisplayOrder).ToList();
+            return [.. afterOpeningTasks
+                .Select(x => new TaskListItemViewModel(
+                    x.Identifier.ToDisplayDescription(),
+                    taskLinkBuilder.Build(x.Identifier.ToDescription()),
+                    x.Status,
+                    x.DisplayOrder    
+                )).OrderBy(x => x.DisplayOrder)];
         }
     }
 }
