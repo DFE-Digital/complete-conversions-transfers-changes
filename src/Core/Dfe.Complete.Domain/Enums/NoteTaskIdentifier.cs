@@ -233,7 +233,7 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Confirm the new bank account details for the school")]
     ConfirmSchoolBankDetails = 59,
     
-    [Description("confirm_children_centre")]
+    [Description("confirm_childrens_centre")]
     [DisplayDescription("Confirm children's centre provision")]
     ConfirmChildrenCentre = 60
 }

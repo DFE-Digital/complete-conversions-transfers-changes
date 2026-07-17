@@ -7369,7 +7369,7 @@
           "private_finance_initiative",
           "third_party_leases",
           "confirm_school_bank_details",
-          "confirm_children_centre"
+          "confirm_childrens_centre"
         ],
         "enum": [
           "Handover",
@@ -9284,14 +9284,6 @@
             "nullable": true
           },
           "checkAccuracyOfHigherNeedsConfirmPublishedNumber": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "checkAccuracyOfHigherNeedsFundedPlacesRequired": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "checkAccuracyOfHigherNeedsAcknowledgeLAMustConfirm": {
             "type": "boolean",
             "nullable": true
           },
