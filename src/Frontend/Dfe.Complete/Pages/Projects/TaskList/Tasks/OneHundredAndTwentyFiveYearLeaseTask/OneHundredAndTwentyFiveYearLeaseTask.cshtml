@@ -8,7 +8,7 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>The 125 year lease is the most common way for land to be transferred between the local authority and the trust. We do not expect any deviations to the model, but if changes have been proposed, the DO should request additional information on the rationale for these changes and forward any queries to SOPU via <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practise Unit</external-link>.</p>
+        <p>The 125 year lease is the most common way for land to be transferred between the local authority and the trust. We do not expect any deviations to the model, but if changes have been proposed, the DO should request additional information on the rationale for these changes and forward any queries to SOPU via <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the Schools Operational Practice Unit</external-link>.</p>
     </div>
 }
 @section TaskSection {
@@ -36,7 +36,7 @@
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Receive))" data-cy="@(nameof(Model.Receive))" asp-for="@Model.Receive" value="true" name="@(nameof(Model.Receive))" checked="@Model.Receive">
-                    <b>Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease</b>
+                    <b>Received email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease</b>
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Save))" data-cy="@(nameof(Model.Save))" asp-for="@Model.Save" value="true" name="@(nameof(Model.Save))" checked="@Model.Save">
