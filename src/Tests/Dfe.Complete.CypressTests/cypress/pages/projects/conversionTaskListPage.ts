@@ -20,6 +20,7 @@ class ConversionTaskListPage {
             "Complete a notification of changes to funded high needs places form",
             "Confirm and process the sponsored support grant",
             "Confirm academy nursery arrangement",
+            "Confirm children's centre provision",
             "Confirm statutory consultation is complete and any issues are being managed",
             "Confirm the academy name",
             "Confirm the headteacher's details",
@@ -28,7 +29,6 @@ class ConversionTaskListPage {
             "Confirm the main contact",
             "Confirm the proposed capacity of the academy",
             "LA confirms payroll deadline (LA)",
-            "Private finance initiative",
         ],
         legalDocuments: [
             "Land questionnaire(s) and land registry plans",
