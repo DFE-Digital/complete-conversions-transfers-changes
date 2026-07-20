@@ -16,6 +16,13 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-20.1666...main) for everything awaiting release
+
+---
+
+## [2.0.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-07-20.1666) - 2026-07-20
+
 ### Changed
 - [282897](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282897) - Moved share information about opening into confirm all conditions are met
 - [282908](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282908) - Update content of Declaration of Expenditure Certificate conversion task 
@@ -43,8 +50,6 @@ Security in case of vulnerabilities.
 - [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
 - [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
 - [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-01.1643...main) for everything awaiting release
 
 ---
 
