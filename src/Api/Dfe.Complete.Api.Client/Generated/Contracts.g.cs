@@ -6306,12 +6306,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsFundedPlacesRequired", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? CheckAccuracyOfHigherNeedsFundedPlacesRequired { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsAcknowledgeLAMustConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? CheckAccuracyOfHigherNeedsAcknowledgeLAMustConfirm { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsCheckReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; } = default!;
 

@@ -23,7 +23,7 @@ describe("Transfer tasks - Commercial transfer agreement", () => {
         taskPage
             .clickDropdown("How to check and assure the commercial transfer agreement")
             .hasDropdownContent(
-                "You can read guidance about how use check and assure the agreement (opens in new tab) on SharePoint.",
+                "You can read guidance about how to check and assure the agreement (opens in new tab) on SharePoint.",
             );
     });
 

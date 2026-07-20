@@ -22,7 +22,7 @@ describe("Conversion tasks - Master funding agreement", () => {
     it("should contain guidance details", () => {
         taskPage
             .hasDropdownContent(
-                "The Master Funding Agreement (MFA) is a deed between the DfE and academy trust and outlines the core teams and conditions under which the trust operates",
+                "The Master Funding Agreement (MFA) is a deed between the DfE and academy trust and outlines the core terms and conditions under which the trust operates",
             )
             .hasDropdownContent(
                 "Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected",

@@ -7,7 +7,7 @@ import { ConversionTasksGroupOneSetup } from "cypress/support/conversionTasksSet
 
 const taskPath = "check_accuracy_of_higher_needs";
 
-describe("Conversion tasks - Check accuracy of high needs places information", () => {
+describe("Conversion tasks - Check accuracy of high needs places", () => {
     let setup: ReturnType<typeof ConversionTasksGroupOneSetup.getSetup>;
 
     before(() => {
@@ -32,8 +32,8 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
             .tick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Check accuracy of high needs places information")
-            .selectTask("Check accuracy of high needs places information");
+            .hasTaskStatusCompleted("Check accuracy of high needs places")
+            .selectTask("Check accuracy of high needs places");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
@@ -51,8 +51,8 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
             .untick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Check accuracy of high needs places information")
-            .selectTask("Check accuracy of high needs places information");
+            .hasTaskStatusNotStarted("Check accuracy of high needs places")
+            .selectTask("Check accuracy of high needs places");
         taskPage
             .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
             .isUnticked()
@@ -107,19 +107,19 @@ describe("Conversion tasks - Check accuracy of high needs places information", (
 
         TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "notApplicable");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Check accuracy of high needs places information");
+        taskListPage.hasTaskStatusNotApplicable("Check accuracy of high needs places");
 
         TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Check accuracy of high needs places information");
+        taskListPage.hasTaskStatusNotStarted("Check accuracy of high needs places");
 
         TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Check accuracy of high needs places information");
+        taskListPage.hasTaskStatusInProgress("Check accuracy of high needs places");
 
         TaskHelperConversions.updateCheckAccuracyOfHigherNeeds(setup.taskId, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Check accuracy of high needs places information");
+        taskListPage.hasTaskStatusCompleted("Check accuracy of high needs places");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
