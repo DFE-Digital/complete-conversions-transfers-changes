@@ -10,12 +10,8 @@ public enum NoteTaskIdentifier
     Handover = 1,
 
     [Description("land_questionnaire")]
-    [DisplayDescription("Land questionnaire")]
+    [DisplayDescription("Land questionnaire(s) and land registry plans")]
     LandQuestionnaire = 2,
-
-    [Description("land_registry")]
-    [DisplayDescription("Land registry title plans")]
-    LandRegistryTitlePlans = 3,
 
     [Description("stakeholder_kick_off")]
     [DisplayDescription("External stakeholder kick-off")]
@@ -58,7 +54,7 @@ public enum NoteTaskIdentifier
     ConfirmDateAcademyTransferred = 13,
 
     [Description("conditions_met")]
-    [DisplayDescription("Confirm all conditions have been met")]
+    [DisplayDescription("Confirm all conditions have been met (according to the set deadline)")]
     ConfirmAllConditionsMet = 14,
 
     [Description("receive_grant_payment_certificate")]
@@ -66,7 +62,7 @@ public enum NoteTaskIdentifier
     ReceiveGrantPaymentCertificate = 15,
 
     [Description("confirm_date_academy_opened")]
-    [DisplayDescription("Confirm the academy open date")]
+    [DisplayDescription("Confirm date academy opened")]
     ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]
@@ -98,7 +94,7 @@ public enum NoteTaskIdentifier
     ConfirmRiskProtectionArrangementsPolicy = 23,
 
     [Description("check_accuracy_of_higher_needs")]
-    [DisplayDescription("Check accuracy of high needs places information")]
+    [DisplayDescription("Check accuracy of high needs places")]
     CheckAccuracyOfHigherNeeds = 24,
 
     [Description("complete_notification_of_change")]
@@ -138,15 +134,15 @@ public enum NoteTaskIdentifier
     Subleases = 33,
 
     [Description("tenancy_at_will")]
-    [DisplayDescription("Tenancy at will")]
+    [DisplayDescription("Tenancy at will or license to occupy")]
     TenancyAtWill = 34,
 
     [Description("school_completed")]
-    [DisplayDescription("Confirm the school has completed all actions")]
+    [DisplayDescription("Confirm school has completed all actions")]
     ConfirmSchoolHasCompletedAllActions = 35,
 
     [Description("share_information")]
-    [DisplayDescription("Share the information about opening")]
+    [DisplayDescription("Share information about opening")]
     ShareInformationAboutOpening = 36,
 
     [Description("confirm_outgoing_trust_ceo_contact")]
@@ -212,9 +208,9 @@ public enum NoteTaskIdentifier
     [Description("post_decision_actions")]
     [DisplayDescription("Post decision actions")]
     PostDecisionActions = 52,
+    
     [Description("tupe_consultation")]
     [DisplayDescription("TUPE Consultation")]
-
     TupeConsultation = 53,
 
     [Description("la_confirms_payroll_deadline")]
@@ -224,4 +220,20 @@ public enum NoteTaskIdentifier
     [Description("confirm_dbs_checks")]
     [DisplayDescription("DBS checks")]
     ConfirmDBSChecks = 56,
+
+    [Description("private_finance_initiative")]
+    [DisplayDescription("Private finance initiative")]
+    PrivateFinanceInitiative = 57,
+
+    [Description("third_party_leases")]
+    [DisplayDescription("Third party leases")]
+    ThirdPartyLeases = 58,
+
+    [Description("confirm_school_bank_details")]
+    [DisplayDescription("Confirm the new bank account details for the school")]
+    ConfirmSchoolBankDetails = 59,
+    
+    [Description("confirm_childrens_centre")]
+    [DisplayDescription("Confirm children's centre provision")]
+    ConfirmChildrenCentre = 60
 }

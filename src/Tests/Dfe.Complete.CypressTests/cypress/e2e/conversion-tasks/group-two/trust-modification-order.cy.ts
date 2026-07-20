@@ -28,27 +28,27 @@ describe("Conversion tasks - Trust modification order", () => {
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Sent to policy team for clearing")
+            .hasCheckboxLabel("Sent to SOPU for LAO clearance")
             .tick()
-            .hasCheckboxLabel("Sent to Academy Operations team mailbox for signing")
+            .hasCheckboxLabel("Sent to Academy Operations mailbox for signing")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("Trust modification order").selectTask("Trust modification order");
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Sent to policy team for clearing")
+            .hasCheckboxLabel("Sent to SOPU for LAO clearance")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Sent to Academy Operations team mailbox for signing")
+            .hasCheckboxLabel("Sent to Academy Operations mailbox for signing")
             .isTicked()
             .untick()
             .saveAndReturn();
         taskListPage.hasTaskStatusNotStarted("Trust modification order").selectTask("Trust modification order");
         taskPage
-            .hasCheckboxLabel("Sent to policy team for clearing")
+            .hasCheckboxLabel("Sent to SOPU for LAO clearance")
             .isUnticked()
-            .hasCheckboxLabel("Sent to Academy Operations team mailbox for signing")
+            .hasCheckboxLabel("Sent to Academy Operations mailbox for signing")
             .isUnticked();
     });
 

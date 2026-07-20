@@ -75,7 +75,6 @@
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kick_off";
         public const string ProjectConfirmStatutoryConsultationTask = ProjectTaskList + "/confirm_statutory_consultation";
         public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
-        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
         public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
         public const string ProjectRiskProtectionArrangementTask = ProjectTaskList + "/risk_protection_arrangement";
         public const string ProjectRiskProtectionArrangementPolicyTask = ProjectTaskList + "/rpa_policy";
@@ -95,8 +94,10 @@
         public const string ProjectDirectionToTransferTask = ProjectTaskList + "/direction_to_transfer";
         public const string ProjectOneHundredAndTwentyFiveYearLeaseTask = ProjectTaskList + "/one_hundred_and_twenty_five_year_lease";
         public const string ProjectSubleasesTask = ProjectTaskList + "/subleases";
+        public const string ProjectThirdPartyLeasesTask = ProjectTaskList + "/third_party_leases";
         public const string ProjectTenancyAtWillTask = ProjectTaskList + "/tenancy_at_will";
         public const string ProjectCommercialTransferAgreementTask = ProjectTaskList + "/commercial_transfer_agreement";
+        public const string ProjectConfirmSchoolBankDetailsTask = ProjectTaskList + "/confirm_school_bank_details";
         public const string ProjectConfirmTheSchoolHasCompletedAllActionsTask = ProjectTaskList + "/school_completed";
         public const string ProjectConfirmAllConditionsHaveBeenMetTask = ProjectTaskList + "/conditions_met";
         public const string ProjectShareTheInformationAboutOpeningTask = ProjectTaskList + "/share_information";

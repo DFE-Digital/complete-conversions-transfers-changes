@@ -38,6 +38,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
                 Email = true,
                 Receive = true,
                 Save = true,
+                Confirm = true
             };
 
             // Act
@@ -50,49 +51,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseEmail);
             Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseReceive);
             Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease);
-            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseNotApplicable);
+            Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseConfirmModel);
         }
 
 
-        [Theory]
-        [CustomAutoData(
-            typeof(CustomWebApplicationDbContextFactoryCustomization),
-            typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync_ShouldNotUpdate_IfNotApplicableIsTrue(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-            var taskData = fixture.Create<ConversionTasksData>();
-            dbContext.ConversionTasksData.Add(taskData);
-
-            await dbContext.SaveChangesAsync();
-
-            var command = new UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand
-            {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                NotApplicable = true,
-                Email = true,
-                Receive = true,
-                Save = true,
-            };
-
-            // Act
-            await tasksDataClient.UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseEmail);
-            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseReceive);
-            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease);
-            Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseNotApplicable);
-        }
 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]

@@ -21,8 +21,8 @@ namespace Dfe.Complete.Models
         public TaskListStatus ConfirmMainContact { get; set; }
         public TaskListStatus ConfirmProposedCapacityOfTheAcademy { get; set; }
         public TaskListStatus LAConfirmsPayrollDeadline { get; set; }
+        public TaskListStatus PrivateFinanceInitiative { get; set; }
         public TaskListStatus LandQuestionnaire { get; set; }
-        public TaskListStatus LandRegistry { get; set; }
         public TaskListStatus SupplementalFundingAgreement { get; set; }
         public TaskListStatus ChurchSupplementalAgreement { get; set; }
         public TaskListStatus MasterFundingAgreement { get; set; }
@@ -33,18 +33,38 @@ namespace Dfe.Complete.Models
         public TaskListStatus OneHundredAndTwentyFiveYearLease { get; set; }
         public TaskListStatus Tubleases { get; set; }
         public TaskListStatus TenancyAtWill { get; set; }
+        public TaskListStatus ThirdPartyLeases { get; set; }
         public TaskListStatus CommercialTransferAgreement { get; set; }
         public TaskListStatus ConfirmTheSchoolHasCompletedAllActions { get; set; }
+        public TaskListStatus ConfirmSchoolBankDetails { get; set; }
         public TaskListStatus ConfirmAllConditionsHaveBeenMet { get; set; }
-        public TaskListStatus ShareTheInformationAboutOpening { get; set; }
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; }
         public TaskListStatus ConfirmStatutoryConsultation { get; set; }
         public TaskListStatus ConfirmNurseryArrangement { get; set; }
+        public TaskListStatus ConfirmChildrenCentre { get; set; }
         public TaskListStatus PostDecisionActions { get; set; }
         public bool ShowProcessConversionSupportGrant { get; set; }
         public TaskListStatus ConfirmDbsChecks { get; set; }
+
+        public static TaskListStatus GetStatusFromCheckboxList(List<bool?> values, bool? notApplicableValue = null)
+        {
+            var hasTrue = false;
+            var hasFalse = false;
+
+            if ( notApplicableValue == true) return TaskListStatus.NotApplicable;
+
+            foreach (var value in values)
+            {
+                if (value == true) hasTrue = true;
+                else hasFalse = true;
+
+                if (hasTrue && hasFalse) return TaskListStatus.InProgress;
+            }
+
+            return hasTrue ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+        }
 
         public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
@@ -67,8 +87,8 @@ namespace Dfe.Complete.Models
                 ConfirmMainContact = ConfirmMainContactTaskStatus(project),
                 ConfirmProposedCapacityOfTheAcademy = ConfirmProposedCapacityOfTheAcademyTaskStatus(taskData),
                 LAConfirmsPayrollDeadline = LAConfirmsPayrollDeadlineTaskStatus(taskData),
+                PrivateFinanceInitiative = PrivateFinanceInitiativeTaskStatus(taskData),
                 LandQuestionnaire = LandQuestionnaireTaskStatus(taskData),
-                LandRegistry = LandRegistryTaskStatus(taskData),
                 SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
                 MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskData),
                 DeedOfVariation = DeedOfVariationTaskStatus(taskData),
@@ -77,15 +97,17 @@ namespace Dfe.Complete.Models
                 OneHundredAndTwentyFiveYearLease = OneHundredAndTwentyFiveYearLeaseTaskStatus(taskData),
                 Tubleases = TubleasesTaskStatus(taskData),
                 TenancyAtWill = TenancyAtWillTaskStatus(taskData),
+                ThirdPartyLeases = ThirdPartyLeasesTaskStatus(taskData),
                 CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
                 ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskData),
-                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project),
-                ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
+                ConfirmSchoolBankDetails = ConfirmSchoolBankDetailsTaskStatus(taskData),
+                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(project, taskData),
                 ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData),
                 ShowProcessConversionSupportGrant = ShouldShowProcessConversionSupportGrant(taskData),
                 ConfirmNurseryArrangement = ConfirmNurseryArrangementTaskStatus(taskData),
+                ConfirmChildrenCentre = ConfirmChildrenCentreTaskStatus(taskData),
                 ConfirmStatutoryConsultation = ConfirmStatutoryConsultationTaskStatus(taskData),
                 PostDecisionActions = PostDecisionActionsTaskStatus(taskData),
                 ConfirmDbsChecks = ConfirmDbsChecksTaskStatus(taskData)
@@ -117,6 +139,24 @@ namespace Dfe.Complete.Models
 
             return TaskListStatus.Completed;
             
+        }
+        
+        private static TaskListStatus ConfirmChildrenCentreTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.ChildrenCentreNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            
+            if (taskData.ChildrenCentreAcademyTrust != true && taskData.ChildrenCentreFundingPensionReviewed != true &&
+                taskData.ChildrenCentreLandLeaseSharedAgreed != true && taskData.ChildrenCentreLocalAuthority != true &&
+                taskData.ChildrenCentreLegalAndGovernanceReviewed != true && 
+                taskData.ChildrenCentreStaffingAndTransferReviewed != true)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return TaskListStatus.Completed;
         }
 
         private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
@@ -208,16 +248,6 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ShareTheInformationAboutOpeningTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if (!taskData.ShareInformationEmail.HasValue || taskData.ShareInformationEmail == false)
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.ShareInformationEmail == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
-
         private static TaskListStatus ConfirmTheSchoolHasCompletedAllActionsTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.SchoolCompletedEmailed.HasValue || taskData.SchoolCompletedEmailed == false) &&
@@ -230,15 +260,35 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ProjectDto project)
+        private static TaskListStatus ConfirmSchoolBankDetailsTaskStatus(ConversionTaskDataDto taskData)
         {
-            return project.AllConditionsMet == true
-                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+
+            if (taskData.ConfirmSchoolBankDetailsSent is null or false &&
+                (taskData.ConfirmSchoolBankDetailsSubmitted is null or false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return taskData is { ConfirmSchoolBankDetailsSent: true, ConfirmSchoolBankDetailsSubmitted: true }
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ProjectDto project, ConversionTaskDataDto taskData)
+        {
+            if (project.AllConditionsMet is null or false && taskData.ShareInformationEmail is null or false)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return (project.AllConditionsMet == true && taskData.ShareInformationEmail == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus CommercialTransferAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.CommercialTransferAgreementAgreed.HasValue || taskData.CommercialTransferAgreementAgreed == false) &&
+            if ((!taskData.CommercialTransferAgreementUnamended.HasValue || taskData.CommercialTransferAgreementUnamended == false) &&
+                (!taskData.CommercialTransferAgreementAgreed.HasValue || taskData.CommercialTransferAgreementAgreed == false) &&
                (!taskData.CommercialTransferAgreementSigned.HasValue || taskData.CommercialTransferAgreementSigned == false) &&
                (!taskData.CommercialTransferAgreementSaved.HasValue || taskData.CommercialTransferAgreementSaved == false) &&
                (!taskData.CommercialTransferAgreementQuestionsChecked.HasValue || taskData.CommercialTransferAgreementQuestionsChecked == false) &&
@@ -246,31 +296,48 @@ namespace Dfe.Complete.Models
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.CommercialTransferAgreementAgreed == true &&
+            return (taskData.CommercialTransferAgreementUnamended == true &&
+                taskData.CommercialTransferAgreementAgreed == true &&
                 taskData.CommercialTransferAgreementSigned == true &&
                 taskData.CommercialTransferAgreementSaved == true &&
                 taskData.CommercialTransferAgreementQuestionsChecked == true &&
                 taskData.CommercialTransferAgreementQuestionsReceived == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
-
-        private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataDto taskData)
+        
+       private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.TenancyAtWillEmailSigned.HasValue || taskData.TenancyAtWillEmailSigned == false) &&
-               (!taskData.TenancyAtWillReceiveSigned.HasValue || taskData.TenancyAtWillReceiveSigned == false) &&
-               (!taskData.TenancyAtWillSaveSigned.HasValue || taskData.TenancyAtWillSaveSigned == false) &&
-               (!taskData.TenancyAtWillNotApplicable.HasValue || taskData.TenancyAtWillNotApplicable == false))
+            var anyCheckboxSet =
+                taskData.TenancyAtWillReceived == true ||
+                taskData.TenancyAtWillCleared == true ||
+                taskData.TenancyAtWillEmailSigned == true ||
+                taskData.TenancyAtWillReceiveSigned == true ||
+                taskData.TenancyAtWillSaveSigned == true;
+
+            if (!taskData.TenancyAtWillBeingUsed.HasValue &&
+                !taskData.TenancyAtWillLicenceToOccupyBeingUsed.HasValue &&
+                !anyCheckboxSet)
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskData.TenancyAtWillNotApplicable == true)
+
+            if (taskData.TenancyAtWillBeingUsed == false &&
+                taskData.TenancyAtWillLicenceToOccupyBeingUsed == false)
             {
-                return TaskListStatus.NotApplicable;
+                return TaskListStatus.Completed;
             }
-            return (taskData.TenancyAtWillEmailSigned == true &&
-               taskData.TenancyAtWillReceiveSigned == true &&
-               taskData.TenancyAtWillSaveSigned == true)
-            ? TaskListStatus.Completed : TaskListStatus.InProgress;
+
+            if ((taskData.TenancyAtWillBeingUsed == true || taskData.TenancyAtWillLicenceToOccupyBeingUsed == true) &&
+                taskData.TenancyAtWillReceived == true &&
+                taskData.TenancyAtWillCleared == true &&
+                taskData.TenancyAtWillEmailSigned == true &&
+                taskData.TenancyAtWillReceiveSigned == true &&
+                taskData.TenancyAtWillSaveSigned == true)
+            {
+                return TaskListStatus.Completed;
+            }
+
+            return TaskListStatus.InProgress;
         }
 
         private static TaskListStatus TubleasesTaskStatus(ConversionTaskDataDto taskData)
@@ -302,20 +369,39 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus OneHundredAndTwentyFiveYearLeaseTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.OneHundredAndTwentyFiveYearLeaseSaveLease.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseSaveLease == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseEmail.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseEmail == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseReceive.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseReceive == false) &&
-               (!taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable.HasValue || taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable == false))
+            if (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease is null or false &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseEmail is null or false) &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseReceive is null or false) &&
+               (taskData.OneHundredAndTwentyFiveYearLeaseConfirmModel is null or false))
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable == true)
+
+            return taskData is
+            {
+                OneHundredAndTwentyFiveYearLeaseSaveLease: true, OneHundredAndTwentyFiveYearLeaseEmail: true,
+                OneHundredAndTwentyFiveYearLeaseReceive: true, OneHundredAndTwentyFiveYearLeaseConfirmModel: true
+            }
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ThirdPartyLeasesTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((!taskData.ThirdPartyLeasesSave.HasValue || taskData.ThirdPartyLeasesSave == false) &&
+               (!taskData.ThirdPartyLeasesEmail.HasValue || taskData.ThirdPartyLeasesEmail == false) &&
+               (!taskData.ThirdPartyLeasesReceive.HasValue || taskData.ThirdPartyLeasesReceive == false) &&
+               (!taskData.ThirdPartyLeasesNotApplicable.HasValue || taskData.ThirdPartyLeasesNotApplicable == false))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.ThirdPartyLeasesNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
-            return (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease == true &&
-               taskData.OneHundredAndTwentyFiveYearLeaseEmail == true &&
-               taskData.OneHundredAndTwentyFiveYearLeaseReceive == true)
+            return (taskData.ThirdPartyLeasesSave == true &&
+               taskData.ThirdPartyLeasesEmail == true &&
+               taskData.ThirdPartyLeasesReceive == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -391,8 +477,8 @@ namespace Dfe.Complete.Models
             if ((!taskData.DeedOfVariationReceived.HasValue || taskData.DeedOfVariationReceived == false) &&
                (!taskData.DeedOfVariationCleared.HasValue || taskData.DeedOfVariationCleared == false) &&
                (!taskData.DeedOfVariationSaved.HasValue || taskData.DeedOfVariationSaved == false) &&
+               (!taskData.DeedOfVariationDraftSaved.HasValue || taskData.DeedOfVariationDraftSaved == false) &&
                (!taskData.DeedOfVariationSigned.HasValue || taskData.DeedOfVariationSigned == false) &&
-               (!taskData.DeedOfVariationSent.HasValue || taskData.DeedOfVariationSent == false) &&
                (!taskData.DeedOfVariationSignedSecretaryState.HasValue || taskData.DeedOfVariationSignedSecretaryState == false) &&
                (!taskData.DeedOfVariationNotApplicable.HasValue || taskData.DeedOfVariationNotApplicable == false))
             {
@@ -405,8 +491,8 @@ namespace Dfe.Complete.Models
             return (taskData.DeedOfVariationReceived == true &&
                taskData.DeedOfVariationCleared == true &&
                taskData.DeedOfVariationSaved == true &&
+               taskData.DeedOfVariationDraftSaved == true &&
                taskData.DeedOfVariationSigned == true &&
-               taskData.DeedOfVariationSent == true &&
                taskData.DeedOfVariationSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
@@ -417,31 +503,18 @@ namespace Dfe.Complete.Models
                (!taskData.SupplementalFundingAgreementCleared.HasValue || taskData.SupplementalFundingAgreementCleared == false) &&
                (!taskData.SupplementalFundingAgreementSaved.HasValue || taskData.SupplementalFundingAgreementSaved == false) &&
                (!taskData.SupplementalFundingAgreementSigned.HasValue || taskData.SupplementalFundingAgreementSigned == false) &&
-               (!taskData.SupplementalFundingAgreementSent.HasValue || taskData.SupplementalFundingAgreementSent == false) &&
                (!taskData.SupplementalFundingAgreementSignedSecretaryState.HasValue || taskData.SupplementalFundingAgreementSignedSecretaryState == false))
             {
-                return TaskListStatus.NotStarted;
+                return !taskData.SupplementalFundingAgreementDraftSaved.HasValue || taskData.SupplementalFundingAgreementDraftSaved == false
+                ? TaskListStatus.NotStarted
+                : TaskListStatus.InProgress;
             }
+
             return (taskData.SupplementalFundingAgreementCleared == true &&
                taskData.SupplementalFundingAgreementReceived == true &&
                taskData.SupplementalFundingAgreementSaved == true &&
                taskData.SupplementalFundingAgreementSigned == true &&
-               taskData.SupplementalFundingAgreementSent == true &&
                taskData.SupplementalFundingAgreementSignedSecretaryState == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
-
-        private static TaskListStatus LandRegistryTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if ((!taskData.LandRegistryReceived.HasValue || taskData.LandRegistryReceived == false) &&
-               (!taskData.LandRegistryCleared.HasValue || taskData.LandRegistryCleared == false) &&
-               (!taskData.LandRegistrySaved.HasValue || taskData.LandRegistrySaved == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.LandRegistryReceived == true &&
-                taskData.LandRegistryCleared == true &&
-                taskData.LandRegistrySaved == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -450,14 +523,20 @@ namespace Dfe.Complete.Models
             if ((!taskData.LandQuestionnaireReceived.HasValue || taskData.LandQuestionnaireReceived == false) &&
                (!taskData.LandQuestionnaireCleared.HasValue || taskData.LandQuestionnaireCleared == false) &&
                (!taskData.LandQuestionnaireSigned.HasValue || taskData.LandQuestionnaireSigned == false) &&
-               (!taskData.LandQuestionnaireSaved.HasValue || taskData.LandQuestionnaireSaved == false))
+               (!taskData.LandQuestionnaireSaved.HasValue || taskData.LandQuestionnaireSaved == false) &&
+               (!taskData.LandRegistryReceived.HasValue || taskData.LandRegistryReceived == false) &&
+               (!taskData.LandRegistryCleared.HasValue || taskData.LandRegistryCleared == false) &&
+               (!taskData.LandRegistrySaved.HasValue || taskData.LandRegistrySaved == false))
             {
                 return TaskListStatus.NotStarted;
             }
             return (taskData.LandQuestionnaireReceived == true &&
                taskData.LandQuestionnaireCleared == true &&
                taskData.LandQuestionnaireSigned == true &&
-               taskData.LandQuestionnaireSaved == true)
+               taskData.LandQuestionnaireSaved == true &&
+               taskData.LandRegistryReceived == true &&
+               taskData.LandRegistryCleared == true &&
+               taskData.LandRegistrySaved == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -483,11 +562,42 @@ namespace Dfe.Complete.Models
         private static TaskListStatus LAConfirmsPayrollDeadlineTaskStatus(ConversionTaskDataDto taskData)
         {
             if (!taskData.LAPayrollDeadline.HasValue)
+                return TaskListStatus.NotStarted;
+            return taskData.LAPayrollDeadline.HasValue
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus PrivateFinanceInitiativeTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if ((taskData.PrivateFinanceInitiativeNotApplicable is null or false) &&
+                !taskData.PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted.HasValue &&
+                !taskData.PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted.HasValue &&
+                (taskData.PrivateFinanceInitiativeReceived is null or false) &&
+                (taskData.PrivateFinanceInitiativeCleared is null or false) &&
+                (taskData.PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder is null or false) &&
+                (taskData.PrivateFinanceInitiativeSignedByAllStakeholders is null or false) &&
+                (taskData.PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder is null or false))
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.LAPayrollDeadline.HasValue)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+
+            if (taskData.PrivateFinanceInitiativeNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+
+            return taskData is
+            {
+                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted: true or false,
+                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted: true or false,
+                PrivateFinanceInitiativeReceived: true, 
+                PrivateFinanceInitiativeCleared: true,
+                PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder: true,
+                PrivateFinanceInitiativeSignedByAllStakeholders: true,
+                PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder: true
+            }
+                ? TaskListStatus.Completed
+                : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmMainContactTaskStatus(ProjectDto project)
@@ -500,12 +610,12 @@ namespace Dfe.Complete.Models
         {
             if ((!taskData.ChurchSupplementalAgreementReceived.HasValue || taskData.ChurchSupplementalAgreementReceived == false) &&
                 (!taskData.ChurchSupplementalAgreementCleared.HasValue || taskData.ChurchSupplementalAgreementCleared == false) &&
-                (!taskData.ChurchSupplementalAgreementSigned.HasValue || taskData.ChurchSupplementalAgreementSigned == false) &&
-                (!taskData.ChurchSupplementalAgreementSaved.HasValue || taskData.ChurchSupplementalAgreementSaved == false) &&
+                (!taskData.ChurchSupplementalAgreementSignedTrust.HasValue || taskData.ChurchSupplementalAgreementSignedTrust == false) &&
+                (!taskData.ChurchSupplementalAgreementDraftSaved.HasValue || taskData.ChurchSupplementalAgreementDraftSaved == false) &&
                 (!taskData.ChurchSupplementalAgreementNotApplicable.HasValue || taskData.ChurchSupplementalAgreementNotApplicable == false) &&
                 (!taskData.ChurchSupplementalAgreementSignedDiocese.HasValue || taskData.ChurchSupplementalAgreementSignedDiocese == false) &&
                 (!taskData.ChurchSupplementalAgreementSignedSecretaryState.HasValue || taskData.ChurchSupplementalAgreementSignedSecretaryState == false) &&
-                (!taskData.ChurchSupplementalAgreementSent.HasValue || taskData.ChurchSupplementalAgreementSent == false))
+                (!taskData.ChurchSupplementalAgreementFinalSaved.HasValue || taskData.ChurchSupplementalAgreementFinalSaved == false))
             {
                 return TaskListStatus.NotStarted;
             }
@@ -515,9 +625,8 @@ namespace Dfe.Complete.Models
             }
             return (taskData.ChurchSupplementalAgreementReceived == true &&
                 taskData.ChurchSupplementalAgreementCleared == true &&
-                taskData.ChurchSupplementalAgreementSigned == true &&
-                taskData.ChurchSupplementalAgreementSaved == true &&
-                taskData.ChurchSupplementalAgreementSent == true &&
+                taskData.ChurchSupplementalAgreementSignedTrust == true &&
+                taskData.ChurchSupplementalAgreementFinalSaved == true &&
                 taskData.ChurchSupplementalAgreementSignedDiocese == true &&
                 taskData.ChurchSupplementalAgreementSignedSecretaryState == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
@@ -525,24 +634,23 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ArticlesOfAssociationTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.ArticlesOfAssociationReceived.HasValue || taskData.ArticlesOfAssociationReceived == false) &&
-               (!taskData.ArticlesOfAssociationCleared.HasValue || taskData.ArticlesOfAssociationCleared == false) &&
-               (!taskData.ArticlesOfAssociationSigned.HasValue || taskData.ArticlesOfAssociationSigned == false) &&
-               (!taskData.ArticlesOfAssociationSaved.HasValue || taskData.ArticlesOfAssociationSaved == false) &&
-               (!taskData.ArticlesOfAssociationNotApplicable.HasValue || taskData.ArticlesOfAssociationNotApplicable == false) &&
-               (!taskData.ArticlesOfAssociationSent.HasValue || taskData.ArticlesOfAssociationSent == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
             if (taskData.ArticlesOfAssociationNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
-            return (taskData.ArticlesOfAssociationReceived == true &&
-               taskData.ArticlesOfAssociationCleared == true &&
-               taskData.ArticlesOfAssociationSigned == true &&
-               taskData.ArticlesOfAssociationSaved == true &&
-               taskData.ArticlesOfAssociationSent == true)
+
+            if (taskData.ArticlesOfAssociationReceived is not true &&
+                taskData.ArticlesOfAssociationCleared is not true &&
+                taskData.ArticlesOfAssociationSigned is not true &&
+                taskData.ArticlesOfAssociationSaved is not true)
+            {
+                return TaskListStatus.NotStarted;
+            }
+
+            return (taskData.ArticlesOfAssociationReceived is true &&
+               taskData.ArticlesOfAssociationCleared is true &&
+               taskData.ArticlesOfAssociationSigned is true &&
+               taskData.ArticlesOfAssociationSaved is true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -565,7 +673,7 @@ namespace Dfe.Complete.Models
         }
         private static TaskListStatus ConfirmAcademyNameTaskStatus(ConversionTaskDataDto taskData)
         {
-            return (string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
+            return string.IsNullOrWhiteSpace(taskData.AcademyDetailsName)
                 ? TaskListStatus.NotStarted : TaskListStatus.Completed;
         }
 
@@ -655,17 +763,13 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
-        {
-            if ((!taskData.CheckAccuracyOfHigherNeedsConfirmNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmNumber == false) &&
-                (!taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber.HasValue || taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == false))
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true &&
-                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
-        }
+        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData) => GetStatusFromCheckboxList(
+            [
+                taskData.CheckAccuracyOfHigherNeedsConfirmNumber,
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber,
+                taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm,
+                taskData.CheckAccuracyOfHigherNeedsSendForm
+            ], taskData.CheckAccuracyOfHigherNeedsNotApplicable);
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)
         {

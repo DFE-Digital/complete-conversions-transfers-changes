@@ -15,6 +15,33 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased
+
+### Changed
+- [282897] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282897) - Moved share information about opening into confirm all conditions are met
+- [282908](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282908) - Update content of Declaration of Expenditure Certificate conversion task 
+- [279040](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279040) - Tenancy at Will additional fields
+- [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
+- [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
+- [277534](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277534) - Merge conversion tasks "Land questionnaire" and "Land registry title plans" into "Land questionnaire(s) and land registry plans" with merged page/handler updates
+- [282882](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/282882) - Updated School Actions task confirmation content and tests
+- [277812](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277812) - Update wording on supplemental funding agreement conversion tasks
+- [277849](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277849) - Update wording on articles of association conversion tasks
+- [277820](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/277820) - Church Supplemental Agreement
+- [282906](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282906) - Update wording on confirm academy open date
+- [279037](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279037) - updated checkboxes on 125 year lease
+- [278436](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/278436) - Transfer modification order content changes
+- [279041](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279041) - Commercial Transfer Agreement
+- [279038](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279038) - Update UI on subleases task
+- [282907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282907) - Redact and send documents content changes
+
+### Added
+- [283349](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/283349) - Added new 'Confirm Children's Centre' conversion task and updated 'Nursery Arrangement' task content
+- [282872](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282872) - Add conversion task "Confirm the new bank account details for the school" in Get ready for opening, with status logic, API endpoint, migration, and test coverage
+- [282893](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282893) - updated checkboxes to be radio buttons and general content change
+- [279042](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279042) - add conversion task "Private finance initiative" with GET and POST support, task list status, migration, and test coverage
+- [277839](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277839) - Master funding agreement content changes
+- [279039](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279039) - add conversion task "Third party leases" with GET and POST support, task list status, migration, and test coverage
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-01.1643...main) for everything awaiting release
 
 ---
@@ -23,7 +50,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - [289552](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/289552) - Relax maintenance banner logs
- - [282060](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/288436) - Update Project page header size for consistency
+- [282060](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/288436) - Update Project page header size for consistency
 - [287342](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/287342) - revert mediatr version to <13
 - [282385](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282385) -  Sonar high severity issues
   

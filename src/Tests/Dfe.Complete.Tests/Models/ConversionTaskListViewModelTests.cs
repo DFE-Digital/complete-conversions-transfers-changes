@@ -101,21 +101,30 @@ namespace Dfe.Complete.Tests.Models
 
 
         [Theory]
-        [InlineData(null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, TaskListStatus.InProgress)]
-        [InlineData(false, true, TaskListStatus.InProgress)]
-        [InlineData(true, true, TaskListStatus.Completed)]
+        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, null, null, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void CheckAccuracyOfHigherNeedsTaskStatus_ShouldReturn_CorrectStatus(
-                bool? confirmNumber,
-                bool? confirmPublishedNumber,
-                TaskListStatus expectedStatus)
+            bool? confirmNumber,
+            bool? confirmPublishedNumber,
+            bool? checkReturnedForm,
+            bool? sendForm,
+            bool? notApplicable,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
                 CheckAccuracyOfHigherNeedsConfirmNumber = confirmNumber,
-                CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber
+                CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber,
+                CheckAccuracyOfHigherNeedsCheckReturnedForm = checkReturnedForm,
+                CheckAccuracyOfHigherNeedsSendForm = sendForm,
+                CheckAccuracyOfHigherNeedsNotApplicable = notApplicable
             };
             var project = new ProjectDto();
 
@@ -322,32 +331,33 @@ namespace Dfe.Complete.Tests.Models
 
         [Theory]
         [InlineData(false, false, false, false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(true, true, false, true, true, true, true, false, TaskListStatus.Completed)]
         [InlineData(null, null, null, null, true, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
         [InlineData(true, true, true, true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void ChurchSupplementalAgreementTaskStatus_ShouldReturn_CorrectStatus(
             bool? received,
             bool? cleared,
-            bool? signed,
-            bool? saved,
+            bool? draftSaved,
+            bool? signedTrust,
             bool? signedDiocese,
             bool? signedSecretaryState,
-            bool? sent,
+            bool? finalSaved,
             bool? notApplicable,
             TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
+                ChurchSupplementalAgreementNotApplicable = notApplicable,
+                
                 ChurchSupplementalAgreementReceived = received,
                 ChurchSupplementalAgreementCleared = cleared,
-                ChurchSupplementalAgreementSigned = signed,
-                ChurchSupplementalAgreementSaved = saved,
-                ChurchSupplementalAgreementNotApplicable = notApplicable,
+                ChurchSupplementalAgreementDraftSaved = draftSaved,
+                ChurchSupplementalAgreementSignedTrust = signedTrust,
                 ChurchSupplementalAgreementSignedDiocese = signedDiocese,
                 ChurchSupplementalAgreementSignedSecretaryState = signedSecretaryState,
-                ChurchSupplementalAgreementSent = sent
+                ChurchSupplementalAgreementFinalSaved = finalSaved
             };
 
             var project = new ProjectDto();
@@ -356,18 +366,18 @@ namespace Dfe.Complete.Tests.Models
 
             Assert.Equal(expectedStatus, result.ChurchSupplementalAgreement);
         }
+
         [Theory]
-        [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(true, true, true, true, true, true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, true, null, TaskListStatus.InProgress)]
-        [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, true, null, null, TaskListStatus.InProgress)]
+        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
         public void ArticlesOfAssociationTaskStatus_ShouldReturn_CorrectStatus(
             bool? received,
             bool? cleared,
             bool? signed,
             bool? saved,
-            bool? sent,
             bool? notApplicable,
             TaskListStatus expectedStatus)
         {
@@ -379,7 +389,6 @@ namespace Dfe.Complete.Tests.Models
                 ArticlesOfAssociationSigned = signed,
                 ArticlesOfAssociationSaved = saved,
                 ArticlesOfAssociationNotApplicable = notApplicable,
-                ArticlesOfAssociationSent = sent
             };
 
             var project = new ProjectDto();
@@ -420,7 +429,7 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
         public void DeedOfVariationTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? draftSaved, bool? signed,
             bool? signedSecretaryState, bool? notApplicable, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -429,8 +438,8 @@ namespace Dfe.Complete.Tests.Models
                 DeedOfVariationReceived = received,
                 DeedOfVariationCleared = cleared,
                 DeedOfVariationSaved = saved,
+                DeedOfVariationDraftSaved = draftSaved,
                 DeedOfVariationSigned = signed,
-                DeedOfVariationSent = sent,
                 DeedOfVariationSignedSecretaryState = signedSecretaryState,
                 DeedOfVariationNotApplicable = notApplicable
             };
@@ -443,9 +452,11 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
         [InlineData(true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, false, true, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, true, false, TaskListStatus.InProgress)]
         [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
         public void SupplementalFundingAgreementTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, bool? signed, bool? sent,
+            bool? received, bool? cleared, bool? saved, bool? signed, bool? draftSaved,
             bool? signedSecretaryState, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
@@ -455,7 +466,7 @@ namespace Dfe.Complete.Tests.Models
                 SupplementalFundingAgreementCleared = cleared,
                 SupplementalFundingAgreementSaved = saved,
                 SupplementalFundingAgreementSigned = signed,
-                SupplementalFundingAgreementSent = sent,
+                SupplementalFundingAgreementDraftSaved = draftSaved,
                 SupplementalFundingAgreementSignedSecretaryState = signedSecretaryState
             };
 
@@ -465,40 +476,30 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.SupplementalFundingAgreement);
         }
         [Theory]
-        [InlineData(false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, TaskListStatus.InProgress)]
-        public void LandRegistryTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? saved, TaskListStatus expectedStatus)
-        {
-            var taskData = new ConversionTaskDataDto
-            {
-                Id = new TaskDataId(Guid.NewGuid()),
-                LandRegistryReceived = received,
-                LandRegistryCleared = cleared,
-                LandRegistrySaved = saved
-            };
-
-            var project = new ProjectDto();
-            var result = ConversionTaskListViewModel.Create(taskData, project, null);
-
-            Assert.Equal(expectedStatus, result.LandRegistry);
-        }
-
-        [Theory]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, false, false, TaskListStatus.InProgress)]
         public void LandQuestionnaireTaskStatus_ShouldReturn_CorrectStatus(
-            bool? received, bool? cleared, bool? signed, bool? saved, TaskListStatus expectedStatus)
+            bool? questionnaireReceived,
+            bool? questionnaireCleared,
+            bool? questionnaireSigned,
+            bool? questionnaireSaved,
+            bool? registryReceived,
+            bool? registryCleared,
+            bool? registrySaved,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                LandQuestionnaireReceived = received,
-                LandQuestionnaireCleared = cleared,
-                LandQuestionnaireSigned = signed,
-                LandQuestionnaireSaved = saved
+                LandQuestionnaireReceived = questionnaireReceived,
+                LandQuestionnaireCleared = questionnaireCleared,
+                LandQuestionnaireSigned = questionnaireSigned,
+                LandQuestionnaireSaved = questionnaireSaved,
+                LandRegistryReceived = registryReceived,
+                LandRegistryCleared = registryCleared,
+                LandRegistrySaved = registrySaved
             };
 
             var project = new ProjectDto();
@@ -584,8 +585,33 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(true, true, true, false, TaskListStatus.Completed)]
         [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
         [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        public void ThirdPartyLeasesTaskStatus_ShouldReturn_CorrectStatus(
+            bool? save, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                ThirdPartyLeasesSave = save,
+                ThirdPartyLeasesEmail = email,
+                ThirdPartyLeasesReceive = receive,
+                ThirdPartyLeasesNotApplicable = notApplicable
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.ThirdPartyLeases);
+        }
+        [Theory]
+        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, true, TaskListStatus.InProgress)]
         public void OneHundredAndTwentyFiveYearLeaseTaskStatus_ShouldReturn_CorrectStatus(
-            bool? saveLease, bool? email, bool? receive, bool? notApplicable, TaskListStatus expectedStatus)
+            bool? saveLease, bool? email, bool? receive, bool? confirmModel, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
@@ -593,7 +619,7 @@ namespace Dfe.Complete.Tests.Models
                 OneHundredAndTwentyFiveYearLeaseSaveLease = saveLease,
                 OneHundredAndTwentyFiveYearLeaseEmail = email,
                 OneHundredAndTwentyFiveYearLeaseReceive = receive,
-                OneHundredAndTwentyFiveYearLeaseNotApplicable = notApplicable
+                OneHundredAndTwentyFiveYearLeaseConfirmModel = confirmModel
             };
 
             var project = new ProjectDto();
@@ -652,23 +678,42 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(null, TaskListStatus.NotStarted)]
-        [InlineData(false, TaskListStatus.NotStarted)]
-        [InlineData(true, TaskListStatus.Completed)]
-        public void ShareTheInformationAboutOpeningTaskStatus_ShouldReturn_CorrectStatus(
-            bool? email, TaskListStatus expectedStatus)
+        [InlineData(null, null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(null, null, null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, false, false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, true, true, true, true, false, TaskListStatus.Completed)]
+        public void PrivateFinanceInitiativeTaskStatus_ShouldReturn_CorrectStatus(
+            bool? supplementaryFundingAgreementPfiClausesInserted,
+            bool? masterFundingAgreementPfiClausesInserted,
+            bool? received,
+            bool? cleared,
+            bool? draftSavedInTrustSharepointFolder,
+            bool? signedByAllStakeholders,
+            bool? finalVersionSavedInSchoolAndTrustSharepointFolder,
+            bool? notApplicable,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                ShareInformationEmail = email
+                PrivateFinanceInitiativeNotApplicable = notApplicable,
+                PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted = supplementaryFundingAgreementPfiClausesInserted,
+                PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted = masterFundingAgreementPfiClausesInserted,
+                PrivateFinanceInitiativeReceived = received,
+                PrivateFinanceInitiativeCleared = cleared,
+                PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder = draftSavedInTrustSharepointFolder,
+                PrivateFinanceInitiativeSignedByAllStakeholders = signedByAllStakeholders,
+                PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder = finalVersionSavedInSchoolAndTrustSharepointFolder
             };
 
             var project = new ProjectDto();
             var result = ConversionTaskListViewModel.Create(taskData, project, null);
 
-            Assert.Equal(expectedStatus, result.ShareTheInformationAboutOpening);
+            Assert.Equal(expectedStatus, result.PrivateFinanceInitiative);
         }
+
         [Theory]
         [InlineData(null, null, TaskListStatus.NotStarted)]
         [InlineData(false, false, TaskListStatus.NotStarted)]
@@ -689,16 +734,44 @@ namespace Dfe.Complete.Tests.Models
 
             Assert.Equal(expectedStatus, result.ConfirmTheSchoolHasCompletedAllActions);
         }
+
         [Theory]
-        [InlineData(null, TaskListStatus.NotStarted)]
-        [InlineData(false, TaskListStatus.NotStarted)]
-        [InlineData(true, TaskListStatus.Completed)]
-        public void ConfirmAllConditionsHaveBeenMetTaskStatus_ShouldReturn_CorrectStatus(
-         bool? allConditionsMet, TaskListStatus expectedStatus)
+        [InlineData(null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
+        [InlineData(true, true, TaskListStatus.Completed)]
+        public void ConfirmSchoolBankDetailsTaskStatus_ShouldReturn_CorrectStatus(
+            bool? submitted,
+            bool? sent,
+            TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
-                Id = new TaskDataId(Guid.NewGuid())
+                Id = new TaskDataId(Guid.NewGuid()),
+                ConfirmSchoolBankDetailsSubmitted = submitted,
+                ConfirmSchoolBankDetailsSent = sent
+            };
+
+            var project = new ProjectDto();
+            var result = ConversionTaskListViewModel.Create(taskData, project, null);
+
+            Assert.Equal(expectedStatus, result.ConfirmSchoolBankDetails);
+        }
+
+        [Theory]
+        [InlineData(null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
+        [InlineData(true, true, TaskListStatus.Completed)]
+        public void ConfirmAllConditionsHaveBeenMetTaskStatus_ShouldReturn_CorrectStatus(
+         bool? allConditionsMet, bool? shareInformationEmail, TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                ShareInformationEmail = shareInformationEmail
             };
 
             var project = new ProjectDto
@@ -711,22 +784,29 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ConfirmAllConditionsHaveBeenMet);
         }
         [Theory]
-        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(null, null, null, true, TaskListStatus.NotApplicable)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        // beingUsed, licenceUsed, received, cleared, emailSigned, receiveSigned, saveSigned, expected
+        [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, null, null, null, null, null, TaskListStatus.Completed)]
+        [InlineData(true, false, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
+        [InlineData(true, false, true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, null, null, null, null, null, null, TaskListStatus.InProgress)]
+        [InlineData(false, null, null, null, null, null, null, TaskListStatus.InProgress)]
         public void TenancyAtWillTaskStatus_ShouldReturn_CorrectStatus(
-            bool? emailSigned, bool? receiveSigned, bool? saveSigned, bool? notApplicable,
+            bool? beingUsed, bool? licenceUsed, bool? received, bool? cleared,
+            bool? emailSigned, bool? receiveSigned, bool? saveSigned,
             TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
+                TenancyAtWillBeingUsed = beingUsed,
+                TenancyAtWillLicenceToOccupyBeingUsed = licenceUsed,
+                TenancyAtWillReceived = received,
+                TenancyAtWillCleared = cleared,
                 TenancyAtWillEmailSigned = emailSigned,
                 TenancyAtWillReceiveSigned = receiveSigned,
-                TenancyAtWillSaveSigned = saveSigned,
-                TenancyAtWillNotApplicable = notApplicable
+                TenancyAtWillSaveSigned = saveSigned
             };
 
             var project = new ProjectDto();

@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand(
         [Required] TaskDataId TaskDataId,
-        bool? NotApplicable,
+        bool? Confirm,
         bool? Email,
         bool? Receive,
         bool? Save
@@ -27,10 +27,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.OneHundredAndTwentyFiveYearLeaseNotApplicable = request.NotApplicable;
-            tasksData.OneHundredAndTwentyFiveYearLeaseEmail = request.NotApplicable == true ? null : request.Email;
-            tasksData.OneHundredAndTwentyFiveYearLeaseReceive = request.NotApplicable == true ? null : request.Receive;
-            tasksData.OneHundredAndTwentyFiveYearLeaseSaveLease = request.NotApplicable == true ? null : request.Save;
+            tasksData.OneHundredAndTwentyFiveYearLeaseConfirmModel = request.Confirm;
+            tasksData.OneHundredAndTwentyFiveYearLeaseEmail = request.Email;
+            tasksData.OneHundredAndTwentyFiveYearLeaseReceive = request.Receive;
+            tasksData.OneHundredAndTwentyFiveYearLeaseSaveLease = request.Save;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
