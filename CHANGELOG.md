@@ -17,11 +17,11 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Changed
-- [282897] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282897) - Moved share information about opening into confirm all conditions are met
+- [282897](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282897) - Moved share information about opening into confirm all conditions are met
 - [282908](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282908) - Update content of Declaration of Expenditure Certificate conversion task 
 - [279040](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279040) - Tenancy at Will additional fields
 - [283357](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/283357) - Remove payroll date validation to be any date
-- [279036] (https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
+- [279036](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279036) - Direction to transfer content changes
 - [277534](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277534) - Merge conversion tasks "Land questionnaire" and "Land registry title plans" into "Land questionnaire(s) and land registry plans" with merged page/handler updates
 - [282882](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/282882) - Updated School Actions task confirmation content and tests
 - [277812](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/277812) - Update wording on supplemental funding agreement conversion tasks
@@ -33,7 +33,9 @@ Security in case of vulnerabilities.
 - [279041](https://dev.azure.com/dfe-gov-uk/Academies-and-Free-Schools-SIP/_workitems/edit/279041) - Commercial Transfer Agreement
 - [279038](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/279038) - Update UI on subleases task
 - [282907](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282907) - Redact and send documents content changes
-
+- [253920](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/253920) - Update Check accuracy of high needs places
+- [278434](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/278434) - Update Deed of variation
+  
 ### Added
 - [283349](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/283349) - Added new 'Confirm Children's Centre' conversion task and updated 'Nursery Arrangement' task content
 - [282872](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/282872) - Add conversion task "Confirm the new bank account details for the school" in Get ready for opening, with status logic, API endpoint, migration, and test coverage
