@@ -19,18 +19,18 @@ describe("Conversion tasks - Church supplemental agreement", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust");
+    it("should show guidance for checking changes", () => {
+        taskPage.pageHasGuidance("Changes that personalise the model documents to a school or trust");
     });
+
+    
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .tick()
-            .hasCheckboxLabel("Signed by diocese")
+            .hasCheckboxLabel("Signed by Diocesan authority and/or trustee")
             .tick()
             .saveAndReturn();
         taskListPage
@@ -39,10 +39,10 @@ describe("Conversion tasks - Church supplemental agreement", () => {
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Signed by diocese")
+            .hasCheckboxLabel("Signed by Diocesan authority and/or trustee")
             .isTicked()
             .untick()
             .saveAndReturn();
@@ -50,9 +50,9 @@ describe("Conversion tasks - Church supplemental agreement", () => {
             .hasTaskStatusNotStarted("Church supplemental agreement")
             .selectTask("Church supplemental agreement");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Signed by trust")
             .isUnticked()
-            .hasCheckboxLabel("Signed by diocese")
+            .hasCheckboxLabel("Signed by Diocesan authority and/or trustee")
             .isUnticked();
     });
 

@@ -15,9 +15,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmNurseryArrangementTa
     {
         public List<NurseryArrangementOption> NurseryArrangementOptions { get; } = EnumExtensions.ToList<NurseryArrangementOption>();
 
+        [BindProperty(Name = "not_applicable")]
+        public bool? NotApplicable { get; set; }
+        
         [BindProperty(Name = "nursery_arrangement")]
         public NurseryArrangementOption? SelectedNurseryArrangement { get; set; }
-
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -32,13 +34,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmNurseryArrangementTa
                 return Redirect(RouteConstants.ErrorPage);
 
             SelectedNurseryArrangement = ConversionTaskData.NurseryArrangement;
-
+            NotApplicable = ConversionTaskData.NurseryArrangement == NurseryArrangementOption.NotApplicable;
+            
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateNurseryArrangementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault()), SelectedNurseryArrangement));
+            if (NotApplicable == true)
+            {
+                SelectedNurseryArrangement = NurseryArrangementOption.NotApplicable;
+            }
+            
+            await Sender.Send(new UpdateNurseryArrangementTaskCommand(
+                new TaskDataId(TasksDataId.GetValueOrDefault()), 
+                SelectedNurseryArrangement
+            ));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

@@ -162,8 +162,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.Cleared = true;
             command.Saved = false;
             command.Received = true;
-            command.Signed = true;
-            command.Sent = false;
+            command.DraftSaved = true;
+            command.Signed = false;
             command.SignedSecretaryState = true;
 
             // Act
@@ -176,8 +176,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.DeedOfVariationCleared);
             Assert.True(existingTaskData.DeedOfVariationReceived);
             Assert.False(existingTaskData.DeedOfVariationSaved);
-            Assert.False(existingTaskData.DeedOfVariationSent);
-            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.False(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationDraftSaved);
             Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
         }
         [Theory]
@@ -282,9 +282,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             command.ProjectType = ProjectType.Conversion;
             command.Cleared = true;
             command.Saved = false;
+            command.DraftSaved = true;
             command.Received = true;
             command.Signed = true;
-            command.Sent = false;
             command.SignedSecretaryState = true;
 
             // Act
@@ -297,7 +297,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
             Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.False(existingTaskData.SupplementalFundingAgreementSent);
+            Assert.True(existingTaskData.SupplementalFundingAgreementDraftSaved);
             Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
             Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
         }
@@ -367,7 +367,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
             Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
             Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
         }
 
         [Theory]
@@ -766,10 +765,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
             Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedTrust);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
-            Assert.False(existingTaskData.ChurchSupplementalAgreementSaved);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementDraftSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementFinalSaved);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
         }
         [Theory]
@@ -922,40 +921,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task UpdateLandRegistryTitlePlansTaskAsync_ShouldUpdate_ConversionTaskData(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            UpdateLandRegistryTitlePlansTaskCommand command,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-
-            var taskData = fixture.Create<ConversionTasksData>();
-            dbContext.ConversionTasksData.Add(taskData);
-
-            await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
-            command.Received = true;
-            command.Cleared = true;
-            command.Saved = false;
-
-            // Act
-            await tasksDataClient.UpdateLandRegistryTitlePlansTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.LandRegistryReceived);
-            Assert.True(existingTaskData.LandRegistryCleared);
-            Assert.False(existingTaskData.LandRegistrySaved);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateCommercialTransferAgreementTaskAsync_ShouldUpdate_TransferTaskData(
           CustomWebApplicationDbContextFactory<Program> factory,
           ITasksDataClient tasksDataClient,
@@ -1050,10 +1015,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
-            command.Received = true;
-            command.Signed = true;
-            command.Saved = false;
-            command.Cleared = false;
+            command.LandQuestionnaireReceived = true;
+            command.LandQuestionnaireSigned = true;
+            command.LandQuestionnaireSaved = false;
+            command.LandQuestionnaireCleared = false;
+            command.LandRegistryTitlePlansReceived = true;
+            command.LandRegistryTitlePlansCleared = true;
+            command.LandRegistryTitlePlansSaved = false;
 
             // Act
             await tasksDataClient.UpdateLandQuestionnaireTaskAsync(command, default);
@@ -1066,6 +1034,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.LandQuestionnaireReceived);
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.False(existingTaskData.LandQuestionnaireSaved);
+            Assert.True(existingTaskData.LandRegistryReceived);
+            Assert.True(existingTaskData.LandRegistryCleared);
+            Assert.False(existingTaskData.LandRegistrySaved);
         }
 
 

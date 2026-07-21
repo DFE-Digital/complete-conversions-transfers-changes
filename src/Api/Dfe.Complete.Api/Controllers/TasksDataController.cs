@@ -326,6 +326,25 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Update the private finance initiative task for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/PrivateFinanceInitiative")]
+        [SwaggerResponse(204, "Private finance initiative task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdatePrivateFinanceInitiativeTaskAsync(
+            [FromBody] UpdatePrivateFinanceInitiativeTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
 
         /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
@@ -384,37 +403,18 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Confirm conversion project's land questionnaire task updated successfully.
+        /// Confirm conversion project's land questionnaire and land registry plans task updated successfully.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/LandQuestionnaire")]
-        [SwaggerResponse(204, "Confirm conversion project's land questionnaire task updated successfully.")]
+        [SwaggerResponse(204, "Confirm conversion project's land questionnaire and land registry plans task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateLandQuestionnaireTaskAsync(
             [FromBody] UpdateLandQuestionnaireTaskCommand request,
-            CancellationToken cancellationToken)
-        {
-            await sender.Send(request, cancellationToken);
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Updaing the land registry title plans task data for transfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWriteUpdate")]
-        [HttpPatch]
-        [Route("TaskData/LandRegistryTitlePlans")]
-        [SwaggerResponse(204, "The land registry title plans task updated successfully.")]
-        [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(404, "Project not found.")]
-        public async Task<IActionResult> UpdateLandRegistryTitlePlansTaskAsync(
-            [FromBody] UpdateLandRegistryTitlePlansTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
@@ -658,14 +658,14 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
-        /// Updating the chair of governors’ task data for conversion project.
+        /// Updating the chair of governors' task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/ConfirmChairOfGovernors")]
-        [SwaggerResponse(204, "Updated the chair of governors’ task successfully.")]
+        [SwaggerResponse(204, "Updated the chair of governors' task successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateChairOfGovernorsTaskAsync(
@@ -746,6 +746,25 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateClosureOrTransferDeclarationTaskAsync(
             [FromBody] UpdateClosureOrTransferDeclarationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Update the confirmation of new school bank details task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmSchoolBankDetails")]
+        [SwaggerResponse(204, "Update confirm school bank details task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmSchoolBankDetailsTaskAsync(
+            [FromBody] UpdateConfirmSchoolBankDetailsTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
@@ -838,6 +857,25 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateSubleasesTaskAsync(
             [FromBody] UpdateSubleasesTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the third party leases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ThirdPartyLeases")]
+        [SwaggerResponse(204, "Updated the third party leases task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateThirdPartyLeasesTaskAsync(
+            [FromBody] UpdateThirdPartyLeasesTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
@@ -994,6 +1032,20 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ChildrensCentre")]
+        [SwaggerResponse(204, "Children's centre task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateChildrenCentreTaskAsync(
+            [FromBody] UpdateChildrenCentreTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/ConfirmDbsChecks")]

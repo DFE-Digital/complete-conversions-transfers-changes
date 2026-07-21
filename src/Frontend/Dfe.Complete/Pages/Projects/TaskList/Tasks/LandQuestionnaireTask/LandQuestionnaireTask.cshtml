@@ -8,7 +8,9 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
-        <p>Make sure that any proposals for the land meet legal requirements and ministerial preferences.</p> 
+        <p>Academy trusts must seek professional legal advice to complete land and title checks for the converting school.</p>
+        <p>The trust's legal advisers should submit a completed academy land questionnaire and title plans for the converting school to the DfE conversion lead by the stated deadline.</p>
+        <p>The land questionnaire, title plans and registers should be received at the earliest opportunity to flag any land complications or conveyances, including additional arrangements such as subleases or shared usage arrangements.</p>
     </div>
 }
 @section TaskSection {
@@ -20,7 +22,6 @@
                     Check and clear the land questionnaire
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-hint>
-                    <p>You can <external-link data-cy="land-transfer-advice-guidance-link" href="@_configuration["ExternalLinks:LandTransferAdviceAndGuidance"]" class="govuk-link">use the land transfer advice and guidance to check for common problems (opens in new tab)</external-link>.</p>
                     <govuk-details>
                         <govuk-details-summary>
                             <span class="govuk-details__summary-text">How to clear a land questionnaire</span>
@@ -28,28 +29,63 @@
                         <govuk-details-text>
                             <p>You must <external-link data-cy="academy-conversion-questionnaire-link" href="@_configuration["ExternalLinks:AcademyConversionQuestionnaire"]">check the school is using the right land questionnaire (opens in new tab)</external-link>.</p>
                             <p>You need to clear the land questionnaire before the master funding agreement and the supplemental funding agreement.</p>
-                            <p>The land questionnaire is critical. It is the basis for all land decisions.</p>
-                            <p>The answers given inform how the land will be treated. It decides which leases, directions and other land agreements are needed.</p>
+                            <p>Help checking the land registry title plans</p>
+                            <p>Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry, include a title plan and title number.</p>
+                            <p>It's a good idea to look at the site on Google Maps and compare that to the title plan. This can help you find out if there's anything to question on the title plan.</p>
+                            <p>The boundary should include all school or trust buildings. If the land has become unregistered you should check the title plan.</p>
+                            <p>Talk to your line manager or the relevant solicitor if you have questions about anything on the title plan.</p>
                         </govuk-details-text>
                     </govuk-details>
                 </govuk-checkboxes-hint>
-                <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandQuestionnaireReceived)" id="@nameof(Model.LandQuestionnaireReceived)" asp-for="@Model.LandQuestionnaireReceived" value="true" name="@nameof(Model.LandQuestionnaireReceived)" checked="@Model.LandQuestionnaireReceived">
                     <b>Received</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandQuestionnaireCleared)" id="@nameof(Model.LandQuestionnaireCleared)" asp-for="@Model.LandQuestionnaireCleared" value="true" name="@nameof(Model.LandQuestionnaireCleared)" checked="@Model.LandQuestionnaireCleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
 
-          <govuk-checkboxes-item id="conversion_task_land_questionnaire_task_form_signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
-            <b>Signed by solicitor</b>
-          </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandQuestionnaireSigned)" id="@nameof(Model.LandQuestionnaireSigned)" asp-for="@Model.LandQuestionnaireSigned" value="true" name="@nameof(Model.LandQuestionnaireSigned)" checked="@Model.LandQuestionnaireSigned">
+                    <b>Signed by solicitor</b>
+                </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandQuestionnaireSaved)" id="@nameof(Model.LandQuestionnaireSaved)" asp-for="@Model.LandQuestionnaireSaved" value="true" name="@nameof(Model.LandQuestionnaireSaved)" checked="@Model.LandQuestionnaireSaved">
+                    <b>Saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
+        <govuk-checkboxes name="land-registry-title-plans-options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend class="govuk-fieldset__legend--l">
+                    Check and clear the land registry title plans
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <govuk-details>
+                        <govuk-details-summary>
+                            <span class="govuk-details__summary-text">Help checking the land registry title plans</span>
+                        </govuk-details-summary>
+                        <govuk-details-text>
+                            <p>Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry, include a title plan and title number.</p>
+                            <p>It's a good idea to look at the site on Google Maps and compare that to the title plan. This can help you find out if there's anything to question on the title plan.</p>
+                            <p>The boundary should include all school or trust buildings. If the land has become unregistered you should check the title plan.</p>
+                            <p>Talk to your line manager or the relevant solicitor if you have questions about anything on the title plan.</p>
+                        </govuk-details-text>
+                    </govuk-details>
+                </govuk-checkboxes-hint>
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandRegistryTitlePlansReceived)" id="@nameof(Model.LandRegistryTitlePlansReceived)" asp-for="@Model.LandRegistryTitlePlansReceived" value="true" name="@nameof(Model.LandRegistryTitlePlansReceived)" checked="@Model.LandRegistryTitlePlansReceived">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandRegistryTitlePlansCleared)" id="@nameof(Model.LandRegistryTitlePlansCleared)" asp-for="@Model.LandRegistryTitlePlansCleared" value="true" name="@nameof(Model.LandRegistryTitlePlansCleared)" checked="@Model.LandRegistryTitlePlansCleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item data-cy="@nameof(Model.LandRegistryTitlePlansSaved)" id="@nameof(Model.LandRegistryTitlePlansSaved)" asp-for="@Model.LandRegistryTitlePlansSaved" value="true" name="@nameof(Model.LandRegistryTitlePlansSaved)" checked="@Model.LandRegistryTitlePlansSaved">
                     <b>Saved in the school's SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
-}  
+}

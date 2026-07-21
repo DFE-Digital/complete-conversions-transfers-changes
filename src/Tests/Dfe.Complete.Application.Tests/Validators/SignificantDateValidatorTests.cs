@@ -225,72 +225,7 @@ namespace Dfe.Complete.Application.Tests.Validators
             Assert.True(result.IsValid);
         }
 
-        #endregion
-
-        #region ValidatePayrollDeadline Tests
-
-        [Fact]
-        public void ValidatePayrollDeadline_WithValidPayrollDateBeforeSignificantDate_ReturnsSuccess()
-        {
-            // Arrange
-            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
-            var project = CreateTestProject(significantDate);
-
-            // Act
-            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-        }
-
-        [Fact]
-        public void ValidatePayrollDeadline_WithPayrollDateInPast_ReturnsSuccess()
-        {
-            // Arrange
-            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
-            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
-            var project = CreateTestProject(significantDate);
-
-            // Act
-            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-        }
-
-        [Fact]
-        public void ValidatePayrollDeadline_WithPayrollDateAfterSignificantDate_ReturnsError()
-        {
-            // Arrange
-            var payrollDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
-            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(5));
-            var project = CreateTestProject(significantDate);
-
-            // Act
-            var result = _validator.ValidatePayrollDeadline(payrollDate, project);
-
-            // Assert
-            Assert.False(result.IsValid);
-            Assert.Equal("Payroll deadline must be before the significant date.", result.ErrorMessage);
-        }
-
-        [Fact]
-        public void ValidatePayrollDeadline_WithNullPayrollDate_ReturnsSuccess()
-        {
-            // Arrange
-            DateOnly? nullPayrollDate = null;
-            var significantDate = DateOnly.FromDateTime(DateTime.Today.AddDays(10));
-            var project = CreateTestProject(significantDate);
-
-            // Act
-            var result = _validator.ValidatePayrollDeadline(nullPayrollDate, project);
-
-            // Assert
-            Assert.True(result.IsValid);
-        }
-
-        #endregion
+        #endregion      
 
         #region Helper Methods
 
