@@ -6,6 +6,7 @@ using Dfe.Complete.Api.Swagger;
 using Dfe.Complete.Application.ApiConfig;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
 using GovUK.Dfe.CoreLibs.Http.Interfaces;
@@ -79,6 +80,9 @@ namespace Dfe.Complete.Api
 
             builder.Services.AddApplicationDependencyGroup(builder.Configuration);
             builder.Services.AddInfrastructureDependencyGroup(builder.Configuration);
+
+            // Add database seeding services
+            builder.Services.AddDatabaseSeeder();
 
             var autoMapperMaxDepth = int.TryParse(builder.Configuration["AutoMapper:MaxDepth"], out var configuredAutoMapperMaxDepth)
                 ? configuredAutoMapperMaxDepth
@@ -199,6 +203,13 @@ namespace Dfe.Complete.Api
             app.MapControllers();
 
             app.MapHealthChecks("/health").AllowAnonymous();
+
+            // Configure database seeding based on command line arguments
+            if (args.Contains("seed-db"))
+            {
+                await DatabaseSeederCli.ExecuteAsync(args, app.Services);
+                return;
+            }
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Logger is working...");
