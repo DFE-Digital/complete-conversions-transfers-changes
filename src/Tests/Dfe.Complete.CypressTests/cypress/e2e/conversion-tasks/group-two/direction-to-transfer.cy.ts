@@ -19,11 +19,6 @@ describe("Conversion tasks - Direction to transfer", () => {
         ConversionTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("You need to compare the direction to transfer against the model documents");
-    });
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");

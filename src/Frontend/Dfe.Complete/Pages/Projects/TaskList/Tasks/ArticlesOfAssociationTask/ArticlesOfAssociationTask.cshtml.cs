@@ -56,7 +56,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
                 Cleared = ConversionTaskData.ArticlesOfAssociationCleared;
                 NotApplicable = ConversionTaskData.ArticlesOfAssociationNotApplicable;
                 Received = ConversionTaskData.ArticlesOfAssociationReceived;
-                Sent = ConversionTaskData.ArticlesOfAssociationSent;
                 Signed = ConversionTaskData.ArticlesOfAssociationSigned;
                 Saved = ConversionTaskData.ArticlesOfAssociationSaved;
             }

@@ -16,8 +16,15 @@
                 <span class="govuk-details__summary-text">Update the grant assurance spreadsheet</span>
             </govuk-details-summary>
             <govuk-details-text>
-                <p>Regional Casework Services team members must <external-link href="@_configuration["ExternalLinks:UpdateSupportGrantAssuranceReportSpreadsheet"]">update the support grant assurance report spreadsheet (opens in new tab)</external-link>.</p>
-                <p>Do not update this grant assurance report spreadsheet if you work in a team in one of the Regions.</p>
+                <p>
+                    Regional Casework Services team members must
+                    <external-link href="@_configuration["ExternalLinks:UpdateSupportGrantAssuranceReportSpreadsheet"]">
+                        update the support grant assurance report spreadsheet (opens in new tab).
+                    </external-link>
+                </p>
+                <p>
+                    Do not update this grant assurance report spreadsheet if you work in a team in one of the Regions.
+                </p>
             </govuk-details-text>
         </govuk-details>
     </div>
@@ -30,21 +37,18 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
-                    <b>Not applicable</b>
-                    <govuk-checkboxes-item-hint>
-                        <p>No grant was received</p>
-                    </govuk-checkboxes-item-hint>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable (No grant received)</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes> 
         <govuk-date-input id="received-date" name-prefix="received-date" asp-for="@Model.ReceivedDate">
             <govuk-date-input-fieldset>
-                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                     Enter the date you received the declaration of expenditure certificate 
                 </govuk-date-input-fieldset-legend>
                 <govuk-date-input-hint>
-                    <p>For example 27 5 2007</p>
+                    <p class="govuk-!-margin-top-0">For example 27 5 2007</p>
                 </govuk-date-input-hint>
                 @if (ErrorService.HasErrorForKey("received-date"))
                 {
@@ -54,32 +58,24 @@
         </govuk-date-input> 
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-fieldset-legend class="govuk-fieldset__legend--m">
+                    Check and save declaration of expenditure certificate
                 </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <p class="govuk-!-margin-top-0">Select all that may apply</p>
+                </govuk-checkboxes-hint>
                 <govuk-checkboxes-item data-cy="check-certificate" id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
                     <b>Check the declaration of expenditure certificate is correct</b>
                     <govuk-checkboxes-item-hint>
-                        <p>Once they have sent it to you, check they've used the right template and there is no missing information.</p>
+                        <p class="govuk-!-margin-0">
+                            Once they have sent it to you, check they've used the right template and there is no missing information. If the school or trust received a sponsored grant, they need to
+                            <external-link href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">
+                                complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)
+                            </external-link>
+                        </p>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        <div class="govuk-checkboxes__hint">
-            <details data-module="govuk-details" class="govuk-details">
-                <summary class="govuk-details__summary">
-                    <span class="govuk-details__summary-text">Using the right certificate</span>
-                </summary>
-                <div class="govuk-details__text">
-                    <p>If the school only received the £25,000 pre-opening support grant, they need to download and <external-link href="@_configuration["ExternalLinks:CompleteAcademyConversionsSupportGrantCertificate"]">complete the academy conversions, support grant certificate (opens in new tab)</external-link>.</p>
-                    <p>If the school or trust received a sponsored grant, they need to <external-link href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]">complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)</external-link>.</p>
-                </div>
-            </details>
-        </div>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>

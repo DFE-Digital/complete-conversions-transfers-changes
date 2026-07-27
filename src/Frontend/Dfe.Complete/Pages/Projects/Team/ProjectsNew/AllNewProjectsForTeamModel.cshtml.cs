@@ -13,7 +13,7 @@ namespace Dfe.Complete.Pages.Projects.Team.ProjectsNew;
 
 public class AllNewProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(NewNavigation)
 {
-    public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+    public List<ListAllProjectsResultModel> Projects { get; set; } = [];
     public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
     public async Task<IActionResult> OnGet()

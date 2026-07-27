@@ -10,10 +10,13 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateLandQuestionnaireTaskCommand(
         TaskDataId TaskDataId,
-        bool? Received,
-        bool? Cleared,
-        bool? Signed,
-        bool? Saved
+        bool? LandQuestionnaireReceived,
+        bool? LandQuestionnaireCleared,
+        bool? LandQuestionnaireSigned,
+        bool? LandQuestionnaireSaved,
+        bool? LandRegistryTitlePlansReceived,
+        bool? LandRegistryTitlePlansCleared,
+        bool? LandRegistryTitlePlansSaved
     ) : IRequest<Result<bool>>;
 
     internal class UpdateLandQuestionnaireTaskCommandHandler(
@@ -26,10 +29,13 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.LandQuestionnaireReceived = request.Received;
-            tasksData.LandQuestionnaireCleared = request.Cleared;
-            tasksData.LandQuestionnaireSigned = request.Signed;
-            tasksData.LandQuestionnaireSaved = request.Saved;
+            tasksData.LandQuestionnaireReceived = request.LandQuestionnaireReceived;
+            tasksData.LandQuestionnaireCleared = request.LandQuestionnaireCleared;
+            tasksData.LandQuestionnaireSigned = request.LandQuestionnaireSigned;
+            tasksData.LandQuestionnaireSaved = request.LandQuestionnaireSaved;
+            tasksData.LandRegistryReceived = request.LandRegistryTitlePlansReceived;
+            tasksData.LandRegistryCleared = request.LandRegistryTitlePlansCleared;
+            tasksData.LandRegistrySaved = request.LandRegistryTitlePlansSaved;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

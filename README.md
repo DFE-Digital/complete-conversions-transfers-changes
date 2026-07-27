@@ -1,3 +1,27 @@
+# Quickstart: Database Setup & Seeding
+
+1. **Set your connection string in user secrets**
+  From the API project directory:
+  ```bash
+  dotnet user-secrets set "ConnectionStrings:DefaultConnection" "<your-connection-string>"
+  ```
+
+2. **Apply database migrations**
+  From the solution root:
+  ```bash
+  dotnet ef database update -p src/Core/Dfe.Complete.Infrastructure -s src/Api/Dfe.Complete.Api
+  ```
+
+3. **Seed the database**
+  From the solution root:
+  ```bash
+  dotnet run --project src/Api/Dfe.Complete.Api -- seed-db
+  ```
+  - To force a reset and reseed:
+    ```bash
+    dotnet run --project src/Api/Dfe.Complete.Api -- seed-db --force
+    ```
+
 # complete-conversions-transfers-changes
 
 Complete application and API (for external services) to help the process of schools converting to academies, transferring between academy trusts or changing their academy status.

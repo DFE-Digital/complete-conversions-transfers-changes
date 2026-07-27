@@ -35,6 +35,7 @@ describe("Complete conversion projects tests", () => {
                 const taskId = response.body.tasksDataId.value;
                 taskHelperConversions.updateExternalStakeholderKickOff(completableProjectId, "completed", "2025-10-01");
                 taskHelperConversions.updateConfirmAllConditionsMet(completableProjectId, "completed");
+                taskHelperConversions.updateShareInformationAboutOpening(taskId, true);
                 taskHelperConversions.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });
@@ -49,6 +50,7 @@ describe("Complete conversion projects tests", () => {
                     getSignificantDateString(1),
                 );
                 taskHelperConversions.updateConfirmAllConditionsMet(someTasksCompletedProjectId, "completed");
+                taskHelperConversions.updateShareInformationAboutOpening(taskId, true);
                 taskHelperConversions.updateConfirmAcademyOpenedDate(taskId, "2025-10-10");
             });
         });

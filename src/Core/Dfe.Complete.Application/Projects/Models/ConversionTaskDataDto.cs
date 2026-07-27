@@ -58,10 +58,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? SupplementalFundingAgreementCleared { get; set; }
 
         public bool? SupplementalFundingAgreementSigned { get; set; }
-
+        public bool? SupplementalFundingAgreementDraftSaved { get; set; }
         public bool? SupplementalFundingAgreementSaved { get; set; }
-
-        public bool? SupplementalFundingAgreementSent { get; set; }
 
         public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; }
 
@@ -69,13 +67,13 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? ChurchSupplementalAgreementCleared { get; set; }
 
-        public bool? ChurchSupplementalAgreementSigned { get; set; }
+        public bool? ChurchSupplementalAgreementSignedTrust { get; set; }
 
         public bool? ChurchSupplementalAgreementSignedDiocese { get; set; }
 
-        public bool? ChurchSupplementalAgreementSaved { get; set; }
+        public bool? ChurchSupplementalAgreementDraftSaved { get; set; }
 
-        public bool? ChurchSupplementalAgreementSent { get; set; }
+        public bool? ChurchSupplementalAgreementFinalSaved { get; set; }
 
         public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; }
 
@@ -107,7 +105,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? DeedOfVariationSaved { get; set; }
 
-        public bool? DeedOfVariationSent { get; set; }
+        public bool? DeedOfVariationDraftSaved { get; set; }
 
         public bool? DeedOfVariationSignedSecretaryState { get; set; }
 
@@ -118,6 +116,25 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? TrustModificationOrderCleared { get; set; }
 
         public bool? TrustModificationOrderSaved { get; set; }
+
+        public bool? PrivateFinanceInitiativeNotApplicable { get; set; }
+
+        public bool? PrivateFinanceInitiativeSupplementaryFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeMasterFundingAgreementPfiClausesInserted { get; set; }
+
+        public bool? PrivateFinanceInitiativeReceived { get; set; }
+
+        public bool? PrivateFinanceInitiativeDocumentsSentToSOPUForClearance { get; set; }
+
+        public bool? PrivateFinanceInitiativeCleared { get; set; }
+
+        public bool? PrivateFinanceInitiativeDraftSavedInTrustSharepointFolder { get; set; }
+
+        public bool? PrivateFinanceInitiativeSignedByAllStakeholders { get; set; }
+        
+        public bool? PrivateFinanceInitiativeFinalVersionSavedInSharepointFolder { get; set; }
+        
 
         public bool? DirectionToTransferReceived { get; set; }
 
@@ -131,6 +148,10 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? SchoolCompletedSaved { get; set; }
 
+        public bool? ConfirmSchoolBankDetailsSent { get; set; }
+
+        public bool? ConfirmSchoolBankDetailsSubmitted { get; set; }
+
         public bool? RedactAndSendRedact { get; set; }
 
         public bool? RedactAndSendSaveRedaction { get; set; }
@@ -143,11 +164,19 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
+        public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; }
+
         public bool? TupeConsultationCompleted { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; }
+        
+        public bool? ThirdPartyLeasesEmail { get; set; }
+
+        public bool? ThirdPartyLeasesReceive { get; set; }
+
+        public bool? ThirdPartyLeasesSave { get; set; }
 
         public bool? SubleasesReceived { get; set; }
 
@@ -168,7 +197,15 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? TenancyAtWillReceiveSigned { get; set; }
 
         public bool? TenancyAtWillSaveSigned { get; set; }
+        
+        public bool? TenancyAtWillBeingUsed { get; set; }
 
+        public bool? TenancyAtWillLicenceToOccupyBeingUsed { get; set; }
+
+        public bool? TenancyAtWillReceived { get; set; }
+
+        public bool? TenancyAtWillCleared { get; set; }
+        
         public bool? ShareInformationEmail { get; set; }
 
         public bool? RedactAndSendSendSolicitors { get; set; }
@@ -183,8 +220,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? MasterFundingAgreementNotApplicable { get; set; }
 
-        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
-
+        public bool? ThirdPartyLeasesNotApplicable { get; set; }
         public bool? SubleasesNotApplicable { get; set; }
 
         public bool? TenancyAtWillNotApplicable { get; set; }
@@ -211,9 +247,15 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public RiskProtectionArrangementOption? RiskProtectionArrangementOption { get; set; }
 
+        public bool? CheckAccuracyOfHigherNeedsNotApplicable { get; set; }
+
         public bool? CheckAccuracyOfHigherNeedsConfirmNumber { get; set; }
 
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; }
+
+        public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; }
+
+        public bool? CheckAccuracyOfHigherNeedsSendForm { get; set; }
 
         public bool? CompleteNotificationOfChangeNotApplicable { get; set; }
 
@@ -261,6 +303,20 @@ namespace Dfe.Complete.Application.Projects.Models
         
         public NurseryArrangementOption? NurseryArrangement { get; set; }
 
+        public bool? ChildrenCentreNotApplicable { get; set; }
+
+        public bool? ChildrenCentreLocalAuthority { get; set; }
+
+        public bool? ChildrenCentreAcademyTrust { get; set; }
+
+        public bool? ChildrenCentreStaffingAndTransferReviewed { get; set; }
+        
+        public bool? ChildrenCentreLandLeaseSharedAgreed { get; set; }
+
+        public bool? ChildrenCentreFundingPensionReviewed { get; set; }
+        
+        public bool? ChildrenCentreLegalAndGovernanceReviewed { get; set; }
+        
         public bool? StatutoryConsultationNotApplicable { get; set; }
 
         public bool? StatutoryConsultationComplete { get; set; }
@@ -271,6 +327,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? PostDecisionActionsLaProformaUploaded { get; set; }
 
-
+        public bool? CommercialTransferAgreementUnamended { get; set; }
     }
 }
