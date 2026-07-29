@@ -6,7 +6,7 @@ namespace Dfe.Complete.Domain.Entities;
 
 public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 {
-    public ProjectId Id { get; set; } = default!;
+    public ProjectId Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -24,11 +24,11 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public Region? Region { get; set; }
 
-    public Ukprn TrustUkprn { get; set; } = default!;
+    public Ukprn TrustUkprn { get; set; }
 
-    public string TrustName { get; set; } = default!;
+    public string TrustName { get; set; }
 
-    public Urn AcademyUrn { get; set; } = default!;
+    public Urn AcademyUrn { get; set; }
 
     public DateOnly? SignificantDate { get; set; }
 
