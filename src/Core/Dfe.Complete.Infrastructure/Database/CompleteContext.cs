@@ -59,6 +59,8 @@ public partial class CompleteContext : DbContext
 
     public virtual DbSet<SignificantChangeProject> SignificantChangeProjects { get; set; }
 
+    public virtual DbSet<SignificantChangeProjectTasksData> SignificantChangeProjectTasksData { get; set; }
+
     public virtual DbSet<SignificantDateHistory> SignificantDateHistories { get; set; }
 
     public virtual DbSet<SignificantDateHistoryReason> SignificantDateHistoryReasons { get; set; }
@@ -88,6 +90,7 @@ public partial class CompleteContext : DbContext
     {
         modelBuilder.Entity<Project>(ConfigureProject);
         modelBuilder.Entity<SignificantChangeProject>(ConfigureSignificantChangeProject);
+        modelBuilder.Entity<SignificantChangeProjectTasksData>(ConfigureSignificantChangeProjectTasksData);
         modelBuilder.Entity<User>(ConfigureUser);
         modelBuilder.Entity<Contact>(ConfigureContact);
         modelBuilder.Entity<ConversionTasksData>(ConfigureConversionTasksData);
@@ -402,7 +405,43 @@ public partial class CompleteContext : DbContext
 
         projectConfiguration.HasOne(d => d.AssignedToUser)
             .WithMany()
-            .HasForeignKey(d => d.AssignedToUserId);
+            .HasForeignKey(d => d.AssignedToUserId)
+            .HasConstraintName("FK_significant_change_projects_users_assigned_to_user_id");
+    }
+
+    private static void ConfigureSignificantChangeProjectTasksData(EntityTypeBuilder<SignificantChangeProjectTasksData> projectConfiguration)
+    {
+        projectConfiguration.HasKey(e => e.Id);
+
+        projectConfiguration.ToTable("significant_change_project_tasks_data", DefaultSchema);
+
+        projectConfiguration.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .HasConversion(
+                v => v!.Value,
+                v => new TaskDataId(v))
+            .HasColumnName("id");
+        projectConfiguration.Property(e => e.ProjectId)
+            .HasColumnName("project_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new ProjectId(v));
+        projectConfiguration.Property(e => e.CreatedAt)
+            .HasPrecision(6)
+            .HasColumnName("created_at");
+        projectConfiguration.Property(e => e.UpdatedAt)
+            .HasPrecision(6)
+            .HasColumnName("updated_at");
+
+        projectConfiguration.HasIndex(e => e.ProjectId)
+            .IsUnique()
+            .HasDatabaseName("IX_significant_change_project_tasks_data_project_id");
+
+        projectConfiguration.HasOne<SignificantChangeProject>()
+            .WithOne()
+            .HasForeignKey<SignificantChangeProjectTasksData>(e => e.ProjectId)
+            .HasPrincipalKey<SignificantChangeProject>(e => e.Id)
+            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_projects_project_id");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
