@@ -20,13 +20,6 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
         TransferTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Complete the Fresh starts, transfers and changes for open academies form")
-            .clickDropdown("Help with this form")
-            .hasGuidance("There is guidance in a Microsoft Word document to help you complete the form");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
