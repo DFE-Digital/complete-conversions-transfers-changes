@@ -42,6 +42,7 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
             await SeedSignificantDateHistoryReasonsAsync();
             await SeedGiasEstablishmentsAsync();
             await SeedProjectsAsync();
+            await SeedSignificantChangeProjectsAsync();
 
             Console.WriteLine("[Seeder] Database seeding completed successfully");
         }
@@ -225,9 +226,9 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
 
     private async Task SeedProjectsAsync()
     {
-        if (await _context.ProjectGroups.AnyAsync())
+        if (await _context.Projects.AnyAsync())
         {
-            Console.WriteLine("[Seeder] Project groups already exist, skipping project data seeding...");
+            Console.WriteLine("[Seeder] Projects already exist, skipping project data seeding...");
             return;
         }
 
@@ -375,6 +376,49 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
         }
 
         return (projects, tasks);
+    }
+
+    private async Task SeedSignificantChangeProjectsAsync()
+    {
+        if (await _context.SignificantChangeProjects.AnyAsync())
+        {
+            Console.WriteLine("[Seeder] Significant change projects already exist, skipping significant change project data seeding...");
+            return;
+        }
+
+        Console.WriteLine("[Seeder] Seeding significant change project data...");
+
+        // Fetch users from the database for correct IDs
+        var users = await _context.Users.ToListAsync();
+
+        for (var i = 0; i < 25; i++)
+        {
+            var assignedToUser = RandomFromList(users);
+
+            var significantChangeProject =
+                SignificantChangeProject.CreateProject(
+                    Ukprns[i % Ukprns.Count],
+                    $"Trusty trustee trust {i + 1}",
+                    Urns[i % Urns.Count]
+                );
+
+            significantChangeProject.AssignUser(assignedToUser.Id);
+
+            _context.SignificantChangeProjects.Add(significantChangeProject);
+        }
+
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Seeder] ERROR seeding projects: {ex.Message}\n{ex}");
+            throw;
+        }
+
+        Console.WriteLine("[Seeder] Significant change project data seeding completed");
     }
 
     private static IReadOnlyList<User> DefaultUsers => [
