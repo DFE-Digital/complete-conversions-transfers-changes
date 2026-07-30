@@ -1524,7 +1524,37 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
                     b.HasIndex("AssignedToUserId");
 
-                    b.ToTable("significant_change_projects", "complete");
+                    b.ToTable("significant_change_project", "complete");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("project_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_significant_change_project_tasks_data_project_id");
+
+                    b.ToTable("significant_change_project_tasks_data", "complete");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
@@ -2268,9 +2298,20 @@ namespace Dfe.Complete.Infrastructure.Migrations
                 {
                     b.HasOne("Dfe.Complete.Domain.Entities.User", "AssignedToUser")
                         .WithMany()
-                        .HasForeignKey("AssignedToUserId");
+                        .HasForeignKey("AssignedToUserId")
+                        .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
 
                     b.Navigation("AssignedToUser");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", b =>
+                {
+                    b.HasOne("Dfe.Complete.Domain.Entities.SignificantChangeProject", null)
+                        .WithOne()
+                        .HasForeignKey("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", "ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>

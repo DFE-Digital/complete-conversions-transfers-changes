@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSignificantChangeTable : Migration
+    public partial class AddSignificantChangeProjectAndTaskTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "significant_change_projects",
+                name: "significant_change_project",
                 schema: "complete",
                 columns: table => new
                 {
@@ -34,27 +34,60 @@ namespace Dfe.Complete.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_significant_change_projects", x => x.id);
+                    table.PrimaryKey("PK_significant_change_project", x => x.id);
                     table.ForeignKey(
-                        name: "FK_significant_change_projects_users_assigned_to_user_id",
+                        name: "FK_significant_change_project_users_assigned_to_user_id",
                         column: x => x.assigned_to_user_id,
                         principalSchema: "complete",
                         principalTable: "users",
                         principalColumn: "id");
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_significant_change_projects_assigned_to_user_id",
+            migrationBuilder.CreateTable(
+                name: "significant_change_project_tasks_data",
                 schema: "complete",
-                table: "significant_change_projects",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    project_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime2(6)", precision: 6, nullable: false),
+                    updated_at = table.Column<DateTime>(type: "datetime2(6)", precision: 6, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_significant_change_project_tasks_data", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_significant_change_project_tasks_data_significant_change_project_project_id",
+                        column: x => x.project_id,
+                        principalSchema: "complete",
+                        principalTable: "significant_change_project",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_significant_change_project_assigned_to_user_id",
+                schema: "complete",
+                table: "significant_change_project",
                 column: "assigned_to_user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_significant_change_project_tasks_data_project_id",
+                schema: "complete",
+                table: "significant_change_project_tasks_data",
+                column: "project_id",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "significant_change_projects",
+                name: "significant_change_project_tasks_data",
+                schema: "complete");
+
+            migrationBuilder.DropTable(
+                name: "significant_change_project",
                 schema: "complete");
         }
     }

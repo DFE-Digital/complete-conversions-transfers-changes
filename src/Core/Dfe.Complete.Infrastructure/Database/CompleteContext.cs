@@ -345,7 +345,7 @@ public partial class CompleteContext : DbContext
     {
         projectConfiguration.HasKey(e => e.Id);
 
-        projectConfiguration.ToTable("significant_change_projects", DefaultSchema);
+        projectConfiguration.ToTable("significant_change_project", DefaultSchema);
 
         projectConfiguration.Property(e => e.Id)
             .ValueGeneratedOnAdd()
@@ -406,7 +406,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.HasOne(d => d.AssignedToUser)
             .WithMany()
             .HasForeignKey(d => d.AssignedToUserId)
-            .HasConstraintName("FK_significant_change_projects_users_assigned_to_user_id");
+            .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
     }
 
     private static void ConfigureSignificantChangeProjectTasksData(EntityTypeBuilder<SignificantChangeProjectTasksData> projectConfiguration)
@@ -441,7 +441,7 @@ public partial class CompleteContext : DbContext
             .WithOne()
             .HasForeignKey<SignificantChangeProjectTasksData>(e => e.ProjectId)
             .HasPrincipalKey<SignificantChangeProject>(e => e.Id)
-            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_projects_project_id");
+            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)

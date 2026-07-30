@@ -152,6 +152,34 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("check_accuracy_of_higher_needs_send_form");
 
+                    b.Property<bool?>("ChildrenCentreAcademyTrust")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_academy_trust");
+
+                    b.Property<bool?>("ChildrenCentreFundingPensionReviewed")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_funding_pension_reviewed");
+
+                    b.Property<bool?>("ChildrenCentreLandLeaseSharedAgreed")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_land_lease_shared_agreed");
+
+                    b.Property<bool?>("ChildrenCentreLegalAndGovernanceReviewed")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_legal_and_governance_reviewed");
+
+                    b.Property<bool?>("ChildrenCentreLocalAuthority")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_local_authority");
+
+                    b.Property<bool?>("ChildrenCentreNotApplicable")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_not_applicable");
+
+                    b.Property<bool?>("ChildrenCentreStaffingAndTransferReviewed")
+                        .HasColumnType("bit")
+                        .HasColumnName("children_centre_staffing_and_transfer_reviewed");
+
                     b.Property<bool?>("ChurchSupplementalAgreementCleared")
                         .HasColumnType("bit")
                         .HasColumnName("church_supplemental_agreement_cleared");
