@@ -29,6 +29,46 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.InRange(project.UpdatedAt, beforeCreate, afterCreate);
         }
 
+        [Fact]
+        public void CreateProject_ShouldCreateAndLinkSignificantTaskData()
+        {
+            // Arrange
+            var beforeCreate = DateTime.UtcNow;
+
+            // Act
+            var project = SignificantChangeProject.CreateProject(
+                new Ukprn(12345678),
+                "Sample Trust",
+                new Urn(123456));
+
+            // Assert
+            var afterCreate = DateTime.UtcNow;
+            Assert.NotNull(project.SignificantTasksData);
+            Assert.NotEqual(Guid.Empty, project.SignificantTasksData.Id.Value);
+            Assert.Equal(project.Id, project.SignificantTasksData.ProjectId);
+            Assert.Same(project, project.SignificantTasksData.Project);
+            Assert.InRange(project.SignificantTasksData.CreatedAt, beforeCreate, afterCreate);
+            Assert.InRange(project.SignificantTasksData.UpdatedAt, beforeCreate, afterCreate);
+            Assert.Equal(project.SignificantTasksData.CreatedAt, project.SignificantTasksData.UpdatedAt);
+        }
+
+        [Fact]
+        public void CreateSignificantChangeProjectTasksData_ShouldBeIdempotent()
+        {
+            // Arrange
+            var project = SignificantChangeProject.CreateProject(
+                new Ukprn(12345678),
+                "Sample Trust",
+                new Urn(123456));
+            var existingTaskData = project.SignificantTasksData;
+
+            // Act
+            project.CreateSignificantChangeProjectTasksData();
+
+            // Assert
+            Assert.Same(existingTaskData, project.SignificantTasksData);
+        }
+
         [Theory]
         [InlineData(null)]
         [InlineData("")]
