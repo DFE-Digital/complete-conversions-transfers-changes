@@ -158,6 +158,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 services.AddCompleteApiClient<ITasksDataClient, TasksDataClient>(config, client);
                 services.AddCompleteApiClient<IUsersClient, UsersClient>(config, client);
                 services.AddCompleteApiClient<IServiceSupportClient, ServiceSupportClient>(config, client);
+                services.AddCompleteApiClient<ISignificantChangeProjectsClient, SignificantChangeProjectsClient>(config, client);
                 services.AddCompleteApiClient<IContactsClient, ContactsClient>(config, client);
                 var serviceProvider = services.BuildServiceProvider();
 
@@ -169,6 +170,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 fixture.Inject(serviceProvider.GetRequiredService<ITasksDataClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<IUsersClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<IServiceSupportClient>());
+                fixture.Inject(serviceProvider.GetRequiredService<ISignificantChangeProjectsClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<IContactsClient>());
                 fixture.Inject(new List<Claim>());
 
