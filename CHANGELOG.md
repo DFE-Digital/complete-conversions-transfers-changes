@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+- [292850](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/Significant%20changes/Stories?workitem=292850) - Update db seeder to include entries for new entity significant change project
+- [292852](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/Significant%20changes/Stories?workitem=292852) - Add significant change creation endpoint in the API
+
 ### Changed
  - [288919](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/288919) - Remove helper text for Fresh Starts checkbox as the advice is no longer needed
  - [294550](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/294550) - Update broken SharePoint link
@@ -77,8 +81,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.46.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-05-13.1533) - 2026-05-13
 
 ### Changed
-- [280987](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280987), [280959](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280959) - allow LA payroll deadline date to be in the past
--[266674](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266674) - Dotnet 10 upgrade
+- [280987](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280987), [280959](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/280959) - allow LA payroll deadline date to be in the past  
+- [266674](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/266674) - Dotnet 10 upgrade
 
 ---
 

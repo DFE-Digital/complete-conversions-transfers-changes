@@ -2585,6 +2585,43 @@
         }
       }
     },
+    "/v1/SignificantChangeProjects/SignificantChange": {
+      "post": {
+        "tags": [
+          "SignificantChangeProjects"
+        ],
+        "summary": "Creates a new significant change project.",
+        "operationId": "SignificantChangeProjects_CreateSignificantChangeProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSignificantChangeProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/Transfer": {
       "get": {
         "tags": [
@@ -8318,6 +8355,31 @@
                 "$ref": "#/components/schemas/ContactId"
               }
             ]
+          }
+        }
+      },
+      "CreateSignificantChangeProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "academyUrn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "trustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "trustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         }
       },
