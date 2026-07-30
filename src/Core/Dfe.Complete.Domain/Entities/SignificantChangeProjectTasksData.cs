@@ -26,24 +26,6 @@ public class SignificantChangeProjectTasksData : IEntity<TaskDataId>
         Project = default!;
     }
 
-    internal static SignificantChangeProjectTasksData CreateTask(SignificantChangeProject project)
-    {
-        ArgumentNullException.ThrowIfNull(project);
-
-        if (project.Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
-
-        var now = DateTime.UtcNow;
-
-        return new SignificantChangeProjectTasksData(
-            new TaskDataId(Guid.NewGuid()),
-            project.Id,
-            now,
-            now)
-        {
-            Project = project
-        };
-    }
-
     private SignificantChangeProjectTasksData(
         TaskDataId id,
         ProjectId projectId,
@@ -62,5 +44,23 @@ public class SignificantChangeProjectTasksData : IEntity<TaskDataId>
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
         Project = default!;
+    }
+
+    internal static SignificantChangeProjectTasksData CreateTask(SignificantChangeProject project)
+    {
+        ArgumentNullException.ThrowIfNull(project);
+
+        if (project.Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
+
+        var now = DateTime.UtcNow;
+
+        return new SignificantChangeProjectTasksData(
+            new TaskDataId(Guid.NewGuid()),
+            project.Id,
+            now,
+            now)
+        {
+            Project = project
+        };
     }
 }
