@@ -36,6 +36,8 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? SharepointFolderLink { get; set; }
 
+    public string? DecisionConditions { get; set; }
+
     public virtual User? AssignedToUser { get; set; }
 
     public virtual SignificantChangeProjectTasksData SignificantTasksData { get; private set; }

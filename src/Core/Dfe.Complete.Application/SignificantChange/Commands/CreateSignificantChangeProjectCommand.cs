@@ -15,8 +15,8 @@ public record CreateSignificantChangeProjectCommand(
     [Required][Urn] int? AcademyUrn,
     [Required][Ukprn(ValueIsInteger = true)] int? TrustUkprn,
     [Required] string? TrustName,
-    [Required] int? PrepareId
-    // TODO add decision conditions
+    [Required] int? PrepareId,
+    string? DecisionConditions
 ) : IRequest<ProjectId>;
 
 public class CreateSignificantChangeProjectCommandHandler(
@@ -47,6 +47,7 @@ public class CreateSignificantChangeProjectCommandHandler(
 
             project.PrepareId = request.PrepareId!.Value;
             project.Region = region;
+            project.DecisionConditions = request.DecisionConditions;
 
             await significantChangeProjectRepository.AddAsync(project, cancellationToken);
             await unitOfWork.CommitAsync();

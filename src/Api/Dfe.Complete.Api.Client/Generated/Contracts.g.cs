@@ -5605,6 +5605,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("prepareId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PrepareId { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("decisionConditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DecisionConditions { get; set; } = default!;
+
         public string ToJson()
         {
 

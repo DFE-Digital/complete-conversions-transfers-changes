@@ -403,6 +403,9 @@ public partial class CompleteContext : DbContext
             .HasMaxLength(4000)
             .HasColumnName("sharepoint_folder_link");
 
+        projectConfiguration.Property(e => e.DecisionConditions)
+            .HasColumnName("decision_conditions");
+
         projectConfiguration.HasOne(d => d.AssignedToUser)
             .WithMany()
             .HasForeignKey(d => d.AssignedToUserId)
