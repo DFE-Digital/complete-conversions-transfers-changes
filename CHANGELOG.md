@@ -16,11 +16,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-30.1678...main) for everything awaiting release
+
+---
+
+## [2.0.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-07-30.1678) - 2026-07-30
+
 ### Changed
  - [288919](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/288919) - Remove helper text for Fresh Starts checkbox as the advice is no longer needed
  - [294550](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/294550) - Update broken SharePoint link
-  
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-20.1666...main) for everything awaiting release
+ - [283933](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/283933) - -Complete seeding
 
 ---
 
