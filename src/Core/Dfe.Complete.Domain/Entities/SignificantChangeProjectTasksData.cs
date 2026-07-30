@@ -7,7 +7,7 @@ namespace Dfe.Complete.Domain.Entities;
 // created and modified only within that project workflow.
 // Note that ConversionTasksData and TransferTasksData have their foreign key on the project
 // SignificantChangeProjectTasksData is a child of a SignificantChangeProject instead and stores the project ID
-public class SignificantChangeProjectTasksData : BaseAggregateRoot, IEntity<TaskDataId>
+public class SignificantChangeProjectTasksData : IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }
 
@@ -17,26 +17,34 @@ public class SignificantChangeProjectTasksData : BaseAggregateRoot, IEntity<Task
 
     public DateTime UpdatedAt { get; set; }
 
+    public virtual SignificantChangeProject Project { get; private set; }
+
     private SignificantChangeProjectTasksData()
     {
         Id = default!;
         ProjectId = default!;
+        Project = default!;
     }
 
-    public static SignificantChangeProjectTasksData CreateTask(ProjectId projectId)
+    internal static SignificantChangeProjectTasksData CreateTask(SignificantChangeProject project)
     {
-        ArgumentNullException.ThrowIfNull(projectId);
+        ArgumentNullException.ThrowIfNull(project);
+
+        if (project.Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
 
         var now = DateTime.UtcNow;
 
         return new SignificantChangeProjectTasksData(
             new TaskDataId(Guid.NewGuid()),
-            projectId,
+            project.Id,
             now,
-            now);
+            now)
+        {
+            Project = project
+        };
     }
 
-    public SignificantChangeProjectTasksData(
+    private SignificantChangeProjectTasksData(
         TaskDataId id,
         ProjectId projectId,
         DateTime createdAt,
@@ -53,5 +61,6 @@ public class SignificantChangeProjectTasksData : BaseAggregateRoot, IEntity<Task
         ProjectId = projectId;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
+        Project = default!;
     }
 }

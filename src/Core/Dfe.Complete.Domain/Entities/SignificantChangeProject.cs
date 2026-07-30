@@ -38,12 +38,15 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? AssignedToUser { get; set; }
 
+    public virtual SignificantChangeProjectTasksData SignificantTasksData { get; private set; }
+
     internal SignificantChangeProject()
     {
         Id = default!;
         TrustUkprn = default!;
         TrustName = default!;
         AcademyUrn = default!;
+        SignificantTasksData = default!;
     }
 
     public static SignificantChangeProject CreateProject(
@@ -61,7 +64,7 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
         var now = DateTime.UtcNow;
 
-        return new SignificantChangeProject
+        var project = new SignificantChangeProject
         {
             Id = new ProjectId(Guid.NewGuid()),
             CreatedAt = now,
@@ -71,6 +74,19 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
             TrustName = trustName,
             AcademyUrn = academyUrn
         };
+
+        project.CreateSignificantChangeProjectTasksData();
+
+        return project;
+    }
+
+    public void CreateSignificantChangeProjectTasksData()
+    {
+        if (Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
+        if (SignificantTasksData is not null) return;
+
+        SignificantTasksData = SignificantChangeProjectTasksData.CreateTask(this);
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void AssignUser(UserId? assignedToUserId)

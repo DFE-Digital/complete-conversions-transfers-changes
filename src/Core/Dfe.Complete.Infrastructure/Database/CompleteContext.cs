@@ -407,6 +407,13 @@ public partial class CompleteContext : DbContext
             .WithMany()
             .HasForeignKey(d => d.AssignedToUserId)
             .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
+
+        projectConfiguration.HasOne(d => d.SignificantTasksData)
+            .WithOne(d => d.Project)
+            .HasForeignKey<SignificantChangeProjectTasksData>(d => d.ProjectId)
+            .HasPrincipalKey<SignificantChangeProject>(d => d.Id)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
     }
 
     private static void ConfigureSignificantChangeProjectTasksData(EntityTypeBuilder<SignificantChangeProjectTasksData> projectConfiguration)
@@ -436,12 +443,6 @@ public partial class CompleteContext : DbContext
         projectConfiguration.HasIndex(e => e.ProjectId)
             .IsUnique()
             .HasDatabaseName("IX_significant_change_project_tasks_data_project_id");
-
-        projectConfiguration.HasOne<SignificantChangeProject>()
-            .WithOne()
-            .HasForeignKey<SignificantChangeProjectTasksData>(e => e.ProjectId)
-            .HasPrincipalKey<SignificantChangeProject>(e => e.Id)
-            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)

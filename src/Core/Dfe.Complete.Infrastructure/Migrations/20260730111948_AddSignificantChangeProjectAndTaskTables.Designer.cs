@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    [Migration("20260730104220_AddSignificantChangeProjectAndTaskTables")]
+    [Migration("20260730111948_AddSignificantChangeProjectAndTaskTables")]
     partial class AddSignificantChangeProjectAndTaskTables
     {
         /// <inheritdoc />
@@ -2309,12 +2309,14 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", b =>
                 {
-                    b.HasOne("Dfe.Complete.Domain.Entities.SignificantChangeProject", null)
-                        .WithOne()
+                    b.HasOne("Dfe.Complete.Domain.Entities.SignificantChangeProject", "Project")
+                        .WithOne("SignificantTasksData")
                         .HasForeignKey("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
@@ -2344,6 +2346,12 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("Notes");
 
                     b.Navigation("SignificantDateHistories");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProject", b =>
+                {
+                    b.Navigation("SignificantTasksData")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
