@@ -126,6 +126,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
     },
     {
+      "Controller": "SignificantChangeProjectsController",
+      "Action": "CreateSignificantChangeProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
       "Controller": "UsersController",
       "Action": "CreateUserAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
