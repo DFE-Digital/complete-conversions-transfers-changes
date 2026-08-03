@@ -57,6 +57,10 @@ public partial class CompleteContext : DbContext
 
     public virtual DbSet<ProjectGroup> ProjectGroups { get; set; }
 
+    public virtual DbSet<SignificantChangeProject> SignificantChangeProjects { get; set; }
+
+    public virtual DbSet<SignificantChangeProjectTasksData> SignificantChangeProjectTasksData { get; set; }
+
     public virtual DbSet<SignificantDateHistory> SignificantDateHistories { get; set; }
 
     public virtual DbSet<SignificantDateHistoryReason> SignificantDateHistoryReasons { get; set; }
@@ -73,6 +77,8 @@ public partial class CompleteContext : DbContext
             optionsBuilder.UseCompleteSqlServer(connectionString!, _configuration!.GetValue("EnableSQLRetryOnFailure", false));
         }
 
+        optionsBuilder.AddInterceptors(new TimestampAuditInterceptor());
+
         if (_serviceProvider != null)
         {
             var mediator = _serviceProvider.GetRequiredService<IMediator>();
@@ -83,6 +89,8 @@ public partial class CompleteContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Project>(ConfigureProject);
+        modelBuilder.Entity<SignificantChangeProject>(ConfigureSignificantChangeProject);
+        modelBuilder.Entity<SignificantChangeProjectTasksData>(ConfigureSignificantChangeProjectTasksData);
         modelBuilder.Entity<User>(ConfigureUser);
         modelBuilder.Entity<Contact>(ConfigureContact);
         modelBuilder.Entity<ConversionTasksData>(ConfigureConversionTasksData);
@@ -331,6 +339,110 @@ public partial class CompleteContext : DbContext
             .WithMany()
             .HasForeignKey(p => p.Urn)
             .HasPrincipalKey(g => g.Urn);
+    }
+
+    private static void ConfigureSignificantChangeProject(EntityTypeBuilder<SignificantChangeProject> projectConfiguration)
+    {
+        projectConfiguration.HasKey(e => e.Id);
+
+        projectConfiguration.ToTable("significant_change_project", DefaultSchema);
+
+        projectConfiguration.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .HasConversion(
+                v => v!.Value,
+                v => new ProjectId(v))
+            .HasColumnName("id");
+
+        projectConfiguration.Property(e => e.CreatedAt)
+            .HasPrecision(6)
+            .HasColumnName("created_at");
+        projectConfiguration.Property(e => e.UpdatedAt)
+            .HasPrecision(6)
+            .HasColumnName("updated_at");
+        projectConfiguration.Property(e => e.CompletedAt)
+            .HasPrecision(6)
+            .HasColumnName("completed_at");
+        projectConfiguration.Property(e => e.State).HasColumnName("state");
+        projectConfiguration.Property(e => e.PrepareId).HasColumnName("prepare_id");
+        projectConfiguration.Property(e => e.AssignedToUserId)
+            .HasColumnName("assigned_to_user_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new UserId(v));
+        projectConfiguration.Property(e => e.AssignedAt)
+            .HasPrecision(6)
+            .HasColumnName("assigned_at");
+        projectConfiguration.Property(e => e.Region)
+            .HasMaxLength(4000)
+            .HasColumnName("region")
+            .HasConversion(
+                r => r.GetCharValue(),
+                regionDbValue => regionDbValue.ToEnumFromChar<Region>());
+        projectConfiguration.Property(e => e.TrustUkprn)
+            .HasColumnName("trust_ukprn")
+            .HasConversion(
+                v => v!.Value,
+                v => new Ukprn(v));
+        projectConfiguration.Property(e => e.TrustName)
+            .HasMaxLength(4000)
+            .HasColumnName("trust_name");
+        projectConfiguration.Property(e => e.AcademyUrn)
+            .HasColumnName("academy_urn")
+            .HasConversion(
+                v => v!.Value,
+                v => new Urn(v));
+        projectConfiguration.Property(e => e.SignificantDate).HasColumnName("significant_date");
+        projectConfiguration.Property(e => e.Team)
+            .HasMaxLength(4000)
+            .HasColumnName("team")
+            .HasConversion(
+                team => team.ToDescription(),
+                teamDbValue => teamDbValue.FromDescriptionValue<ProjectTeam>());
+        projectConfiguration.Property(e => e.SharepointFolderLink)
+            .HasMaxLength(4000)
+            .HasColumnName("sharepoint_folder_link");
+
+        projectConfiguration.HasOne(d => d.AssignedToUser)
+            .WithMany()
+            .HasForeignKey(d => d.AssignedToUserId)
+            .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
+
+        projectConfiguration.HasOne(d => d.SignificantTasksData)
+            .WithOne(d => d.Project)
+            .HasForeignKey<SignificantChangeProjectTasksData>(d => d.ProjectId)
+            .HasPrincipalKey<SignificantChangeProject>(d => d.Id)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("FK_significant_change_project_tasks_data_significant_change_project_project_id");
+    }
+
+    private static void ConfigureSignificantChangeProjectTasksData(EntityTypeBuilder<SignificantChangeProjectTasksData> projectConfiguration)
+    {
+        projectConfiguration.HasKey(e => e.Id);
+
+        projectConfiguration.ToTable("significant_change_project_tasks_data", DefaultSchema);
+
+        projectConfiguration.Property(e => e.Id)
+            .ValueGeneratedOnAdd()
+            .HasConversion(
+                v => v!.Value,
+                v => new TaskDataId(v))
+            .HasColumnName("id");
+        projectConfiguration.Property(e => e.ProjectId)
+            .HasColumnName("project_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new ProjectId(v));
+        projectConfiguration.Property(e => e.CreatedAt)
+            .HasPrecision(6)
+            .HasColumnName("created_at");
+        projectConfiguration.Property(e => e.UpdatedAt)
+            .HasPrecision(6)
+            .HasColumnName("updated_at");
+
+        projectConfiguration.HasIndex(e => e.ProjectId)
+            .IsUnique()
+            .HasDatabaseName("IX_significant_change_project_tasks_data_project_id");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
