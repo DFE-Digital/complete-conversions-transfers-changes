@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
                 cfg.AddProfile<AutoMapping>();
             });
 
-            config.AssertConfigurationIsValid(); // Ensures all mappings are valid
+                config.AssertConfigurationIsValid(); // Ensures all mappings are valid
 
             _mapper = config.CreateMapper();
         }

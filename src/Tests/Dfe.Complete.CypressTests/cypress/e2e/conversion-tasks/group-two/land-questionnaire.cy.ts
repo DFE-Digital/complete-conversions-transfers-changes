@@ -4,6 +4,7 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelperConversions from "cypress/api/taskHelperConversions";
 import { ConversionTasksGroupTwoSetup } from "cypress/support/conversionTasksSetup";
+import landQuestionnairePage from "cypress/pages/projects/landQuestionnairePage";
 
 const taskPath = "land_questionnaire";
 
@@ -20,50 +21,61 @@ describe("Conversion tasks - Land questionnaire", () => {
     });
 
     it("should expand and collapse guidance details", () => {
-        taskPage
+        landQuestionnairePage
             .clickDropdown("How to clear a land questionnaire")
-            .hasDropdownContent("You must check the school is using the right land questionnaire");
+            .hasDropdownContent("You must check the school is using the right land questionnaire")
+            .clickDropdown("Help checking the land registry title plans")
+            .hasDropdownContent(
+                "Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry",
+            );
     });
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select all checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .tick()
-            .hasCheckboxLabel("Cleared")
-            .tick()
-            .hasCheckboxLabel("Signed by solicitor")
-            .tick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .tick()
-            .saveAndReturn();
+        landQuestionnairePage
+            .landQuestionnaireSection()
+            .hasCheckboxLabel("Received").tick()
+            .hasCheckboxLabel("Cleared").tick()
+            .hasCheckboxLabel("Signed by solicitor").tick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").tick();
+
+        landQuestionnairePage
+            .landRegistrySection()
+            .hasCheckboxLabel("Received").tick()
+            .hasCheckboxLabel("Cleared").tick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").tick();
+
+        taskPage.saveAndReturn();
         taskListPage.hasTaskStatusCompleted("Land questionnaire").selectTask("Land questionnaire");
 
         Logger.log("Unselect all checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Cleared")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Signed by solicitor")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .isTicked()
-            .untick()
-            .saveAndReturn();
+        landQuestionnairePage
+            .landQuestionnaireSection()
+            .hasCheckboxLabel("Received").isTicked().untick()
+            .hasCheckboxLabel("Cleared").isTicked().untick()
+            .hasCheckboxLabel("Signed by solicitor").isTicked().untick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").isTicked().untick();
+
+        landQuestionnairePage
+            .landRegistrySection()
+            .hasCheckboxLabel("Received").isTicked().untick()
+            .hasCheckboxLabel("Cleared").isTicked().untick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").isTicked().untick();
+
+        taskPage.saveAndReturn();
         taskListPage.hasTaskStatusNotStarted("Land questionnaire").selectTask("Land questionnaire");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .isUnticked()
-            .hasCheckboxLabel("Cleared")
-            .isUnticked()
-            .hasCheckboxLabel("Signed by solicitor")
-            .isUnticked()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .isUnticked();
+        landQuestionnairePage
+            .landQuestionnaireSection()
+            .hasCheckboxLabel("Received").isUnticked()
+            .hasCheckboxLabel("Cleared").isUnticked()
+            .hasCheckboxLabel("Signed by solicitor").isUnticked()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").isUnticked();
+
+        landQuestionnairePage
+            .landRegistrySection()
+            .hasCheckboxLabel("Received").isUnticked()
+            .hasCheckboxLabel("Cleared").isUnticked()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder").isUnticked();
     });
 
     it("should show task status based on the checkboxes are checked", () => {

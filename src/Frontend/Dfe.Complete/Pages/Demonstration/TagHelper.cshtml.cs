@@ -69,10 +69,6 @@ namespace Dfe.Complete.Pages.Demonstration
             _errorService = errorService;
         }
 
-        public void OnGet()
-        {
-        }
-
         public IActionResult OnPostAsync()
         {
             if (!ModelState.IsValid)

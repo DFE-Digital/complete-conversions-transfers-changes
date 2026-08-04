@@ -10,7 +10,7 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
+namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
 {
     public class UpdateAccuracyOfHigherNeedsTaskTests
     {
@@ -18,7 +18,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldUpdate_TransferTaskData(
+        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldUpdate_ConversionTasksData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -35,7 +35,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ConfirmNumber = true,
-                ConfirmPublishedNumber = true
+                CheckReturnedForm = true,
+                SendForm = true,
+                ConfirmPublishedNumber = true,
+                NotApplicable = false
             };
 
             // Act
@@ -46,6 +49,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
+            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm);
+            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsSendForm);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
 
         }

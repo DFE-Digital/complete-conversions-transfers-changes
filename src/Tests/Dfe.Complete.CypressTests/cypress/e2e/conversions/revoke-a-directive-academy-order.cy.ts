@@ -49,7 +49,7 @@ describe("Complete conversion projects tests", () => {
             .tick()
             .hasCheckboxLabel("I confirm I have sent the letter confirming the revocation decision")
             .tick()
-            .hasCheckboxLabel("I confirm I have saved a copy of the letter to the school’s SharePoint folder")
+            .hasCheckboxLabel("I confirm I have saved a copy of the letter to the school's SharePoint folder")
             .tick()
             .continue()
             .selectReasonWithDetails(

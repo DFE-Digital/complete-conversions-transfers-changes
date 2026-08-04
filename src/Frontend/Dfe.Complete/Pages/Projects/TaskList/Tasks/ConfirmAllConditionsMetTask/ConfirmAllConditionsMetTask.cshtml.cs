@@ -25,6 +25,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask
         public Guid? TasksDataId { get; set; }
         [BindProperty]
         public ProjectType? Type { get; set; }
+
+        [BindProperty]
+        public bool? ShareInformationEmail { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
@@ -36,15 +39,25 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask
                 BaselineSheetApproved = TransferTaskData.ConditionsMetBaselineSheetApproved;
                 AnyInformationChanged = TransferTaskData.ConditionsMetCheckAnyInformationChanged;
             }
+            else
+            {
+                ShareInformationEmail = ConversionTaskData.ShareInformationEmail ?? false;
+            }
             Confirm = Project.AllConditionsMet;
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(Type == ProjectType.Conversion
-                ? new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm)
-                : new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
+            if (Type == ProjectType.Conversion)
+            {
+                await Sender.Send(new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm));
+                await Sender.Send(new UpdateShareInformationAboutOpeningTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault()), ShareInformationEmail));
+            }
+            else
+            {
+                await Sender.Send(new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
                     new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, Confirm));
+            }
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

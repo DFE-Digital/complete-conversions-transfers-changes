@@ -19,7 +19,9 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? Saved,
         bool? Signed,
         bool? SignedSecretaryState,
-        bool? NotApplicable) : IRequest<Result<bool>>;
+        bool? NotApplicable,
+        bool? DraftSaved
+    ) : IRequest<Result<bool>>;
     internal class UpdateDeedOfVariationTaskCommandHandler(
        ITaskDataReadRepository taskDataReadRepository,
        ITaskDataWriteRepository taskDataWriteRepository)
@@ -48,8 +50,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeedOfVariationSaved = request.NotApplicable == true ? null : request.Saved;
             tasksData.DeedOfVariationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.DeedOfVariationReceived = request.NotApplicable == true ? null : request.Received;
-            tasksData.DeedOfVariationSent = request.NotApplicable == true ? null : request.Sent;
             tasksData.DeedOfVariationSigned = request.NotApplicable == true ? null : request.Signed;
+            tasksData.DeedOfVariationDraftSaved = request.NotApplicable == true ? null : request.DraftSaved;
             tasksData.DeedOfVariationSignedSecretaryState = request.NotApplicable == true ? null : request.SignedSecretaryState;
             tasksData.DeedOfVariationNotApplicable = request.NotApplicable;
 

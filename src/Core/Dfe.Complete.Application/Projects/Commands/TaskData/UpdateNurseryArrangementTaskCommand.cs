@@ -27,7 +27,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                             ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
             tasksData.NurseryArrangement = request.NurseryArrangement;
-
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);

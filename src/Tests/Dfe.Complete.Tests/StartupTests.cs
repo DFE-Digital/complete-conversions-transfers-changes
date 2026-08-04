@@ -4,6 +4,8 @@ using GovUK.Dfe.CoreLibs.Security.Antiforgery;
 using GovUK.Dfe.CoreLibs.Security.Cypress;
 using GovUK.Dfe.CoreLibs.Security.Enums;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
+using AutoMapper;
+using AutoMapper.Internal;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
@@ -312,6 +314,51 @@ public sealed class StartupTests : IDisposable
 
         // Assert
         Assert.NotEqual(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);
+    }
+
+    [Fact]
+    public void ConfigureServices_AutoMapper_UsesDefaultMaxDepth_WhenNotConfigured()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var mapperConfig = provider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+        var typeMaps = mapperConfig.Internal().GetAllTypeMaps();
+
+        // Assert
+        Assert.NotEmpty(typeMaps);
+        Assert.All(typeMaps, typeMap => Assert.Equal(64, typeMap.MaxDepth));
+    }
+
+    [Fact]
+    public void ConfigureServices_AutoMapper_UsesConfiguredMaxDepth_WhenConfigured()
+    {
+        // Arrange
+        var dict = new Dictionary<string, string?>
+        {
+            ["DataProtection:DpTargetPath"] = _tempDpTargetPath,
+            ["DataProtection:KeyVaultKey"] = string.Empty,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false",
+            ["AutoMapper:MaxDepth"] = "12"
+        };
+        IConfiguration cfg = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var mapperConfig = provider.GetRequiredService<AutoMapper.IConfigurationProvider>();
+        var typeMaps = mapperConfig.Internal().GetAllTypeMaps();
+
+        // Assert
+        Assert.NotEmpty(typeMaps);
+        Assert.All(typeMaps, typeMap => Assert.Equal(12, typeMap.MaxDepth));
     }
 
     private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)

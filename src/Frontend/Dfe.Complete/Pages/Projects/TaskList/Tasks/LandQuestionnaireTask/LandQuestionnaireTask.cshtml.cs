@@ -13,16 +13,26 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.LandQuestionnaire, projectPermissionService)
     {
         [BindProperty]
-        public bool? Cleared { get; set; }
+        public bool? LandQuestionnaireCleared { get; set; }
 
         [BindProperty]
-        public bool? Received { get; set; }
+        public bool? LandQuestionnaireReceived { get; set; }
 
         [BindProperty]
-        public bool? Signed { get; set; }
+        public bool? LandQuestionnaireSigned { get; set; }
 
         [BindProperty]
-        public bool? Saved { get; set; }
+        public bool? LandQuestionnaireSaved { get; set; }
+
+        [BindProperty]
+        public bool? LandRegistryTitlePlansReceived { get; set; }
+
+        [BindProperty]
+        public bool? LandRegistryTitlePlansCleared { get; set; }
+
+        [BindProperty]
+        public bool? LandRegistryTitlePlansSaved { get; set; }
+
         [BindProperty]
         public Guid? TasksDataId { get; set; }
 
@@ -34,17 +44,28 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
                 return Redirect(RouteConstants.ErrorPage);
 
             TasksDataId = Project.TasksDataId?.Value;
-            Received = ConversionTaskData.LandQuestionnaireReceived;
-            Cleared = ConversionTaskData.LandQuestionnaireCleared;
-            Signed = ConversionTaskData.LandQuestionnaireSigned;
-            Saved = ConversionTaskData.LandQuestionnaireSaved;
+            LandQuestionnaireReceived = ConversionTaskData.LandQuestionnaireReceived;
+            LandQuestionnaireCleared = ConversionTaskData.LandQuestionnaireCleared;
+            LandQuestionnaireSigned = ConversionTaskData.LandQuestionnaireSigned;
+            LandQuestionnaireSaved = ConversionTaskData.LandQuestionnaireSaved;
+            LandRegistryTitlePlansReceived = ConversionTaskData.LandRegistryReceived;
+            LandRegistryTitlePlansCleared = ConversionTaskData.LandRegistryCleared;
+            LandRegistryTitlePlansSaved = ConversionTaskData.LandRegistrySaved;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateLandQuestionnaireTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Signed, Saved));
+            await Sender.Send(new UpdateLandQuestionnaireTaskCommand(
+                new TaskDataId(TasksDataId.GetValueOrDefault())!,
+                LandQuestionnaireReceived,
+                LandQuestionnaireCleared,
+                LandQuestionnaireSigned,
+                LandQuestionnaireSaved,
+                LandRegistryTitlePlansReceived,
+                LandRegistryTitlePlansCleared,
+                LandRegistryTitlePlansSaved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

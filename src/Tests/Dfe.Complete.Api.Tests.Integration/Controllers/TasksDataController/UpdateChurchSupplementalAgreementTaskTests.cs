@@ -103,8 +103,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
-            Assert.True(existingTaskData.ChurchSupplementalAgreementSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedTrust);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementDraftSaved);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
             Assert.Null(existingTaskData.ChurchSupplementalAgreementNotApplicable);
@@ -152,11 +152,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingTaskData);
             Assert.Null(existingTaskData.ChurchSupplementalAgreementReceived);
             Assert.Null(existingTaskData.ChurchSupplementalAgreementCleared);
-            Assert.Null(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSignedTrust);
             Assert.Null(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
-            Assert.Null(existingTaskData.ChurchSupplementalAgreementSaved);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementDraftSaved);
             Assert.Null(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
-            Assert.Null(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementFinalSaved);
             Assert.True(existingTaskData.ChurchSupplementalAgreementNotApplicable);
         }
 
