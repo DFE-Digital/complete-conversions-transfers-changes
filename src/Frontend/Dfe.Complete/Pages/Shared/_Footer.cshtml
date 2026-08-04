@@ -1,9 +1,8 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 
 @{
-    var unifiedIntakeBaseUrl = Configuration["UnifiedIntake:baseUrl"] ?? "https://unified-intake.rsd.education.gov.uk/";
-    var unifiedIntakeServiceCode = Configuration["UnifiedIntake:code"] ?? "COMPLETE";
-    var unifiedIntakeUrl = $"{unifiedIntakeBaseUrl}?serviceCode={unifiedIntakeServiceCode}";
+    var unifiedIntakeBaseUrl = Configuration["UnifiedIntake:baseUrl"];
+    var unifiedIntakeUrl = $"{unifiedIntakeBaseUrl}?serviceCode=COMPLETE";
 }
 
 <footer class="govuk-footer" role="contentinfo">
