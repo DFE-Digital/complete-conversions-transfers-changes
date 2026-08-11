@@ -164,6 +164,9 @@
         public const string ProjectsExternalContactDelete = ProjectExternalContacts + "/{1}/delete";
         public const string ProjectsExternalContactEdit = ProjectExternalContacts + "/{1}/edit";
 
+        // Significant change
+        public const string SignificantChange = "/significant-change";
+
         // Error Page
         public const string ErrorPage = "/error";
     }

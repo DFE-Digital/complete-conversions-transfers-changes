@@ -90,6 +90,11 @@ data-module="govuk-service-navigation">
                         All projects
                     </a>
                 </li>
+                <li class="govuk-service-navigation__item @IsCurrentTab(TabNavigationModel.SignificantChangeTabName)">
+                    <a class="govuk-service-navigation__link" href="@RouteConstants.SignificantChange">
+                        Significant change
+                    </a>
+                </li>
                 <li class="govuk-service-navigation__item @IsCurrentTab(TabNavigationModel.GroupsTabName)" asp-policy="@UserPolicyConstants.CanViewGroups">
                     <a class="govuk-service-navigation__link" href="@RouteConstants.Groups">
                         Groups
