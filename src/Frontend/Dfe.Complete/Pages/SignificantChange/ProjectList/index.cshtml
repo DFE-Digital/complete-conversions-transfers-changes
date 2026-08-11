@@ -1,0 +1,52 @@
+@page "/significant-change"
+@using Dfe.Complete.Extensions
+@using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.SignificantChange.ProjectList.IndexModel
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = "Significant change";
+}
+
+<h1 class="govuk-heading-xl govuk-!-margin-bottom-3">Projects</h1>
+<p class="govuk-body-l">Filter and manage all projects from one page.</p>
+
+<div class="govuk-grid-row">
+    <div>
+        <h2 class="govuk-heading-m">@Model.Projects.Count.ToResultsCountMessage()</h2>
+
+        <table class="govuk-table" aria-label="Projects table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">School or academy</th>
+                    <th class="govuk-table__header" scope="col">URN</th>
+                    <th class="govuk-table__header" scope="col">Project type</th>
+                    <th class="govuk-table__header" scope="col">Form a MAT</th>
+                    <th class="govuk-table__header" scope="col">Assigned to</th>
+                    <th class="govuk-table__header" scope="col">Region</th>
+                    <th class="govuk-table__header" scope="col">Local authority</th>
+                    <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+                    <th class="govuk-table__header" scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var project in Model.Projects)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">@project.EstablishmentName</a>
+                        </td>
+                        <td class="govuk-table__cell">@project.Urn.Value</td>
+                        <td class="govuk-table__cell">@(project.ProjectType?.ToString() ?? "Significant change")</td>
+                        <td class="govuk-table__cell">@project.IsFormAMat.ToYesNoString()</td>
+                        <td class="govuk-table__cell">@(string.IsNullOrWhiteSpace(project.AssignedToFullName) ? "Unassigned" : project.AssignedToFullName)</td>
+                        <td class="govuk-table__cell">@project.Region.ToDisplayDescription()</td>
+                        <td class="govuk-table__cell">@project.LocalAuthorityName</td>
+                        <td class="govuk-table__cell">@project.SignificantDate.ToMonthYearString()</td>
+                        <td class="govuk-table__cell">@project.State.ToDescription()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
