@@ -42,7 +42,7 @@
     "eslint-plugin-cypress": "6.4.1",
     "globals": "^17.4.0",
     "mocha": "11.7.6",
-    "mochawesome": "7.1.4",
+    "mochawesome": "8.0.1",
     "mochawesome-merge": "5.1.1",
     "mochawesome-report-generator": "6.3.2",
     "prettier": "3.8.3",
