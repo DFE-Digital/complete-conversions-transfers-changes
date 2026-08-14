@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace Dfe.Complete.Models;
 
-public abstract class BaseSignificantChangeProjectsPageModel : PageModel
+public abstract class BaseSignificantChangeProjectsPageModel() : PaginatedPageModel(string.Empty)
 {
-    
+    protected TabNavigationModel SignificantChangeTabNavigationModel = new(TabNavigationModel.SignificantChangeTabName);
 }
