@@ -406,10 +406,29 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.DecisionConditions)
             .HasColumnName("decision_conditions");
 
+        projectConfiguration.Property(e => e.LocalAuthorityId)
+            .HasColumnName("local_authority_id")
+            .HasConversion(
+                v => v.Value,
+                v => new LocalAuthorityId(v));
+
         projectConfiguration.HasOne(d => d.AssignedToUser)
             .WithMany()
             .HasForeignKey(d => d.AssignedToUserId)
             .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
+
+        projectConfiguration.HasOne(p => p.LocalAuthority)
+            .WithMany()
+            .HasForeignKey(p => p.LocalAuthorityId)
+            .OnDelete(DeleteBehavior.NoAction)
+            .HasConstraintName("FK_significant_change_project_local_authorities_local_authority_id");
+
+        projectConfiguration.HasOne(p => p.GiasEstablishment)
+            .WithMany()
+            .HasForeignKey(p => p.AcademyUrn)
+            .HasPrincipalKey(g => g.Urn)
+            .OnDelete(DeleteBehavior.NoAction)
+            .HasConstraintName("FK_significant_change_project_gias_establishments_academy_urn");
 
         projectConfiguration.HasOne(d => d.SignificantTasksData)
             .WithOne(d => d.Project)

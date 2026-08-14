@@ -40,6 +40,12 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? AssignedToUser { get; set; }
 
+    public LocalAuthorityId LocalAuthorityId { get; set; }
+
+    public GiasEstablishment? GiasEstablishment { get; internal set; }
+
+    public virtual LocalAuthority? LocalAuthority { get; set; }
+
     public virtual SignificantChangeProjectTasksData SignificantTasksData { get; private set; }
 
     internal SignificantChangeProject()
@@ -49,6 +55,7 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
         TrustName = default!;
         AcademyUrn = default!;
         SignificantTasksData = default!;
+        LocalAuthorityId = default!;
     }
 
     public static SignificantChangeProject CreateProject(
