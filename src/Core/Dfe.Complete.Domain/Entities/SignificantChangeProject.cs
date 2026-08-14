@@ -82,7 +82,7 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public void CreateSignificantChangeProjectTasksData()
+    private void CreateSignificantChangeProjectTasksData()
     {
         if (Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
         if (SignificantTasksData is not null) return;
@@ -93,10 +93,12 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public void AssignUser(UserId? assignedToUserId)
     {
+        var assignmentChanged = AssignedToUserId != assignedToUserId;
+
         AssignedToUserId = assignedToUserId;
         AssignedAt = assignedToUserId is null ? null : DateTime.UtcNow;
 
-        if (assignedToUserId is null)
+        if (assignmentChanged)
         {
             AssignedToUser = null;
         }

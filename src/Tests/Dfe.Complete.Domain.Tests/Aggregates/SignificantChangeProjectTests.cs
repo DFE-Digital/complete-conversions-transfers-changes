@@ -53,20 +53,28 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         }
 
         [Fact]
-        public void CreateSignificantChangeProjectTasksData_ShouldBeIdempotent()
+        public void AssignUser_ShouldClearAssignedToUserNavigation_WhenReassigned()
         {
             // Arrange
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(12345678),
                 "Sample Trust",
                 new Urn(123456));
-            var existingTaskData = project.SignificantTasksData;
+            var firstAssignedUserId = new UserId(Guid.NewGuid());
+            var secondAssignedUserId = new UserId(Guid.NewGuid());
+            project.AssignUser(firstAssignedUserId);
+            project.AssignedToUser = new User { Id = firstAssignedUserId };
+            var beforeReassign = DateTime.UtcNow;
 
             // Act
-            project.CreateSignificantChangeProjectTasksData();
+            project.AssignUser(secondAssignedUserId);
 
             // Assert
-            Assert.Same(existingTaskData, project.SignificantTasksData);
+            var afterReassign = DateTime.UtcNow;
+            Assert.Equal(secondAssignedUserId, project.AssignedToUserId);
+            Assert.NotNull(project.AssignedAt);
+            Assert.Null(project.AssignedToUser);
+            Assert.InRange(project.UpdatedAt, beforeReassign, afterReassign);
         }
 
         [Theory]
