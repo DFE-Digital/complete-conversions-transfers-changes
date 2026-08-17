@@ -12,7 +12,11 @@ namespace Dfe.Complete.Application.Tests.Database.Interceptors
         {
             // Arrange
             await using var context = CreateContext();
-            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456));
+            var project = SignificantChangeProject.CreateProject(
+                new Ukprn(12345678),
+                "Sample Trust",
+                new Urn(123456),
+                new LocalAuthorityId(Guid.NewGuid()));
             var originalUpdatedAt = DateTime.UtcNow.AddDays(-2);
             project.UpdatedAt = originalUpdatedAt;
 
@@ -37,7 +41,11 @@ namespace Dfe.Complete.Application.Tests.Database.Interceptors
             // Arrange
             await using var context = CreateContext();
             var expectedUpdatedAt = new DateTime(2024, 01, 01, 0, 0, 0, DateTimeKind.Utc);
-            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456));
+            var project = SignificantChangeProject.CreateProject(
+                new Ukprn(12345678),
+                "Sample Trust",
+                new Urn(123456),
+                new LocalAuthorityId(Guid.NewGuid()));
             project.UpdatedAt = expectedUpdatedAt;
 
             // Act

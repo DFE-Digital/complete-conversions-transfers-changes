@@ -51,12 +51,12 @@ public class CreateSignificantChangeProjectCommandHandler(
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(trustUkprn),
                 request.TrustName!,
-                new Urn(urn));
+                new Urn(urn),
+                new LocalAuthorityId(commonData.LocalAuthorityId));
 
             project.PrepareId = request.PrepareId!.Value;
             project.Region = commonData.Region;
             project.DecisionConditions = request.DecisionConditions;
-            project.LocalAuthorityId = new LocalAuthorityId(commonData.LocalAuthorityId);
 
             project.AssignUser(commonData.UserId);
 

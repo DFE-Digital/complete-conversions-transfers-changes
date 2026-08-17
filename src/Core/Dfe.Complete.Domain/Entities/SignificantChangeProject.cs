@@ -61,10 +61,12 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
     public static SignificantChangeProject CreateProject(
         Ukprn trustUkprn,
         string trustName,
-        Urn academyUrn)
+        Urn academyUrn,
+        LocalAuthorityId localAuthorityId)
     {
         ArgumentNullException.ThrowIfNull(trustUkprn);
         ArgumentNullException.ThrowIfNull(academyUrn);
+        ArgumentNullException.ThrowIfNull(localAuthorityId);
 
         if (string.IsNullOrWhiteSpace(trustName))
         {
@@ -81,7 +83,8 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
             State = ProjectState.Active,
             TrustUkprn = trustUkprn,
             TrustName = trustName,
-            AcademyUrn = academyUrn
+            AcademyUrn = academyUrn,
+            LocalAuthorityId = localAuthorityId
         };
 
         project.CreateSignificantChangeProjectTasksData();
