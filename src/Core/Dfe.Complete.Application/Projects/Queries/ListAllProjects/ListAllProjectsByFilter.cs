@@ -20,7 +20,6 @@ internal class ListProjectsByFilterQueryHandler(
         {
             var listProjectsByFilterResultsModel = listAllProjectsByFilterQueryService.ListAllProjectsByFilter();
 
-            // TODO I have moved pagination from infra to application, leaving the select there. I think I did select AFTER pagination, something to do with the Concat
             var projects = await listProjectsByFilterResultsModel
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
