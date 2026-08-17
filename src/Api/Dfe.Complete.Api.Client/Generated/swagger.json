@@ -8372,10 +8372,6 @@
             "format": "int32",
             "nullable": true
           },
-          "trustName": {
-            "type": "string",
-            "nullable": true
-          },
           "prepareId": {
             "type": "integer",
             "format": "int32",

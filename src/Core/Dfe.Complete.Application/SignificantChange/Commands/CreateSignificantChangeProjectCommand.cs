@@ -1,5 +1,6 @@
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Validators;
@@ -14,7 +15,6 @@ namespace Dfe.Complete.Application.SignificantChange.Commands;
 public record CreateSignificantChangeProjectCommand(
     [Required][Urn] int? AcademyUrn,
     [Required][Ukprn(ValueIsInteger = true)] int? TrustUkprn,
-    [Required] string? TrustName,
     [Required] int? PrepareId,
     [Required][InternalEmail] string? DecisionRecordedByEmail,
     [Required] string? DecisionRecordedByFirstName,
@@ -26,7 +26,8 @@ public class CreateSignificantChangeProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
     ICompleteRepository<SignificantChangeProject> significantChangeProjectRepository,
-    ILogger<CreateSignificantChangeProjectCommandHandler> logger)
+    ILogger<CreateSignificantChangeProjectCommandHandler> logger,
+    ISender sender)
     : IRequestHandler<CreateSignificantChangeProjectCommand, ProjectId>
 {
     public async Task<ProjectId> Handle(CreateSignificantChangeProjectCommand request, CancellationToken cancellationToken)
@@ -48,9 +49,15 @@ public class CreateSignificantChangeProjectCommandHandler(
                 request.DecisionRecordedByEmail!,
                 cancellationToken);
 
+            var trustRequest = new GetTrustByUkprnRequest(trustUkprn.ToString());
+            var trustResponse = await sender.Send(trustRequest, cancellationToken);
+
+            if (!trustResponse.IsSuccess || trustResponse.Value == null)
+                throw new NotFoundException($"Trust with UKPRN {trustUkprn} not found.");
+
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(trustUkprn),
-                request.TrustName!,
+                trustResponse.Value.Name!,
                 new Urn(urn),
                 new LocalAuthorityId(commonData.LocalAuthorityId));
 

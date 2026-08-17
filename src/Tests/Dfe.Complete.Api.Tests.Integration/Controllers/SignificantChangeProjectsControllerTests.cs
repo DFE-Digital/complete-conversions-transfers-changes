@@ -38,7 +38,6 @@ public class SignificantChangeProjectsControllerTests
         {
             AcademyUrn = academyUrn,
             TrustUkprn = 10000001,
-            TrustName = "Test Trust",
             PrepareId = 42,
             DecisionRecordedByEmail = "decision.recorder@education.gov.uk",
             DecisionRecordedByFirstName = "Decision",
@@ -87,7 +86,7 @@ public class SignificantChangeProjectsControllerTests
             .SingleOrDefaultAsync(p => p.Id == createdProjectId);
 
         Assert.NotNull(createdProject);
-        Assert.Equal(command.TrustName, createdProject.TrustName);
+        Assert.Equal(trustDto.Name, createdProject.TrustName);
         Assert.Equal(command.PrepareId, createdProject.PrepareId);
         Assert.Equal(command.DecisionConditions, createdProject.DecisionConditions);
         Assert.Equal(command.AcademyUrn!.Value, createdProject.AcademyUrn.Value);
@@ -124,7 +123,6 @@ public class SignificantChangeProjectsControllerTests
         {
             AcademyUrn = 123456,
             TrustUkprn = 10000001,
-            TrustName = "Test Trust",
             PrepareId = 42,
             DecisionRecordedByEmail = "decision.recorder@education.gov.uk",
             DecisionRecordedByFirstName = "Decision",
