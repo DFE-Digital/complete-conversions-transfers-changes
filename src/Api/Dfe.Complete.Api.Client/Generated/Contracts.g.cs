@@ -5605,6 +5605,15 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("prepareId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? PrepareId { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("decisionRecordedByEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DecisionRecordedByEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("decisionRecordedByFirstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DecisionRecordedByFirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("decisionRecordedByLastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DecisionRecordedByLastName { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("decisionConditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? DecisionConditions { get; set; } = default!;
 

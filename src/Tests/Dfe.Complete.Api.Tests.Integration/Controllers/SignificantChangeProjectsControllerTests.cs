@@ -40,6 +40,9 @@ public class SignificantChangeProjectsControllerTests
             TrustUkprn = 10000001,
             TrustName = "Test Trust",
             PrepareId = 42,
+            DecisionRecordedByEmail = "decision.recorder@education.gov.uk",
+            DecisionRecordedByFirstName = "Decision",
+            DecisionRecordedByLastName = "Recorder",
             DecisionConditions = "Decision conditions"
         };
 
@@ -89,6 +92,15 @@ public class SignificantChangeProjectsControllerTests
         Assert.Equal(command.DecisionConditions, createdProject.DecisionConditions);
         Assert.Equal(command.AcademyUrn!.Value, createdProject.AcademyUrn.Value);
         Assert.Equal(command.TrustUkprn!.Value, createdProject.TrustUkprn.Value);
+        Assert.Equal(localAuthority.Id.Value, createdProject.LocalAuthorityId.Value);
+        Assert.NotNull(createdProject.AssignedToUserId);
+        Assert.NotNull(createdProject.AssignedAt);
+
+        var assignedUser = await dbContext.Users.SingleOrDefaultAsync(u => u.Id == createdProject.AssignedToUserId);
+        Assert.NotNull(assignedUser);
+        Assert.Equal(command.DecisionRecordedByEmail, assignedUser.Email);
+        Assert.Equal(command.DecisionRecordedByFirstName, assignedUser.FirstName);
+        Assert.Equal(command.DecisionRecordedByLastName, assignedUser.LastName);
 
         Assert.NotNull(createdProject.SignificantTasksData);
         Assert.Equal(createdProject.Id.Value, createdProject.SignificantTasksData.ProjectId.Value);
@@ -114,6 +126,9 @@ public class SignificantChangeProjectsControllerTests
             TrustUkprn = 10000001,
             TrustName = "Test Trust",
             PrepareId = 42,
+            DecisionRecordedByEmail = "decision.recorder@education.gov.uk",
+            DecisionRecordedByFirstName = "Decision",
+            DecisionRecordedByLastName = "Recorder",
             DecisionConditions = "Decision conditions"
         };
 

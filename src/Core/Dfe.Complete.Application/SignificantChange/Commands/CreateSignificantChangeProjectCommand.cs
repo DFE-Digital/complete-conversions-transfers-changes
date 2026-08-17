@@ -16,6 +16,9 @@ public record CreateSignificantChangeProjectCommand(
     [Required][Ukprn(ValueIsInteger = true)] int? TrustUkprn,
     [Required] string? TrustName,
     [Required] int? PrepareId,
+    [Required][InternalEmail] string? DecisionRecordedByEmail,
+    [Required] string? DecisionRecordedByFirstName,
+    [Required] string? DecisionRecordedByLastName,
     string? DecisionConditions
 ) : IRequest<ProjectId>;
 
@@ -37,8 +40,13 @@ public class CreateSignificantChangeProjectCommandHandler(
 
             // Validate the request
             await handoverProjectService.ValidateTrustAsync(trustUkprn, cancellationToken: cancellationToken);
-
-            var region = await handoverProjectService.GetRegionForUrn(urn, cancellationToken);
+            
+            var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
+                urn,
+                request.DecisionRecordedByFirstName!,
+                request.DecisionRecordedByLastName!,
+                request.DecisionRecordedByEmail!,
+                cancellationToken);
 
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(trustUkprn),
@@ -46,8 +54,11 @@ public class CreateSignificantChangeProjectCommandHandler(
                 new Urn(urn));
 
             project.PrepareId = request.PrepareId!.Value;
-            project.Region = region;
+            project.Region = commonData.Region;
             project.DecisionConditions = request.DecisionConditions;
+            project.LocalAuthorityId = new LocalAuthorityId(commonData.LocalAuthorityId);
+
+            project.AssignUser(commonData.UserId);
 
             await significantChangeProjectRepository.AddAsync(project, cancellationToken);
             await unitOfWork.CommitAsync();

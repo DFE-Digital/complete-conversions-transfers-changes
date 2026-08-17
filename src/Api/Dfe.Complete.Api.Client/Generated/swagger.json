@@ -8381,6 +8381,18 @@
             "format": "int32",
             "nullable": true
           },
+          "decisionRecordedByEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "decisionRecordedByFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "decisionRecordedByLastName": {
+            "type": "string",
+            "nullable": true
+          },
           "decisionConditions": {
             "type": "string",
             "nullable": true
