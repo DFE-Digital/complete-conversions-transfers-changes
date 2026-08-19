@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using Dfe.Complete.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -14,6 +15,13 @@ public class ProjectListFilters
     public List<string> AvailableStatuses { get; set; } = [];
 
     [BindProperty] public string[] SelectedStatuses { get; set; } = [];
+
+    public ProjectState[] SelectedStatusEnums =>
+        [.. SelectedStatuses
+            .Select(TryParseAs<ProjectState>)
+            .Where(status => status.HasValue)
+            .Select(status => status!.Value)
+            .Distinct()];
 
     public bool IsVisible => SelectedStatuses.Length > 0;
 
@@ -71,7 +79,7 @@ public class ProjectListFilters
 
         string[] GetFromQuery(string key)
         {
-            if (query.TryGetValue(key, out StringValues values) is false) return [];
+            if (!query.TryGetValue(key, out StringValues values)) return [];
 
             return [.. values
                 .SelectMany(value => (value ?? string.Empty).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
@@ -88,5 +96,18 @@ public class ProjectListFilters
     public static void ClearFiltersFrom(IDictionary<string, object?> store)
     {
         new ProjectListFilters().PersistUsing(store).ClearFilters();
+    }
+
+    private static T? TryParseAs<T>(string? input) where T : struct, Enum
+    {
+        if (string.IsNullOrWhiteSpace(input)) return null;
+
+        if (int.TryParse(input, out int intValue) && Enum.IsDefined(typeof(T), intValue))
+            return (T)Enum.ToObject(typeof(T), intValue);
+
+        if (Enum.TryParse(input, true, out T enumValue) && Enum.IsDefined(typeof(T), enumValue))
+            return enumValue;
+
+        return null;
     }
 }

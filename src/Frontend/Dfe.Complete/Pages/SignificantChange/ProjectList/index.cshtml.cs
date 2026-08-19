@@ -24,16 +24,6 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
         Filters.AvailableStatuses = [.. Enum.GetNames<ProjectState>()];
         Filters.PopulateFrom(Request.Query);
 
-        List<ProjectState> selectedProjectStatuses = [];
-
-        foreach (var selectedStatus in Filters.SelectedStatuses.Distinct(StringComparer.OrdinalIgnoreCase))
-        {
-            if (Enum.TryParse<ProjectState>(selectedStatus, true, out var parsedStatus))
-            {
-                selectedProjectStatuses.Add(parsedStatus);
-            }
-        }
-
         var request = new ListProjectsByFilterQuery(
             PageNumber,
             PageSize);
@@ -41,9 +31,9 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
 
         var queryParts = new List<string>();
 
-        foreach (var selectedStatus in Filters.SelectedStatuses)
+        foreach (var selectedStatus in Filters.SelectedStatusEnums)
         {
-            queryParts.Add($"SelectedStatuses={Uri.EscapeDataString(selectedStatus)}");
+            queryParts.Add($"SelectedStatuses={Uri.EscapeDataString(selectedStatus.ToString())}");
         }
 
         var paginationUrl = RouteConstants.SignificantChange +
