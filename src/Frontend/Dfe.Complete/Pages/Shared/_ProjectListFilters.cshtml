@@ -1,0 +1,80 @@
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Models.ProjectList.ProjectListFilters
+@{
+    var selectedStatuses = new HashSet<string>(Model.SelectedStatuses ?? [], StringComparer.OrdinalIgnoreCase);
+}
+
+<div class="moj-filter">
+    <div class="moj-filter__header">
+        <div class="moj-filter__header-title">
+            <h2 class="govuk-heading-m">Filter</h2>
+        </div>
+
+        <div class="moj-filter__header-action">
+        </div>
+    </div>
+
+    <div class="moj-filter__content">
+        @if (Model.IsVisible)
+        {
+            <div class="moj-filter__selected">
+                <div class="moj-filter__selected-heading">
+                    <div class="moj-filter__heading-title">
+                        <h2 class="govuk-heading-m">Selected filters</h2>
+                    </div>
+
+                    <div class="moj-filter__heading-action">
+                        <p>
+                            <a class="govuk-link govuk-link--no-visited-state" href="@($"{RouteConstants.SignificantChange}?clear=1")">Clear filters</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="moj-filter__options">
+            <form method="get" action="@RouteConstants.SignificantChange">
+                <govuk-button type="submit">Apply filters</govuk-button>
+
+                <div class="govuk-accordion" data-module="govuk-accordion" id="projects-filter-accordion">
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading">
+                                <span class="govuk-accordion__section-button" id="projects-filter-status-heading">
+                                    Status
+                                </span>
+                            </h2>
+                        </div>
+                        <section class="govuk-accordion__section-content" aria-labelledby="projects-filter-status-heading" id="projects-filter-status-content">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-visually-hidden" for="statusText">Type to filter statuses</label>
+                                <input id="statusText" class="govuk-input" type="text" placeholder="Type to filter statuses..." autocomplete="off" />
+                            </div>
+
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                @foreach (var status in Model.AvailableStatuses)
+                                {
+                                    @* TODO - replace this with an extension method, prepare uses status.Stub() *@
+                                    var checkboxId = $"status-{status.Replace(" ", "-").ToLowerInvariant()}";
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input"
+                                               id="@checkboxId"
+                                               name="SelectedStatuses"
+                                               type="checkbox"
+                                               value="@status"
+                                               checked="@(selectedStatuses.Contains(status) ? "checked" : null)" />
+                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@status</label>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <govuk-button type="submit" class="govuk-!-margin-top-6">Apply filters</govuk-button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/src/filter.js" asp-add-nonce></script>

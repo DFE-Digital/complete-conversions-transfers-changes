@@ -12,7 +12,10 @@
 <p class="govuk-body-l">Filter and manage all projects from one page.</p>
 
 <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
+    <div class="govuk-grid-column-one-third">
+        <partial name="Shared/_ProjectListFilters" model="Model.Filters" />
+    </div>
+    <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-m">@Model.Projects.Count.ToResultsCountMessage()</h2>
 
         <table class="govuk-table" aria-label="Projects table">
@@ -48,10 +51,10 @@
                 }
             </tbody>
         </table>
+        @if (Model.Pagination != null)
+        {
+            @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+        }
     </div>
 </div>
 
-@if (Model.Pagination != null)
-{
-    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
-}
