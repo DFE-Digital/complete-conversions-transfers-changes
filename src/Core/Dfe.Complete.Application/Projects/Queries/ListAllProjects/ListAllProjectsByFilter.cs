@@ -1,11 +1,14 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListProjectsByFilterQuery(
+    ProjectState[]? ProjectStatuses = null,
     int PageNumber = 1,
     int PageSize = 20)
     : IRequest<PaginatedResult<List<ListProjectsByFilterResultsModel>>>;
@@ -18,11 +21,10 @@ internal class ListProjectsByFilterQueryHandler(
     {
         try
         {
-            var listProjectsByFilterResultsModel = listAllProjectsByFilterQueryService.ListAllProjectsByFilter();
+            var listProjectsByFilterResultsModel = listAllProjectsByFilterQueryService.ListAllProjectsByFilter(request.ProjectStatuses);
 
             var projects = await listProjectsByFilterResultsModel
-                .Skip((request.PageNumber - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Paginate(request.PageNumber, request.PageSize)
                 .ToListAsync(cancellationToken);
 
             var projectCount = await listProjectsByFilterResultsModel.CountAsync(cancellationToken);

@@ -15,7 +15,6 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
 
     public ProjectListFilters Filters { get; } = new();
 
-
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = SignificantChangeTabNavigationModel;
@@ -25,8 +24,10 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
         Filters.PopulateFrom(Request.Query);
 
         var request = new ListProjectsByFilterQuery(
-            PageNumber,
+            Filters.SelectedStatusEnums,
+            PageNumber - 1,
             PageSize);
+
         var result = await sender.Send(request);
 
         var queryParts = new List<string>();

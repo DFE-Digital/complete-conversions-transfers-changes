@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
@@ -8,9 +9,12 @@ namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IListAllProjectsByFilterQueryService
 {
-    public IQueryable<ListProjectsByFilterResultsModel> ListAllProjectsByFilter()
+    public IQueryable<ListProjectsByFilterResultsModel> ListAllProjectsByFilter(ProjectState[]? projectStatuses = null)
     {
-        var significantChangeProjects = context.SignificantChangeProjects
+        var statusList = projectStatuses?.ToList();
+
+        var significantChangeProjects = new SignificantStateQuery(statusList)
+            .Apply(context.SignificantChangeProjects)
             .Include(p => p.LocalAuthority)
             .Include(p => p.GiasEstablishment)
             .Select(p => new
@@ -27,7 +31,8 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
                 p.State 
             });
 
-        var projects = context.Projects
+        var projects = new StateQuery(statusList)
+            .Apply(context.Projects)
             .Include(p => p.LocalAuthority)
             .Include(p => p.GiasEstablishment)
             .Select(p => new
