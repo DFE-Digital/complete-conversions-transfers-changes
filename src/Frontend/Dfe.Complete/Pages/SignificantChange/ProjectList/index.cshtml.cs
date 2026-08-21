@@ -20,7 +20,11 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
         ViewData[TabNavigationModel.ViewDataKey] = SignificantChangeTabNavigationModel;
 
         Filters.PersistUsing(new Dictionary<string, object?>());
-        Filters.AvailableStatuses = [.. Enum.GetNames<ProjectState>()];
+        Filters.AvailableStatuses = [
+            ProjectState.Active.ToString(),
+            ProjectState.Completed.ToString(),
+            ProjectState.DaoRevoked.ToString(),
+        ];
         Filters.PopulateFrom(Request.Query);
 
         var request = new ListProjectsByFilterQuery(
