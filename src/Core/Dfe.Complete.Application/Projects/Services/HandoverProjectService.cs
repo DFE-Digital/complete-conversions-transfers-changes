@@ -194,7 +194,6 @@ public class HandoverProjectService(
 
         if (!trustResponse.IsSuccess || trustResponse.Value == null)
             throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn.ToString()));
-
     }
 
     public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)

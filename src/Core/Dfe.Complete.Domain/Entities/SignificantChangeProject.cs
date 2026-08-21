@@ -36,7 +36,15 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? SharepointFolderLink { get; set; }
 
+    public string? DecisionConditions { get; set; }
+
     public virtual User? AssignedToUser { get; set; }
+
+    public LocalAuthorityId LocalAuthorityId { get; set; }
+
+    public GiasEstablishment? GiasEstablishment { get; internal set; }
+
+    public virtual LocalAuthority? LocalAuthority { get; set; }
 
     public virtual SignificantChangeProjectTasksData SignificantTasksData { get; private set; }
 
@@ -47,15 +55,18 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
         TrustName = default!;
         AcademyUrn = default!;
         SignificantTasksData = default!;
+        LocalAuthorityId = default!;
     }
 
     public static SignificantChangeProject CreateProject(
         Ukprn trustUkprn,
         string trustName,
-        Urn academyUrn)
+        Urn academyUrn,
+        LocalAuthorityId localAuthorityId)
     {
         ArgumentNullException.ThrowIfNull(trustUkprn);
         ArgumentNullException.ThrowIfNull(academyUrn);
+        ArgumentNullException.ThrowIfNull(localAuthorityId);
 
         if (string.IsNullOrWhiteSpace(trustName))
         {
@@ -72,7 +83,8 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
             State = ProjectState.Active,
             TrustUkprn = trustUkprn,
             TrustName = trustName,
-            AcademyUrn = academyUrn
+            AcademyUrn = academyUrn,
+            LocalAuthorityId = localAuthorityId
         };
 
         project.CreateSignificantChangeProjectTasksData();
@@ -80,7 +92,7 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    public void CreateSignificantChangeProjectTasksData()
+    private void CreateSignificantChangeProjectTasksData()
     {
         if (Id == default) throw new InvalidOperationException("Project ID must be set before creating task data.");
         if (SignificantTasksData is not null) return;
@@ -91,10 +103,12 @@ public class SignificantChangeProject : BaseAggregateRoot, IEntity<ProjectId>
 
     public void AssignUser(UserId? assignedToUserId)
     {
+        var assignmentChanged = AssignedToUserId != assignedToUserId;
+
         AssignedToUserId = assignedToUserId;
         AssignedAt = assignedToUserId is null ? null : DateTime.UtcNow;
 
-        if (assignedToUserId is null)
+        if (assignmentChanged)
         {
             AssignedToUser = null;
         }

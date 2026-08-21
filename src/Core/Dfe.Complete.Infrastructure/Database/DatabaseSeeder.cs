@@ -390,18 +390,35 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
 
         // Fetch users from the database for correct IDs
         var users = await _context.Users.ToListAsync();
+        var giasByUrn = await _context.GiasEstablishments
+            .AsNoTracking()
+            .Where(x => x.Urn != null)
+            .ToDictionaryAsync(x => x.Urn!.Value);
+        var localAuthorityByCode = await _context.LocalAuthorities
+            .AsNoTracking()
+            .ToDictionaryAsync(x => x.Code, x => x.Id);
 
         for (var i = 0; i < 25; i++)
         {
             var assignedToUser = RandomFromList(users);
+            var academyUrn = Urns[i % Urns.Count];
+
+            if (!giasByUrn.TryGetValue(academyUrn.Value, out var giasEstablishment)
+                || string.IsNullOrWhiteSpace(giasEstablishment.LocalAuthorityCode)
+                || !localAuthorityByCode.TryGetValue(giasEstablishment.LocalAuthorityCode, out var localAuthorityId))
+            {
+                throw new InvalidOperationException($"Unable to resolve local authority for significant change seed URN {academyUrn.Value}.");
+            }
 
             var significantChangeProject =
                 SignificantChangeProject.CreateProject(
                     Ukprns[i % Ukprns.Count],
                     $"Trusty trustee trust {i + 1}",
-                    Urns[i % Urns.Count]
+                    academyUrn,
+                    localAuthorityId
                 );
 
+            significantChangeProject.Region = giasEstablishment.RegionCode?.ToEnumFromChar<Region>();
             significantChangeProject.AssignUser(assignedToUser.Id);
 
             _context.SignificantChangeProjects.Add(significantChangeProject);

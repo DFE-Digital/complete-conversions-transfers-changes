@@ -4,6 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dfe.Complete.Infrastructure.Migrations
 {
     [DbContext(typeof(CompleteContext))]
-    partial class CompleteContextModelSnapshot : ModelSnapshot
+    [Migration("20260730161159_AddSignificantChangeDecisionConditions")]
+    partial class AddSignificantChangeDecisionConditions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1482,10 +1485,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("decision_conditions");
 
-                    b.Property<Guid>("LocalAuthorityId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("local_authority_id");
-
                     b.Property<int?>("PrepareId")
                         .HasColumnType("int")
                         .HasColumnName("prepare_id");
@@ -1530,11 +1529,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AcademyUrn");
-
                     b.HasIndex("AssignedToUserId");
-
-                    b.HasIndex("LocalAuthorityId");
 
                     b.ToTable("significant_change_project", "complete");
                 });
@@ -2308,31 +2303,12 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProject", b =>
                 {
-                    b.HasOne("Dfe.Complete.Domain.Entities.GiasEstablishment", "GiasEstablishment")
-                        .WithMany()
-                        .HasForeignKey("AcademyUrn")
-                        .HasPrincipalKey("Urn")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("FK_significant_change_project_gias_establishments_academy_urn");
-
                     b.HasOne("Dfe.Complete.Domain.Entities.User", "AssignedToUser")
                         .WithMany()
                         .HasForeignKey("AssignedToUserId")
                         .HasConstraintName("FK_significant_change_project_users_assigned_to_user_id");
 
-                    b.HasOne("Dfe.Complete.Domain.Entities.LocalAuthority", "LocalAuthority")
-                        .WithMany()
-                        .HasForeignKey("LocalAuthorityId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("FK_significant_change_project_local_authorities_local_authority_id");
-
                     b.Navigation("AssignedToUser");
-
-                    b.Navigation("GiasEstablishment");
-
-                    b.Navigation("LocalAuthority");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantChangeProjectTasksData", b =>

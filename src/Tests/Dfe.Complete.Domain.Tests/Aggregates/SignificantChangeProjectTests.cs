@@ -13,10 +13,11 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             var trustUkprn = new Ukprn(12345678);
             var trustName = "Sample Trust";
             var academyUrn = new Urn(123456);
+            var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
             var beforeCreate = DateTime.UtcNow;
 
             // Act
-            var project = SignificantChangeProject.CreateProject(trustUkprn, trustName, academyUrn);
+            var project = SignificantChangeProject.CreateProject(trustUkprn, trustName, academyUrn, localAuthorityId);
 
             // Assert
             var afterCreate = DateTime.UtcNow;
@@ -25,6 +26,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(trustUkprn, project.TrustUkprn);
             Assert.Equal(trustName, project.TrustName);
             Assert.Equal(academyUrn, project.AcademyUrn);
+            Assert.Equal(localAuthorityId, project.LocalAuthorityId);
             Assert.InRange(project.CreatedAt, beforeCreate, afterCreate);
             Assert.InRange(project.UpdatedAt, beforeCreate, afterCreate);
         }
@@ -39,7 +41,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(12345678),
                 "Sample Trust",
-                new Urn(123456));
+                new Urn(123456),
+                new LocalAuthorityId(Guid.NewGuid()));
 
             // Assert
             var afterCreate = DateTime.UtcNow;
@@ -53,20 +56,29 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         }
 
         [Fact]
-        public void CreateSignificantChangeProjectTasksData_ShouldBeIdempotent()
+        public void AssignUser_ShouldClearAssignedToUserNavigation_WhenReassigned()
         {
             // Arrange
             var project = SignificantChangeProject.CreateProject(
                 new Ukprn(12345678),
                 "Sample Trust",
-                new Urn(123456));
-            var existingTaskData = project.SignificantTasksData;
+                new Urn(123456),
+                new LocalAuthorityId(Guid.NewGuid()));
+            var firstAssignedUserId = new UserId(Guid.NewGuid());
+            var secondAssignedUserId = new UserId(Guid.NewGuid());
+            project.AssignUser(firstAssignedUserId);
+            project.AssignedToUser = new User { Id = firstAssignedUserId };
+            var beforeReassign = DateTime.UtcNow;
 
             // Act
-            project.CreateSignificantChangeProjectTasksData();
+            project.AssignUser(secondAssignedUserId);
 
             // Assert
-            Assert.Same(existingTaskData, project.SignificantTasksData);
+            var afterReassign = DateTime.UtcNow;
+            Assert.Equal(secondAssignedUserId, project.AssignedToUserId);
+            Assert.NotNull(project.AssignedAt);
+            Assert.Null(project.AssignedToUser);
+            Assert.InRange(project.UpdatedAt, beforeReassign, afterReassign);
         }
 
         [Theory]
@@ -77,7 +89,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Act
             var exception = Assert.Throws<ArgumentException>(() =>
-                SignificantChangeProject.CreateProject(new Ukprn(12345678), trustName!, new Urn(123456)));
+                SignificantChangeProject.CreateProject(new Ukprn(12345678), trustName!, new Urn(123456), new LocalAuthorityId(Guid.NewGuid())));
 
             // Assert
             Assert.Equal("trustName", exception.ParamName);
@@ -88,7 +100,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Act
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                SignificantChangeProject.CreateProject(null!, "Sample Trust", new Urn(123456)));
+                SignificantChangeProject.CreateProject(null!, "Sample Trust", new Urn(123456), new LocalAuthorityId(Guid.NewGuid())));
 
             // Assert
             Assert.Equal("trustUkprn", exception.ParamName);
@@ -99,17 +111,28 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Act
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", null!));
+                SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", null!, new LocalAuthorityId(Guid.NewGuid())));
 
             // Assert
             Assert.Equal("academyUrn", exception.ParamName);
         }
 
         [Fact]
+        public void CreateProject_ShouldThrowArgumentNullException_WhenLocalAuthorityIdIsNull()
+        {
+            // Act
+            var exception = Assert.Throws<ArgumentNullException>(() =>
+                SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456), null!));
+
+            // Assert
+            Assert.Equal("localAuthorityId", exception.ParamName);
+        }
+
+        [Fact]
         public void AssignUser_ShouldSetAssignedFieldsAndUpdateTimestamp()
         {
             // Arrange
-            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456));
+            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456), new LocalAuthorityId(Guid.NewGuid()));
             var previousUpdatedAt = DateTime.UtcNow.AddDays(-5);
             project.UpdatedAt = previousUpdatedAt;
             var assignedUserId = new UserId(Guid.NewGuid());
@@ -131,7 +154,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         public void AssignUser_ShouldClearAssignment_WhenAssignedUserIdIsNull()
         {
             // Arrange
-            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456));
+            var project = SignificantChangeProject.CreateProject(new Ukprn(12345678), "Sample Trust", new Urn(123456), new LocalAuthorityId(Guid.NewGuid()));
             var assignedUserId = new UserId(Guid.NewGuid());
             project.AssignUser(assignedUserId);
             project.AssignedToUser = new User { Id = assignedUserId };
