@@ -5,6 +5,7 @@ using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.CommandServices;
@@ -38,6 +39,7 @@ namespace Dfe.Complete.Infrastructure
 
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
+            services.AddScoped<IListAllProjectsByFilterQueryService, ListAllProjectsByFilterQueryService>();
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
