@@ -369,6 +369,11 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus OneHundredAndTwentyFiveYearLeaseTaskStatus(ConversionTaskDataDto taskData)
         {
+            if (taskData.OneHundredAndTwentyFiveYearLeaseNotApplicable is true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+
             if (taskData.OneHundredAndTwentyFiveYearLeaseSaveLease is null or false &&
                (taskData.OneHundredAndTwentyFiveYearLeaseEmail is null or false) &&
                (taskData.OneHundredAndTwentyFiveYearLeaseReceive is null or false) &&
