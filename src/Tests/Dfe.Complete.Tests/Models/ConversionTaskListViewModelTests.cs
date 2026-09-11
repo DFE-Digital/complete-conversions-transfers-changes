@@ -603,15 +603,18 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ThirdPartyLeases);
         }
         [Theory]
-        [InlineData(null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(false, true, false, false, TaskListStatus.InProgress)]
-        [InlineData(false, false, true, false, TaskListStatus.InProgress)]
-        [InlineData(false, false, false, true, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, true, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, false, true, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(false, false, false, false, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void OneHundredAndTwentyFiveYearLeaseTaskStatus_ShouldReturn_CorrectStatus(
-            bool? saveLease, bool? email, bool? receive, bool? confirmModel, TaskListStatus expectedStatus)
+            bool? saveLease, bool? email, bool? receive, bool? confirmModel, bool? notApplicable, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
@@ -619,7 +622,8 @@ namespace Dfe.Complete.Tests.Models
                 OneHundredAndTwentyFiveYearLeaseSaveLease = saveLease,
                 OneHundredAndTwentyFiveYearLeaseEmail = email,
                 OneHundredAndTwentyFiveYearLeaseReceive = receive,
-                OneHundredAndTwentyFiveYearLeaseConfirmModel = confirmModel
+                OneHundredAndTwentyFiveYearLeaseConfirmModel = confirmModel,
+                OneHundredAndTwentyFiveYearLeaseNotApplicable = notApplicable
             };
 
             var project = new ProjectDto();

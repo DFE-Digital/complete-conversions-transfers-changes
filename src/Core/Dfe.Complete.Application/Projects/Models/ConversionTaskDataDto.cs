@@ -162,6 +162,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; }
 
+        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
+
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseConfirmModel { get; set; }
