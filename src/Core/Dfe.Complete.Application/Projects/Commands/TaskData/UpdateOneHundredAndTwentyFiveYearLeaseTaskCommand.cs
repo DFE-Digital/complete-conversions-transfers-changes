@@ -29,10 +29,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                             ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
             tasksData.OneHundredAndTwentyFiveYearLeaseNotApplicable = request.NotApplicable;
-            tasksData.OneHundredAndTwentyFiveYearLeaseConfirmModel = request.Confirm;
-            tasksData.OneHundredAndTwentyFiveYearLeaseEmail = request.Email;
-            tasksData.OneHundredAndTwentyFiveYearLeaseReceive = request.Receive;
-            tasksData.OneHundredAndTwentyFiveYearLeaseSaveLease = request.Save;
+            tasksData.OneHundredAndTwentyFiveYearLeaseConfirmModel = request.NotApplicable == true ? null : request.Confirm;
+            tasksData.OneHundredAndTwentyFiveYearLeaseEmail = request.NotApplicable == true ? null : request.Email;
+            tasksData.OneHundredAndTwentyFiveYearLeaseReceive = request.NotApplicable == true ? null : request.Receive;
+            tasksData.OneHundredAndTwentyFiveYearLeaseSaveLease = request.NotApplicable == true ? null : request.Save;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 

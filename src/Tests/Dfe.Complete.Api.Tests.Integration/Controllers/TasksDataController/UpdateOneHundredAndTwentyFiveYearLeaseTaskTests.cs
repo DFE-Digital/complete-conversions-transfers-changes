@@ -78,10 +78,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 NotApplicable = true,
-                Email = false,
-                Receive = false,
-                Save = false,
-                Confirm = false
+                Email = true,
+                Receive = true,
+                Save = true,
+                Confirm = true
             };
 
             // Act
@@ -92,10 +92,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.OneHundredAndTwentyFiveYearLeaseNotApplicable);
-            Assert.False(existingTaskData.OneHundredAndTwentyFiveYearLeaseEmail);
-            Assert.False(existingTaskData.OneHundredAndTwentyFiveYearLeaseReceive);
-            Assert.False(existingTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease);
-            Assert.False(existingTaskData.OneHundredAndTwentyFiveYearLeaseConfirmModel);
+            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseEmail);
+            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseReceive);
+            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseSaveLease);
+            Assert.Null(existingTaskData.OneHundredAndTwentyFiveYearLeaseConfirmModel);
         }
 
 
