@@ -9173,6 +9173,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
           "oneHundredAndTwentyFiveYearLeaseEmail": {
             "type": "boolean",
             "nullable": true
@@ -10929,6 +10933,10 @@
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
           },
           "confirm": {
             "type": "boolean",

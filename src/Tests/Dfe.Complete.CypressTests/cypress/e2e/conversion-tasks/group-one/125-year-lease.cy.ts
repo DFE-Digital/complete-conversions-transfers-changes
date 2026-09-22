@@ -63,6 +63,26 @@ describe("Conversion tasks - 125 year lease", () => {
 
     });
 
+    it("should mark the task as not applicable and persist the selection", () => {
+        Logger.log("Select 'Not applicable' and save");
+        taskPage
+            .hasCheckboxLabel("Not applicable")
+            .tick()
+            .saveAndReturn();
+
+        taskListPage.hasTaskStatusNotApplicable("125 year lease").selectTask("125 year lease");
+
+        Logger.log("Unselect 'Not applicable' and save");
+        taskPage
+            .hasCheckboxLabel("Not applicable")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+
+        taskListPage.hasTaskStatusNotStarted("125 year lease").selectTask("125 year lease");
+        taskPage.hasCheckboxLabel("Not applicable").isUnticked();
+    });
+
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${setup.projectId}/tasks`);
 
@@ -70,6 +90,9 @@ describe("Conversion tasks - 125 year lease", () => {
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("125 year lease");
 
+        TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(setup.taskId, "notApplicable");
+        cy.reload();
+        taskListPage.hasTaskStatusNotApplicable("125 year lease");
 
         TaskHelperConversions.updateOneHundredAndTwentyFiveYearLease(setup.taskId, "inProgress");
         cy.reload();
