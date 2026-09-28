@@ -324,7 +324,7 @@ namespace Dfe.Complete.Models
             if (taskData.TenancyAtWillBeingUsed == false &&
                 taskData.TenancyAtWillLicenceToOccupyBeingUsed == false)
             {
-                return TaskListStatus.Completed;
+                return TaskListStatus.NotApplicable;
             }
 
             if ((taskData.TenancyAtWillBeingUsed == true || taskData.TenancyAtWillLicenceToOccupyBeingUsed == true) &&
