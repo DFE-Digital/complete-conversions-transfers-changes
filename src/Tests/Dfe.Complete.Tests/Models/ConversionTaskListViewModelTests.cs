@@ -841,18 +841,16 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ProjectReceiveDeclarationOfExpenditureCertificate);
         }
         [Theory]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, TaskListStatus.Completed)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
         public void RedactAndSendDocumentsTaskStatus_ShouldReturn_CorrectStatus(
-            bool? redact, bool? saveRedaction, bool? sendRedaction, bool? sendSolicitors, TaskListStatus expectedStatus)
+            bool? saveRedaction, bool? sendSolicitors, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                RedactAndSendRedact = redact,
                 RedactAndSendSaveRedaction = saveRedaction,
-                RedactAndSendSendRedaction = sendRedaction,
                 RedactAndSendSendSolicitors = sendSolicitors
             };
 

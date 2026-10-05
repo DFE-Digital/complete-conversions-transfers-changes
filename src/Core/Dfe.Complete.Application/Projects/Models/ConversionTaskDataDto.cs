@@ -152,11 +152,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? ConfirmSchoolBankDetailsSubmitted { get; set; }
 
-        public bool? RedactAndSendRedact { get; set; }
-
         public bool? RedactAndSendSaveRedaction { get; set; }
-
-        public bool? RedactAndSendSendRedaction { get; set; }
 
         public bool? UpdateEsfaUpdate { get; set; }
 
