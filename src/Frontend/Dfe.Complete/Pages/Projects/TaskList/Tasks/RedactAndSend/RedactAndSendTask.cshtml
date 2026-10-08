@@ -22,20 +22,11 @@
                     Confirm document actions
                     <span class="govuk-caption-m">Select all that apply</span>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item data-cy="redact" id="redact" asp-for="@Model.Redact" value="true" name="redact" checked="@Model.Redact">
-                    <b>Redact all relevant documents</b>
-                </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save relevant documents in the school's SharePoint folder</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item data-cy="send" id="send" asp-for="@Model.Send" value="true" name="send" checked="@Model.Send">
-                    <b>Send the redacted documents to the funding agreements mailbox to be published on GOV.UK</b>
-                    <govuk-checkboxes-item-hint>
-                        <external-link href="@_configuration["ExternalLinks:HelpRedactingDocuments"]">Help redacting the documents (opens in new tab)</external-link>
-                    </govuk-checkboxes-item-hint>
-                </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="send_to_solicitors" id="send_to_solicitors" asp-for="@Model.SendToSolicitors" value="true" name="send_to_solicitors" checked="@Model.SendToSolicitors">
-                    <b>Send the redacted and unredacted versions of documents to the solicitors</b>
+                    <b>Send signed and sealedcopies of the documents to the solicitors and trust</b>
                 </govuk-checkboxes-item>
 
             </govuk-checkboxes-fieldset>

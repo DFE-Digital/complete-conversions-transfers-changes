@@ -5887,14 +5887,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToEsfa", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSendToEsfa { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendDocumentsRedact { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSaved { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToFundingTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendDocumentsSendToFundingTeam { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToSolicitors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSendToSolicitors { get; set; } = default!;
@@ -6213,14 +6207,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("confirmSchoolBankDetailsSubmitted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConfirmSchoolBankDetailsSubmitted { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("redactAndSendRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendRedact { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("redactAndSendSaveRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendSaveRedaction { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("redactAndSendSendRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendSendRedaction { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("updateEsfaUpdate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? UpdateEsfaUpdate { get; set; } = default!;

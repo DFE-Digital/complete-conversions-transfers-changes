@@ -13,12 +13,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
     public class RedactAndSendTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger, IProjectPermissionService projectPermissionService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.RedactAndSend, projectPermissionService)
     {
-        [BindProperty(Name = "redact")]
-        public bool? Redact { get; set; }
-
-        [BindProperty(Name = "send")]
-        public bool? Send { get; set; }
-
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
 
@@ -37,9 +31,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
 
             TasksDataId = Project.TasksDataId?.Value;
 
-            Redact = ConversionTaskData.RedactAndSendRedact;
             Saved = ConversionTaskData.RedactAndSendSaveRedaction;
-            Send = ConversionTaskData.RedactAndSendSendRedaction;
             SendToSolicitors = ConversionTaskData.RedactAndSendSendSolicitors;
 
             return Page();
@@ -47,7 +39,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
         public async Task<IActionResult> OnPost()
         {
             await Sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
-                new TaskDataId(TasksDataId.GetValueOrDefault())!, ProjectType.Conversion, Redact, Saved, null, Send, SendToSolicitors));
+                new TaskDataId(TasksDataId.GetValueOrDefault())!, ProjectType.Conversion, null, Saved, null, null, SendToSolicitors));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
