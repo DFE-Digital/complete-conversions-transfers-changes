@@ -86,7 +86,7 @@ describe("Conversion tasks - Tenancy at will", () => {
         taskPage.noNotApplicableOptionExists();
     });
 
-    it("should mark the task complete when both questions are answered 'No'", () => {
+    it("should mark the task 'Not Applicable' when both questions are answered 'No'", () => {
         Logger.log("Answer 'No' to both radio questions and save");
         // cy.contains() yields only the first match, so scope each click to its own
         // radio group by the question legend rather than indexing a global 'No' match.
@@ -97,7 +97,7 @@ describe("Conversion tasks - Tenancy at will", () => {
             .closest("fieldset")
             .within(() => cy.contains("label", "No").click());
         taskPage.saveAndReturn();
-        taskListPage.hasTaskStatusCompleted("Tenancy at will").selectTask("Tenancy at will");
+        taskListPage.hasTaskStatusNotApplicable("Tenancy at will").selectTask("Tenancy at will");
 
         Logger.log("Confirm both 'No' answers persist");
         cy.contains("legend", "Is a tenancy at will being used?")
