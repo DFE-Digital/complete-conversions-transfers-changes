@@ -626,6 +626,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsNotApplicable).HasColumnName("check_accuracy_of_higher_needs_not_applicable");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_number");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmPublishedNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_published_number");
+        projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber).HasColumnName("check_accuracy_of_higher_needs_confirm_published_incorrect_number");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsCheckReturnedForm).HasColumnName("check_accuracy_of_higher_needs_check_returned_form");
         projectConfiguration.Property(e => e.CheckAccuracyOfHigherNeedsSendForm).HasColumnName("check_accuracy_of_higher_needs_send_form");
         projectConfiguration.Property(e => e.ChildrenCentreAcademyTrust).HasColumnName("children_centre_academy_trust");
