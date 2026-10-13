@@ -37,7 +37,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
                 ConfirmNumber = true,
                 CheckReturnedForm = true,
                 SendForm = true,
-                ConfirmPublishedNumber = true,
+                ConfirmPublishedNumber = false,
+                ConfirmPublishedIncorrectNumber = true,
                 NotApplicable = false
             };
 
@@ -48,11 +49,55 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsNotApplicable);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm);
             Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsSendForm);
-            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
+            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber);
+        }
 
+        [Theory]
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(ConversionTaskDataCustomization))]
+        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldClearOtherAnswers_WhenPublishedNumberConfirmed(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+            await dbContext.SaveChangesAsync();
+
+            var command = new UpdateAccuracyOfHigherNeedsTaskCommand
+            {
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
+                ConfirmNumber = true,
+                CheckReturnedForm = true,
+                SendForm = true,
+                ConfirmPublishedNumber = true,
+                ConfirmPublishedIncorrectNumber = true,
+                NotApplicable = false
+            };
+
+            // Act
+            await tasksDataClient.UpdateAccuracyOfHigherNeedsTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsNotApplicable);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsSendForm);
+            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber);
         }
 
         [Theory]
