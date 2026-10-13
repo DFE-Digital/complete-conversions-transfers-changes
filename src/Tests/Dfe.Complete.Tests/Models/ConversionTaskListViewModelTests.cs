@@ -101,17 +101,21 @@ namespace Dfe.Complete.Tests.Models
 
 
         [Theory]
-        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(null, true, null, null, false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(false, false, false, false, true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, true, TaskListStatus.NotApplicable)]
-        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, true, null, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, null, true, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, true, null, null, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, null, null, null, false, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, false, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void CheckAccuracyOfHigherNeedsTaskStatus_ShouldReturn_CorrectStatus(
             bool? confirmNumber,
             bool? confirmPublishedNumber,
+            bool? confirmPublishedIncorrectNumber,
             bool? checkReturnedForm,
             bool? sendForm,
             bool? notApplicable,
@@ -122,6 +126,7 @@ namespace Dfe.Complete.Tests.Models
                 Id = new TaskDataId(Guid.NewGuid()),
                 CheckAccuracyOfHigherNeedsConfirmNumber = confirmNumber,
                 CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber,
+                CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber = confirmPublishedIncorrectNumber,
                 CheckAccuracyOfHigherNeedsCheckReturnedForm = checkReturnedForm,
                 CheckAccuracyOfHigherNeedsSendForm = sendForm,
                 CheckAccuracyOfHigherNeedsNotApplicable = notApplicable

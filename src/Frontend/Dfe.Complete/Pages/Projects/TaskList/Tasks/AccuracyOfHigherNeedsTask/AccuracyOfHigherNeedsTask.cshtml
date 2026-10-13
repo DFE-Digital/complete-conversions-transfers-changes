@@ -43,7 +43,7 @@
 
                 <govuk-checkboxes-divider>or</govuk-checkboxes-divider>
 
-                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" value="confirm-published-number" checked="@Model.SelectedOptions.Contains("confirm-published-number")">
+                <govuk-checkboxes-item data-cy="@nameof(Model.ConfirmPublishedNumber)" id="@(nameof(Model.ConfirmPublishedNumber))" value="confirm-published-number" checked="@Model.SelectedOptions.Contains("confirm-published-number")" behavior="Exclusive">
                     <b>Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund</b>
                 </govuk-checkboxes-item>
 

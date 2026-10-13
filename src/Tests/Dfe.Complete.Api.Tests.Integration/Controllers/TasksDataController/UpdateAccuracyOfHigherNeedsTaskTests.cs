@@ -101,6 +101,49 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataControllergi
         }
 
         [Theory]
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(ConversionTaskDataCustomization))]
+        public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldClearAllAnswers_WhenNotApplicable(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+            await dbContext.SaveChangesAsync();
+
+            var command = new UpdateAccuracyOfHigherNeedsTaskCommand
+            {
+                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
+                ConfirmNumber = true,
+                CheckReturnedForm = true,
+                SendForm = true,
+                ConfirmPublishedNumber = true,
+                ConfirmPublishedIncorrectNumber = true,
+                NotApplicable = true
+            };
+
+            // Act
+            await tasksDataClient.UpdateAccuracyOfHigherNeedsTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.CheckAccuracyOfHigherNeedsNotApplicable);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmNumber);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsCheckReturnedForm);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsSendForm);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber);
+            Assert.Null(existingTaskData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber);
+        }
+
+        [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldFail_WhenTaskDataIdNotMatched(
             CustomWebApplicationDbContextFactory<Program> factory,
