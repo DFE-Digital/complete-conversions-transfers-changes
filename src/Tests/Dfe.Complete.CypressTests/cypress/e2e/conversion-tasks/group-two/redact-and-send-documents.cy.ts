@@ -21,23 +21,21 @@ describe("Conversion tasks - Redact and send documents", () => {
 
     it("shows the document actions heading and guidance link", () => {
         taskPage
-            .hasCheckboxLabel("Redact all relevant documents")
             .hasCheckboxLabel("Save relevant documents in the school's SharePoint folder")
-            .hasCheckboxLabel("Send the redacted documents to the funding agreements mailbox to be published on GOV.UK")
-            .hasCheckboxLabel("Send the redacted and unredacted versions of documents to the solicitors");
+            .hasCheckboxLabel("Send signed and sealed copies of the documents to the solicitors and trust");
         cy.contains("Confirm document actions").should("be.visible");
         cy.contains("a", "Approval to Opening guidance").should("have.attr", "href");
     });
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select first checkbox and save");
-        taskPage.hasCheckboxLabel("Redact all relevant documents").tick().saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Redact and send documents").selectTask("Redact and send documents");
+        taskPage.hasCheckboxLabel("Save relevant documents in the school's SharePoint folder").tick().saveAndReturn();
+        taskListPage.hasTaskStatusInProgress("Send and Save Documents").selectTask("Send and Save Documents");
 
         Logger.log("Unselect same checkbox and save");
-        taskPage.hasCheckboxLabel("Redact all relevant documents").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Redact and send documents").selectTask("Redact and send documents");
-        taskPage.hasCheckboxLabel("Redact all relevant documents").isUnticked();
+        taskPage.hasCheckboxLabel("Save relevant documents in the school's SharePoint folder").isTicked().untick().saveAndReturn();
+        taskListPage.hasTaskStatusNotStarted("Send and Save Documents").selectTask("Send and Save Documents");
+        taskPage.hasCheckboxLabel("Save relevant documents in the school's SharePoint folder").isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
@@ -45,15 +43,15 @@ describe("Conversion tasks - Redact and send documents", () => {
 
         TaskHelperConversions.updateRedactAndSendDocuments(setup.taskId, setup.projectType, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Redact and send documents");
+        taskListPage.hasTaskStatusNotStarted("Send and Save Documents");
 
         TaskHelperConversions.updateRedactAndSendDocuments(setup.taskId, setup.projectType, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Redact and send documents");
+        taskListPage.hasTaskStatusInProgress("Send and Save Documents");
 
         TaskHelperConversions.updateRedactAndSendDocuments(setup.taskId, setup.projectType, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Redact and send documents");
+        taskListPage.hasTaskStatusCompleted("Send and Save Documents");
     });
 
     it("Should NOT see the not applicable option for this task", () => {

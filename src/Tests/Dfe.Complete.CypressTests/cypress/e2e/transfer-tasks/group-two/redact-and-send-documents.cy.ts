@@ -20,32 +20,23 @@ describe("Transfer tasks - Redact and send documents", () => {
         TransferTasksGroupTwoSetup.setupBeforeEach(taskPath);
     });
 
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .hasCheckboxLabel("Redact all relevant documents")
-            .expandGuidance("Help redacting the documents")
-            .hasGuidance("You need to create a redacted version of each document")
-            .hasGuidance("deed of novation and variation")
-            .hasGuidance("deed of termination");
-    });
-
     it("should submit the form and persist selections", () => {
         Logger.log("Select first checkbox and save");
         taskPage
-            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
             .tick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Redact and send documents").selectTask("Redact and send documents");
+        taskListPage.hasTaskStatusInProgress("Send and Save Documents").selectTask("Send and Save Documents");
 
         Logger.log("Unselect same checkbox and save");
         taskPage
-            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Redact and send documents").selectTask("Redact and send documents");
+        taskListPage.hasTaskStatusNotStarted("Send and Save Documents").selectTask("Send and Save Documents");
         taskPage
-            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
             .isUnticked();
     });
 
@@ -54,15 +45,15 @@ describe("Transfer tasks - Redact and send documents", () => {
 
         TaskHelperTransfers.updateRedactAndSendDocuments(setup.taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Redact and send documents");
+        taskListPage.hasTaskStatusNotStarted("Send and Save Documents");
 
         TaskHelperTransfers.updateRedactAndSendDocuments(setup.taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Redact and send documents");
+        taskListPage.hasTaskStatusInProgress("Send and Save Documents");
 
         TaskHelperTransfers.updateRedactAndSendDocuments(setup.taskId, ProjectType.Transfer, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Redact and send documents");
+        taskListPage.hasTaskStatusCompleted("Send and Save Documents");
     });
 
     it("Should NOT see the not applicable option for this task", () => {
