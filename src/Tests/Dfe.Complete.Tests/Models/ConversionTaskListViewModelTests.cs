@@ -790,7 +790,7 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         // beingUsed, licenceUsed, received, cleared, emailSigned, receiveSigned, saveSigned, expected
         [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, null, null, null, null, null, TaskListStatus.Completed)]
+        [InlineData(false, false, null, null, null, null, null, TaskListStatus.NotApplicable)]
         [InlineData(true, false, true, true, true, true, true, TaskListStatus.Completed)]
         [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
         [InlineData(true, false, true, false, false, false, false, TaskListStatus.InProgress)]
