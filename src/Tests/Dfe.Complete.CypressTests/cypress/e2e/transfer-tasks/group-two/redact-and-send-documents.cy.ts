@@ -23,20 +23,20 @@ describe("Transfer tasks - Redact and send documents", () => {
     it("should submit the form and persist selections", () => {
         Logger.log("Select first checkbox and save");
         taskPage
-            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and Oversight)")
             .tick()
             .saveAndReturn();
         taskListPage.hasTaskStatusInProgress("Send and Save Documents").selectTask("Send and Save Documents");
 
         Logger.log("Unselect same checkbox and save");
         taskPage
-            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and Oversight)")
             .isTicked()
             .untick()
             .saveAndReturn();
         taskListPage.hasTaskStatusNotStarted("Send and Save Documents").selectTask("Send and Save Documents");
         taskPage
-            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and oversight)")
+            .hasCheckboxLabel("Send relevant documents to SFSO (Schools Financial Support and Oversight)")
             .isUnticked();
     });
 
