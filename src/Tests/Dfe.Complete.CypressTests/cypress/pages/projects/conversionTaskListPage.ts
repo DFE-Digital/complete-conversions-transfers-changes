@@ -54,7 +54,7 @@ class ConversionTaskListPage {
         ],
         afterOpening: [
             "Confirm date academy opened",
-            "Redact and send documents",
+            "Send and Save Documents",
             "Receive declaration of expenditure certificate",
         ],
     };

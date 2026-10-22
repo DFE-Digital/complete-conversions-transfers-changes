@@ -8738,15 +8738,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "redactAndSendDocumentsRedact": {
-            "type": "boolean",
-            "nullable": true
-          },
           "redactAndSendDocumentsSaved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "redactAndSendDocumentsSendToFundingTeam": {
             "type": "boolean",
             "nullable": true
           },
@@ -9153,15 +9145,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "redactAndSendRedact": {
-            "type": "boolean",
-            "nullable": true
-          },
           "redactAndSendSaveRedaction": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "redactAndSendSendRedaction": {
             "type": "boolean",
             "nullable": true
           },

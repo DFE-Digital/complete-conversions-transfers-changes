@@ -224,16 +224,12 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus RedactAndSendDocumentsTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.RedactAndSendRedact.HasValue || taskData.RedactAndSendRedact == false) &&
-               (!taskData.RedactAndSendSaveRedaction.HasValue || taskData.RedactAndSendSaveRedaction == false) &&
-               (!taskData.RedactAndSendSendRedaction.HasValue || taskData.RedactAndSendSendRedaction == false) &&
+            if ((!taskData.RedactAndSendSaveRedaction.HasValue || taskData.RedactAndSendSaveRedaction == false) &&
                (!taskData.RedactAndSendSendSolicitors.HasValue || taskData.RedactAndSendSendSolicitors == false))
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.RedactAndSendRedact == true &&
-                taskData.RedactAndSendSaveRedaction == true &&
-                taskData.RedactAndSendSendRedaction == true &&
+            return (taskData.RedactAndSendSaveRedaction == true &&
                 taskData.RedactAndSendSendSolicitors == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
