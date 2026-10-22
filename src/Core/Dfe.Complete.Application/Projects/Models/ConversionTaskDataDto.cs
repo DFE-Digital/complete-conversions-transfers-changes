@@ -251,6 +251,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; }
 
+        public bool? CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber { get; set; }
+
         public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; }
 
         public bool? CheckAccuracyOfHigherNeedsSendForm { get; set; }

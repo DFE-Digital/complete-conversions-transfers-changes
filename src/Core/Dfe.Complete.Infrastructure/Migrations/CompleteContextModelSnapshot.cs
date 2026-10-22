@@ -137,6 +137,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("check_accuracy_of_higher_needs_confirm_number");
 
+                    b.Property<bool?>("CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber")
+                        .HasColumnType("bit")
+                        .HasColumnName("check_accuracy_of_higher_needs_confirm_published_incorrect_number");
+
                     b.Property<bool?>("CheckAccuracyOfHigherNeedsConfirmPublishedNumber")
                         .HasColumnType("bit")
                         .HasColumnName("check_accuracy_of_higher_needs_confirm_published_number");

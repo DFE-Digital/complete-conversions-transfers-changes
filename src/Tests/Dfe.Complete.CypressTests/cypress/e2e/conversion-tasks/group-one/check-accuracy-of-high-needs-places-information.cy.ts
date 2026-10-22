@@ -19,10 +19,34 @@ describe("Conversion tasks - Check accuracy of high needs places", () => {
         ConversionTasksGroupOneSetup.setupBeforeEach(taskPath);
     });
 
-    it("should submit the form and persist selections", () => {
-        Logger.log("Select all checkboxes and save");
+    it("should complete the task when the published number is correct", () => {
+        Logger.log("Confirm the published number is correct and save");
         taskPage
             .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .tick()
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusCompleted("Check accuracy of high needs places")
+            .selectTask("Check accuracy of high needs places");
+
+        Logger.log("Unselect and save");
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusNotStarted("Check accuracy of high needs places")
+            .selectTask("Check accuracy of high needs places");
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .isUnticked();
+    });
+
+    it("should submit the form and persist selections when the published number is incorrect", () => {
+        Logger.log("Select the incorrect number checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the incorrect number of high needs places FFO must fund")
             .tick()
             .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
             .tick()
@@ -32,12 +56,12 @@ describe("Conversion tasks - Check accuracy of high needs places", () => {
             .tick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Check accuracy of high needs places")
+            .hasTaskStatusInProgress("Check accuracy of high needs places")
             .selectTask("Check accuracy of high needs places");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the incorrect number of high needs places FFO must fund")
             .isTicked()
             .untick()
             .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
@@ -54,13 +78,32 @@ describe("Conversion tasks - Check accuracy of high needs places", () => {
             .hasTaskStatusNotStarted("Check accuracy of high needs places")
             .selectTask("Check accuracy of high needs places");
         taskPage
-            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the incorrect number of high needs places FFO must fund")
             .isUnticked()
             .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
             .isUnticked()
             .hasCheckboxLabel("Check the returned Notification of Changes form")
             .isUnticked()
             .hasCheckboxLabel("Send the completed Notification of Changes form to FFO")
+            .isUnticked();
+    });
+
+    it("should have EXCLUSIVE correct published number checkbox", () => {
+        Logger.log("Check ticking correct published number unticks other options");
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the incorrect number of high needs places FFO must fund")
+            .tick()
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
+            .tick()
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .tick();
+
+        taskPage
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the correct number of high needs places FFO must fund")
+            .isTicked()
+            .hasCheckboxLabel("Confirm the section 251 spreadsheet shows the incorrect number of high needs places FFO must fund")
+            .isUnticked()
+            .hasCheckboxLabel("Tell the local authority to complete the Notification of Changes form")
             .isUnticked();
     });
 

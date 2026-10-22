@@ -6358,6 +6358,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsCheckReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; } = default!;
 
@@ -7589,6 +7592,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("confirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConfirmPublishedNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmPublishedIncorrectNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmPublishedIncorrectNumber { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("checkReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckReturnedForm { get; set; } = default!;

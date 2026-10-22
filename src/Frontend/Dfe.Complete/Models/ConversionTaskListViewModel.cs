@@ -764,13 +764,28 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData) => GetStatusFromCheckboxList(
-            [
-                taskData.CheckAccuracyOfHigherNeedsConfirmNumber,
-                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber,
-                taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm,
-                taskData.CheckAccuracyOfHigherNeedsSendForm
-            ], taskData.CheckAccuracyOfHigherNeedsNotApplicable);
+        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.CheckAccuracyOfHigherNeedsNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            else if (taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            else if (
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber == true
+                || taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true 
+                || taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm == true 
+                || taskData.CheckAccuracyOfHigherNeedsSendForm == true
+            )
+            {
+                return TaskListStatus.InProgress;
+            }
+
+            return TaskListStatus.NotStarted;
+        }
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)
         {
