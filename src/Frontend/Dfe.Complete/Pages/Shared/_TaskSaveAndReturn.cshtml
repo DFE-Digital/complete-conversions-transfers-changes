@@ -1,6 +1,4 @@
 ﻿@model Dfe.Complete.Models.TaskSaveAndReturnModel
-@using Dfe.Complete.Domain.Extensions;
-@using Dfe.Complete.Domain.Enums;
 @inject Dfe.Complete.Services.IProjectPermissionService projectPermissionService;
 
 @if (projectPermissionService.UserCanEdit(Model.Project, User))

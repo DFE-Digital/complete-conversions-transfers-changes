@@ -29,7 +29,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList
                 new(NoteTaskIdentifier.StakeholderKickoff, conversionTaskList.ExternalStakeHolderKickoff, 3),
                 new(NoteTaskIdentifier.ConfirmRiskProtectionArrangements, conversionTaskList.ConfirmAcademyRiskProtectionArrangements, 4),
                 new(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds, conversionTaskList.CheckAccuracyOfHigherNeeds, 5),
-                new(NoteTaskIdentifier.CompleteNotificationOfChange, conversionTaskList.CompleteNotificationOfChange, 7),
                 new(NoteTaskIdentifier.ConfirmAndProcessTheSponsoredSupportGrant, conversionTaskList.ConfirmAndProcessSponsoredSupportGrant, 8),
                 new(NoteTaskIdentifier.NurseryArrangement, conversionTaskList.ConfirmNurseryArrangement, 9),
                 new(NoteTaskIdentifier.ConfirmChildrenCentre,  conversionTaskList.ConfirmChildrenCentre, 10),

@@ -9365,6 +9365,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "checkAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
           "checkAccuracyOfHigherNeedsCheckReturnedForm": {
             "type": "boolean",
             "nullable": true
@@ -10445,6 +10449,10 @@
             "nullable": true
           },
           "confirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedIncorrectNumber": {
             "type": "boolean",
             "nullable": true
           },

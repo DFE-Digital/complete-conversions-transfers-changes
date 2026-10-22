@@ -12,6 +12,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         TaskDataId TaskDataId,
         bool? ConfirmNumber,
         bool? ConfirmPublishedNumber,
+        bool? ConfirmPublishedIncorrectNumber,
         bool? CheckReturnedForm,
         bool? SendForm,
         bool? NotApplicable
@@ -27,11 +28,33 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == request.TaskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {request.TaskDataId} not found.");
 
-            tasksData.CheckAccuracyOfHigherNeedsNotApplicable = request.NotApplicable;
-            tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = request.NotApplicable == true ? null : request.ConfirmNumber;
-            tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = request.NotApplicable == true ? null : request.CheckReturnedForm;
-            tasksData.CheckAccuracyOfHigherNeedsSendForm = request.NotApplicable == true ? null : request.SendForm;
-            tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = request.NotApplicable == true ? null : request.ConfirmPublishedNumber;
+            if (request.NotApplicable == true)
+            {
+                tasksData.CheckAccuracyOfHigherNeedsNotApplicable = true;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = null;
+                tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = null;
+                tasksData.CheckAccuracyOfHigherNeedsSendForm = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber = null;
+            }
+            else if (request.ConfirmPublishedNumber == true)
+            {
+                tasksData.CheckAccuracyOfHigherNeedsNotApplicable = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = null;
+                tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = null;
+                tasksData.CheckAccuracyOfHigherNeedsSendForm = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = true;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber = null;
+            }
+            else
+            {
+                tasksData.CheckAccuracyOfHigherNeedsNotApplicable = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmNumber = request.ConfirmNumber;
+                tasksData.CheckAccuracyOfHigherNeedsCheckReturnedForm = request.CheckReturnedForm;
+                tasksData.CheckAccuracyOfHigherNeedsSendForm = request.SendForm;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber = null;
+                tasksData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber = request.ConfirmPublishedIncorrectNumber;
+            }
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
