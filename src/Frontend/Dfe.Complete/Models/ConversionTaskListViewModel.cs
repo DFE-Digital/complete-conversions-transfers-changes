@@ -224,16 +224,12 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus RedactAndSendDocumentsTaskStatus(ConversionTaskDataDto taskData)
         {
-            if ((!taskData.RedactAndSendRedact.HasValue || taskData.RedactAndSendRedact == false) &&
-               (!taskData.RedactAndSendSaveRedaction.HasValue || taskData.RedactAndSendSaveRedaction == false) &&
-               (!taskData.RedactAndSendSendRedaction.HasValue || taskData.RedactAndSendSendRedaction == false) &&
+            if ((!taskData.RedactAndSendSaveRedaction.HasValue || taskData.RedactAndSendSaveRedaction == false) &&
                (!taskData.RedactAndSendSendSolicitors.HasValue || taskData.RedactAndSendSendSolicitors == false))
             {
                 return TaskListStatus.NotStarted;
             }
-            return (taskData.RedactAndSendRedact == true &&
-                taskData.RedactAndSendSaveRedaction == true &&
-                taskData.RedactAndSendSendRedaction == true &&
+            return (taskData.RedactAndSendSaveRedaction == true &&
                 taskData.RedactAndSendSendSolicitors == true)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
@@ -324,7 +320,7 @@ namespace Dfe.Complete.Models
             if (taskData.TenancyAtWillBeingUsed == false &&
                 taskData.TenancyAtWillLicenceToOccupyBeingUsed == false)
             {
-                return TaskListStatus.Completed;
+                return TaskListStatus.NotApplicable;
             }
 
             if ((taskData.TenancyAtWillBeingUsed == true || taskData.TenancyAtWillLicenceToOccupyBeingUsed == true) &&
@@ -768,13 +764,28 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData) => GetStatusFromCheckboxList(
-            [
-                taskData.CheckAccuracyOfHigherNeedsConfirmNumber,
-                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber,
-                taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm,
-                taskData.CheckAccuracyOfHigherNeedsSendForm
-            ], taskData.CheckAccuracyOfHigherNeedsNotApplicable);
+        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (taskData.CheckAccuracyOfHigherNeedsNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            else if (taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            else if (
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber == true
+                || taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true 
+                || taskData.CheckAccuracyOfHigherNeedsCheckReturnedForm == true 
+                || taskData.CheckAccuracyOfHigherNeedsSendForm == true
+            )
+            {
+                return TaskListStatus.InProgress;
+            }
+
+            return TaskListStatus.NotStarted;
+        }
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)
         {

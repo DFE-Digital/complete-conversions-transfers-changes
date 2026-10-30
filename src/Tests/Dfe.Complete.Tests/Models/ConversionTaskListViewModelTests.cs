@@ -101,17 +101,21 @@ namespace Dfe.Complete.Tests.Models
 
 
         [Theory]
-        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
-        [InlineData(null, true, null, null, false, TaskListStatus.InProgress)]
-        [InlineData(true, true, true, true, false, TaskListStatus.Completed)]
-        [InlineData(false, false, false, false, true, TaskListStatus.NotApplicable)]
-        [InlineData(null, null, null, null, true, TaskListStatus.NotApplicable)]
-        [InlineData(true, true, true, true, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, true, null, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, null, true, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, true, null, null, false, TaskListStatus.InProgress)]
+        [InlineData(null, true, null, null, null, false, TaskListStatus.Completed)]
+        [InlineData(true, true, true, true, true, false, TaskListStatus.Completed)]
+        [InlineData(false, false, false, false, false, true, TaskListStatus.NotApplicable)]
+        [InlineData(null, null, null, null, null, true, TaskListStatus.NotApplicable)]
+        [InlineData(true, true, true, true, true, true, TaskListStatus.NotApplicable)]
         public void CheckAccuracyOfHigherNeedsTaskStatus_ShouldReturn_CorrectStatus(
             bool? confirmNumber,
             bool? confirmPublishedNumber,
+            bool? confirmPublishedIncorrectNumber,
             bool? checkReturnedForm,
             bool? sendForm,
             bool? notApplicable,
@@ -122,6 +126,7 @@ namespace Dfe.Complete.Tests.Models
                 Id = new TaskDataId(Guid.NewGuid()),
                 CheckAccuracyOfHigherNeedsConfirmNumber = confirmNumber,
                 CheckAccuracyOfHigherNeedsConfirmPublishedNumber = confirmPublishedNumber,
+                CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber = confirmPublishedIncorrectNumber,
                 CheckAccuracyOfHigherNeedsCheckReturnedForm = checkReturnedForm,
                 CheckAccuracyOfHigherNeedsSendForm = sendForm,
                 CheckAccuracyOfHigherNeedsNotApplicable = notApplicable
@@ -790,7 +795,7 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         // beingUsed, licenceUsed, received, cleared, emailSigned, receiveSigned, saveSigned, expected
         [InlineData(null, null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, null, null, null, null, null, TaskListStatus.Completed)]
+        [InlineData(false, false, null, null, null, null, null, TaskListStatus.NotApplicable)]
         [InlineData(true, false, true, true, true, true, true, TaskListStatus.Completed)]
         [InlineData(false, true, true, true, true, true, true, TaskListStatus.Completed)]
         [InlineData(true, false, true, false, false, false, false, TaskListStatus.InProgress)]
@@ -841,18 +846,16 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.ProjectReceiveDeclarationOfExpenditureCertificate);
         }
         [Theory]
-        [InlineData(false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, TaskListStatus.Completed)]
+        [InlineData(false, true, TaskListStatus.InProgress)]
         public void RedactAndSendDocumentsTaskStatus_ShouldReturn_CorrectStatus(
-            bool? redact, bool? saveRedaction, bool? sendRedaction, bool? sendSolicitors, TaskListStatus expectedStatus)
+            bool? saveRedaction, bool? sendSolicitors, TaskListStatus expectedStatus)
         {
             var taskData = new ConversionTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                RedactAndSendRedact = redact,
                 RedactAndSendSaveRedaction = saveRedaction,
-                RedactAndSendSendRedaction = sendRedaction,
                 RedactAndSendSendSolicitors = sendSolicitors
             };
 
