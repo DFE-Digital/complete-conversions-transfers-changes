@@ -23,7 +23,7 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Complete the Fresh starts, transfers and changes for open academies form")
+            .hasCheckboxLabel("Academy requires a new URN")
             .tick()
             .hasCheckboxLabel("Give the new URN and LAESTAB information to the academy and incoming trust")
             .tick()
@@ -34,7 +34,7 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Complete the Fresh starts, transfers and changes for open academies form")
+            .hasCheckboxLabel("Academy requires a new URN")
             .isTicked()
             .untick()
             .hasCheckboxLabel("Give the new URN and LAESTAB information to the academy and incoming trust")
@@ -45,7 +45,7 @@ describe("Transfer tasks - Request a new URN and record for the academy", () => 
             .hasTaskStatusNotStarted("Request a new URN and record for the academy")
             .selectTask("Request a new URN and record for the academy");
         taskPage
-            .hasCheckboxLabel("Complete the Fresh starts, transfers and changes for open academies form")
+            .hasCheckboxLabel("Academy requires a new URN")
             .isUnticked()
             .hasCheckboxLabel("Give the new URN and LAESTAB information to the academy and incoming trust")
             .isUnticked();
