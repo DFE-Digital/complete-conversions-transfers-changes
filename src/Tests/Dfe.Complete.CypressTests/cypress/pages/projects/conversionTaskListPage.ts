@@ -17,7 +17,6 @@ class ConversionTaskListPage {
             "Confirm the academy's risk protection arrangements",
             "Check accuracy of high needs places",
             "Process conversion support grant",
-            "Complete a notification of changes to funded high needs places form",
             "Confirm and process the sponsored support grant",
             "Confirm academy nursery arrangement",
             "Confirm children's centre provision",
@@ -55,7 +54,7 @@ class ConversionTaskListPage {
         ],
         afterOpening: [
             "Confirm date academy opened",
-            "Redact and send documents",
+            "Send and Save Documents",
             "Receive declaration of expenditure certificate",
         ],
     };
