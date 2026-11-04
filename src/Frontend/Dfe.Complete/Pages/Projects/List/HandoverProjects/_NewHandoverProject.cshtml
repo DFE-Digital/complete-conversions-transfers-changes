@@ -46,7 +46,10 @@
 
                         <ul>
                             <li>whether the provisional conversion date has been discussed with the local authority</li>
-                            <li>if the local authority proforma has been received or requested</li>
+                            @if (Model.Type == ProjectType.Conversion)
+                            {
+                                <li>if the local authority proforma has been received or requested</li>
+                            }
                             <li>who the Schools Financial Support and Oversight lead is</li>
                             <li>if the introduction and next steps email has been sent to external stakeholders</li>
                         </ul>
