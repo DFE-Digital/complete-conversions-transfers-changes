@@ -152,15 +152,13 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? ConfirmSchoolBankDetailsSubmitted { get; set; }
 
-        public bool? RedactAndSendRedact { get; set; }
-
         public bool? RedactAndSendSaveRedaction { get; set; }
-
-        public bool? RedactAndSendSendRedaction { get; set; }
 
         public bool? UpdateEsfaUpdate { get; set; }
 
         public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; }
+
+        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; }
 
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 
@@ -252,6 +250,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public bool? CheckAccuracyOfHigherNeedsConfirmNumber { get; set; }
 
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; }
+
+        public bool? CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber { get; set; }
 
         public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; }
 

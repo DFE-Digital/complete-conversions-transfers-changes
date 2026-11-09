@@ -13,7 +13,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ArticleOfAssociation, "articles_of_association", "Articles of association")]
         [InlineData(NoteTaskIdentifier.DeedOfNovationAndVariation, "deed_of_novation_and_variation", "Deed of novation and variation")]
         [InlineData(NoteTaskIdentifier.DeedOfVariation, "deed_of_variation", "Deed of variation")]
-        [InlineData(NoteTaskIdentifier.RedactAndSendDocuments, "redact_and_send_documents", "Redact and send documents")]
+        [InlineData(NoteTaskIdentifier.RedactAndSendDocuments, "redact_and_send_documents", "Send and Save Documents")]
         [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, "proposed_capacity_of_the_academy", "Confirm the proposed capacity of the academy")]
         [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "conditions_met", "Confirm this transfer has authority to proceed")]
         [InlineData(NoteTaskIdentifier.DeclarationOfExpenditureCertificate, "declaration_of_expenditure_certificate", "Receive declaration of expenditure certificate")]
@@ -50,7 +50,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ConfirmSchoolBankDetails, "confirm_school_bank_details", "Confirm the new bank account details for the school")]
         [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions, "confirm_incoming_trust_has_completed_all_actions", "Confirm the incoming trust has completed all actions")]
         [InlineData(NoteTaskIdentifier.AcademyDetails, "academy_details", "Confirm the academy name")]
-        [InlineData(NoteTaskIdentifier.RedactAndSend, "redact_and_send", "Redact and send documents")]
+        [InlineData(NoteTaskIdentifier.RedactAndSend, "redact_and_send", "Send and Save Documents")]
         [InlineData(NoteTaskIdentifier.PrivateFinanceInitiative, "private_finance_initiative", "Private finance initiative")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {

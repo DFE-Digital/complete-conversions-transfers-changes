@@ -79,7 +79,7 @@
             var afterTransferTasks = new List<TaskListItemViewModel>
             {
                 new(confirmDateAcademyTransferredTitle, taskLinkBuilder.Build("confirm_date_academy_transferred"), transferTaskList.ConfirmDateAcademyTransferred, 1),
-                new("Redact and send documents", taskLinkBuilder.Build("redact_and_send_documents"), transferTaskList.RedactAndSendDocuments, 2),
+                new("Send and Save Documents", taskLinkBuilder.Build("redact_and_send_documents"), transferTaskList.RedactAndSendDocuments, 2),
                 new("Receive declaration of expenditure certificate", taskLinkBuilder.Build("declaration_of_expenditure_certificate"), transferTaskList.DeclarationOfExpenditureCertificate, 3)
             };
 

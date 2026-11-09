@@ -34,7 +34,7 @@ public enum NoteTaskIdentifier
     DeedOfVariation = 8,
 
     [Description("redact_and_send_documents")]
-    [DisplayDescription("Redact and send documents")]
+    [DisplayDescription("Send and Save Documents")]
     RedactAndSendDocuments = 9,
 
     [Description("proposed_capacity_of_the_academy")]
@@ -194,7 +194,7 @@ public enum NoteTaskIdentifier
     AcademyDetails = 48,
 
     [Description("redact_and_send")]
-    [DisplayDescription("Redact and send documents")]
+    [DisplayDescription("Send and Save Documents")]
     RedactAndSend = 49,
 
     [Description("confirm_statutory_consultation")]

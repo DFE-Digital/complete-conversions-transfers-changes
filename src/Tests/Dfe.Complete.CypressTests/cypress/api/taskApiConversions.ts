@@ -4,6 +4,7 @@ interface UpdateCheckAccuracyOfHigherNeedsTaskRequest {
     taskDataId: TaskDataId;
     confirmNumber?: boolean;
     confirmPublishedNumber?: boolean;
+    confirmPublishedIncorrectNumber?: boolean;
     checkReturnedForm?: boolean;
     sendForm?: boolean;
     notApplicable?: boolean;
@@ -81,6 +82,7 @@ interface UpdateLandQuestionnaireTaskRequest {
 
 interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
     taskDataId: TaskDataId;
+    notApplicable?: boolean;
     confirm?: boolean;
     email?: boolean;
     receive?: boolean;

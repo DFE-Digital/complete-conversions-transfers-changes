@@ -302,10 +302,8 @@ export class TaskHelper {
         const defaultBody = {
             taskDataId: { value: taskDataId },
             projectType: projectType,
-            redact: false,
             saved: false,
             sendToEsfa: false,
-            send: false,
             sendToSolicitors: false,
         };
 
@@ -313,17 +311,15 @@ export class TaskHelper {
             case "inProgress":
                 return taskApi.updateRedactAndSendDocumentsTask({
                     ...defaultBody,
-                    redact: true,
+                    saved: true,
                 });
 
             case "completed":
                 return taskApi.updateRedactAndSendDocumentsTask({
                     taskDataId: { value: taskDataId },
                     projectType: projectType,
-                    redact: true,
                     saved: true,
                     sendToEsfa: true,
-                    send: true,
                     sendToSolicitors: true,
                 });
 

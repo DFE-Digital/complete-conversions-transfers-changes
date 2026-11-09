@@ -87,20 +87,18 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expectedStatus, result.DeclarationOfExpenditureCertificate);
         }
         [Theory]
-        [InlineData(null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(false, false, false, false, false, TaskListStatus.NotStarted)]
-        [InlineData(true, true, true, true, true, TaskListStatus.Completed)]
-        [InlineData(true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(false, false, false, TaskListStatus.NotStarted)]
+        [InlineData(true, true, true, TaskListStatus.Completed)]
+        [InlineData(false, false, true, TaskListStatus.InProgress)]
         public void RedactAndSendDocumentsTaskStatus_ShouldReturn_CorrectStatus(
-            bool? redact, bool? saved, bool? sendEsfa, bool? sendFundingTeam, bool? sendSolicitors, TaskListStatus expectedStatus)
+            bool? saved, bool? sendEsfa, bool? sendSolicitors, TaskListStatus expectedStatus)
         {
             var taskData = new TransferTaskDataDto
             {
                 Id = new TaskDataId(Guid.NewGuid()),
-                RedactAndSendDocumentsRedact = redact,
                 RedactAndSendDocumentsSaved = saved,
                 RedactAndSendDocumentsSendToEsfa = sendEsfa,
-                RedactAndSendDocumentsSendToFundingTeam = sendFundingTeam,
                 RedactAndSendDocumentsSendToSolicitors = sendSolicitors
             };
 

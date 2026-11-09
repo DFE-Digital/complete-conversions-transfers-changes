@@ -5887,14 +5887,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToEsfa", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSendToEsfa { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendDocumentsRedact { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSaved { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToFundingTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendDocumentsSendToFundingTeam { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToSolicitors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendDocumentsSendToSolicitors { get; set; } = default!;
@@ -6213,20 +6207,17 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("confirmSchoolBankDetailsSubmitted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConfirmSchoolBankDetailsSubmitted { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("redactAndSendRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendRedact { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("redactAndSendSaveRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? RedactAndSendSaveRedaction { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("redactAndSendSendRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? RedactAndSendSendRedaction { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("updateEsfaUpdate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? UpdateEsfaUpdate { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("receiveGrantPaymentCertificateSaveCertificate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; } = default!;
@@ -6366,6 +6357,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsCheckReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckAccuracyOfHigherNeedsCheckReturnedForm { get; set; } = default!;
@@ -7599,6 +7593,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("confirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ConfirmPublishedNumber { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("confirmPublishedIncorrectNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmPublishedIncorrectNumber { get; set; } = default!;
+
         [Newtonsoft.Json.JsonProperty("checkReturnedForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? CheckReturnedForm { get; set; } = default!;
 
@@ -8203,6 +8200,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("confirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? Confirm { get; set; } = default!;

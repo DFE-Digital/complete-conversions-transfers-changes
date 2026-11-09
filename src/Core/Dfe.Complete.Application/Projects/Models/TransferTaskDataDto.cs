@@ -174,11 +174,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? RedactAndSendDocumentsSendToEsfa { get; set; }
 
-        public bool? RedactAndSendDocumentsRedact { get; set; }
-
         public bool? RedactAndSendDocumentsSaved { get; set; }
-
-        public bool? RedactAndSendDocumentsSendToFundingTeam { get; set; }
 
         public bool? RedactAndSendDocumentsSendToSolicitors { get; set; }
 

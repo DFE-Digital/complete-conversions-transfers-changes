@@ -23,6 +23,13 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ---
 
+## [2.0.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-08-21.1687) - 2026-08-21
+
+### Changed
+ - [295551](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/295551) - Update Incorrect/broken links
+ - [292850](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_workitems/edit/292850) - Update db seeder to include entries for new entity significant change project
+
+---
 ## [2.0.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2026-07-30.1678) - 2026-07-30
 
 ### Changed

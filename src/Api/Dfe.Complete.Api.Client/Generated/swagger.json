@@ -8738,15 +8738,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "redactAndSendDocumentsRedact": {
-            "type": "boolean",
-            "nullable": true
-          },
           "redactAndSendDocumentsSaved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "redactAndSendDocumentsSendToFundingTeam": {
             "type": "boolean",
             "nullable": true
           },
@@ -9153,15 +9145,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "redactAndSendRedact": {
-            "type": "boolean",
-            "nullable": true
-          },
           "redactAndSendSaveRedaction": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "redactAndSendSendRedaction": {
             "type": "boolean",
             "nullable": true
           },
@@ -9170,6 +9154,10 @@
             "nullable": true
           },
           "receiveGrantPaymentCertificateSaveCertificate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
             "type": "boolean",
             "nullable": true
           },
@@ -9358,6 +9346,10 @@
             "nullable": true
           },
           "checkAccuracyOfHigherNeedsConfirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkAccuracyOfHigherNeedsConfirmPublishedIncorrectNumber": {
             "type": "boolean",
             "nullable": true
           },
@@ -10444,6 +10436,10 @@
             "type": "boolean",
             "nullable": true
           },
+          "confirmPublishedIncorrectNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
           "checkReturnedForm": {
             "type": "boolean",
             "nullable": true
@@ -10929,6 +10925,10 @@
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
           },
           "confirm": {
             "type": "boolean",
