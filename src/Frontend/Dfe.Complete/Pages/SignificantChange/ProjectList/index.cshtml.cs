@@ -1,5 +1,5 @@
-using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Application.SignificantChange.Models;
+using Dfe.Complete.Application.SignificantChange.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.SignificantChange.ProjectList;
 
 public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel()
 {  
-    public List<ListProjectsByFilterResultsModel> Projects { get; private set; } = [];
+    public List<ListSignificantChangeProjectsByFilterResultsModel> Projects { get; private set; } = [];
 
     public ProjectListFilters Filters { get; } = new();
 
@@ -27,7 +27,7 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
         ];
         Filters.PopulateFrom(Request.Query);
 
-        var request = new ListProjectsByFilterQuery(
+        var request = new ListSignificantChangeProjectsByFilterQuery(
             Filters.SelectedStatusEnums,
             PageNumber - 1,
             PageSize);

@@ -2,7 +2,7 @@ using Dfe.Complete.Application.Common.Queries;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 
-namespace Dfe.Complete.Application.Projects.Queries.QueryFilters;
+namespace Dfe.Complete.Application.SignificantChange.Queries.QueryFilters;
 
 public class SignificantStateQuery(List<ProjectState>? states) : IQueryObject<SignificantChangeProject>
 {

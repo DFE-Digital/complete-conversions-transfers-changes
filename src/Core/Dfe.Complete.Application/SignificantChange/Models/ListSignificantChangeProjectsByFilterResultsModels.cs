@@ -1,13 +1,11 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Application.Common.Models;
-public record ListProjectsByFilterResultsModel(
+namespace Dfe.Complete.Application.SignificantChange.Models;
+public record ListSignificantChangeProjectsByFilterResultsModel(
     ProjectId ProjectId,
     string? EstablishmentName,
     Urn Urn,
-    string ProjectType,
-    bool? IsFormAMat,
     string? AssignedToFullName,
     Region? Region,
     string? LocalAuthorityName,
