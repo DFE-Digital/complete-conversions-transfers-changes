@@ -23,7 +23,5 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();
         }
-
-
     }
 }

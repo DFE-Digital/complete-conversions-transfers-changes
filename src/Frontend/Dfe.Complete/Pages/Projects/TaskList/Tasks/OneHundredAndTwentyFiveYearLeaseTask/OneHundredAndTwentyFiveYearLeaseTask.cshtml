@@ -18,6 +18,15 @@
 
         <div class="govuk-form-group">
             <h2 class="govuk-heading-m">Confirm the 125 year lease has been signed</h2>
+
+            <govuk-checkboxes name="@nameof(Model.NotApplicable)">
+                <govuk-checkboxes-item id="@(nameof(Model.NotApplicable))" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes>
+
+            <div class="govuk-hint govuk-!-margin-bottom-0">Or</div>
+
             <div class="govuk-hint">
                 Select all that apply
             </div>
@@ -26,7 +35,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                
+
                 <govuk-checkboxes-item id="@(nameof(Model.Confirm))" data-cy="@(nameof(Model.Confirm))" asp-for="@Model.Confirm" value="true" name="@(nameof(Model.Confirm))" checked="@Model.Confirm">
                     <b>Confirm if the model DfE 125 year lease been used unamended</b>
                 </govuk-checkboxes-item>

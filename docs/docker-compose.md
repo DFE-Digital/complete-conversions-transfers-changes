@@ -11,7 +11,7 @@
 
 ### Why?
 
-For quickly brining up any dependencies the project has such as an SQL database and redis (if applicable)
+For quickly bringing up any dependencies the project has such as an SQL database and redis (if applicable)
 
 ### How?
 
