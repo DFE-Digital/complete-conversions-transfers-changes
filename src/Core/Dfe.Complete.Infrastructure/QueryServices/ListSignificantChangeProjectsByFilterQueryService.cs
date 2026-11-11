@@ -13,32 +13,17 @@ internal class ListSignificantChangeProjectsByFilterQueryService(CompleteContext
     {
         var statusList = projectStatuses?.ToList();
 
-        var significantChangeProjects = new SignificantStateQuery(statusList)
+        return new SignificantStateQuery(statusList)
             .Apply(context.SignificantChangeProjects)
-            .Include(p => p.LocalAuthority)
-            .Include(p => p.GiasEstablishment)
-            .Select(p => new
-            {
-                p.Id,
-                EstablishmentName = p.GiasEstablishment!.Name,
-                Urn = p.AcademyUrn,
-                p.AssignedToUser,
-                p.Region,
-                LocalAuthorityName = p.LocalAuthority!.Name,
-                p.SignificantDate,
-                p.State 
-            });
-
-        return significantChangeProjects
-            .OrderByDescending(x => x.SignificantDate)
-            .ThenBy(x => x.Urn)
+            .OrderByDescending(p => p.SignificantDate)
+            .ThenBy(p => p.AcademyUrn)
             .Select(p => new ListSignificantChangeProjectsByFilterResultsModel(
                 p.Id,
-                p.EstablishmentName,
-                p.Urn,
+                p.GiasEstablishment!.Name,
+                p.AcademyUrn,
                 p.AssignedToUser!.FullName,
                 p.Region,
-                p.LocalAuthorityName,
+                p.LocalAuthority!.Name,
                 p.SignificantDate,
                 p.State));
     }
