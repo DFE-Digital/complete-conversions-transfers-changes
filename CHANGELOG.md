@@ -17,9 +17,6 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- [292850](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/Significant%20changes/Stories?workitem=292850) - Update db seeder to include entries for new entity significant change project
-- [292852](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/Significant%20changes/Stories?workitem=292852) - Add significant change creation endpoint in the API
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-07-30.1678...main) for everything awaiting release
 - [292852](https://dfe-gov-uk.visualstudio.com/Academies-and-Free-Schools-SIP/_boards/board/t/Significant%20changes/Stories?workitem=292852) - Add significant change creation endpoint in the API
   
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2026-08-21.1687...main) for everything awaiting release
