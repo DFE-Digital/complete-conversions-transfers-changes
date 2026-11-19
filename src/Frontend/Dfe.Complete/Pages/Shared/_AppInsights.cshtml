@@ -22,6 +22,25 @@
         }
     });
 
+    // Track clicks on GOV.UK details summaries (expand/collapse)
+    document.addEventListener("click", function (e) {
+        const summary = e.target.closest(".govuk-details__summary");
+        if (!summary) return;
+        const textEl = summary.querySelector(".govuk-details__summary-text");
+        if (!textEl) return;
+        const details = summary.closest("details");
+
+        window.appInsights.trackEvent({
+            name: "Accordion click event",
+            properties: {
+                className: "govuk-details__summary-text",
+                text: textEl.innerText?.trim(),
+                action: details && details.open ? "collapse" : "expand",
+                page: window.location.pathname
+            }
+        });
+    });
+
     // Set Authenticated User Context
     window.appInsights.setAuthenticatedUserContext("@authenticatedUserId", null, true);
 </script>
