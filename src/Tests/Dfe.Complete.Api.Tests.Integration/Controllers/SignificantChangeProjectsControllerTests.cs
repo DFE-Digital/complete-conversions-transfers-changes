@@ -12,6 +12,8 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Claims;
+using DomainProjectState = Dfe.Complete.Domain.Enums.ProjectState;
+using DomainRegion = Dfe.Complete.Domain.Enums.Region;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -134,6 +136,110 @@ public class SignificantChangeProjectsControllerTests
             await significantChangeProjectsClient.CreateSignificantChangeProjectAsync(command, default));
 
         Assert.Equal(HttpStatusCode.Forbidden, (HttpStatusCode)exception.StatusCode);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task ListSignificantChangeProjectsByFilterAsync_WithKeyword_ReturnsOnlyMatchingProjects(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        ISignificantChangeProjectsClient significantChangeProjectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var keyword = $"Keyword{Guid.NewGuid():N}";
+
+        var matchingProject = await SeedSignificantChangeProjectAsync(
+            dbContext, fixture, $"{keyword} Academy Trust", DomainProjectState.Active, DomainRegion.London);
+        await SeedSignificantChangeProjectAsync(
+            dbContext, fixture, "Unrelated Trust", DomainProjectState.Active, DomainRegion.London);
+
+        var result = await significantChangeProjectsClient.ListSignificantChangeProjectsByFilterAsync(
+            new ListSignificantChangeProjectsByFilterQuery
+            {
+                Filters = new SignificantChangeProjectFilters { Keyword = keyword },
+                PageNumber = 0,
+                PageSize = 20
+            },
+            default);
+
+        Assert.NotNull(result);
+        Assert.Equal(1, result.ItemCount);
+        var item = Assert.Single(result.Value!);
+        Assert.Equal(matchingProject.Id.Value, item.ProjectId?.Value);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task GetSignificantChangeProjectFilterOptionsAsync_ExcludesEachFiltersOwnSelectionFromItsOptions(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        ISignificantChangeProjectsClient significantChangeProjectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var keyword = $"Keyword{Guid.NewGuid():N}";
+
+        await SeedSignificantChangeProjectAsync(
+            dbContext, fixture, $"{keyword} Active Trust", DomainProjectState.Active, DomainRegion.London);
+        await SeedSignificantChangeProjectAsync(
+            dbContext, fixture, $"{keyword} Completed Trust", DomainProjectState.Completed, DomainRegion.NorthWest);
+
+        var result = await significantChangeProjectsClient.GetSignificantChangeProjectFilterOptionsAsync(
+            new GetSignificantChangeProjectFilterOptionsQuery
+            {
+                Filters = new SignificantChangeProjectFilters
+                {
+                    Keyword = keyword,
+                    ProjectStatuses = [ProjectState.Completed]
+                }
+            },
+            default);
+
+        Assert.NotNull(result);
+        Assert.NotNull(result.Statuses);
+        Assert.Contains(result.Statuses, s => s.Value == nameof(DomainProjectState.Active));
+        Assert.Contains(result.Statuses, s => s.Value == nameof(DomainProjectState.Completed));
+
+        var region = Assert.Single(result.Regions!);
+        Assert.Equal(nameof(DomainRegion.NorthWest), region.Value);
+    }
+
+    private static async Task<Dfe.Complete.Domain.Entities.SignificantChangeProject> SeedSignificantChangeProjectAsync(
+        CompleteContext dbContext,
+        IFixture fixture,
+        string trustName,
+        DomainProjectState state,
+        DomainRegion region)
+    {
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+        var urn = await GetUnusedUrnAsync(dbContext);
+
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Dfe.Complete.Domain.ValueObjects.Urn(urn)
+            })
+            .Create<GiasEstablishment>();
+
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var project = Dfe.Complete.Domain.Entities.SignificantChangeProject.CreateProject(
+            new Dfe.Complete.Domain.ValueObjects.Ukprn(10000001),
+            trustName,
+            new Dfe.Complete.Domain.ValueObjects.Urn(urn),
+            localAuthority.Id);
+        project.State = state;
+        project.Region = region;
+
+        await dbContext.SignificantChangeProjects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+        dbContext.ChangeTracker.Clear();
+
+        return project;
     }
 
     private static async Task<int> GetUnusedUrnAsync(CompleteContext dbContext)

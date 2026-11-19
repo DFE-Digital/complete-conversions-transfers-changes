@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.SignificantChange.Models;
 using Dfe.Complete.Application.SignificantChange.Queries;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ProjectList;
 using Dfe.Complete.Pages.Pagination;
@@ -20,29 +19,28 @@ public class IndexModel(ISender sender) : BaseSignificantChangeProjectsPageModel
         ViewData[TabNavigationModel.ViewDataKey] = SignificantChangeTabNavigationModel;
 
         Filters.PersistUsing(new Dictionary<string, object?>());
-        Filters.AvailableStatuses = [
-            ProjectState.Active.ToString(),
-            ProjectState.Completed.ToString(),
-            ProjectState.DaoRevoked.ToString(),
-        ];
         Filters.PopulateFrom(Request.Query);
 
+        var filters = Filters.ToFilters();
+
         var request = new ListSignificantChangeProjectsByFilterQuery(
-            Filters.SelectedStatusEnums,
+            filters,
             PageNumber - 1,
             PageSize);
 
         var result = await sender.Send(request);
 
-        var queryParts = new List<string>();
+        var options = await sender.Send(new GetSignificantChangeProjectFilterOptionsQuery(filters));
 
-        foreach (var selectedStatus in Filters.SelectedStatusEnums)
-        {
-            queryParts.Add($"SelectedStatuses={Uri.EscapeDataString(selectedStatus.ToString())}");
-        }
+        Filters.StatusOptions = options.Statuses;
+        Filters.ProjectOwnerOptions = options.ProjectOwners;
+        Filters.RegionOptions = options.Regions;
+        Filters.LocalAuthorityOptions = options.LocalAuthorities;
+
+        var queryString = Filters.ToQueryString();
 
         var paginationUrl = RouteConstants.SignificantChange +
-            (queryParts.Count > 0 ? $"?{string.Join("&", queryParts)}" : string.Empty);
+            (string.IsNullOrEmpty(queryString) ? string.Empty : $"?{queryString}");
 
         Pagination = new PaginationModel(paginationUrl, PageNumber, result.ItemCount, PageSize);
 

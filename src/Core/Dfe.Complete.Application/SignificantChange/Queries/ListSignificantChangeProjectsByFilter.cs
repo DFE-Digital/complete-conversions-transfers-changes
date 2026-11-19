@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.SignificantChange.Models;
 using Dfe.Complete.Application.SignificantChange.Services;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.SignificantChange.Queries;
 
 public record ListSignificantChangeProjectsByFilterQuery(
-    ProjectState[]? ProjectStatuses = null,
-    int PageNumber = 1,
+    SignificantChangeProjectFilters? Filters = null,
+    int PageNumber = 0,
     int PageSize = 20)
     : IRequest<PaginatedResult<List<ListSignificantChangeProjectsByFilterResultsModel>>>;
 
@@ -22,7 +21,7 @@ internal class ListSignificantChangeProjectsByFilterQueryHandler(
     {
         try
         {
-            var projects = listSignificantChangeProjectsByFilterQueryService.ListSignificantChangeProjectsByFilter(request.ProjectStatuses);
+            var projects = listSignificantChangeProjectsByFilterQueryService.ListSignificantChangeProjectsByFilter(request.Filters ?? new());
 
             var projectsResult = await projects
                 .Paginate(request.PageNumber, request.PageSize)

@@ -1,6 +1,8 @@
 ﻿#nullable enable
 
+using Dfe.Complete.Application.SignificantChange.Models;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
@@ -9,12 +11,29 @@ namespace Dfe.Complete.Models.ProjectList;
 public class ProjectListFilters
 {
     public const string FilterStatuses = nameof(FilterStatuses);
+    public const string FilterProjectOwners = nameof(FilterProjectOwners);
+    public const string FilterRegions = nameof(FilterRegions);
+    public const string FilterLocalAuthorities = nameof(FilterLocalAuthorities);
 
     private IDictionary<string, object?> _store = null!;
 
-    public List<string> AvailableStatuses { get; set; } = [];
+    public List<SignificantChangeFilterOption> StatusOptions { get; set; } = [];
+
+    public List<SignificantChangeFilterOption> ProjectOwnerOptions { get; set; } = [];
+
+    public List<SignificantChangeFilterOption> RegionOptions { get; set; } = [];
+
+    public List<SignificantChangeFilterOption> LocalAuthorityOptions { get; set; } = [];
+
+    public string? Keyword { get; set; }
 
     [BindProperty] public string[] SelectedStatuses { get; set; } = [];
+
+    [BindProperty] public string[] SelectedProjectOwners { get; set; } = [];
+
+    [BindProperty] public string[] SelectedRegions { get; set; } = [];
+
+    [BindProperty] public string[] SelectedLocalAuthorities { get; set; } = [];
 
     public ProjectState[] SelectedStatusEnums =>
         [.. SelectedStatuses
@@ -23,13 +42,66 @@ public class ProjectListFilters
             .Select(status => status!.Value)
             .Distinct()];
 
-    public bool IsVisible => SelectedStatuses.Length > 0;
+    public bool IsVisible =>
+        !string.IsNullOrWhiteSpace(Keyword)
+        || SelectedStatuses.Length > 0
+        || SelectedProjectOwners.Length > 0
+        || SelectedRegions.Length > 0
+        || SelectedLocalAuthorities.Length > 0;
+
+    public SignificantChangeProjectFilters ToFilters() => new(
+        ProjectStatuses: SelectedStatusEnums,
+        Keyword: string.IsNullOrWhiteSpace(Keyword) ? null : Keyword.Trim(),
+        ProjectOwnerIds: SelectedProjectOwners
+            .Select(TryParseGuid)
+            .Where(id => id.HasValue)
+            .Select(id => new UserId(id!.Value))
+            .ToArray(),
+        Regions: SelectedRegions
+            .Select(TryParseAs<Region>)
+            .Where(region => region.HasValue)
+            .Select(region => region!.Value)
+            .Distinct()
+            .ToArray(),
+        LocalAuthorityIds: SelectedLocalAuthorities
+            .Select(TryParseGuid)
+            .Where(id => id.HasValue)
+            .Select(id => new LocalAuthorityId(id!.Value))
+            .ToArray());
+
+    public string ToQueryString()
+    {
+        List<string> parts = [];
+
+        if (!string.IsNullOrWhiteSpace(Keyword))
+        {
+            parts.Add($"{nameof(Keyword)}={Uri.EscapeDataString(Keyword.Trim())}");
+        }
+
+        AddParts(parts, nameof(SelectedStatuses), SelectedStatusEnums.Select(status => status.ToString()));
+        AddParts(parts, nameof(SelectedProjectOwners), SelectedProjectOwners);
+        AddParts(parts, nameof(SelectedRegions), SelectedRegions);
+        AddParts(parts, nameof(SelectedLocalAuthorities), SelectedLocalAuthorities);
+
+        return string.Join("&", parts);
+    }
+
+    private static void AddParts(List<string> parts, string key, IEnumerable<string> values)
+    {
+        foreach (var value in values)
+        {
+            parts.Add($"{key}={Uri.EscapeDataString(value)}");
+        }
+    }
 
     public ProjectListFilters PersistUsing(IDictionary<string, object?> store)
     {
         _store = store;
 
         SelectedStatuses = Get(FilterStatuses);
+        SelectedProjectOwners = Get(FilterProjectOwners);
+        SelectedRegions = Get(FilterRegions);
+        SelectedLocalAuthorities = Get(FilterLocalAuthorities);
 
         return this;
     }
@@ -61,20 +133,42 @@ public class ProjectListFilters
         if (query.ContainsKey("clear"))
         {
             ClearFilters();
-            SelectedStatuses = [];
 
             return;
         }
 
-        bool activeFilterChanges = query.ContainsKey(nameof(SelectedStatuses));
+        bool activeFilterChanges = query.Keys.Any(IsFilterKey);
 
         if (activeFilterChanges)
         {
+            Keyword = GetKeyword();
             SelectedStatuses = Cache(FilterStatuses, GetFromQuery(nameof(SelectedStatuses)));
+            SelectedProjectOwners = Cache(FilterProjectOwners, GetFromQuery(nameof(SelectedProjectOwners)));
+            SelectedRegions = Cache(FilterRegions, GetFromQuery(nameof(SelectedRegions)));
+            SelectedLocalAuthorities = Cache(FilterLocalAuthorities, GetFromQuery(nameof(SelectedLocalAuthorities)));
         }
         else
         {
             SelectedStatuses = Get(FilterStatuses, true);
+            SelectedProjectOwners = Get(FilterProjectOwners, true);
+            SelectedRegions = Get(FilterRegions, true);
+            SelectedLocalAuthorities = Get(FilterLocalAuthorities, true);
+        }
+
+        bool IsFilterKey(string key) =>
+            key.Equals(nameof(Keyword), StringComparison.OrdinalIgnoreCase)
+            || key.Equals(nameof(SelectedStatuses), StringComparison.OrdinalIgnoreCase)
+            || key.Equals(nameof(SelectedProjectOwners), StringComparison.OrdinalIgnoreCase)
+            || key.Equals(nameof(SelectedRegions), StringComparison.OrdinalIgnoreCase)
+            || key.Equals(nameof(SelectedLocalAuthorities), StringComparison.OrdinalIgnoreCase);
+
+        string? GetKeyword()
+        {
+            if (!query.TryGetValue(nameof(Keyword), out StringValues values)) return null;
+
+            string? keyword = values.FirstOrDefault()?.Trim();
+
+            return string.IsNullOrWhiteSpace(keyword) ? null : keyword;
         }
 
         string[] GetFromQuery(string key)
@@ -85,12 +179,15 @@ public class ProjectListFilters
                 .SelectMany(value => (value ?? string.Empty).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
                 .Distinct(StringComparer.OrdinalIgnoreCase)];
         }
-
     }
 
     private void ClearFilters()
     {
-        Cache(FilterStatuses, default);
+        Keyword = null;
+        SelectedStatuses = Cache(FilterStatuses, default);
+        SelectedProjectOwners = Cache(FilterProjectOwners, default);
+        SelectedRegions = Cache(FilterRegions, default);
+        SelectedLocalAuthorities = Cache(FilterLocalAuthorities, default);
     }
 
     public static void ClearFiltersFrom(IDictionary<string, object?> store)
@@ -110,4 +207,7 @@ public class ProjectListFilters
 
         return null;
     }
+
+    private static Guid? TryParseGuid(string? input) =>
+        Guid.TryParse(input, out Guid value) ? value : null;
 }

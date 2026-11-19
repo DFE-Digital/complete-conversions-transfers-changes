@@ -398,9 +398,13 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
             .AsNoTracking()
             .ToDictionaryAsync(x => x.Code, x => x.Id);
 
+        var states = new[] { ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked };
+        var teams = Enum.GetValues<ProjectTeam>();
+
         for (var i = 0; i < 25; i++)
         {
-            var assignedToUser = RandomFromList(users);
+            // Every fifth project is left unassigned so the unassigned state is represented
+            var assignedToUser = i % 5 == 0 ? null : RandomFromList(users);
             var academyUrn = Urns[i % Urns.Count];
 
             if (!giasByUrn.TryGetValue(academyUrn.Value, out var giasEstablishment)
@@ -419,7 +423,13 @@ public class DatabaseSeeder(CompleteContext context, IConfiguration configuratio
                 );
 
             significantChangeProject.Region = giasEstablishment.RegionCode?.ToEnumFromChar<Region>();
-            significantChangeProject.AssignUser(assignedToUser.Id);
+            significantChangeProject.SignificantDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-i * 14));
+            significantChangeProject.Team = teams[i % teams.Length];
+            significantChangeProject.SharepointFolderLink = $"https://example.sharepoint.com/sites/SignificantChange/Shared%20Documents/Project-{i + 1}";
+            significantChangeProject.DecisionConditions = $"Decision conditions for significant change project {i + 1}";
+            significantChangeProject.State = states[i % states.Length];
+            significantChangeProject.CompletedAt = significantChangeProject.State == ProjectState.Completed ? DateTime.UtcNow : null;
+            significantChangeProject.AssignUser(assignedToUser?.Id);
 
             _context.SignificantChangeProjects.Add(significantChangeProject);
         }

@@ -2,6 +2,9 @@
 @model Dfe.Complete.Models.ProjectList.ProjectListFilters
 @{
     var selectedStatuses = new HashSet<string>(Model.SelectedStatuses ?? [], StringComparer.OrdinalIgnoreCase);
+    var selectedProjectOwners = new HashSet<string>(Model.SelectedProjectOwners ?? [], StringComparer.OrdinalIgnoreCase);
+    var selectedRegions = new HashSet<string>(Model.SelectedRegions ?? [], StringComparer.OrdinalIgnoreCase);
+    var selectedLocalAuthorities = new HashSet<string>(Model.SelectedLocalAuthorities ?? [], StringComparer.OrdinalIgnoreCase);
 }
 
 <div class="moj-filter">
@@ -36,6 +39,12 @@
             <form method="get" action="@RouteConstants.SignificantChange">
                 <govuk-button type="submit">Apply filters</govuk-button>
 
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="projects-filter-keyword">Keyword</label>
+                    <div class="govuk-hint" id="projects-filter-keyword-hint">Academy name, trust name, URN or trust UKPRN</div>
+                    <input id="projects-filter-keyword" class="govuk-input" name="Keyword" type="text" aria-describedby="projects-filter-keyword-hint" value="@Model.Keyword" />
+                </div>
+
                 <div class="govuk-accordion" data-module="govuk-accordion" id="projects-filter-accordion">
                     <div class="govuk-accordion__section">
                         <div class="govuk-accordion__section-header">
@@ -52,19 +61,115 @@
                             </div>
 
                             <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                                @foreach (var status in Model.AvailableStatuses)
+                                @foreach (var option in Model.StatusOptions)
                                 {
                                     @* TODO - replace this with an extension method, prepare uses status.Stub() *@
-                                    var checkboxId = $"status-{status.Replace(" ", "-").ToLowerInvariant()}";
+                                    var checkboxId = $"status-{option.Value.Replace(" ", "-").ToLowerInvariant()}";
                                     <div class="govuk-checkboxes__item">
                                         <input class="govuk-checkboxes__input"
                                                id="@checkboxId"
                                                name="SelectedStatuses"
                                                type="checkbox"
-                                               value="@status"
-                                               checked="@(selectedStatuses.Contains(status) ? "checked" : null)" />
-                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@status</label>
+                                               value="@option.Value"
+                                               checked="@(selectedStatuses.Contains(option.Value) ? "checked" : null)" />
+                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@option.Label</label>
                                     </div>
+                                }
+                                @foreach (var value in selectedStatuses.Except(Model.StatusOptions.Select(o => o.Value), StringComparer.OrdinalIgnoreCase))
+                                {
+                                    <input type="hidden" name="SelectedStatuses" value="@value" />
+                                }
+                            </div>
+                        </section>
+                    </div>
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading">
+                                <span class="govuk-accordion__section-button" id="projects-filter-project-owner-heading">
+                                    Project owner
+                                </span>
+                            </h2>
+                        </div>
+                        <section class="govuk-accordion__section-content" aria-labelledby="projects-filter-project-owner-heading" id="projects-filter-project-owner-content">
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                @foreach (var option in Model.ProjectOwnerOptions)
+                                {
+                                    var checkboxId = $"project-owner-{option.Value}";
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input"
+                                               id="@checkboxId"
+                                               name="SelectedProjectOwners"
+                                               type="checkbox"
+                                               value="@option.Value"
+                                               checked="@(selectedProjectOwners.Contains(option.Value) ? "checked" : null)" />
+                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@option.Label</label>
+                                    </div>
+                                }
+                                @foreach (var value in selectedProjectOwners.Except(Model.ProjectOwnerOptions.Select(o => o.Value), StringComparer.OrdinalIgnoreCase))
+                                {
+                                    <input type="hidden" name="SelectedProjectOwners" value="@value" />
+                                }
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading">
+                                <span class="govuk-accordion__section-button" id="projects-filter-region-heading">
+                                    Region
+                                </span>
+                            </h2>
+                        </div>
+                        <section class="govuk-accordion__section-content" aria-labelledby="projects-filter-region-heading" id="projects-filter-region-content">
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                @foreach (var option in Model.RegionOptions)
+                                {
+                                    var checkboxId = $"region-{option.Value}";
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input"
+                                               id="@checkboxId"
+                                               name="SelectedRegions"
+                                               type="checkbox"
+                                               value="@option.Value"
+                                               checked="@(selectedRegions.Contains(option.Value) ? "checked" : null)" />
+                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@option.Label</label>
+                                    </div>
+                                }
+                                @foreach (var value in selectedRegions.Except(Model.RegionOptions.Select(o => o.Value), StringComparer.OrdinalIgnoreCase))
+                                {
+                                    <input type="hidden" name="SelectedRegions" value="@value" />
+                                }
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading">
+                                <span class="govuk-accordion__section-button" id="projects-filter-local-authority-heading">
+                                    Local authority
+                                </span>
+                            </h2>
+                        </div>
+                        <section class="govuk-accordion__section-content" aria-labelledby="projects-filter-local-authority-heading" id="projects-filter-local-authority-content">
+                            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                                @foreach (var option in Model.LocalAuthorityOptions)
+                                {
+                                    var checkboxId = $"local-authority-{option.Value}";
+                                    <div class="govuk-checkboxes__item">
+                                        <input class="govuk-checkboxes__input"
+                                               id="@checkboxId"
+                                               name="SelectedLocalAuthorities"
+                                               type="checkbox"
+                                               value="@option.Value"
+                                               checked="@(selectedLocalAuthorities.Contains(option.Value) ? "checked" : null)" />
+                                        <label class="govuk-label govuk-checkboxes__label" for="@checkboxId">@option.Label</label>
+                                    </div>
+                                }
+                                @foreach (var value in selectedLocalAuthorities.Except(Model.LocalAuthorityOptions.Select(o => o.Value), StringComparer.OrdinalIgnoreCase))
+                                {
+                                    <input type="hidden" name="SelectedLocalAuthorities" value="@value" />
                                 }
                             </div>
                         </section>
