@@ -37,7 +37,7 @@
     "cypress-axe": "1.7.0",
     "cypress-localstorage-commands": "2.3.0",
     "cypress-multi-reporters": "2.0.5",
-    "cypress-slack-reporter": "1.5.4",
+    "cypress-slack-reporter": "1.5.5",
     "eslint": "10.3.0",
     "eslint-plugin-cypress": "6.4.1",
     "globals": "17.6.0",
