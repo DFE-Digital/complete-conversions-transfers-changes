@@ -32,6 +32,18 @@
                         </p>
                     </div>
                 </div>
+
+                @foreach (var group in Model.AppliedFilterGroups)
+                {
+                    <h3 class="govuk-heading-s govuk-!-margin-bottom-0">@group.Heading</h3>
+
+                    <ul class="moj-filter-tags">
+                        @foreach (var chip in group.Chips)
+                        {
+                            <li><a class="moj-filter__tag" href="@chip.RemoveUrl"><span class="govuk-visually-hidden">Remove this filter</span> @chip.Label</a></li>
+                        }
+                    </ul>
+                }
             </div>
         }
 
@@ -40,8 +52,8 @@
                 <govuk-button type="submit">Apply filters</govuk-button>
 
                 <div class="govuk-form-group">
-                    <label class="govuk-label" for="projects-filter-keyword">Keyword</label>
-                    <div class="govuk-hint" id="projects-filter-keyword-hint">Academy name, trust name, URN or trust UKPRN</div>
+                    <label class="govuk-label govuk-label--m govuk-!-margin-top-0" for="projects-filter-keyword">Search for change</label>
+                    <div class="govuk-hint" id="projects-filter-keyword-hint">You can search by school name, academy name, trust name, URN and trust UKPRN</div>
                     <input id="projects-filter-keyword" class="govuk-input" name="Keyword" type="text" aria-describedby="projects-filter-keyword-hint" value="@Model.Keyword" />
                 </div>
 

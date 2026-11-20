@@ -1,12 +1,17 @@
 ﻿#nullable enable
 
 using Dfe.Complete.Application.SignificantChange.Models;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 
 namespace Dfe.Complete.Models.ProjectList;
+
+public record AppliedFilterChip(string Label, string RemoveUrl);
+
+public record AppliedFilterGroup(string Heading, List<AppliedFilterChip> Chips);
 
 public class ProjectListFilters
 {
@@ -69,7 +74,16 @@ public class ProjectListFilters
             .Select(id => new LocalAuthorityId(id!.Value))
             .ToArray());
 
-    public string ToQueryString()
+    public List<AppliedFilterGroup> AppliedFilterGroups =>
+        [.. new[]
+        {
+            BuildGroup("Project status", nameof(SelectedStatuses), SelectedStatusEnums.Select(status => status.ToString()), StatusOptions),
+            BuildGroup("Project owner", nameof(SelectedProjectOwners), SelectedProjectOwners, ProjectOwnerOptions),
+            BuildGroup("Region", nameof(SelectedRegions), SelectedRegions, RegionOptions),
+            BuildGroup("Local authority", nameof(SelectedLocalAuthorities), SelectedLocalAuthorities, LocalAuthorityOptions)
+        }.OfType<AppliedFilterGroup>()];
+
+    public string ToQueryString(string? removeKey = null, string? removeValue = null)
     {
         List<string> parts = [];
 
@@ -78,18 +92,32 @@ public class ProjectListFilters
             parts.Add($"{nameof(Keyword)}={Uri.EscapeDataString(Keyword.Trim())}");
         }
 
-        AddParts(parts, nameof(SelectedStatuses), SelectedStatusEnums.Select(status => status.ToString()));
-        AddParts(parts, nameof(SelectedProjectOwners), SelectedProjectOwners);
-        AddParts(parts, nameof(SelectedRegions), SelectedRegions);
-        AddParts(parts, nameof(SelectedLocalAuthorities), SelectedLocalAuthorities);
+        AddParts(parts, nameof(SelectedStatuses), SelectedStatusEnums.Select(status => status.ToString()), removeKey, removeValue);
+        AddParts(parts, nameof(SelectedProjectOwners), SelectedProjectOwners, removeKey, removeValue);
+        AddParts(parts, nameof(SelectedRegions), SelectedRegions, removeKey, removeValue);
+        AddParts(parts, nameof(SelectedLocalAuthorities), SelectedLocalAuthorities, removeKey, removeValue);
 
         return string.Join("&", parts);
     }
 
-    private static void AddParts(List<string> parts, string key, IEnumerable<string> values)
+    private AppliedFilterGroup? BuildGroup(string heading, string key, IEnumerable<string> selected, List<SignificantChangeFilterOption> options)
+    {
+        List<AppliedFilterChip> chips = [.. selected.Select(value => new AppliedFilterChip(
+            options.FirstOrDefault(option => option.Value.Equals(value, StringComparison.OrdinalIgnoreCase))?.Label ?? value,
+            BuildUrl(ToQueryString(key, value))))];
+
+        return chips.Count == 0 ? null : new AppliedFilterGroup(heading, chips);
+    }
+
+    private static string BuildUrl(string queryString) =>
+        string.IsNullOrEmpty(queryString) ? RouteConstants.SignificantChange : $"{RouteConstants.SignificantChange}?{queryString}";
+
+    private static void AddParts(List<string> parts, string key, IEnumerable<string> values, string? removeKey, string? removeValue)
     {
         foreach (var value in values)
         {
+            if (key == removeKey && value.Equals(removeValue, StringComparison.OrdinalIgnoreCase)) continue;
+
             parts.Add($"{key}={Uri.EscapeDataString(value)}");
         }
     }

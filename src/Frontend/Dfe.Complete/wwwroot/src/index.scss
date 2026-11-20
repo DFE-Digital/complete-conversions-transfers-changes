@@ -28,6 +28,19 @@ $govuk-assets-path: "/assets/";
 @import "./css/pupil-numbers.scss";
 @import "./css/pagination.scss";
 
+// Drawn with gradients: the CSP img-src policy blocks data: URIs and the webpack SVG rule breaks url() references.
+a.moj-filter__tag::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 5px;
+  background:
+    linear-gradient(45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%),
+    linear-gradient(-45deg, transparent 42%, currentColor 42%, currentColor 58%, transparent 58%);
+  vertical-align: middle;
+}
+
 .moj-sub-navigation__link {
 	font-weight: bold;
 }
